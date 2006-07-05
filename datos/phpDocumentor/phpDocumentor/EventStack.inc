@@ -21,14 +21,14 @@
  * An event Stack
  * 
  * @author    Joshua Eichorn <jeichorn@phpdoc.org>
- * @version    $Id: EventStack.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version    $Id: EventStack.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  * @package     phpDocumentor
  */
 /**
  * An event Stack
  * 
  * @author    Joshua Eichorn <jeichorn@phpdoc.org>
- * @version    $Id: EventStack.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version    $Id: EventStack.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  * @package     phpDocumentor
  */
 class EventStack

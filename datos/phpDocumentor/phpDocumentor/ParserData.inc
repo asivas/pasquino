@@ -23,7 +23,7 @@
  * @subpackage ParserData
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserData.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserData.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 /**
  * Contains information about a PHP file, used to group procedural elements
@@ -32,7 +32,7 @@
  * @subpackage ParserData
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserData.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserData.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserPage
 {
@@ -264,7 +264,7 @@ class parserPage
  * @subpackage ParserData
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserData.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserData.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserData
 {
@@ -505,7 +505,7 @@ class parserData
  * @abstract
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserData.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserData.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserBase
 {
@@ -554,7 +554,7 @@ class parserBase
  * @subpackage ParserData
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserData.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserData.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserStringWithInlineTags extends parserBase
 {

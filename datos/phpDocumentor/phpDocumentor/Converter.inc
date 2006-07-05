@@ -22,7 +22,7 @@
  * @package Converters
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: Converter.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: Converter.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 /**
  * Smarty template files
@@ -56,7 +56,7 @@ include_once("phpDocumentor/Smarty-2.6.0/libs/Smarty.class.php");
  * @abstract
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: Converter.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: Converter.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 class Converter
 {

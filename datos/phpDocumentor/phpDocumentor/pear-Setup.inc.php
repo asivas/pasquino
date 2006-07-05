@@ -20,7 +20,7 @@
 /**
  * This was all in phpdoc.inc, and now encapsulates the complexity
  * @author Greg Beaver <cellog@users.sourceforge.net>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.1.1.1 $
  * @package phpDocumentor
  * @since 1.2
  */

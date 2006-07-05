@@ -25,7 +25,7 @@
  * @see parserDocBlock, parserInclude, parserPage, parserClass, parserDefine, parserFunction, parserMethod, parserVar
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.2
- * @version $Id: XMLDocBookpeardoc2Converter.inc,v 1.1 2006-07-05 13:54:13 vidaguren Exp $
+ * @version $Id: XMLDocBookpeardoc2Converter.inc,v 1.1.1.1 2006-07-05 13:54:13 vidaguren Exp $
  */
 /**
  * XML DocBook converter.
@@ -43,7 +43,7 @@
  * @subpackage XMLDocBook
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.2
- * @version $Id: XMLDocBookpeardoc2Converter.inc,v 1.1 2006-07-05 13:54:13 vidaguren Exp $
+ * @version $Id: XMLDocBookpeardoc2Converter.inc,v 1.1.1.1 2006-07-05 13:54:13 vidaguren Exp $
  */
 class XMLDocBookpeardoc2Converter extends Converter
 {

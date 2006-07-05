@@ -652,7 +652,7 @@ There is only 1 template for all other Converters, <b>default</b>
       <!-- hhmts start -->
 <pre>
 Last modified: $Date: 2006-07-05 13:54:05 $
-Revision: $Revision: 1.1 $
+Revision: $Revision: 1.1.1.1 $
 </pre>
       <!-- hhmts end -->
       <?php } //End the else that prints all code

@@ -574,7 +574,7 @@ var screenShots = new Array();
 		<!-- hhmts start -->
 		<pre>
 		Last modified: $Date: 2006-07-05 13:54:05 $
-		Revision: $Revision: 1.1 $
+		Revision: $Revision: 1.1.1.1 $
 		</pre>
 	</div>
 	<div class="tab-page" id="tab_links">

@@ -1,5 +1,5 @@
 <?php
-// $Id: bug-561101.php,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+// $Id: bug-561101.php,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
 
 /**
 * Class ClubBase
@@ -9,7 +9,7 @@
 *
 * @link      http://www.swr3clubde
 * @package   tests SWR3.online-Edition
-* @version   $Revision: 1.1 $ ($Date: 2006-07-05 13:54:06 $),
+* @version   $Revision: 1.1.1.1 $ ($Date: 2006-07-05 13:54:06 $),
 * @copyright Copyright (c) 2001 SWR3.online. All rights reserved.
 * @author    Karsten Kraus <kk@swr3.de>
 * @access    private

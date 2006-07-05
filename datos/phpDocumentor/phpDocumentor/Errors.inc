@@ -21,7 +21,7 @@
  * @package phpDocumentor
  * @subpackage Errors
  * @author Gregory Beaver <cellog@users.sourceforge.net>
- * @version $Id: Errors.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: Errors.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 /**
  * warning triggered when inheritance could be from more than one class

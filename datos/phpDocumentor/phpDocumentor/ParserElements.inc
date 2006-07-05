@@ -22,7 +22,7 @@
  * @package phpDocumentor
  * @subpackage ParserElements
  * @since 1.1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 
 /**
@@ -32,7 +32,7 @@
  * @subpackage ParserElements
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserElement extends parserBase
 {
@@ -185,7 +185,7 @@ class parserElement extends parserBase
  * @subpackage ParserElements
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserInclude extends parserElement
 {
@@ -201,7 +201,7 @@ class parserInclude extends parserElement
  * @subpackage ParserElements
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserGlobal extends parserElement
 {
@@ -304,7 +304,7 @@ class parserGlobal extends parserElement
  * @subpackage ParserElements
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserFunction extends parserElement
 {
@@ -653,7 +653,7 @@ class parserFunction extends parserElement
  * @subpackage ParserElements
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserClass extends parserElement
 {
@@ -1248,7 +1248,7 @@ class parserClass extends parserElement
  * @subpackage ParserElements
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserVar extends parserElement
 {
@@ -1425,7 +1425,7 @@ class parserConst extends parserElement
  * @subpackage ParserElements
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserMethod extends parserFunction
 {
@@ -1609,7 +1609,7 @@ class parserMethod extends parserFunction
  * @subpackage ParserElements
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserDefine extends parserElement
 {
@@ -1653,7 +1653,7 @@ class parserDefine extends parserElement
  * @subpackage ParserElements
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserElements.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserElements.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserPackagePage extends parserStringWithInlineTags
 {

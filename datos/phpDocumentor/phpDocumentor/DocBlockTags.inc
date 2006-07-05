@@ -32,7 +32,7 @@
  * @subpackage DocBlockTags
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: DocBlockTags.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: DocBlockTags.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 class parserTag extends parserStringWithInlineTags
 {
@@ -256,7 +256,7 @@ class parserAccessTag extends parserTag
  * @subpackage DocBlockTags
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: DocBlockTags.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: DocBlockTags.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 class parserReturnTag extends parserTag
 {
@@ -348,7 +348,7 @@ class parserReturnTag extends parserTag
  * @subpackage DocBlockTags
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: DocBlockTags.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: DocBlockTags.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 class parserVarTag extends parserReturnTag
 {
@@ -401,7 +401,7 @@ class parserStaticvarTag extends parserParamTag
  * @subpackage DocBlockTags
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: DocBlockTags.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: DocBlockTags.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 class parserLinkTag extends parserTag
 {
@@ -437,7 +437,7 @@ class parserLinkTag extends parserTag
  * @subpackage DocBlockTags
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: DocBlockTags.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: DocBlockTags.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 class parserSeeTag extends parserLinkTag
 {

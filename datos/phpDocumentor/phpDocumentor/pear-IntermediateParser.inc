@@ -22,7 +22,7 @@
  *  The Intermediary Data Parser (intermediate between Parse and Converter)
  *
  *  @author Gregory Beaver
- *  @version $Revision: 1.1 $
+ *  @version $Revision: 1.1.1.1 $
  *  @copyright 2002 Gregory Beaver
  *  @package     phpDocumentor
  */
@@ -42,7 +42,7 @@
  * $docblock parameter of the parserElement
  * descendant object.
  *  @author Gregory Beaver
- *  @version $Id: pear-IntermediateParser.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ *  @version $Id: pear-IntermediateParser.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  *  @copyright 2002 Gregory Beaver
  *  @package     phpDocumentor
  */

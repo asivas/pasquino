@@ -24,7 +24,7 @@
  *
  * @author Kellin <passionplay@hotmail.com>
  * @author Joshua Eichorn <jeichorn@phpdoc.org>
- * @version	$Id: Publisher.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version	$Id: Publisher.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  * @package 	phpDocumentor
  */
 /**
@@ -32,7 +32,7 @@
  *
  * @author Kellin <passionplay@hotmail.com>
  * @author Joshua Eichorn <jeichorn@phpdoc.org>
- * @version	$Id: Publisher.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version	$Id: Publisher.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  * @package 	phpDocumentor
  */
 class Publisher

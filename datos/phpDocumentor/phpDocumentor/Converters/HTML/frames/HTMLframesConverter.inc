@@ -25,7 +25,7 @@
  * @see parserDocBlock, parserInclude, parserPage, parserClass, parserDefine, parserFunction, parserMethod, parserVar
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: HTMLframesConverter.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: HTMLframesConverter.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 /**
  * HTML output converter.
@@ -36,7 +36,7 @@
  * @see parserDocBlock, parserInclude, parserPage, parserClass, parserDefine, parserFunction, parserMethod, parserVar
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.2
- * @version $Id: HTMLframesConverter.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: HTMLframesConverter.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class HTMLframesConverter extends Converter
 {

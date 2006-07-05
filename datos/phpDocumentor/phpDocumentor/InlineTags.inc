@@ -22,7 +22,7 @@
  * @package phpDocumentor
  * @subpackage InlineTags
  * @since separate file since version 1.2
- * @version $Id: InlineTags.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: InlineTags.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 /**
  * Use this element to represent an {@}inline tag} like {@}link}
@@ -31,7 +31,7 @@
  * @subpackage InlineTags
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.1.1.1 $
  * @tutorial inlinetags.pkg
  */
 class parserInlineTag extends parserBase

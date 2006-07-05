@@ -19,7 +19,7 @@
 
 /**
  * @author    Joshua Eichorn <jeichorn@phpdoc.org>
- * @version    $Id: WordParser.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version    $Id: WordParser.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  * @package     phpDocumentor
  * @subpackage WordParsers
  */
@@ -27,7 +27,7 @@
  * Retrieves tokens from source code for use by the Parser
  * @see Parser
  * @author    Joshua Eichorn <jeichorn@phpdoc.org>
- * @version    $Id: WordParser.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version    $Id: WordParser.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  * @package     phpDocumentor
  * @subpackage WordParsers
  */

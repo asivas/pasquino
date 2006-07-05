@@ -23,7 +23,7 @@
  * @subpackage CHMdefault
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: CHMdefaultConverter.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: CHMdefaultConverter.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 /**
  * Generates files that MS HTML Help Worshop can use to create a MS Windows
@@ -39,7 +39,7 @@
  * @subpackage CHMdefault
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.1.1.1 $
  */
 class CHMdefaultConverter extends Converter
 {

@@ -459,7 +459,7 @@ Could have been implemented a lot easier with replace but it's not very backward
       <!-- hhmts start -->
 <pre>
 Last modified: $Date: 2006-07-05 13:54:05 $
-Revision: $Revision: 1.1 $
+Revision: $Revision: 1.1.1.1 $
 </pre>
       <!-- hhmts end -->
       <?php } //End the else that prints all code

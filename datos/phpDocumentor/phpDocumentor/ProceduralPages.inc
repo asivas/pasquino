@@ -24,7 +24,7 @@
  * @package phpDocumentor
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.1
- * @version $Id: ProceduralPages.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ProceduralPages.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 /**
  * Intermediate procedural page parsing structure.
@@ -33,7 +33,7 @@
  * @package phpDocumentor
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.1
- * @version $Id: ProceduralPages.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ProceduralPages.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class ProceduralPages
 {

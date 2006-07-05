@@ -25,7 +25,7 @@
  * @see parserDocBlock, parserInclude, parserPage, parserClass, parserDefine, parserFunction, parserMethod, parserVar
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.1.1.1 $
  */
 /**
  * HTML output converter.
@@ -36,7 +36,7 @@
  * @see parserDocBlock, parserInclude, parserPage, parserClass, parserDefine, parserFunction, parserMethod, parserVar
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.1.1.1 $
  */
 class HTMLSmartyConverter extends Converter
 {

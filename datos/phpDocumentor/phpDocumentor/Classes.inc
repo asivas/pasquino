@@ -22,7 +22,7 @@
  * @package phpDocumentor
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: Classes.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: Classes.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 /**
  * Intermediate class parsing structure.
@@ -43,7 +43,7 @@
  * @package phpDocumentor
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: Classes.inc,v 1.1 2006-07-05 13:54:06 vidaguren Exp $
+ * @version $Id: Classes.inc,v 1.1.1.1 2006-07-05 13:54:06 vidaguren Exp $
  */
 class Classes
 {

@@ -21,14 +21,14 @@
  * @package phpDocumentor
  * @subpackage Parsers
  * @author Gregory Beaver <cellog@users.sourceforge.net>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.1.1.1 $
  */
 /**
  * Tokenizer-based parser for PHP source code
  * @package phpDocumentor
  * @subpackage Parsers
  * @author Gregory Beaver <cellog@users.sourceforge.net>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.1.1.1 $
  */
 class phpDocumentorTParser extends Parser
 {

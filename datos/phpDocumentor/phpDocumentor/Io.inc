@@ -21,14 +21,14 @@
  * Class to handle file and user io opperations
  *
  * @author    Joshua Eichorn <jeichorn@phpdoc.org>
- * @version    $Id: Io.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version    $Id: Io.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  * @package     phpDocumentor
  */
 /**
  * Class to handle file and user io opperations
  *
  * @author    Joshua Eichorn <jeichorn@phpdoc.org>
- * @version    $Id: Io.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version    $Id: Io.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  * @package     phpDocumentor
  */
 class Io 

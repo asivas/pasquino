@@ -31,7 +31,7 @@
  * @package Smarty
  */
 
-/* $Id: Config_File.class.php,v 1.1 2006-07-05 13:54:13 vidaguren Exp $ */
+/* $Id: Config_File.class.php,v 1.1.1.1 2006-07-05 13:54:13 vidaguren Exp $ */
 /**
  * Config file reading class
  * @package Smarty

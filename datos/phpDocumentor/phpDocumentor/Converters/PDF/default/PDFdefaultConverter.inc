@@ -33,7 +33,7 @@ include_once('phpDocumentor/Converters/PDF/default/class.phpdocpdf.php');
  * @subpackage PDFdefault
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.1
- * @version $Id: PDFdefaultConverter.inc,v 1.1 2006-07-05 13:54:12 vidaguren Exp $
+ * @version $Id: PDFdefaultConverter.inc,v 1.1.1.1 2006-07-05 13:54:12 vidaguren Exp $
  * @todo Implement links to conflicts/inheritance
  */
 class PDFdefaultConverter extends Converter

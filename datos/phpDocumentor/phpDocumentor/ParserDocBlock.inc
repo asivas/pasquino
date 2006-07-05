@@ -28,7 +28,7 @@
  * @subpackage ParserDocBlock
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserDocBlock.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserDocBlock.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserDesc extends parserStringWithInlineTags
 {
@@ -110,7 +110,7 @@ class parserDesc extends parserStringWithInlineTags
  * @subpackage ParserDocBlock
  * @author Greg Beaver <cellog@users.sourceforge.net>
  * @since 1.0rc1
- * @version $Id: ParserDocBlock.inc,v 1.1 2006-07-05 13:54:07 vidaguren Exp $
+ * @version $Id: ParserDocBlock.inc,v 1.1.1.1 2006-07-05 13:54:07 vidaguren Exp $
  */
 class parserDocBlock
 {

@@ -1,4 +1,4 @@
-<!-- $Revision: 1.1 $ -->
+<!-- $Revision: 1.1.1.1 $ -->
 <refentry id="{$id}">
    <refnamediv>
     <refname>Class {$class_name} Summary</refname>
