@@ -16,7 +16,8 @@
     * @author	    Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
     * @copyright	Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
     *
-    * @package      Auth
+    * @package      datos
+    * @subpackage      Auth
     * @version      0.1
     */		
 	class ssHandler {
@@ -60,6 +61,11 @@
 		var $error;
 		
 		/**
+		* @var bool Determina si la contraseña debe ser case-sensitive
+		*/
+		var $passCaseSensitive;
+		
+		/**
 		 * @var object maneja los logs
 		 */
 		var $logobj;
@@ -77,13 +83,14 @@
 		function ssHandler($base) 
 		{
 		    if(isset($base)) $this->db = $base;
-		    $this->logobj = new sqlLogger($db);
+		    $this->logobj = new sqlLogger($this->db);
 			//$this->InitSession();//debe llamarse explicitamente el InitSession
 			$this->table = "admin";
 			$this->usr_id_label = "id";
 			$this->usr_label = "usr";
 			$this->pass_label = "pass";
 			$this->cookie_min= 15;
+			$this->passCaseSensitive = true;
 		}
 		
 		/**
@@ -94,6 +101,19 @@
 		    session_name($this->sessionName);
 			session_set_cookie_params($this->cookie_min*60);
 			session_start();
+			
+			// Fecha en el pasado
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+            
+            // siempre modificado
+            header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+            
+            // HTTP/1.1
+            header("Cache-Control: no-store, no-cache, must-revalidate");
+            header("Cache-Control: post-check=0, pre-check=0", false);
+            
+            // HTTP/1.0
+            header("Pragma: no-cache");
 		}	
 		
 		/**
@@ -120,7 +140,8 @@
 						$_SESSION[$this->pass_label] = md5($_POST[$this->pass_label]);
 						$_SESSION[$this->usr_id_label] = $this->usr_id;
 
-						$this->logobj->log(date("Y-m-d H:i")." - {$_SESSION[$this->usr_label]}: Inicio sessión $_SERVER[REMOTE_ADDR]",CH_LOG_NOTICE);
+						if(isset($this->logobj))
+						    $this->logobj->log(date("Y-m-d H:i")." - {$_SESSION[$this->usr_label]}: Inicio sessión $_SERVER[REMOTE_ADDR]",CH_LOG_NOTICE);
 						
 						//como hizo el login para quee si actualiza no vuelva a enviar los datos
 						//cargo de nuevo la página actual sin las cosas de $_POST
@@ -144,7 +165,14 @@
 		*/
 		function IsLoged()
 		{
-			return isset($_SESSION[$this->usr_label],$_SESSION[$this->pass_label]);
+			$ret isset($_SESSION[$this->usr_label],$_SESSION[$this->pass_label]);
+			if($ret)
+	    	{
+	    	    $this->usr_id = $_SESSION[$this->usr_id_label];
+			    $this->usr_name = $_SESSION[$this->usr_label];
+			    $this->password = $_SESSION[$this->pass_label];
+			}
+			return  $ret;
 		}
 		/**
 		* Cierra la sesion del usuario
@@ -152,7 +180,7 @@
 		function LogOut()
 		{
 			//unset($_SESSION[$this->usr_label],$_SESSION[$this->pass_label]);
-			if($this->IsLoged())
+			if($this->IsLoged() && isset($this->logobj))
 			    $this->logobj->log(date("Y-m-d H:i")." - {$_SESSION[$this->usr_label]}: Cerró sessión",CH_LOG_NOTICE);
 			$_SESSION = array();
 			
@@ -171,7 +199,10 @@
 		{
 			global $lang;
 			$db = $this->db;
-			$sql = "SELECT `$this->usr_label`,`$this->pass_label`,`$this->usr_id_label` FROM `$this->table` WHERE `$this->usr_label` = '$usr' AND `$this->pass_label` = '".md5($pass)."'";
+			if($this->passCaseSensitive)
+			    $sql = "SELECT `$this->usr_label`,`$this->pass_label`,`$this->usr_id_label` FROM `$this->table` WHERE `$this->usr_label` = '$usr' AND `$this->pass_label` = MD5('$pass')";
+			else
+			    $sql = "SELECT `$this->usr_label`,`$this->pass_label`,`$this->usr_id_label` FROM `$this->table` WHERE `$this->usr_label` = '$usr' AND `$this->pass_label` = '$pass'";
 			$res = $db->Execute($sql);
 			//print $sql;
 			if(!$res) trigger_error($db->ErrorMsg(),E_USER_ERROR);

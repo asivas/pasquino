@@ -30,7 +30,7 @@ class textfileLogger extends logger {
      * Nombre de archivo en el que se escribiran las entradas
      * @var string
      */
-    var $_filename
+    var $_filename;
     
     /**
      * asigna las variables de instancia segun el valor del parametro $mode
