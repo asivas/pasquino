@@ -48,7 +48,7 @@ class excelReportWriter extends reportWriter
         if(empty($excelFileName))
             $this->excelFileName = "(" . date("Y-m-d H;i;s").").xls";
         else
-            $this->excelFileName .= $excelFileName
+            $this->excelFileName .= $excelFileName;
             
         $this->excelWriter = new ExcelWriter("{$this->excelFilePath}/{$this->excelFileName}",$this->excelFileName);
         $this->fileNamesList[] = "{$this->excelFileName}";
@@ -98,7 +98,7 @@ class excelReportWriter extends reportWriter
 	 */
 	function startReport($cellspacing=3,$cellpadding=0,$reportName="Econtrol")
 	{
-	    $this->excelWriter->writeSheet($reportName)
+	    $this->excelWriter->writeSheet($reportName);
 	    /*if(!$this->excelWriter->writeSheet($reportName))
 	        printError($this->excelWriter->error."<br>");*/
     }

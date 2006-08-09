@@ -165,7 +165,7 @@
 		*/
 		function IsLoged()
 		{
-			$ret isset($_SESSION[$this->usr_label],$_SESSION[$this->pass_label]);
+			$ret = isset($_SESSION[$this->usr_label],$_SESSION[$this->pass_label]);
 			if($ret)
 	    	{
 	    	    $this->usr_id = $_SESSION[$this->usr_id_label];

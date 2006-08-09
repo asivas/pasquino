@@ -26,7 +26,7 @@
 /**
  * Dummy value
  */
-@include('');
+@include('a');
 // value used to test whether include worked
 return 6;
 ?>

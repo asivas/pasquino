@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 * @class: activeCalendar
 * @project: Active Calendar
 * @version: 1.2.0;
@@ -31,6 +31,7 @@
 * The layout of can be configured using css, as the class generates various html classes
 * Please read the readme.html first and check the examples included in this package
 */
+
 class activeCalendar{
 /*
 ----------------------
