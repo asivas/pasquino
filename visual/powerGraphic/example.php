@@ -26,7 +26,7 @@
 
 <?php
 
-require_once "class.graphic.php";
+require_once "graphic.class.php";
 $PG = new PowerGraphic;
 
 

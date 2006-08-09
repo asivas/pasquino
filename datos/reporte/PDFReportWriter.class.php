@@ -126,7 +126,7 @@ class pdfReportWriter extends reportWriter
 	 * @param integer $cellpadding la superposición entre celdas
 	 * @param string $reportName El nombre base del reporte que se genera
 	 */
-	function startReport($cellspacing=3,$cellpadding=0,$reportName="Econtrol")
+	function startReport($cellspacing=3,$cellpadding=0,$reportName="Econtrol",$link="")
 	{
 	    //print "Nueva Sección ". $reportName."<br>";
 	    $this->pdf->AddPage('L');

@@ -19,7 +19,7 @@ require_once('datos/logger/logger.class.php');
 /**
  * para conexion a la base de datos
  */
-require_once('datos/adobd/adodb.inc.php');
+require_once('datos/adodb/adodb.inc.php');
 
 /**
  * Genera un log en una tabla SQL o en un archivo de texto
