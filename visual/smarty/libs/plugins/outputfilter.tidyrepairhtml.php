@@ -18,9 +18,9 @@
 function smarty_outputfilter_tidyrepairhtml ($source, &$smarty)
 {
     if(extension_loaded('tidy')) {
-        tidy_parse_string($source);
-        tidy_clean_repair();
-        return  tidy_get_output();
+        $tidy = tidy_parse_string($source);
+        tidy_clean_repair($tidy);
+        return  tidy_get_output($tidy);
     }
     return $source;
 } 
