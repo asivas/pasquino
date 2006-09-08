@@ -30,7 +30,7 @@ sub FCKeditor
 
 	local($instanceName) = @_;
 	$InstanceName	= $instanceName;
-	$BasePath		= '/FCKeditor/';
+	$BasePath		= '/fckeditor/';
 	$Width			= '100%';
 	$Height			= '200';
 	$ToolbarSet		= 'Default';

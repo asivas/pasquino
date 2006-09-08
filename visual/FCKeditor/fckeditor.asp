@@ -32,7 +32,7 @@ Class FCKeditor
 	private oConfig
 
 	Private Sub Class_Initialize()
-		sBasePath		= "/FCKeditor/"
+		sBasePath		= "/fckeditor/"
 		sWidth			= "100%"
 		sHeight			= "200"
 		sToolbarSet		= "Default"

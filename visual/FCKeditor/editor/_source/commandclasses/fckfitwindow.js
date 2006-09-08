@@ -35,7 +35,7 @@ FCKFitWindow.prototype.Execute = function()
 	var eBodyStyle			= eBody.style ;
 
 	// No original style properties known? Go fullscreen.
-	if ( this.originalCssText == null )
+	if ( !this.IsMaximized )
 	{
 		// Registering an event handler when the window gets resized.
 		if( FCKBrowserInfo.IsIE )
@@ -46,32 +46,31 @@ FCKFitWindow.prototype.Execute = function()
 		// Save the scrollbars position.
 		this._ScrollPos = FCKTools.GetScrollPosition( eMainWindow ) ;
 		
-		// preparing the body for the editor in fullsize and hiding the scrollbars in Firefox
-		this.bodyCssText	= eBodyStyle.cssText ;
-		eBodyStyle.cssText	= '' ;
-		eBodyStyle.overflow	= 'hidden' ;
-		eBodyStyle.margin	= '0px' ;
-		eBodyStyle.padding	= '0px' ;
-		eBodyStyle.height	= '0px' ;
-		eBodyStyle.width	= '0px' ;
-		eBodyStyle.position	= 'static' ;
-		eBodyStyle.top		= '0px' ;
-		eBodyStyle.left		= '0px' ;
+		// Save and reset the styles for the entire node tree. They could interfere in the result.
+		var eParent = eEditorFrame ;
+		while( eParent = eParent.parentNode )
+		{
+			if ( eParent.nodeType == 1 )
+				eParent._fckSavedStyles = FCKTools.SaveStyles( eParent ) ;
+		}		
 
-		// Save the body className.
-		this.bodyClassName = eBody.className ;
-		
 		// Hide IE scrollbars (in strict mode).
 		if ( FCKBrowserInfo.IsIE )
 		{
 			this.documentElementOverflow = eDocEl.style.overflow ;
-			eDocEl.style.overflow = "hidden" ;
+			eDocEl.style.overflow	= 'hidden' ;
+			eBodyStyle.overflow		= 'hidden' ;
+		}
+		else
+		{
+			// Hide the scroolbars in Firefox.
+			eBodyStyle.overflow = 'hidden' ;
+			eBodyStyle.width = '0px' ;
+			eBodyStyle.height = '0px' ;
 		}
 		
-		// Save some frame attributes.
-		this.originalCssText	= eEditorFrameStyle.cssText;
-		this.originalWidth		= eEditorFrame.width;
-		this.originalHeight		= eEditorFrame.height;
+		// Save the IFRAME styles.
+		this._EditorFrameStyles = FCKTools.SaveStyles( eEditorFrame ) ;
 		
 		// Resize.
 		var oViewPaneSize = FCKTools.GetViewPaneSize( eMainWindow ) ;
@@ -98,6 +97,8 @@ FCKFitWindow.prototype.Execute = function()
 
 		// Scroll to top left.
 		eMainWindow.scrollTo(0, 0);
+
+		this.IsMaximized = true ;
 	}
 	else	// Resize to original size.
 	{
@@ -107,33 +108,39 @@ FCKFitWindow.prototype.Execute = function()
 		else
 			eMainWindow.removeEventListener( "resize", FCKFitWindow_Resize, true ) ;
 
-		// Restoring the body and restoring the scrollbars in Firefox.
-		eBodyStyle.cssText = this.bodyCssText ;
-
-		// Restore the className.
-		eBody.className = this.bodyClassName ;
-
+		// Restore the CSS position for the entire node tree.
+		var eParent = eEditorFrame ;
+		while( eParent = eParent.parentNode )
+		{
+			if ( eParent._fckSavedStyles )
+			{
+				FCKTools.RestoreStyles( eParent, eParent._fckSavedStyles ) ;
+				eParent._fckSavedStyles = null ;
+			}
+		}
+		
 		// Restore IE scrollbars
 		if ( FCKBrowserInfo.IsIE )
 			eDocEl.style.overflow = this.documentElementOverflow ;
 
 		// Restore original size
-		with ( eEditorFrameStyle )
-		{
-			cssText		= this.originalCssText;
-			width		= this.originalWidth;
-			height		= this.originalHeight;
-			position	= "static";
-		}
+		FCKTools.RestoreStyles( eEditorFrame, this._EditorFrameStyles ) ;
 		
 		// Restore the window scroll position.
 		eMainWindow.scrollTo( this._ScrollPos.X, this._ScrollPos.Y ) ;
 
-		// Clear the CSS buffer.
-		this.originalCssText = null ;
+		this.IsMaximized = false ;
 	}
 	
 	FCKToolbarItems.GetItem('FitWindow').RefreshState() ;
+
+	// It seams that Firefox restarts the editing area when making this changes.
+	// On FF 1.0.x, the area is not anymore editable. On FF 1.5+, the special 
+	//configuration, like DisableFFTableHandles and DisableObjectResizing get 
+	//lost, so we must reset it. Also, the cursor position and selection are 
+	//also lost, even if you comment the following line (MakeEditable).
+	// if ( FCKBrowserInfo.IsGecko10 )	// Initially I thought it was a FF 1.0 only problem.
+	FCK.EditingArea.MakeEditable() ;
 	
 	FCK.Focus() ;
 }
@@ -143,7 +150,7 @@ FCKFitWindow.prototype.GetState = function()
 	if ( FCKConfig.ToolbarLocation != 'In' )
 		return FCK_TRISTATE_DISABLED ;
 	else
-		return ( this.originalCssText == null ? FCK_TRISTATE_OFF : FCK_TRISTATE_ON );
+		return ( this.IsMaximized ? FCK_TRISTATE_ON : FCK_TRISTATE_OFF );
 }
 
 function FCKFitWindow_Resize()

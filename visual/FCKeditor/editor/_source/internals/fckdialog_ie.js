@@ -24,7 +24,10 @@ FCKDialog.Show = function( dialogInfo, dialogName, pageUrl, dialogWidth, dialogH
 
 	FCKFocusManager.Lock() ;
 	
-	parentWindow.showModalDialog( pageUrl, dialogInfo, "dialogWidth:" + dialogWidth + "px;dialogHeight:" + dialogHeight + "px;help:no;scroll:no;status:no") ;
+	var oReturn = parentWindow.showModalDialog( pageUrl, dialogInfo, "dialogWidth:" + dialogWidth + "px;dialogHeight:" + dialogHeight + "px;help:no;scroll:no;status:no") ;
 	
+	if ( !oReturn )
+		alert( FCKLang.DialogBlocked ) ;	
+
 	FCKFocusManager.Unlock() ;
 }

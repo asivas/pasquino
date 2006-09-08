@@ -28,7 +28,7 @@ var FCKToolbarButtonUI = function( name, label, tooltip, iconPathOrStripInfoArra
 	this.Icon = new FCKIcon( iconPathOrStripInfoArray ) ;
 
 	if ( FCK.IECleanup )
-		FCK.IECleanup.AddItem( this, this._Cleanup ) ;
+		FCK.IECleanup.AddItem( this, FCKToolbarButtonUI_Cleanup ) ;
 }
 
 
@@ -46,14 +46,14 @@ FCKToolbarButtonUI.prototype.Create = function( parentElement )
 	
 	if ( oMainElement )
 	{
-		this._Cleanup(this) ;
+		FCKToolbarButtonUI_Cleanup.call(this) ;
 		
 		if ( oMainElement.parentNode )
 			oMainElement.parentNode.removeChild( oMainElement ) ;
 		oMainElement = this.MainElement = null ;
 	}
 
-	var oDoc = parentElement.ownerDocument ;	// This is IE 6+
+	var oDoc = FCKTools.GetElementDocument( parentElement ) ;
 	
 	// Create the Main Element.
 	oMainElement = this.MainElement = oDoc.createElement( 'DIV' ) ;
@@ -160,7 +160,7 @@ FCKToolbarButtonUI.prototype.ChangeState = function( newState, force )
 	this.State = newState ;
 }
 
-FCKToolbarButtonUI.prototype._Cleanup = function()
+function FCKToolbarButtonUI_Cleanup()
 {
 	if ( this.MainElement )
 	{

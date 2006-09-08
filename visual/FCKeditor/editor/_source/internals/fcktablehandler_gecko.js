@@ -26,7 +26,7 @@ FCKTableHandler.GetSelectedCells = function()
 	// If the selection is a text.
 	if ( oSelection.rangeCount == 1 && oSelection.anchorNode.nodeType == 3 )
 	{
-		var oParent = FCKTools.GetElementAscensor( oSelection.anchorNode, 'TD' ) ;
+		var oParent = FCKTools.GetElementAscensor( oSelection.anchorNode, 'TD,TH' ) ;
 		
 		if ( oParent )
 		{
@@ -38,9 +38,14 @@ FCKTableHandler.GetSelectedCells = function()
 	for ( var i = 0 ; i < oSelection.rangeCount ; i++ )
 	{
 		var oRange = oSelection.getRangeAt(i) ;
-		var oCell = oRange.startContainer.childNodes[ oRange.startOffset ] ;
+		var oCell ;
 		
-		if ( oCell.tagName == 'TD' )
+		if ( oRange.startContainer.tagName.Equals( 'TD', 'TH' ) )
+			oCell = oRange.startContainer ;
+		else
+			oCell = oRange.startContainer.childNodes[ oRange.startOffset ] ;
+		
+		if ( oCell.tagName.Equals( 'TD', 'TH' ) )
 			aCells[aCells.length] = oCell ;
 	}
 

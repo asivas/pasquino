@@ -40,9 +40,11 @@ function FCKToolbarSet_Create( overhideLocation )
 			var eToolbarTarget ;
 			
 			// Out:[TargetWindow]([TargetId])
-			var oOutMatch = sLocation.match( /^Out:(\w+)\((\w+)\)$/ ) ;
+			var oOutMatch = sLocation.match( /^Out:(.+)\((\w+)\)$/ ) ;
 			if ( oOutMatch )
-				eToolbarTarget = eval( oOutMatch[1] ).document.getElementById( oOutMatch[2] ) ;
+			{
+				eToolbarTarget = eval( 'parent.' + oOutMatch[1] ).document.getElementById( oOutMatch[2] ) ;
+			}
 			else
 			{
 				// Out:[TargetId]
@@ -62,17 +64,20 @@ function FCKToolbarSet_Create( overhideLocation )
 				break ;
 
 			// Create the IFRAME that will hold the toolbar inside the target element.
-			var eToolbarIFrame = eToolbarTarget.ownerDocument.createElement( 'IFRAME' ) ;
+			var eToolbarIFrame = FCKTools.GetElementDocument( eToolbarTarget ).createElement( 'iframe' ) ;
 			eToolbarIFrame.frameBorder = 0 ;
 			eToolbarIFrame.width = '100%' ;
 			eToolbarIFrame.height = '10' ;
 			eToolbarTarget.appendChild( eToolbarIFrame ) ;
+			eToolbarIFrame.unselectable = 'on' ;
 			
 			// Write the basic HTML for the toolbar (copy from the editor main page).
 			var eTargetDocument = eToolbarIFrame.contentWindow.document ;
 			eTargetDocument.open() ;
 			eTargetDocument.write( '<html><head><script type="text/javascript"> window.onload = window.onresize = function() { window.frameElement.height = document.body.scrollHeight ; } </script></head><body style="overflow: hidden">' + document.getElementById( 'xToolbarSpace' ).innerHTML + '</body></html>' ) ;
 			eTargetDocument.close() ;
+			
+			eTargetDocument.oncontextmenu = FCKTools.CancelEvent ;
 
 			// Load external resources (must be done here, otherwise Firefox will not
 			// have the document DOM ready to be used right away.
@@ -80,6 +85,9 @@ function FCKToolbarSet_Create( overhideLocation )
 			
 			oToolbarSet = eToolbarTarget.__FCKToolbarSet = new FCKToolbarSet( eTargetDocument ) ;
 			oToolbarSet._IFrame = eToolbarIFrame ;
+
+			if ( FCK.IECleanup )
+				FCK.IECleanup.AddItem( eToolbarTarget, FCKToolbarSet_Target_Cleanup ) ;
 	}
 	
 	oToolbarSet.CurrentInstance = FCK ;
@@ -94,11 +102,7 @@ function FCK_OnBlur( editorInstance )
 	var eToolbarSet = editorInstance.ToolbarSet ;
 	
 	if ( eToolbarSet.CurrentInstance == editorInstance )
-	{
-//		var eIFrame = eToolbarSet._IFrame ;
-//		if ( eIFrame.ownerDocument.activeElement != eIFrame )
 		eToolbarSet.Disable() ;
-	}
 }
 
 function FCK_OnFocus( editorInstance )
@@ -116,6 +120,17 @@ function FCK_OnFocus( editorInstance )
 	oInstance.FocusManager.AddWindow( oToolbarset._IFrame.contentWindow, true ) ;
 
 	oToolbarset.Enable() ;
+}
+
+function FCKToolbarSet_Cleanup()
+{
+	this._TargetElement = null ;
+	this._IFrame = null ;
+}
+
+function FCKToolbarSet_Target_Cleanup()
+{
+	this.__FCKToolbarSet = null ;
 }
 
 var FCKToolbarSet = function( targetDocument )
@@ -152,6 +167,9 @@ var FCKToolbarSet = function( targetDocument )
 	// Set the default properties.
 	this.Toolbars = new Array() ;
 	this.IsLoaded = false ;
+
+	if ( FCK.IECleanup )
+		FCK.IECleanup.AddItem( this, FCKToolbarSet_Cleanup ) ;
 }
 
 function FCKToolbarSet_Expand_OnClick()

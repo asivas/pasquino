@@ -39,7 +39,7 @@ def escape(text, replace=string.replace):
 class FCKeditor(object):
 	def __init__(self, instanceName):
 		self.InstanceName = instanceName
-		self.BasePath = '/FCKeditor/'
+		self.BasePath = '/fckeditor/'
 		self.Width = '100%'
 		self.Height = '200'
 		self.ToolbarSet = 'Default'

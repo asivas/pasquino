@@ -25,7 +25,16 @@ var FCKTextColorCommand = function( type )
 	this.Name = type == 'ForeColor' ? 'TextColor' : 'BGColor' ;
 	this.Type = type ;
 
-	this._Panel = new FCKPanel( FCKBrowserInfo.IsIE ? window : window.parent, true ) ;
+	var oWindow ;
+	
+	if ( FCKBrowserInfo.IsIE )
+		oWindow = window ;
+	else if ( FCK.ToolbarSet._IFrame )
+		oWindow = FCKTools.GetElementWindow( FCK.ToolbarSet._IFrame ) ;
+	else
+		oWindow = window.parent ;
+
+	this._Panel = new FCKPanel( oWindow, true ) ;
 	this._Panel.AppendStyleSheet( FCKConfig.SkinPath + 'fck_editor.css' ) ;
 	this._Panel.MainNode.className = 'FCK_Panel' ;
 	this._CreatePanelBody( this._Panel.Document, this._Panel.MainNode ) ;

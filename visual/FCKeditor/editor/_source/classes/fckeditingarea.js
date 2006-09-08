@@ -25,16 +25,19 @@ var FCKEditingArea = function( targetElement )
 {
 	this.TargetElement = targetElement ;
 	this.Mode = FCK_EDITMODE_WYSIWYG ;
+
+	if ( FCK.IECleanup )
+		FCK.IECleanup.AddItem( this, FCKEditingArea_Cleanup ) ;
 }
 
 
 /**
  * @param {String} html The complete HTML for the page, including DOCTYPE and the <html> tag.
  */
-FCKEditingArea.prototype.Start = function( html )
+FCKEditingArea.prototype.Start = function( html, secondCall )
 {
 	var eTargetElement	= this.TargetElement ;
-	var oTargetDocument	= eTargetElement.ownerDocument ;
+	var oTargetDocument	= FCKTools.GetElementDocument( eTargetElement ) ;
 	
 	// Remove all child nodes from the target.
 	while( eTargetElement.childNodes.length > 0 )
@@ -43,39 +46,53 @@ FCKEditingArea.prototype.Start = function( html )
 	if ( this.Mode == FCK_EDITMODE_WYSIWYG )
 	{
 		if ( FCKBrowserInfo.IsGecko )
-		{
 			html = html.replace( /(<body[^>]*>)\s*(<\/body>)/i, '$1' + GECKO_BOGUS + '$2' ) ;
-		}
 	
 		// Create the editing area IFRAME.
-		var oIFrame = this.IFrame = oTargetDocument.createElement( 'iframe' ) ; 
+		var oIFrame = this.IFrame = oTargetDocument.createElement( 'iframe' ) ;
+		oIFrame.src = 'javascript:void(0)' ;
 		oIFrame.frameBorder = 0 ;
 		oIFrame.width = oIFrame.height = '100%' ;
 		
 		// Append the new IFRAME to the target.
 		eTargetElement.appendChild( oIFrame ) ;
 		
+		// IE has a bug with the <base> tag... it must have a </base> closer,
+		// otherwise the all sucessive tags will be set as children nodes of the <base>.
+		if ( FCKBrowserInfo.IsIE )
+			html = html.replace( /(<base[^>]*?)\s*\/?>(?!\s*<\/base>)/gi, '$1></base>' ) ;
+
 		// Get the window and document objects used to interact with the newly created IFRAME.
 		this.Window = oIFrame.contentWindow ;
+		
+		// IE: Avoid JavaScript errors thrown by the editing are source (like tags events).
+		// TODO: This error handler is not being fired.
+		// this.Window.onerror = function() { alert( 'Error!' ) ; return true ; }
+
 		var oDoc = this.Document = this.Window.document ;
 		
 		oDoc.open() ;
 		oDoc.write( html ) ;
 		oDoc.close() ;
-
-		this.Window._FCKEditingArea = this ;
-		FCKEditingArea_CompleteStart.call( this.Window ) ;
 		
-		/*
-		if ( FCKBrowserInfo.IsGecko10 )
+		// Firefox 1.0.x is buggy... ohh yes... so let's do it two times and it
+		// will magicaly work.
+		if ( FCKBrowserInfo.IsGecko10 && !secondCall )
 		{
-			this.Window.Document = oDoc ;
-			this.Window._FCKEditingArea = this ;
-			this.Window.setTimeout( this.MakeEditable, 500 ) ;
+			this.Start( html, true ) ;
+			return ;
 		}
+		
+		this.Window._FCKEditingArea = this ;
+		
+		// FF 1.0.x is buggy... we must wait a lot to enable editing because
+		// sometimes the content simply disappears, for example when pasting
+		// "bla1!<img src='some_url'>!bla2" in the source and then switching
+		// back to design.
+		if ( FCKBrowserInfo.IsGecko10 )
+			this.Window.setTimeout( FCKEditingArea_CompleteStart, 500 ) ;
 		else
-			this.MakeEditable() ;
-		*/
+			FCKEditingArea_CompleteStart.call( this.Window ) ;
 	}
 	else
 	{
@@ -105,7 +122,7 @@ function FCKEditingArea_CompleteStart()
 	
 	var oEditorArea = this._FCKEditingArea ;
 	oEditorArea.MakeEditable() ;
-
+	
 	// Fire the "OnLoad" event.
 	FCKTools.RunFunction( oEditorArea.OnLoad ) ;
 }
@@ -130,7 +147,7 @@ FCKEditingArea.prototype.MakeEditable = function()
 			// gives the same behavior that you have with IE. It works only if you are
 			// already inside a paragraph and it doesn't render correctly in the first enter.
 			// oDoc.execCommand( 'insertBrOnReturn', false, false ) ;
-			
+
 			// Tell Gecko (Firefox 1.5+) to enable or not live resizing of objects (by Alfonso Martinez)
 			oDoc.execCommand( 'enableObjectResizing', false, !FCKConfig.DisableObjectResizing ) ;
 			
@@ -156,4 +173,18 @@ FCKEditingArea.prototype.Focus = function()
 			this.Textarea.focus() ;
 	}
 	catch(e) {}
+}
+
+function FCKEditingArea_Cleanup()
+{
+	this.TargetElement = null ;
+	this.IFrame = null ;
+	this.Document = null ;
+	this.Textarea = null ;
+	
+	if ( this.Window )
+	{
+		this.Window._FCKEditingArea = null ;
+		this.Window = null ;
+	}
 }

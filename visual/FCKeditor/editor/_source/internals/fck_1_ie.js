@@ -26,6 +26,7 @@ FCK._GetBehaviorsStyle = function()
 	if ( !FCK._BehaviorsStyle )
 	{
 		var sBasePath = FCKConfig.FullBasePath ;
+		var sTableBehavior = '' ;
 		var sStyle ;
 		
 		// The behaviors should be pointed using the FullBasePath to avoid security
@@ -35,15 +36,21 @@ FCK._GetBehaviorsStyle = function()
 			'INPUT { behavior: url(' + sBasePath + 'css/behaviors/hiddenfield.htc) ; }' ;
 
 		if ( FCKConfig.ShowBorders )
-			sStyle += 'TABLE { behavior: url(' + sBasePath + 'css/behaviors/showtableborders.htc) ; }' ;
+			sTableBehavior = 'url(' + sBasePath + 'css/behaviors/showtableborders.htc)' ;
 
 		// Disable resize handlers.
 		sStyle += 'INPUT,TEXTAREA,SELECT,.FCK__Anchor,.FCK__PageBreak' ;
 
 		if ( FCKConfig.DisableObjectResizing )
-			sStyle += ',IMG,TABLE' ;
-
+		{
+			sStyle += ',IMG' ;
+			sTableBehavior += ' url(' + sBasePath + 'css/behaviors/disablehandles.htc)' ;
+		}
+		
 		sStyle += ' { behavior: url(' + sBasePath + 'css/behaviors/disablehandles.htc) ; }' ;
+
+		if ( sTableBehavior.length > 0 )
+			sStyle += 'TABLE { behavior: ' + sTableBehavior + ' ; }' ;
 
 		sStyle += '</style>' ;
 		FCK._BehaviorsStyle = sStyle ;
@@ -65,9 +72,9 @@ function Doc_OnMouseUp()
 function Doc_OnPaste()
 {
 	if ( FCK.Status == FCK_STATUS_COMPLETE )
-		return FCK.Events.FireEvent( "OnPaste" ) ;
-	else
-		return false ;
+		FCK.Events.FireEvent( "OnPaste" ) ;
+
+	return false ;
 }
 
 /*
@@ -221,7 +228,7 @@ FCK.InsertHtml = function( html )
 	var oSel = FCK.EditorDocument.selection ;
 
 	// Deletes the actual selection contents.
-	if ( oSel.type.toLowerCase() != "none" )
+	if ( oSel.type.toLowerCase() == 'control' )
 		oSel.clear() ;
 
 	// Insert the HTML.
@@ -245,6 +252,9 @@ function FCK_PreloadImages()
 	// Get the images to preload.
 	var aImages = FCKConfig.PreloadImages || [] ;
 	
+	if ( typeof( aImages ) == 'string' )
+		aImages = aImages.split( ';' ) ;
+
 	// Add the skin icons strip.
 	aImages.push( FCKConfig.SkinPath + 'fck_strip.gif' ) ;
 	
@@ -255,7 +265,7 @@ function FCK_PreloadImages()
 	for ( var i = 0 ; i < aImages.length ; i++ )
 	{
 		var eImg = document.createElement( 'img' ) ;
-		eImg.onload = eImg.onerror = LoadToolbarSetup ;
+		eImg.onload = eImg.onerror = FCK_PreloadImages_OnImage ;
 		eImg.src = aImages[i] ;
 		
 		FCK_PreloadImages_Images[i] = eImg ;
@@ -274,3 +284,9 @@ function Document_OnContextMenu()
 	return ( event.srcElement._FCKShowContextMenu == true ) ;
 }
 document.oncontextmenu = Document_OnContextMenu ;
+
+function FCK_Cleanup()
+{
+	this.EditorWindow = null ;
+	this.EditorDocument = null ;
+}

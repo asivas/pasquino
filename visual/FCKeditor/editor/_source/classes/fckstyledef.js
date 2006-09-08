@@ -49,7 +49,7 @@ FCKStyleDef.prototype.GetCloserTag = function()
 FCKStyleDef.prototype.RemoveFromSelection = function()
 {
 	if ( FCKSelection.GetType() == 'Control' )
-		this._RemoveMe( FCKSelection.GetSelectedElement() ) ;
+		this._RemoveMe( FCK.ToolbarSet.CurrentInstance.Selection.GetSelectedElement() ) ;
 	else
-		this._RemoveMe( FCKSelection.GetParentElement() ) ;
+		this._RemoveMe( FCK.ToolbarSet.CurrentInstance.Selection.GetParentElement() ) ;
 }

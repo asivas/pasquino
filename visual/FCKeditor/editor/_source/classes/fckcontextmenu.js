@@ -22,18 +22,16 @@ var FCKContextMenu = function( parentWindow, mouseClickWindow, langDir )
 	var oPanel = this._Panel = new FCKPanel( parentWindow, true ) ;
 	oPanel.AppendStyleSheet( FCKConfig.SkinPath + 'fck_editor.css' ) ;
 	oPanel.IsContextMenu = true ;
-	oPanel.EnableContextMenu( false ) ;
 	
 	var oMenuBlock = this._MenuBlock = new FCKMenuBlock() ;
-	oMenuBlock.Dir = langDir ;
-	oMenuBlock._FCKContextMenu = this ;
 	oMenuBlock.Panel = oPanel ;
-	oMenuBlock.OnItemClick = FCKContextMenu_MenuBlock_OnItemClick ;
+	oMenuBlock.OnClick = FCKTools.CreateEventListener( FCKContextMenu_MenuBlock_OnClick, this ) ;
 	
 	this._Redraw = true ;
 	
 	this.SetMouseClickWindow( mouseClickWindow || parentWindow ) ;
 }
+
 
 FCKContextMenu.prototype.SetMouseClickWindow = function( mouseClickWindow )
 {
@@ -65,9 +63,11 @@ FCKContextMenu.prototype.RemoveAllItems = function()
 
 FCKContextMenu.prototype.AttachToElement = function( element )
 {
-	element._FCKContextMenu = this ;
 	if ( FCKBrowserInfo.IsIE )
-		element.oncontextmenu = FCKContextMenu_AttachedElement_OnContextMenu ;
+		FCKTools.AddEventListenerEx( element, 'contextmenu', FCKContextMenu_AttachedElement_OnContextMenu, this ) ;
+	else
+		element._FCKContextMenu = this ;
+
 //	element.onmouseup		= FCKContextMenu_AttachedElement_OnMouseUp ;
 }
 
@@ -80,51 +80,41 @@ function FCKContextMenu_Document_OnContextMenu( e )
 		if ( el._FCKContextMenu )
 		{
 			FCKTools.CancelEvent( e ) ;
-			FCKContextMenu_AttachedElement_OnContextMenu( e, el ) ;
+			FCKContextMenu_AttachedElement_OnContextMenu( e, el._FCKContextMenu, el ) ;
 		}
 		el = el.parentNode ;
 	}
 }
 
-function FCKContextMenu_AttachedElement_OnContextMenu( e, el )
+function FCKContextMenu_AttachedElement_OnContextMenu( ev, fckContextMenu, el )
 {
 //	var iButton = e ? e.which - 1 : event.button ;
 
 //	if ( iButton != 2 )
 //		return ;
 
-	var oIEEvent ;
-	if ( !e )
-		oIEEvent = FCKTools.GetElementWindow( this ).event ;
+	var eTarget = el || this ;
 
-	var eTarget = el || ( e ? e.target : this ) ;
-
-	var oContextMenu = eTarget._FCKContextMenu ;
+	if ( fckContextMenu.OnBeforeOpen )
+		fckContextMenu.OnBeforeOpen.call( fckContextMenu, eTarget ) ;
 	
-	if ( oContextMenu.OnBeforeOpen )
-		oContextMenu.OnBeforeOpen.call( oContextMenu, eTarget ) ;
-	
-	if ( oContextMenu._Redraw )
+	if ( fckContextMenu._Redraw )
 	{
-		oContextMenu._MenuBlock.Create( oContextMenu._Panel.MainNode ) ;
-		oContextMenu._Redraw = false ;
+		fckContextMenu._MenuBlock.Create( fckContextMenu._Panel.MainNode ) ;
+		fckContextMenu._Redraw = false ;
 	}
 
-	oContextMenu._Panel.Show( 
-		e ? e.pageX : oIEEvent.screenX, 
-		e ? e.pageY : oIEEvent.screenY, 
-		e ? e.currentTarget : null
+	fckContextMenu._Panel.Show( 
+		ev.pageX || ev.screenX, 
+		ev.pageY || ev.screenY, 
+		ev.currentTarget || null
 	) ;
 	
 	return false ;
 }
 
-function FCKContextMenu_MenuBlock_OnItemClick( menuBlock, menuItem )
+function FCKContextMenu_MenuBlock_OnClick( menuItem, contextMenu )
 {
-	var oContextMenu = menuBlock._FCKContextMenu ;
-	
-	oContextMenu._Panel.Hide() ;
-	
-	if ( oContextMenu.OnItemClick )
-		oContextMenu.OnItemClick.call( oContextMenu, menuItem ) ;
+	contextMenu._Panel.Hide() ;
+	FCKTools.RunFunction( contextMenu.OnItemClick, contextMenu, menuItem ) ;
 }

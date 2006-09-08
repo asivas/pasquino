@@ -109,7 +109,7 @@ FCK.Preview = function()
 	oWindow.document.close();
 }
 
-FCK.SwitchEditMode = function()
+FCK.SwitchEditMode = function( noUndo )
 {
 	var bIsWysiwyg = ( FCK.EditMode == FCK_EDITMODE_WYSIWYG ) ;
 	var sHtml ;
@@ -117,7 +117,7 @@ FCK.SwitchEditMode = function()
 	// Update the HTML in the view output to show.
 	if ( bIsWysiwyg )
 	{
-		if ( FCKBrowserInfo.IsIE )
+		if ( !noUndo && FCKBrowserInfo.IsIE )
 			FCKUndo.SaveUndoStep() ;
 
 		sHtml = FCK.GetXHTML( FCKConfig.FormatSource ) ;
@@ -136,7 +136,7 @@ FCK.SwitchEditMode = function()
 	FCK.Focus() ;
 
 	// Update the toolbar (Running it directly causes IE to fail).
-	FCKTools.RunFunction( 'FCK.ToolbarSet.RefreshModeState()' ) ;
+	FCKTools.RunFunction( FCK.ToolbarSet.RefreshModeState, FCK.ToolbarSet ) ;
 }
 
 FCK.CreateElement = function( tag )

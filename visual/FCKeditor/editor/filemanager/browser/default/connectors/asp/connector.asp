@@ -1,6 +1,7 @@
 ﻿<%@ CodePage=65001 Language="VBScript"%>
 <%
 Option Explicit
+Response.Buffer = True
 %>
 <!--
  * FCKeditor - The text editor for internet

@@ -38,7 +38,7 @@ function FCKToolbarSpecialCombo_OnSelect( itemId, item )
 
 FCKToolbarSpecialCombo.prototype.Create = function( targetElement )
 {
-	this._Combo = new FCKSpecialCombo( this.GetLabel(), this.FieldWidth, this.PanelWidth, this.PanelMaxHeight, FCKBrowserInfo.IsIE ? window : window.parent ) ;
+	this._Combo = new FCKSpecialCombo( this.GetLabel(), this.FieldWidth, this.PanelWidth, this.PanelMaxHeight, FCKBrowserInfo.IsIE ? window : FCKTools.GetElementWindow( targetElement ).parent ) ;
 	
 	/*
 	this._Combo.FieldWidth		= this.FieldWidth		!= null ? this.FieldWidth		: 100 ;

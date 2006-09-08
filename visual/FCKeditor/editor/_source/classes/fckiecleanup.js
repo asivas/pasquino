@@ -17,6 +17,7 @@
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
+
 var	FCKIECleanup = function( attachWindow )
 {
 
@@ -34,11 +35,17 @@ FCKIECleanup.prototype.AddItem = function( dirtyItem, cleanupFunction )
 function FCKIECleanup_Cleanup()
 {
 	var aItems = this._FCKCleanupObj.Items ;
+	var iLenght = aItems.length ;
 
-	for ( var i = 0 ; i < aItems.length ; i++ )
+	for ( var i = 0 ; i < iLenght ; i++ )
 	{
 		var oItem = aItems[i] ;
 		oItem[1].call( oItem[0] ) ;
-		oItem = aItems[i] = null ;
+		aItems[i] = null ;
 	}
+	
+	this._FCKCleanupObj = null ;
+	
+	if ( CollectGarbage )
+		CollectGarbage() ;
 }

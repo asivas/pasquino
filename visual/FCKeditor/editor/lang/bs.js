@@ -151,12 +151,12 @@ DlgBtnCancel		: "Odustani",
 DlgBtnClose			: "Zatvori",
 DlgBtnBrowseServer	: "Browse Server",	//MISSING
 DlgAdvancedTag		: "Naprednije",
-DlgOpOther			: "&lt;Other&gt;",	//MISSING
+DlgOpOther			: "<Other>",	//MISSING
 DlgInfoTab			: "Info",	//MISSING
 DlgAlertUrl			: "Please insert the URL",	//MISSING
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;nije podešeno&gt;",
+DlgGenNotSet		: "<nije podešeno>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Smjer pisanja",
 DlgGenLangDirLtr	: "S lijeva na desno (LTR)",
@@ -220,12 +220,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Sidro na ovoj stranici",
 DlgLnkTypeEMail		: "E-Mail",
 DlgLnkProto			: "Protokol",
-DlgLnkProtoOther	: "&lt;drugi&gt;",
+DlgLnkProtoOther	: "<drugi>",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Izaberi sidro",
 DlgLnkAnchorByName	: "Po nazivu sidra",
 DlgLnkAnchorById	: "Po Id-u elementa",
-DlgLnkNoAnchors		: "&lt;Nema dostupnih sidra na stranici&gt;",
+DlgLnkNoAnchors		: "<Nema dostupnih sidra na stranici>",
 DlgLnkEMail			: "E-Mail Adresa",
 DlgLnkEMailSubject	: "Subjekt poruke",
 DlgLnkEMailBody		: "Poruka",
@@ -233,8 +233,8 @@ DlgLnkUpload		: "Šalji",
 DlgLnkBtnUpload		: "Šalji na server",
 
 DlgLnkTarget		: "Prozor",
-DlgLnkTargetFrame	: "&lt;frejm&gt;",
-DlgLnkTargetPopup	: "&lt;popup prozor&gt;",
+DlgLnkTargetFrame	: "<frejm>",
+DlgLnkTargetPopup	: "<popup prozor>",
 DlgLnkTargetBlank	: "Novi prozor (_blank)",
 DlgLnkTargetParent	: "Glavni prozor (_parent)",
 DlgLnkTargetSelf	: "Isti prozor (_self)",

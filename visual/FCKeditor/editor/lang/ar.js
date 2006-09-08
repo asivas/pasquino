@@ -99,13 +99,13 @@ Button			: "زر ضغط",
 SelectionField	: "قائمة منسدلة",
 ImageButton		: "زر صورة",
 
-FitWindow		: "Maximize the editor size",	//MISSING
+FitWindow		: "تكبير حجم المحرر",
 
 // Context Menu
 EditLink			: "تحرير رابط",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
+CellCM				: "خلية",
+RowCM				: "صف",
+ColumnCM			: "عمود",
 InsertRow			: "إدراج صف",
 DeleteRows			: "حذف صفوف",
 InsertColumn		: "إدراج عمود",
@@ -152,12 +152,12 @@ DlgBtnCancel		: "إلغاء الأمر",
 DlgBtnClose			: "إغلاق",
 DlgBtnBrowseServer	: "تصفح الخادم",
 DlgAdvancedTag		: "متقدم",
-DlgOpOther			: "&lt;أخرى&gt;",
+DlgOpOther			: "<أخرى>",
 DlgInfoTab			: "معلومات",
 DlgAlertUrl			: "الرجاء كتابة عنوان الإنترنت",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;بدون تحديد&gt;",
+DlgGenNotSet		: "<بدون تحديد>",
 DlgGenId			: "الرقم",
 DlgGenLangDir		: "إتجاه النص",
 DlgGenLangDirLtr	: "اليسار لليمين (LTR)",
@@ -221,12 +221,12 @@ DlgLnkTypeURL		: "العنوان",
 DlgLnkTypeAnchor	: "مكان في هذا المستند",
 DlgLnkTypeEMail		: "بريد إلكتروني",
 DlgLnkProto			: "البروتوكول",
-DlgLnkProtoOther	: "&lt;أخرى&gt;",
+DlgLnkProtoOther	: "<أخرى>",
 DlgLnkURL			: "الموقع",
 DlgLnkAnchorSel		: "اختر علامة مرجعية",
 DlgLnkAnchorByName	: "حسب اسم العلامة",
 DlgLnkAnchorById	: "حسب تعريف العنصر",
-DlgLnkNoAnchors		: "&lt;لا يوجد علامات مرجعية في هذا المستند&gt;",
+DlgLnkNoAnchors		: "<لا يوجد علامات مرجعية في هذا المستند>",
 DlgLnkEMail			: "عنوان بريد إلكتروني",
 DlgLnkEMailSubject	: "موضوع الرسالة",
 DlgLnkEMailBody		: "محتوى الرسالة",
@@ -234,8 +234,8 @@ DlgLnkUpload		: "رفع",
 DlgLnkBtnUpload		: "أرسلها للخادم",
 
 DlgLnkTarget		: "الهدف",
-DlgLnkTargetFrame	: "&lt;إطار&gt;",
-DlgLnkTargetPopup	: "&lt;نافذة منبثقة&gt;",
+DlgLnkTargetFrame	: "<إطار>",
+DlgLnkTargetPopup	: "<نافذة منبثقة>",
 DlgLnkTargetBlank	: "إطار جديد (_blank)",
 DlgLnkTargetParent	: "الإطار الأصل (_parent)",
 DlgLnkTargetSelf	: "نفس الإطار (_self)",
@@ -480,7 +480,7 @@ DlgTemplatesNoTpl	: "(لم يتم تعريف أي قالب)",
 // About Dialog
 DlgAboutAboutTab	: "نبذة",
 DlgAboutBrowserInfoTab	: "معلومات متصفحك",
-DlgAboutLicenseTab	: "License",	//MISSING
+DlgAboutLicenseTab	: "الترخيص",
 DlgAboutVersion		: "الإصدار",
 DlgAboutLicense		: "مرخّص بحسب قانون  GNU LGPL",
 DlgAboutInfo		: "لمزيد من المعلومات تفضل بزيارة"

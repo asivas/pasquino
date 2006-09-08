@@ -14,7 +14,7 @@
  * 	Chinese Simplified language file.
  * 
  * File Authors:
- * 		NetRube (NetRube@126.com)
+ * 		NetRube (NetRube@gmail.com)
  */
 
 var FCKLang =
@@ -98,13 +98,13 @@ Button			: "按钮",
 SelectionField	: "列表/菜单",
 ImageButton		: "图像域",
 
-FitWindow		: "Maximize the editor size",	//MISSING
+FitWindow		: "全屏编辑",
 
 // Context Menu
 EditLink			: "编辑超链接",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
+CellCM				: "单元格",
+RowCM				: "行",
+ColumnCM			: "列",
 InsertRow			: "插入行",
 DeleteRows			: "删除行",
 InsertColumn		: "插入列",
@@ -130,7 +130,7 @@ SelectionFieldProp	: "菜单/列表属性",
 TextareaProp		: "多行文本属性",
 FormProp			: "表单属性",
 
-FontFormats			: "普通;带格式的;地址;标题 1;标题 2;标题 3;标题 4;标题 5;标题 6;段落(DIV)",
+FontFormats			: "普通;已编排格式;地址;标题 1;标题 2;标题 3;标题 4;标题 5;标题 6;段落(DIV)",
 
 // Alerts and Messages
 ProcessingXHTML		: "正在处理 XHTML，请稍等...",
@@ -151,12 +151,12 @@ DlgBtnCancel		: "取消",
 DlgBtnClose			: "关闭",
 DlgBtnBrowseServer	: "浏览服务器",
 DlgAdvancedTag		: "高级",
-DlgOpOther			: "&lt;其它&gt;",
+DlgOpOther			: "<其它>",
 DlgInfoTab			: "信息",
 DlgAlertUrl			: "请插入 URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;没有设置&gt;",
+DlgGenNotSet		: "<没有设置>",
 DlgGenId			: "ID",
 DlgGenLangDir		: "语言方向",
 DlgGenLangDirLtr	: "从左到右 (LTR)",
@@ -220,12 +220,12 @@ DlgLnkTypeURL		: "超链接",
 DlgLnkTypeAnchor	: "页内锚点链接",
 DlgLnkTypeEMail		: "电子邮件",
 DlgLnkProto			: "协议",
-DlgLnkProtoOther	: "&lt;其它&gt;",
+DlgLnkProtoOther	: "<其它>",
 DlgLnkURL			: "地址",
 DlgLnkAnchorSel		: "选择一个锚点",
 DlgLnkAnchorByName	: "按锚点名称",
 DlgLnkAnchorById	: "按锚点 ID",
-DlgLnkNoAnchors		: "&lt;此文档没有可用的锚点&gt;",
+DlgLnkNoAnchors		: "<此文档没有可用的锚点>",
 DlgLnkEMail			: "地址",
 DlgLnkEMailSubject	: "主题",
 DlgLnkEMailBody		: "内容",
@@ -233,8 +233,8 @@ DlgLnkUpload		: "上传",
 DlgLnkBtnUpload		: "发送到服务器上",
 
 DlgLnkTarget		: "目标",
-DlgLnkTargetFrame	: "&lt;框架&gt;",
-DlgLnkTargetPopup	: "&lt;弹出窗口&gt;",
+DlgLnkTargetFrame	: "<框架>",
+DlgLnkTargetPopup	: "<弹出窗口>",
 DlgLnkTargetBlank	: "新窗口 (_blank)",
 DlgLnkTargetParent	: "父窗口 (_parent)",
 DlgLnkTargetSelf	: "本窗口 (_self)",
@@ -277,7 +277,7 @@ DlgTableRows		: "行数",
 DlgTableColumns		: "列数",
 DlgTableBorder		: "边框",
 DlgTableAlign		: "对齐",
-DlgTableAlignNotSet	: "&lt;没有设置&gt;",
+DlgTableAlignNotSet	: "<没有设置>",
 DlgTableAlignLeft	: "左对齐",
 DlgTableAlignCenter	: "居中",
 DlgTableAlignRight	: "右对齐",
@@ -297,16 +297,16 @@ DlgCellWidthPx		: "像素",
 DlgCellWidthPc		: "百分比",
 DlgCellHeight		: "高度",
 DlgCellWordWrap		: "自动换行",
-DlgCellWordWrapNotSet	: "&lt;没有设置&gt;",
+DlgCellWordWrapNotSet	: "<没有设置>",
 DlgCellWordWrapYes	: "是",
 DlgCellWordWrapNo	: "否",
 DlgCellHorAlign		: "水平对齐",
-DlgCellHorAlignNotSet	: "&lt;没有设置&gt;",
+DlgCellHorAlignNotSet	: "<没有设置>",
 DlgCellHorAlignLeft	: "左对齐",
 DlgCellHorAlignCenter	: "居中",
 DlgCellHorAlignRight: "右对齐",
 DlgCellVerAlign		: "垂直对齐",
-DlgCellVerAlignNotSet	: "&lt;没有设置&gt;",
+DlgCellVerAlignNotSet	: "<没有设置>",
 DlgCellVerAlignTop	: "顶端",
 DlgCellVerAlignMiddle	: "居中",
 DlgCellVerAlignBottom	: "底部",
@@ -479,7 +479,7 @@ DlgTemplatesNoTpl	: "(没有模板)",
 // About Dialog
 DlgAboutAboutTab	: "关于",
 DlgAboutBrowserInfoTab	: "浏览器信息",
-DlgAboutLicenseTab	: "License",	//MISSING
+DlgAboutLicenseTab	: "许可证",
 DlgAboutVersion		: "版本",
 DlgAboutLicense		: "基于 GNU 通用公共许可证授权发布 ",
 DlgAboutInfo		: "要获得更多信息请访问 "

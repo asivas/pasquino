@@ -14,7 +14,7 @@
  * 	Bengali/Bangla language file.
  * 
  * File Authors:
- * 		Richard Walledge (arkdoctrine@hotmail.com)
+ * 		Richard Walledge (darkdoctrine@hotmail.com)
  */
 
 var FCKLang =
@@ -98,13 +98,13 @@ Button			: "বটন",
 SelectionField	: "চুনা঵ ৞ীল্ড",
 ImageButton		: "তস্঵ীর বটন",
 
-FitWindow		: "Maximize the editor size",	//MISSING
+FitWindow		: "মকসিমিসে সি",
 
 // Context Menu
 EditLink			: "লিंক সंপাদন",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
+CellCM				: "স৅ল",
+RowCM				: "পंক্তি",
+ColumnCM			: "ক৉লম",
 InsertRow			: "পंক্তি ইন্সর্ট করেं",
 DeleteRows			: "পंক্তিযাँ ডিলীট করেं",
 InsertColumn		: "ক৉লম ইন্সর্ট করেं",
@@ -151,12 +151,12 @@ DlgBtnCancel		: "রদ্দ করেं",
 DlgBtnClose			: "বন্দ করেं",
 DlgBtnBrowseServer	: "সর্঵র ব্রাউ৛ করেं",
 DlgAdvancedTag		: "঍ড্঵ান্স্ড",
-DlgOpOther			: "&lt;অন্য&gt;",
+DlgOpOther			: "<অন্য>",
 DlgInfoTab			: "সূচনা",
 DlgAlertUrl			: "URL ইন্সর্ট করেं",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;স৅ট নহীं&gt;",
+DlgGenNotSet		: "<স৅ট নহীं>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "ভাষা লিখনে কী দিশা",
 DlgGenLangDirLtr	: "বাযেं সে দাযেं (LTR)",
@@ -220,12 +220,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "ইস পেজ কা ঐंকর",
 DlgLnkTypeEMail		: "ঈ-মেল",
 DlgLnkProto			: "প্রোটোক৉ল",
-DlgLnkProtoOther	: "&lt;অন্য&gt;",
+DlgLnkProtoOther	: "<অন্য>",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "ঐंকর চুনেं",
 DlgLnkAnchorByName	: "ঐंকর নাম সে",
 DlgLnkAnchorById	: "঍লীম৅ন্ট Id সে",
-DlgLnkNoAnchors		: "&lt;ড৉ক্যূম৅ন্ট মেं ঐंকর্স কী সंখ্যা&gt;",
+DlgLnkNoAnchors		: "<ড৉ক্যূম৅ন্ট মেं ঐंকর্স কী সंখ্যা>",
 DlgLnkEMail			: "ঈ-মেল পতা",
 DlgLnkEMailSubject	: "সंদেশ ঵িষয",
 DlgLnkEMailBody		: "সंদেশ",
@@ -233,8 +233,8 @@ DlgLnkUpload		: "অপলোড",
 DlgLnkBtnUpload		: "ইসে সর্঵র কো ভেজেं",
 
 DlgLnkTarget		: "টার্গেট",
-DlgLnkTargetFrame	: "&lt;৞্রেম&gt;",
-DlgLnkTargetPopup	: "&lt;প৉প-অপ ঵িন্ডো&gt;",
+DlgLnkTargetFrame	: "<৞্রেম>",
+DlgLnkTargetPopup	: "<প৉প-অপ ঵িন্ডো>",
 DlgLnkTargetBlank	: "নযা ঵িন্ডো (_blank)",
 DlgLnkTargetParent	: "মূল ঵িন্ডো (_parent)",
 DlgLnkTargetSelf	: "ইসী ঵িন্ডো (_self)",
@@ -277,7 +277,7 @@ DlgTableRows		: "পंক্তিযাँ",
 DlgTableColumns		: "ক৉লম",
 DlgTableBorder		: "ব৉র্ডর সাই৛",
 DlgTableAlign		: "঍লাইন্ম৅ন্ট",
-DlgTableAlignNotSet	: "&lt;স৅ট নহীं&gt;",
+DlgTableAlignNotSet	: "<স৅ট নহীं>",
 DlgTableAlignLeft	: "দাযেं",
 DlgTableAlignCenter	: "বীচ মেं",
 DlgTableAlignRight	: "বাযেं",
@@ -297,16 +297,16 @@ DlgCellWidthPx		: "পিক্স৅ল",
 DlgCellWidthPc		: "প্রতিশত",
 DlgCellHeight		: "ঊँচাঈ",
 DlgCellWordWrap		: "঵র্ড রৈপ",
-DlgCellWordWrapNotSet	: "&lt;স৅ট নহীं&gt;",
+DlgCellWordWrapNotSet	: "<স৅ট নহীं>",
 DlgCellWordWrapYes	: "হাँ",
 DlgCellWordWrapNo	: "নহীं",
 DlgCellHorAlign		: "হ৉রি৛৉ন্টল ঍লাইন্ম৅ন্ট",
-DlgCellHorAlignNotSet	: "&lt;স৅ট নহীं&gt;",
+DlgCellHorAlignNotSet	: "<স৅ট নহীं>",
 DlgCellHorAlignLeft	: "দাযেं",
 DlgCellHorAlignCenter	: "বীচ মেं",
 DlgCellHorAlignRight: "বাযেं",
 DlgCellVerAlign		: "঵র্টিকল ঍লাইন্ম৅ন্ট",
-DlgCellVerAlignNotSet	: "&lt;স৅ট নহীं&gt;",
+DlgCellVerAlignNotSet	: "<স৅ট নহীं>",
 DlgCellVerAlignTop	: "ঊপর",
 DlgCellVerAlignMiddle	: "মধ্য",
 DlgCellVerAlignBottom	: "নীচে",
@@ -479,7 +479,7 @@ DlgTemplatesNoTpl	: "(কোঈ ট৅ম্প্লেট ডি৞াইন �
 // About Dialog
 DlgAboutAboutTab	: "FCKEditor কে বারে মেं",
 DlgAboutBrowserInfoTab	: "ব্রাউ৛র কে বারে মেं",
-DlgAboutLicenseTab	: "License",	//MISSING
+DlgAboutLicenseTab	: "লিসেণস",
 DlgAboutVersion		: "঵র্৛ন",
 DlgAboutLicense		: "লাইসেंস :GNU LGPL",
 DlgAboutInfo		: "অধিক জানকারী কে লিযে যহাँ জাযেं:"

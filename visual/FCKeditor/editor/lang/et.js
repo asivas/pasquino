@@ -99,13 +99,13 @@ Button			: "Nupp",
 SelectionField	: "Valiklahter",
 ImageButton		: "Piltnupp",
 
-FitWindow		: "Maximize the editor size",	//MISSING
+FitWindow		: "Maksimeeri redaktori mõõtmed",
 
 // Context Menu
 EditLink			: "Muuda linki",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
+CellCM				: "Lahter",
+RowCM				: "Rida",
+ColumnCM			: "Veerg",
 InsertRow			: "Lisa rida",
 DeleteRows			: "Eemalda ridu",
 InsertColumn		: "Lisa veerg",
@@ -152,12 +152,12 @@ DlgBtnCancel		: "Loobu",
 DlgBtnClose			: "Sulge",
 DlgBtnBrowseServer	: "Sirvi serverit",
 DlgAdvancedTag		: "Täpsemalt",
-DlgOpOther			: "&lt;Teine&gt;",
+DlgOpOther			: "<Teine>",
 DlgInfoTab			: "Info",
 DlgAlertUrl			: "Palun sisesta URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;määramata&gt;",
+DlgGenNotSet		: "<määramata>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Keele suund",
 DlgGenLangDirLtr	: "Vasakult paremale (LTR)",
@@ -221,12 +221,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Ankur sellel lehel",
 DlgLnkTypeEMail		: "E-post",
 DlgLnkProto			: "Protokoll",
-DlgLnkProtoOther	: "&lt;muu&gt;",
+DlgLnkProtoOther	: "<muu>",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Vali ankur",
 DlgLnkAnchorByName	: "Ankru nime järgi",
 DlgLnkAnchorById	: "Elemendi id järgi",
-DlgLnkNoAnchors		: "&lt;Selles dokumendis ei ole ankruid&gt;",
+DlgLnkNoAnchors		: "<Selles dokumendis ei ole ankruid>",
 DlgLnkEMail			: "E-posti aadress",
 DlgLnkEMailSubject	: "Sõnumi teema",
 DlgLnkEMailBody		: "Sõnumi tekst",
@@ -234,8 +234,8 @@ DlgLnkUpload		: "Lae üles",
 DlgLnkBtnUpload		: "Saada serverisse",
 
 DlgLnkTarget		: "Sihtkoht",
-DlgLnkTargetFrame	: "&lt;raam&gt;",
-DlgLnkTargetPopup	: "&lt;hüpikaken&gt;",
+DlgLnkTargetFrame	: "<raam>",
+DlgLnkTargetPopup	: "<hüpikaken>",
 DlgLnkTargetBlank	: "Uus aken (_blank)",
 DlgLnkTargetParent	: "Vanem aken (_parent)",
 DlgLnkTargetSelf	: "Sama aken (_self)",
@@ -480,7 +480,7 @@ DlgTemplatesNoTpl	: "(Ühtegi šablooni ei ole defineeritud)",
 // About Dialog
 DlgAboutAboutTab	: "Teave",
 DlgAboutBrowserInfoTab	: "Interneti sirvija info",
-DlgAboutLicenseTab	: "License",	//MISSING
+DlgAboutLicenseTab	: "Litsents",
 DlgAboutVersion		: "versioon",
 DlgAboutLicense		: "Litsenseeritud GNU Lesser General Public License litsentsiga",
 DlgAboutInfo		: "Täpsema info saamiseks mine"

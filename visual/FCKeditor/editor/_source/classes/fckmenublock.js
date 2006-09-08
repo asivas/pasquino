@@ -11,104 +11,114 @@
  * "Support Open Source software. What about a donation today?"
  * 
  * File Name: fckmenublock.js
- * 	FCKMenuBlock Class: renders a list of menu items.
+ * 	Renders a list of menu items.
  * 
  * File Authors:
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
-var FCKMenuBlock = function( direction )
+
+var FCKMenuBlock = function()
 {
-	this.Dir	= direction || 'ltr' ;
-	this.Items	= new Array() ;
-	
-	if ( FCK.IECleanup )
-		FCK.IECleanup.AddItem( this, this._Cleanup ) ;
+	this._Items	= new Array() ;
 }
+
 
 FCKMenuBlock.prototype.AddItem = function( name, label, iconPathOrStripInfoArrayOrIndex, isDisabled )
 {
-	if ( typeof( iconPathOrStripInfoArrayOrIndex ) == 'number' )
-		 iconPathOrStripInfoArrayOrIndex = [ FCKConfig.SkinPath + 'fck_strip.gif', 16, iconPathOrStripInfoArrayOrIndex ] ;
+	var oItem = new FCKMenuItem( this, name, label, iconPathOrStripInfoArrayOrIndex, isDisabled ) ;
+	
+	oItem.OnClick		= FCKTools.CreateEventListener( FCKMenuBlock_Item_OnClick, this ) ;
+	oItem.OnActivate	= FCKTools.CreateEventListener( FCKMenuBlock_Item_OnActivate, this ) ;
+	
+	this._Items.push( oItem ) ;
 
-	var oItem = new FCKMenuItem( name, label, iconPathOrStripInfoArrayOrIndex, isDisabled, this.Dir ) ;
-	oItem.Dir = this.Dir ;
-	
-	oItem._FCKMenuBlock = this ;
-	oItem.OnClick = FCKMenuBlock_OnItemClick ;
-	
-	this.Items[ this.Items.length ] = oItem ;
-	
 	return oItem ;
 }
 
 FCKMenuBlock.prototype.AddSeparator = function()
 {
-	this.Items[ this.Items.length ] = new FCKMenuSeparator() ;
+	this._Items.push( new FCKMenuSeparator() ) ;
 }
 
 FCKMenuBlock.prototype.RemoveAllItems = function()
 {
-	this.Items = new Array() ;
+	this._Items = new Array() ;
+	
+	var eItemsTable = this._ItemsTable ;
+	if ( eItemsTable )
+	{
+		while ( eItemsTable.rows.length > 0 )
+			eItemsTable.deleteRow( 0 ) ;
+	}
 }
 
 FCKMenuBlock.prototype.Create = function( parentElement )
 {
-	if ( this.MainElement )
+	if ( !this._ItemsTable )
 	{
-		this.MainElement.parentNode.removeChild( this.MainElement ) ;
-		this._Cleanup() ;
-	}
+		if ( FCK.IECleanup )
+			FCK.IECleanup.AddItem( this, FCKMenuBlock_Cleanup ) ;
 
-	var oDoc = parentElement.ownerDocument ;
+		this._Window = FCKTools.GetElementWindow( parentElement ) ;
 
-	var eTable = oDoc.createElement( 'table' ) ;
-	eTable.dir = this.Dir ;
-	eTable.cellPadding = 0 ;
-	eTable.cellSpacing = 0 ;
-	
-	var oMainElement = this.MainElement = eTable.insertRow(-1).insertCell(-1) ;
-	oMainElement.className = 'MN_Menu' ;
-	
-	var eItemsTable = oMainElement.appendChild( oDoc.createElement( 'table' ) ) ;
-	eItemsTable.cellPadding = 0 ;
-	eItemsTable.cellSpacing = 0 ;
-	
-	for ( var i = 0 ; i < this.Items.length ; i++ )
-	{
-		var oItem = this.Items[i] ;
+		var oDoc = FCKTools.GetElementDocument( parentElement ) ;
+
+		var eTable = parentElement.appendChild( oDoc.createElement( 'table' ) ) ;
+		eTable.cellPadding = 0 ;
+		eTable.cellSpacing = 0 ;
+
+		FCKTools.DisableSelection( eTable ) ;
 		
-		if ( this.Panel )
-			oItem.Panel = this.Panel ;
-
-		oItem.Create( eItemsTable ) ;
+		var oMainElement = eTable.insertRow(-1).insertCell(-1) ;
+		oMainElement.className = 'MN_Menu' ;
+	
+		var eItemsTable = this._ItemsTable = oMainElement.appendChild( oDoc.createElement( 'table' ) ) ;
+		eItemsTable.cellPadding = 0 ;
+		eItemsTable.cellSpacing = 0 ;		
 	}
 	
-	parentElement.appendChild( eTable ) ;
-	
-	// Disable mouse selection on the block.
-	FCKTools.DisableSelection( eTable ) ;
+	for ( var i = 0 ; i < this._Items.length ; i++ )
+		this._Items[i].Create( this._ItemsTable ) ;
 }
 
-FCKMenuBlock.prototype._Cleanup = function()
+/* Events */
+
+function FCKMenuBlock_Item_OnClick( clickedItem, menuBlock )
 {
-	this.MainElement = null ;
+	FCKTools.RunFunction( menuBlock.OnClick, menuBlock, [ clickedItem ] ) ;
 }
 
-function FCKMenuBlock_OnItemClick( menuItem )
+function FCKMenuBlock_Item_OnActivate( menuBlock )
 {
-	var oMenuBlock = menuItem._FCKMenuBlock ;
+	var oActiveItem = menuBlock._ActiveItem ;
 	
-	if ( oMenuBlock.OnItemClick )
-		oMenuBlock.OnItemClick( oMenuBlock, menuItem ) ;
+	if ( oActiveItem && oActiveItem != this )
+	{
+		// Set the focus to this menu block window (to fire OnBlur on opened panels).
+		if ( !FCKBrowserInfo.IsIE && oActiveItem.HasSubMenu && !this.HasSubMenu )
+			menuBlock._Window.focus() ;
+
+		oActiveItem.Deactivate() ;		
+	}
+
+	menuBlock._ActiveItem = this ;
 }
+
+function FCKMenuBlock_Cleanup()
+{
+	this._Window = null ;
+	this._ItemsTable = null ;
+}
+
+// ################# //
 
 var FCKMenuSeparator = function()
 {}
 
 FCKMenuSeparator.prototype.Create = function( parentTable )
 {
-	var oDoc = parentTable.ownerDocument ;	// This is IE 6+
+	var oDoc = FCKTools.GetElementDocument( parentTable ) ;
 
 	var r = parentTable.insertRow(-1) ;
 	

@@ -261,8 +261,6 @@ function FCK_ContextMenu_GetListener( listenerName )
 
 function FCK_ContextMenu_OnBeforeOpen()
 {
-	FCK.Focus() ;
-
 	// Update the UI.
 	FCK.Events.FireEvent( "OnSelectionChange" ) ;
 
@@ -284,5 +282,6 @@ function FCK_ContextMenu_OnBeforeOpen()
 
 function FCK_ContextMenu_OnItemClick( item )
 {
+	FCK.Focus() ;
 	FCKCommands.GetCommand( item.Name ).Execute() ;
 }

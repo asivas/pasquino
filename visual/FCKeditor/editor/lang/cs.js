@@ -100,13 +100,13 @@ Button			: "Tlačítko",
 SelectionField	: "Seznam",
 ImageButton		: "Obrázkové tlačítko",
 
-FitWindow		: "Maximize the editor size",	//MISSING
+FitWindow		: "Maximalizovat velikost editoru",
 
 // Context Menu
 EditLink			: "Změnit odkaz",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
+CellCM				: "Buňka",
+RowCM				: "Řádek",
+ColumnCM			: "Sloupec",
 InsertRow			: "Vložit řádek",
 DeleteRows			: "Smazat řádek",
 InsertColumn		: "Vložit sloupec",
@@ -153,12 +153,12 @@ DlgBtnCancel		: "Storno",
 DlgBtnClose			: "Zavřít",
 DlgBtnBrowseServer	: "Vybrat na serveru",
 DlgAdvancedTag		: "Rozšířené",
-DlgOpOther			: "&lt;Ostatní&gt;",
+DlgOpOther			: "<Ostatní>",
 DlgInfoTab			: "Info",
 DlgAlertUrl			: "Prosím vložte URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;nenastaveno&gt;",
+DlgGenNotSet		: "<nenastaveno>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Orientace jazyka",
 DlgGenLangDirLtr	: "Zleva do prava (LTR)",
@@ -222,12 +222,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Kotva v této stránce",
 DlgLnkTypeEMail		: "E-Mail",
 DlgLnkProto			: "Protokol",
-DlgLnkProtoOther	: "&lt;jiný&gt;",
+DlgLnkProtoOther	: "<jiný>",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Vybrat kotvu",
 DlgLnkAnchorByName	: "Podle jména kotvy",
 DlgLnkAnchorById	: "Podle Id objektu",
-DlgLnkNoAnchors		: "&lt;Ve stránce žádná kotva není definována&gt;",
+DlgLnkNoAnchors		: "<Ve stránce žádná kotva není definována>",
 DlgLnkEMail			: "E-Mailová adresa",
 DlgLnkEMailSubject	: "Předmět zprávy",
 DlgLnkEMailBody		: "Tělo zprávy",
@@ -235,8 +235,8 @@ DlgLnkUpload		: "Odeslat",
 DlgLnkBtnUpload		: "Odeslat na Server",
 
 DlgLnkTarget		: "Cíl",
-DlgLnkTargetFrame	: "&lt;rámec&gt;",
-DlgLnkTargetPopup	: "&lt;vyskakovací okno&gt;",
+DlgLnkTargetFrame	: "<rámec>",
+DlgLnkTargetPopup	: "<vyskakovací okno>",
 DlgLnkTargetBlank	: "Nové okno (_blank)",
 DlgLnkTargetParent	: "Rodičovské okno (_parent)",
 DlgLnkTargetSelf	: "Stejné okno (_self)",
@@ -290,7 +290,7 @@ DlgTableHeight		: "Výška",
 DlgTableCellSpace	: "Vzdálenost buněk",
 DlgTableCellPad		: "Odsazení obsahu",
 DlgTableCaption		: "Popis",
-DlgTableSummary		: "Summary",	//MISSING
+DlgTableSummary		: "Souhrn",
 
 // Table Cell Dialog
 DlgCellTitle		: "Vlastnosti buňky",
@@ -481,7 +481,7 @@ DlgTemplatesNoTpl	: "(Není definována žádná šablona)",
 // About Dialog
 DlgAboutAboutTab	: "O aplikaci",
 DlgAboutBrowserInfoTab	: "Informace o prohlížeči",
-DlgAboutLicenseTab	: "License",	//MISSING
+DlgAboutLicenseTab	: "Licence",
 DlgAboutVersion		: "verze",
 DlgAboutLicense		: "Licencováno pod GNU Lesser General Public License",
 DlgAboutInfo		: "Více informací získáte na"

@@ -11,189 +11,147 @@
  * "Support Open Source software. What about a donation today?"
  * 
  * File Name: fckmenuitem.js
- * 	FCKMenuItem Class: renders a menu items in a menu block.
+ * 	Defines and renders a menu items in a menu block.
  * 
  * File Authors:
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
-var FCKMenuItem = function( name, label, iconPathOrStripInfoArray, isDisabled, direction )
+
+var FCKMenuItem = function( parentMenuBlock, name, label, iconPathOrStripInfoArray, isDisabled )
 {
 	this.Name		= name ;
 	this.Label		= label || name ;
 	this.IsDisabled	= isDisabled ;
-//	this.IsCheck	= isCheck ;
-//	this.IsChecked	= isChecked ;
-	this.Dir		= direction || 'ltr' ;
 	
 	this.Icon = new FCKIcon( iconPathOrStripInfoArray ) ;
-
-	this.Items = new FCKMenuBlock( direction ) ;
 	
+	this.SubMenu			= new FCKMenuBlockPanel() ;
+	this.SubMenu.Parent		= parentMenuBlock ;
+	this.SubMenu.OnClick	= FCKTools.CreateEventListener( FCKMenuItem_SubMenu_OnClick, this ) ;
+
 	if ( FCK.IECleanup )
-		FCK.IECleanup.AddItem( this, this._Cleanup ) ;
+		FCK.IECleanup.AddItem( this, FCKMenuItem_Cleanup ) ;
 }
 
 
 FCKMenuItem.prototype.AddItem = function( name, label, iconPathOrStripInfoArrayOrIndex, isDisabled )
 {
-	if ( this.Items )
-	{
-		if ( this.OnClick )
-			this.Items.OnItemClick = this.OnClick ;
-	}
-	
-	var oItem = this.Items.AddItem( name, label, iconPathOrStripInfoArrayOrIndex, isDisabled, this.Dir ) ;
-	
-	if ( this._FCKMenuBlock )
-		oItem._FCKMenuBlock = this._FCKMenuBlock ;
-
-	return oItem ;
+	this.HasSubMenu = true ;
+	return this.SubMenu.AddItem( name, label, iconPathOrStripInfoArrayOrIndex, isDisabled ) ;
 }
 
 FCKMenuItem.prototype.AddSeparator = function()
 {
-	this.Items.AddSeparator() ;
+	this.SubMenu.AddSeparator() ;
 }
 
 FCKMenuItem.prototype.Create = function( parentTable )
 {
-	var oDoc = parentTable.ownerDocument ;	// This is IE 6+
+	var bHasSubMenu = this.HasSubMenu ;
+	
+	var oDoc = FCKTools.GetElementDocument( parentTable ) ;
 
+	// Add a row in the table to hold the menu item.
 	var r = this.MainElement = parentTable.insertRow(-1) ;
 	r.className = this.IsDisabled ? 'MN_Item_Disabled' : 'MN_Item' ;
-	
-	r._FCKMenuItem = this ;		// IE Memory Leak (Circular reference).
-	
+
+	// Set the row behavior.
 	if ( !this.IsDisabled )
 	{
-		r.onmouseover	= FCKMenuItem_OnMouseOver ;
-		r.onmouseout	= FCKMenuItem_OnMouseOut ;
-		r.onclick		= FCKMenuItem_OnClick ;
+		FCKTools.AddEventListenerEx( r, 'mouseover', FCKMenuItem_OnMouseOver, [ this ] ) ;
+		FCKTools.AddEventListenerEx( r, 'click', FCKMenuItem_OnClick, [ this ] ) ;
+
+		if ( !bHasSubMenu )
+			FCKTools.AddEventListenerEx( r, 'mouseout', FCKMenuItem_OnMouseOut, [ this ] ) ;
 	}
 	
+	// Create the icon cell.
 	var eCell = r.insertCell(-1) ;
 	eCell.className = 'MN_Icon' ;
-	
-	/*
-	// Support for Check style element.
-	if ( this.IsCheck )
-	{
-		var eDiv = eCell.appendChild( oDoc.createElement( 'DIV' ) ) ;
-		eDiv.className = 'TB_Button_Image' ;
-		eDiv.style.height = 6 ;
-		
-		this.CheckImg = eDiv.appendChild( oDoc.createElement( 'IMG' ) ) ;
-		this.CheckImg.src = FCK_IMAGES_PATH + 'check.gif' ;
-		this.CheckImg.width	 = 7 ;
-		this.CheckImg.height = 6 ;
+	eCell.appendChild( this.Icon.CreateIconElement( oDoc ) ) ;
 
-		if ( !this.IsChecked )
-			this.CheckImg.style.display = 'none' ;
-	}
-	else
-	*/
-		eCell.appendChild( this.Icon.CreateIconElement( oDoc ) ) ;
-
+	// Create the label cell.
 	eCell = r.insertCell(-1) ;
 	eCell.className = 'MN_Label' ;
 	eCell.noWrap = true ;
 	eCell.appendChild( oDoc.createTextNode( this.Label ) ) ;
 	
+	// Create the arrow cell and setup the sub menu panel (if needed).
 	eCell = r.insertCell(-1) ;
-	if ( this.Items.Items.length > 0 )
+	if ( bHasSubMenu )
 	{
 		eCell.className = 'MN_Arrow' ;
 
+		// The arrow is a fixed size image.
 		var eArrowImg = eCell.appendChild( oDoc.createElement( 'IMG' ) ) ;
-		eArrowImg.src = FCK_IMAGES_PATH + 'arrow_' + this.Dir + '.gif' ;
+		eArrowImg.src = FCK_IMAGES_PATH + 'arrow_' + FCKLang.Dir + '.gif' ;
 		eArrowImg.width	 = 4 ;
 		eArrowImg.height = 7 ;
 		
-		var oItemsPanelWin ;
-		
-		if ( !FCKBrowserInfo.IsIE && this.Panel )
-			oItemsPanelWin = this.Panel._Window ;
-		else
-			oItemsPanelWin = FCKTools.GetParentWindow( oDoc ) ;
-
-		var oItemsPanel = this.ItemsPanel = new FCKPanel( oItemsPanelWin, true ) ;
-		oItemsPanel.EnableContextMenu( false ) ;
-		oItemsPanel.SetDirection( this.Dir ) ;
-		oItemsPanel.AppendStyleSheet( FCKConfig.SkinPath + 'fck_editor.css' ) ;
-		
-		if ( !FCKBrowserInfo.IsIE )
-		{
-			oItemsPanel._FCKMenuItem = this ;
-			oItemsPanel.OnHide = FCKMenuItem_ItemsPanel_OnHide ;
-		}
-		
-		this.Items.Panel = oItemsPanel ;
-		this.Items.Create( oItemsPanel.MainNode ) ;		
+		this.SubMenu.Create() ;
+		this.SubMenu.Panel.OnHide = FCKTools.CreateEventListener( FCKMenuItem_SubMenu_OnHide, this ) ;
 	}
 }
 
-FCKMenuItem.prototype._Cleanup = function()
+FCKMenuItem.prototype.Activate = function()
 {
-	if ( this.MainElement )
+	this.MainElement.className = 'MN_Item_Over' ;
+
+	if ( this.HasSubMenu )
 	{
-		this.MainElement._FCKMenuItem = null ;
-	}
-}
-
-/*
-	Events
-*/
-
-function FCKMenuItem_ItemsPanel_OnHide()
-{
-	var oPanel = this._FCKMenuItem.Panel ;
-	
-	if ( oPanel )
-	{
-		oPanel.CanHide = true ;
-		oPanel.Hide( true ) ;
-	}
-}
-
-function FCKMenuItem_OnMouseOver()
-{
-	this.className = 'MN_Item_Over' ;
-}
-
-function FCKMenuItem_OnMouseOut()
-{
-	this.className = 'MN_Item' ;
-}
-
-function FCKMenuItem_OnClick()
-{
-	var oMenuItem = this._FCKMenuItem ;
-
-	if ( oMenuItem.ItemsPanel )
-	{
-		if ( oMenuItem.Panel )
-			oMenuItem.Panel.CanHide = false ;
-
 		// Show the child menu block. The ( +2, -2 ) correction is done because
 		// of the padding in the skin. It is not a good solution because one
 		// could change the skin and so the final result would not be accurate.
 		// For now it is ok because we are controlling the skin.
-		oMenuItem.ItemsPanel.Show( oMenuItem.MainElement.offsetWidth + 2, -2, oMenuItem.MainElement ) ;
+		this.SubMenu.Show( this.MainElement.offsetWidth + 2, -2, this.MainElement ) ;
 	}
+
+	FCKTools.RunFunction( this.OnActivate, this ) ;
+}
+
+FCKMenuItem.prototype.Deactivate = function()
+{
+	this.MainElement.className = 'MN_Item' ;
+
+	if ( this.HasSubMenu )
+		this.SubMenu.Hide() ;
+}
+
+/* Events */
+
+function FCKMenuItem_SubMenu_OnClick( clickedItem, listeningItem )
+{
+	FCKTools.RunFunction( listeningItem.OnClick, listeningItem, [ clickedItem ] ) ;
+}
+
+function FCKMenuItem_SubMenu_OnHide( menuItem )
+{
+	menuItem.Deactivate() ;
+}
+
+function FCKMenuItem_OnClick( ev, menuItem )
+{
+	if ( menuItem.HasSubMenu )
+		menuItem.Activate() ;
 	else
 	{
-		this.className = 'MN_Item' ;
-
-		/*
-		if ( oMenuItem.IsCheck )
-		{
-			oMenuItem.IsChecked = !oMenuItem.IsChecked ;
-			oMenuItem.CheckImg.style.display = oMenuItem.IsChecked ? '' : 'none' ;
-		}
-		*/
-		
-		if ( oMenuItem.OnClick )
-			oMenuItem.OnClick( oMenuItem ) ;
+		menuItem.Deactivate() ;
+		FCKTools.RunFunction( menuItem.OnClick, menuItem, [ menuItem ] ) ;
 	}
+}
+
+function FCKMenuItem_OnMouseOver( ev, menuItem )
+{
+	menuItem.Activate() ;
+}
+
+function FCKMenuItem_OnMouseOut( ev, menuItem )
+{
+	menuItem.Deactivate() ;
+}
+
+function FCKMenuItem_Cleanup()
+{
+	this.MainElement = null ;
 }

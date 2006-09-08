@@ -11,7 +11,7 @@ DEFINE CLASS fckeditor AS custom
 	FUNCTION fckeditor( tcInstanceName )
 		LOCAL lnLoop,lnLoop2
 		THIS.cInstanceName	= tcInstanceName
-		THIS.BasePath	= '../../../FCKeditor/'
+		THIS.BasePath	= '../../'
 		THIS.cWIDTH		= '100%'
 		THIS.cHEIGHT	= '200'
 		THIS.ToolbarSet	= 'Default'

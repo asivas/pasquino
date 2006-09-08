@@ -53,17 +53,32 @@ FCKSelection.SelectNode = function( node )
 {
 	FCK.Focus() ;
 	FCK.EditorDocument.selection.empty() ;
-	var oRange = FCK.EditorDocument.selection.createRange() ;
-	oRange.moveToElementText( node ) ;
+
+	try 
+	{
+		// Try to select the node as a control.
+		var oRange = FCK.EditorDocument.body.createControlRange() ;
+		oRange.addElement( node ) ;
+	} 
+	catch(e) 
+	{
+		// If failed, select it as a text range.
+		var oRange = FCK.EditorDocument.selection.createRange() ;
+		oRange.moveToElementText( node ) ;
+	}
+
 	oRange.select() ;
 }
 
 FCKSelection.Collapse = function( toStart )
 {
 	FCK.Focus() ;
-	var oRange = FCK.EditorDocument.selection.createRange() ;
-	oRange.collapse( toStart == null || toStart === true ) ;
-	oRange.select() ;
+	if ( this.GetType() == 'Text' )
+	{
+		var oRange = FCK.EditorDocument.selection.createRange() ;
+		oRange.collapse( toStart == null || toStart === true ) ;
+		oRange.select() ;
+	}
 }
 
 // The "nodeTagName" parameter must be Upper Case.

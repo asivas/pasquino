@@ -99,13 +99,13 @@ Button			: "Przycisk",
 SelectionField	: "Lista wyboru",
 ImageButton		: "Przycisk obrazek",
 
-FitWindow		: "Maximize the editor size",	//MISSING
+FitWindow		: "Maksymalizuj rozmiar edytora",
 
 // Context Menu
 EditLink			: "Edytuj hiperłącze",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
+CellCM				: "Komórka",
+RowCM				: "Wiersz",
+ColumnCM			: "Kolumna",
 InsertRow			: "Wstaw wiersz",
 DeleteRows			: "Usuń wiersze",
 InsertColumn		: "Wstaw kolumnę",
@@ -152,12 +152,12 @@ DlgBtnCancel		: "Anuluj",
 DlgBtnClose			: "Zamknij",
 DlgBtnBrowseServer	: "Przeglądaj",
 DlgAdvancedTag		: "Zaawansowane",
-DlgOpOther			: "&lt;Inny&gt;",
+DlgOpOther			: "<Inny>",
 DlgInfoTab			: "Informacje",
 DlgAlertUrl			: "Proszę podać URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;nieustawione&gt;",
+DlgGenNotSet		: "<nieustawione>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Kierunek tekstu",
 DlgGenLangDirLtr	: "Od lewej do prawej (LTR)",
@@ -221,12 +221,12 @@ DlgLnkTypeURL		: "Adres URL",
 DlgLnkTypeAnchor	: "Odnośnik wewnątrz strony",
 DlgLnkTypeEMail		: "Adres e-mail",
 DlgLnkProto			: "Protokół",
-DlgLnkProtoOther	: "&lt;inny&gt;",
+DlgLnkProtoOther	: "<inny>",
 DlgLnkURL			: "Adres URL",
 DlgLnkAnchorSel		: "Wybierz etykietę",
 DlgLnkAnchorByName	: "Wg etykiety",
 DlgLnkAnchorById	: "Wg identyfikatora elementu",
-DlgLnkNoAnchors		: "&lt;W dokumencie nie zdefiniowano żadnych etykiet&gt;",
+DlgLnkNoAnchors		: "<W dokumencie nie zdefiniowano żadnych etykiet>",
 DlgLnkEMail			: "Adres e-mail",
 DlgLnkEMailSubject	: "Temat",
 DlgLnkEMailBody		: "Treść",
@@ -234,8 +234,8 @@ DlgLnkUpload		: "Upload",
 DlgLnkBtnUpload		: "Wyślij",
 
 DlgLnkTarget		: "Cel",
-DlgLnkTargetFrame	: "&lt;ramka&gt;",
-DlgLnkTargetPopup	: "&lt;wyskakujące okno&gt;",
+DlgLnkTargetFrame	: "<ramka>",
+DlgLnkTargetPopup	: "<wyskakujące okno>",
 DlgLnkTargetBlank	: "Nowe okno (_blank)",
 DlgLnkTargetParent	: "Okno nadrzędne (_parent)",
 DlgLnkTargetSelf	: "To samo okno (_self)",
@@ -480,7 +480,7 @@ DlgTemplatesNoTpl	: "(Brak zdefiniowanych szablonów)",
 // About Dialog
 DlgAboutAboutTab	: "O ...",
 DlgAboutBrowserInfoTab	: "O przeglądarce",
-DlgAboutLicenseTab	: "License",	//MISSING
+DlgAboutLicenseTab	: "Licencja",
 DlgAboutVersion		: "wersja",
 DlgAboutLicense		: "na licencji GNU Lesser General Public License",
 DlgAboutInfo		: "Więcej informacji uzyskasz pod adresem"

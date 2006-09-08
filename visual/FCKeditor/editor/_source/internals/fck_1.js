@@ -61,10 +61,10 @@ FCK.SetStatus = function( newStatus )
 // GetHTML is Deprecated : returns the same value as GetXHTML.
 FCK.GetHTML = FCK.GetXHTML = function( format )
 {
-	var bSource = ( FCK.EditMode == FCK_EDITMODE_SOURCE ) ;
-
-	if ( bSource )
-		this.SwitchEditMode() ;
+	// We assume that if the user is in source editing, the editor value must
+	// represent the exact contents of the source, as the user wanted it to be.
+	if ( FCK.EditMode == FCK_EDITMODE_SOURCE )
+			return FCK.EditingArea.Textarea.value ;
 
 	var sXHTML ;
 	
@@ -77,9 +77,6 @@ FCK.GetHTML = FCK.GetXHTML = function( format )
 		else
 			sXHTML = FCKXHtml.GetXHTML( this.EditorDocument.body, false, format ) ;
 	}
-
-	if ( bSource )
-		this.SwitchEditMode() ;
 
 	if ( FCKBrowserInfo.IsIE )
 		sXHTML = sXHTML.replace( FCKRegexLib.ToReplace, '$1' ) ;
@@ -199,12 +196,12 @@ FCK.SetHTML = function( html )
 			sHtml +=
 				'><head><title></title>' +
 				this._GetEditorAreaStyleTags() +
-				'<link href="css/fck_internal.css' + '" rel="stylesheet" type="text/css" _fcktemp="true" />' ;
+				'<link href="' + FCKConfig.FullBasePath + 'css/fck_internal.css' + '" rel="stylesheet" type="text/css" _fcktemp="true" />' ;
 
 			if ( FCKBrowserInfo.IsIE )
 				sHtml += FCK._GetBehaviorsStyle() ;
 			else if ( FCKConfig.ShowBorders ) 
-				sHtml += '<link href="css/fck_showtableborders_gecko.css" rel="stylesheet" type="text/css" _fcktemp="true" />' ;
+				sHtml += '<link href="' + FCKConfig.FullBasePath + 'css/fck_showtableborders_gecko.css" rel="stylesheet" type="text/css" _fcktemp="true" />' ;
 
 			sHtml += FCK.TempBaseTag ;
 			sHtml += '</head><body>' ;
@@ -322,7 +319,7 @@ FCKFocusManager._ResetTimer = function()
 
 function FCKFocusManager_Win_OnBlur()
 {
-	if ( FCK.HasFocus )
+	if ( FCK && FCK.HasFocus )
 	{
 		FCKFocusManager._ResetTimer() ;
 		FCKFocusManager._Timer = window.setTimeout( FCKFocusManager_FireOnBlur, 100 ) ;

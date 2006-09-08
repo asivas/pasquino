@@ -56,7 +56,7 @@ FCKCodeFormatter.Format = function( html )
 	FCKCodeFormatter.ProtectedData = new Array() ;
 	
 	var sFormatted = html.replace( this.Regex.ProtectedTags, FCKCodeFormatter._ProtectData ) ;
-
+	
 	// Line breaks.
 	sFormatted		= sFormatted.replace( this.Regex.BlocksOpener, '\n$&' ) ; ;
 	sFormatted		= sFormatted.replace( this.Regex.BlocksCloser, '$&\n' ) ;
@@ -89,7 +89,7 @@ FCKCodeFormatter.Format = function( html )
 	for ( var i = 0 ; i < FCKCodeFormatter.ProtectedData.length ; i++ )
 	{
 		var oRegex = new RegExp( '___FCKpd___' + i ) ;
-		sFormatted = sFormatted.replace( oRegex, FCKCodeFormatter.ProtectedData[i] ) ;
+		sFormatted = sFormatted.replace( oRegex, FCKCodeFormatter.ProtectedData[i].replace( /\$/g, '$$$$' ) ) ;
 	}
 
 	return sFormatted.trim() ;

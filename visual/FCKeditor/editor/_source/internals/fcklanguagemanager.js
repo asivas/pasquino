@@ -112,19 +112,20 @@ FCKLanguageManager.GetActiveLanguage = function()
 	return this.DefaultLanguage ;
 }
 
-FCKLanguageManager.TranslateElements = function( targetDocument, tag, propertyToSet )
+FCKLanguageManager.TranslateElements = function( targetDocument, tag, propertyToSet, encode )
 {
 	var e = targetDocument.getElementsByTagName(tag) ;
-
+	var sKey, s ;
 	for ( var i = 0 ; i < e.length ; i++ )
 	{
-		var sKey = e[i].getAttribute( 'fckLang' ) ;
-		
-		if ( sKey )
+		if ( sKey = e[i].getAttribute( 'fckLang' ) )
 		{
-			var s = FCKLang[ sKey ] ;
-			if ( s ) 
+			if ( s = FCKLang[ sKey ] )
+			{
+				if ( encode )
+					s = FCKTools.HTMLEncode( s ) ;
 				eval( 'e[i].' + propertyToSet + ' = s' ) ;
+			}
 		}
 	}
 }
@@ -134,7 +135,7 @@ FCKLanguageManager.TranslatePage = function( targetDocument )
 	this.TranslateElements( targetDocument, 'INPUT', 'value' ) ;
 	this.TranslateElements( targetDocument, 'SPAN', 'innerHTML' ) ;
 	this.TranslateElements( targetDocument, 'LABEL', 'innerHTML' ) ;
-	this.TranslateElements( targetDocument, 'OPTION', 'innerHTML' ) ;
+	this.TranslateElements( targetDocument, 'OPTION', 'innerHTML', true ) ;
 }
 
 FCKLanguageManager.Initialize = function()

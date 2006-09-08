@@ -98,13 +98,13 @@ Button			: "Painike",
 SelectionField	: "Valintakenttä",
 ImageButton		: "Kuvapainike",
 
-FitWindow		: "Maximize the editor size",	//MISSING
+FitWindow		: "Suurenna editori koko ikkunaan",
 
 // Context Menu
 EditLink			: "Muokkaa linkkiä",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
+CellCM				: "Solu",
+RowCM				: "Rivi",
+ColumnCM			: "Sarake",
 InsertRow			: "Lisää rivi",
 DeleteRows			: "Poista rivit",
 InsertColumn		: "Lisää sarake",
@@ -156,7 +156,7 @@ DlgInfoTab			: "Info",
 DlgAlertUrl			: "Lisää URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;ei asetettu&gt;",
+DlgGenNotSet		: "<ei asetettu>",
 DlgGenId			: "Tunniste",
 DlgGenLangDir		: "Kielen suunta",
 DlgGenLangDirLtr	: "Vasemmalta oikealle (LTR)",
@@ -220,12 +220,12 @@ DlgLnkTypeURL		: "Osoite",
 DlgLnkTypeAnchor	: "Ankkuri tässä sivussa",
 DlgLnkTypeEMail		: "Sähköposti",
 DlgLnkProto			: "Protokolla",
-DlgLnkProtoOther	: "&lt;muu&gt;",
+DlgLnkProtoOther	: "<muu>",
 DlgLnkURL			: "Osoite",
 DlgLnkAnchorSel		: "Valitse ankkuri",
 DlgLnkAnchorByName	: "Ankkurin nimen mukaan",
 DlgLnkAnchorById	: "Ankkurin ID:n mukaan",
-DlgLnkNoAnchors		: "&lt;Ei ankkureita tässä dokumentissa&gt;",
+DlgLnkNoAnchors		: "<Ei ankkureita tässä dokumentissa>",
 DlgLnkEMail			: "Sähköpostiosoite",
 DlgLnkEMailSubject	: "Aihe",
 DlgLnkEMailBody		: "Viesti",
@@ -233,8 +233,8 @@ DlgLnkUpload		: "Lisää tiedosto",
 DlgLnkBtnUpload		: "Lähetä palvelimelle",
 
 DlgLnkTarget		: "Kohde",
-DlgLnkTargetFrame	: "&lt;kehys&gt;",
-DlgLnkTargetPopup	: "&lt;popup ikkuna&gt;",
+DlgLnkTargetFrame	: "<kehys>",
+DlgLnkTargetPopup	: "<popup ikkuna>",
 DlgLnkTargetBlank	: "Uusi ikkuna (_blank)",
 DlgLnkTargetParent	: "Emoikkuna (_parent)",
 DlgLnkTargetSelf	: "Sama ikkuna (_self)",
@@ -479,7 +479,7 @@ DlgTemplatesNoTpl	: "(Ei määriteltyjä pohjia)",
 // About Dialog
 DlgAboutAboutTab	: "Editorista",
 DlgAboutBrowserInfoTab	: "Selaimen tiedot",
-DlgAboutLicenseTab	: "License",	//MISSING
+DlgAboutLicenseTab	: "Lisenssi",
 DlgAboutVersion		: "versio",
 DlgAboutLicense		: "Lisenssi: GNU Lesser General Public License",
 DlgAboutInfo		: "Lisää tietoa osoitteesta"

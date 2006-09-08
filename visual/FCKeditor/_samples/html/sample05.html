@@ -73,7 +73,7 @@ function ChangeLanguage( languageCode )
 // Automatically calculates the editor base path based on the _samples directory.
 // This is usefull only for these samples. A real application should use something like this:
 // oFCKeditor.BasePath = '/fckeditor/' ;	// '/fckeditor/' is the default value.
-var sBasePath = document.location.pathname.substring(0,document.location.pathname.lastIndexOf('/_samples/')+1) ;
+var sBasePath = document.location.pathname.substring(0,document.location.pathname.lastIndexOf('_samples')) ;
 
 // Get the skin from the URL.
 var sSkin ;
@@ -84,7 +84,31 @@ var oFCKeditor = new FCKeditor( 'FCKeditor1' ) ;
 oFCKeditor.BasePath	= sBasePath ;
 
 if ( sSkin != null )
-	oFCKeditor.Config['SkinPath'] = sBasePath + 'editor/skins/' + sSkin + '/' ;
+{
+	var sSkinPath = sBasePath + 'editor/skins/' + sSkin + '/' ;
+	oFCKeditor.Config['SkinPath'] = sSkinPath ;
+
+	// The following switch is optional. It is done to enhance the loading
+	// time of the toolbar, by preloading the images used on it.
+	switch ( sSkin )
+	{
+		case 'office2003' :
+			oFCKeditor.Config['PreloadImages'] =
+				sSkinPath + 'images/toolbar.start.gif' + ';' +
+				sSkinPath + 'images/toolbar.end.gif' + ';' +
+				sSkinPath + 'images/toolbar.bg.gif' + ';' +
+				sSkinPath + 'images/toolbar.buttonarrow.gif' ;
+			break ;
+			
+		case 'silver' :
+			oFCKeditor.Config['PreloadImages'] =
+				sSkinPath + 'images/toolbar.start.gif' + ';' +
+				sSkinPath + 'images/toolbar.end.gif' + ';' +
+				sSkinPath + 'images/toolbar.buttonbg.gif' + ';' +
+				sSkinPath + 'images/toolbar.buttonarrow.gif' ;
+			break ;
+	}
+}
 
 oFCKeditor.Value	= 'This is some <strong>sample text</strong>. You are using <a href="http://www.fckeditor.net/">FCKeditor</a>.' ;
 oFCKeditor.Create() ;

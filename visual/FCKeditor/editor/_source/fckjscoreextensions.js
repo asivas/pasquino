@@ -25,6 +25,15 @@ String.prototype.Contains = function( textToCheck )
 	return ( this.indexOf( textToCheck ) > -1 ) ;
 }
 
+String.prototype.Equals = function()
+{
+	for ( var i = 0 ; i < arguments.length ; i++ )
+		if ( this == arguments[i] )
+			return true ;
+	
+	return false ;
+}
+
 Array.prototype.AddItem = function( item )
 {
 	var i = this.length ;

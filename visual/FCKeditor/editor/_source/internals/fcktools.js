@@ -89,14 +89,14 @@ function FCKTools_SubmitReplacer()
 // Get the window object where the element is placed in.
 FCKTools.GetElementWindow = function( element )
 {
-	return FCKTools.GetDocumentWindow( element.ownerDocument ) ;
+	return this.GetDocumentWindow( this.GetElementDocument( element ) ) ;
 }
 
 FCKTools.GetDocumentWindow = function( doc )
 {
 	// With Safari, there is not way to retrieve the window from the document, so we must fix it.
 	if ( FCKBrowserInfo.IsSafari && !doc.parentWindow )
-		FCKTools.FixDocumentParentWindow( window.top ) ;
+		this.FixDocumentParentWindow( window.top ) ;
 	
 	return doc.parentWindow || doc.defaultView ;
 }
@@ -121,7 +121,11 @@ FCKTools.GetElementPosition = function( el, relativeWindow )
 			if ( oOwnerWindow != oWindow )
 				el = oOwnerWindow.frameElement ;
 			else
+			{
+				c.X += el.scrollLeft ;
+				c.Y += el.scrollTop  ;
 				break ;
+			}
 		}
 		else
 			el = el.offsetParent ;
@@ -129,28 +133,6 @@ FCKTools.GetElementPosition = function( el, relativeWindow )
 
 	// Return the Coordinates object
 	return c ;
-}
-
-// Returns and object with the "Width" and "Height" properties.
-FCKTools.GetViewPaneSize = function( win )
-{
-	var oSizeSource ;
-	
-	if ( win.clientWidth )							// All, except IE
-		oSizeSource = win ;
-	else
-	{
-		var oDoc = win.document.documentElement ;
-		if ( oDoc && oDoc.clientWidth )				// IE6 Strict Mode
-			oSizeSource = oDoc ;
-		else
-			oSizeSource = top.document.body ;		// Other IEs
-	}
-	
-	if ( oSizeSource )
-		return { Width : oSizeSource.clientWidth, Height : oSizeSource.clientHeight } ;
-	else
-		return { Width : 0, Height : 0 } ;
 }
 
 /*
@@ -176,10 +158,8 @@ FCKTools.HTMLEncode = function( text )
 		return '' ;
 
 	text = text.replace( /&/g, '&amp;' ) ;
-	text = text.replace( /"/g, '&quot;' ) ;
 	text = text.replace( /</g, '&lt;' ) ;
 	text = text.replace( />/g, '&gt;' ) ;
-	text = text.replace( /'/g, '&#39;' ) ;
 
 	return text ;
 }
@@ -189,7 +169,7 @@ FCKTools.HTMLEncode = function( text )
  */
 FCKTools.AddSelectOption = function( selectElement, optionText, optionValue )
 {
-	var oOption = selectElement.ownerDocument.createElement( "OPTION" ) ;
+	var oOption = FCKTools.GetElementDocument( selectElement ).createElement( "OPTION" ) ;
 
 	oOption.text	= optionText ;
 	oOption.value	= optionValue ;	
@@ -199,10 +179,33 @@ FCKTools.AddSelectOption = function( selectElement, optionText, optionValue )
 	return oOption ;
 }
 
-FCKTools.RunFunction = function( func, timerWindow, thisObj )
+FCKTools.RunFunction = function( func, thisObject, paramsArray, timerWindow )
 {
 	if ( func )
-		( timerWindow || window ).setTimeout( func, 0 ) ;
+		this.SetTimeout( func, 0, thisObject, paramsArray, timerWindow ) ;
+}
+
+FCKTools.SetTimeout = function( func, milliseconds, thisObject, paramsArray, timerWindow )
+{
+	return ( timerWindow || window ).setTimeout( 
+		function()
+		{
+			if ( paramsArray )
+				func.apply( thisObject, [].concat( paramsArray ) ) ;
+			else
+				func.apply( thisObject ) ;
+		},
+		milliseconds ) ;
+}
+
+FCKTools.SetInterval = function( func, milliseconds, thisObject, paramsArray, timerWindow )
+{
+	return ( timerWindow || window ).setInterval( 
+		function()
+		{
+			func.apply( thisObject, paramsArray || [] ) ;
+		},
+		milliseconds ) ;
 }
 
 FCKTools.ConvertStyleSizeToHtml = function( size )
@@ -234,3 +237,23 @@ FCKTools.GetElementAscensor = function( element, ascensorTagNames )
 	return null ;
 }
 // END iCM MODIFICATIONS
+
+FCKTools.CreateEventListener = function( func, params )
+{
+	var f = function()
+	{
+		var aAllParams = [] ;
+		
+		for ( var i = 0 ; i < arguments.length ; i++ )
+			aAllParams.push( arguments[i] ) ;
+
+		func.apply( this, aAllParams.concat( params ) ) ;
+	} 
+
+	return f ;
+}
+
+FCKTools.GetElementDocument = function ( element )
+{
+	return element.ownerDocument || element.document ;
+}

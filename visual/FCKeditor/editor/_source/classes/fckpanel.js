@@ -11,26 +11,25 @@
  * "Support Open Source software. What about a donation today?"
  * 
  * File Name: fckpanel.js
- * 	FCKPanel Class: component that creates floating panels. It is used by many 
+ * 	Component that creates floating panels. It is used by many 
  * 	other components, like the toolbar items, context menu, etc...
  * 
  * File Authors:
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
-var FCKPanel = function( parentWindow, hideOnBlur )
+
+var FCKPanel = function( parentWindow )
 {
 	this.IsRTL			= ( FCKLang.Dir == 'rtl' ) ;
 	this.IsContextMenu	= false ;
-	this._IsOpened		= false ;
-	this.HideOnBlur		= hideOnBlur ;
-	this.CanHide		= hideOnBlur ;
+	this._LockCounter	= 0 ;
 	
 	this._Window = parentWindow || window ;
 	
 	var oDocument ;
 	
-	if ( hideOnBlur && FCKBrowserInfo.IsIE )
+	if ( FCKBrowserInfo.IsIE )
 	{
 		// Create the Popup that will hold the panel.
 		this._Popup	= this._Window.createPopup() ;
@@ -39,14 +38,18 @@ var FCKPanel = function( parentWindow, hideOnBlur )
 	else
 	{
 		var oIFrame = this._IFrame = this._Window.document.createElement('iframe') ; 
+		oIFrame.src					= 'javascript:void(0)' ;
 		oIFrame.allowTransparency	= true ;
 		oIFrame.frameBorder			= '0' ;
 		oIFrame.scrolling			= 'no' ;
 		oIFrame.style.position		= 'absolute';
 		oIFrame.style.zIndex		= FCKConfig.FloatingPanelsZIndex ;
-		oIFrame.width = oIFrame.height = FCKBrowserInfo.IsIE ? 1 : 0 ;
+		oIFrame.width = oIFrame.height = 0 ;
 
-		this._Window.document.body.appendChild( oIFrame ) ;
+		if ( this._Window == window.parent )
+			window.frameElement.parentNode.insertBefore( oIFrame, window.frameElement ) ;
+		else
+			this._Window.document.body.appendChild( oIFrame ) ;
 		
 		var oIFrameWindow = oIFrame.contentWindow ; 
 		
@@ -54,27 +57,16 @@ var FCKPanel = function( parentWindow, hideOnBlur )
 
 		// Initialize the IFRAME document body.
 		oDocument.open() ;
-		oDocument.write( '<html><head></head><body><\/body><\/html>' ) ;
+		oDocument.write( '<html><head></head><body style="margin:0px;padding:0px;"><\/body><\/html>' ) ;
 		oDocument.close() ;
 
-		// Remove the default margins.
-		oDocument.body.style.margin = oDocument.body.style.padding = '0px' ;
-		
-		if ( hideOnBlur )
-		{
-			oIFrameWindow.Panel = this ;
-
-			if ( FCKBrowserInfo.IsSafari )
-				oIFrameWindow.IsFCKPanel = true ;
-			else
-			{
-				oIFrameWindow.onfocus	= FCKPanel_Window_OnFocus ;
-				oIFrameWindow.onblur	= FCKPanel_Window_OnBlur ;
-			}
-		}
+		FCKTools.AddEventListenerEx( oIFrameWindow, 'focus', FCKPanel_Window_OnFocus, this ) ;
+		FCKTools.AddEventListenerEx( oIFrameWindow, 'blur', FCKPanel_Window_OnBlur, this ) ;
 	}
 
 	oDocument.dir = FCKLang.Dir ;
+	
+	oDocument.oncontextmenu = FCKTools.CancelEvent ;
 
 
 	// Create the main DIV that is used as the panel base.
@@ -82,25 +74,18 @@ var FCKPanel = function( parentWindow, hideOnBlur )
 
 	// The "float" property must be set so Firefox calculates the size correcly.
 	this.MainNode.style.cssFloat = this.IsRTL ? 'right' : 'left' ;
+
+	if ( FCK.IECleanup )
+		FCK.IECleanup.AddItem( this, FCKPanel_Cleanup ) ;
 }
 
-FCKPanel.prototype.EnableContextMenu = function( enabled )
-{
-	this.Document.oncontextmenu = enabled ? null : FCKTools.CancelEvent ;
-}
 
 FCKPanel.prototype.AppendStyleSheet = function( styleSheet )
 {
 	FCKTools.AppendStyleSheet( this.Document, styleSheet ) ;
 }
 
-FCKPanel.prototype.SetDirection = function( dir )
-{
-	this.IsRTL = ( dir == 'rtl' ) ;
-	this.Document.dir = dir ;
-}
-
-FCKPanel.prototype.Load = function( x, y, relElement )
+FCKPanel.prototype.Preload = function( x, y, relElement )
 {
 	// The offsetWidth and offsetHeight properties are not available if the 
 	// element is not visible. So we must "show" the popup with no size to
@@ -138,16 +123,20 @@ FCKPanel.prototype.Show = function( x, y, relElement, width, height )
 		
 		if ( this.OnHide )
 		{
-			if ( FCKPanel_ActivePopupInfo.Timer )
-				CheckPopupOnHide() ;
-			FCKPanel_ActivePopupInfo.Timer = window.setInterval( CheckPopupOnHide, 100 ) ;
-			FCKPanel_ActivePopupInfo.Panel = this ;
+			if ( this._Timer )
+				CheckPopupOnHide.call( this, true ) ;
+
+			this._Timer = FCKTools.SetInterval( CheckPopupOnHide, 100, this ) ;
 		}
 	}
 	else
 	{
+		// Do not fire OnBlur while the panel is opened.
 		FCKFocusManager.Lock() ;
-		
+
+		if ( this.ParentPanel )
+			this.ParentPanel.Lock() ;
+
 		this.MainNode.style.width	= width ? width + 'px' : '' ;
 		this.MainNode.style.height	= height ? height + 'px' : '' ;
 
@@ -156,12 +145,13 @@ FCKPanel.prototype.Show = function( x, y, relElement, width, height )
 		if ( !width )	this._IFrame.width	= 1 ;
 		if ( !height )	this._IFrame.height	= 1 ;
 
-		var oPos ;
-		
-		if ( relElement.nodeType == 9 )
-			oPos = FCKTools.GetElementPosition( relElement.body, this._Window ) ;
-		else
-			oPos = FCKTools.GetElementPosition( relElement, this._Window ) ;
+		// This is weird... but with Firefox, we must get the offsetWidth before
+		// setting the _IFrame size (which returns "0"), and then after that,
+		// to return the correct width. Remove the first step and it will not
+		// work when the editor is in RTL.
+		iMainWidth = this.MainNode.offsetWidth ;
+
+		var oPos = FCKTools.GetElementPosition( ( relElement.nodeType == 9 ? relElement.body : relElement), this._Window ) ;
 
 		if ( this.IsRTL && !this.IsContextMenu )
 			x = ( x * -1 ) ;
@@ -179,12 +169,16 @@ FCKPanel.prototype.Show = function( x, y, relElement, width, height )
 		else
 		{
 			var oViewPaneSize = FCKTools.GetViewPaneSize( this._Window ) ;
+			var oScrollPosition = FCKTools.GetScrollPosition( this._Window ) ;
+			
+			var iViewPaneHeight	= oViewPaneSize.Height + oScrollPosition.Y ;
+			var iViewPaneWidth	= oViewPaneSize.Width + oScrollPosition.X ;
 
-			if ( ( x + iMainWidth ) > oViewPaneSize.Width )
-				x -= x + iMainWidth - oViewPaneSize.Width ;
+			if ( ( x + iMainWidth ) > iViewPaneWidth )
+				x -= x + iMainWidth - iViewPaneWidth ;
 
-			if ( ( y + this.MainNode.offsetHeight ) > oViewPaneSize.Height )
-				y -= y + this.MainNode.offsetHeight - oViewPaneSize.Height ;
+			if ( ( y + this.MainNode.offsetHeight ) > iViewPaneHeight )
+				y -= y + this.MainNode.offsetHeight - iViewPaneHeight ;
 		}
 		
 		if ( x < 0 )
@@ -197,45 +191,41 @@ FCKPanel.prototype.Show = function( x, y, relElement, width, height )
 		var iWidth	= iMainWidth ;
 		var iHeight	= this.MainNode.offsetHeight ;
 		
-		if ( FCKBrowserInfo.IsSafari )
-			FCKPanel_WatchOnDocumentClick( window.top ) ;
-		
 		this._IFrame.width	= iWidth ;
 		this._IFrame.height = iHeight ;
 
 		// Move the focus to the IFRAME so we catch the "onblur".
 		this._IFrame.contentWindow.focus() ;
-		
-		this.HasFocus = true ;
 	}
 
-	if ( this.OnShow )
-		this.OnShow.call( this ) ;
-
 	this._IsOpened = true ;
+
+	FCKTools.RunFunction( this.OnShow, this ) ;
 }
 
-FCKPanel.prototype.Hide = function( ignoreIfHasFocus )
+FCKPanel.prototype.Hide = function( ignoreOnHide )
 {
 	if ( this._Popup )
 		this._Popup.hide() ;
 	else
 	{
-		FCKFocusManager.Unlock() ;
-
-		var oPanel = this.Panel || this ;
-
-		if ( !oPanel._IsOpened || !oPanel.CanHide || ( ignoreIfHasFocus && oPanel.HasFocus ) )
+		if ( !this._IsOpened )
 			return ;
 		
+		// Enable the editor to fire the "OnBlur".
+		FCKFocusManager.Unlock() ;
+
 		// It is better to set the sizes to 0, otherwise Firefox would have 
 		// rendering problems.
-		oPanel._IFrame.width = oPanel._IFrame.height = FCKBrowserInfo.IsIE ? 1 : 0 ;
+		this._IFrame.width = this._IFrame.height = 0 ;
 
-		if ( oPanel.OnHide )
-			oPanel.OnHide.call( oPanel ) ;
+		this._IsOpened = false ;
+		
+		if ( this.ParentPanel )
+			this.ParentPanel.Unlock() ;
 
-		oPanel._IsOpened = false ;
+		if ( !ignoreOnHide )
+			FCKTools.RunFunction( this.OnHide, this ) ;
 	}
 }
 
@@ -247,89 +237,57 @@ FCKPanel.prototype.CheckIsOpened = function()
 		return this._IsOpened ;
 }
 
-function FCKPanel_Window_OnFocus()
+FCKPanel.prototype.CreateChildPanel = function()
 {
-	var oPanel = this.Panel ;
-	oPanel.HasFocus = true ;
-}
+	var oWindow = this._Popup ? FCKTools.GetParentWindow( this.Document ) : this._Window ;
 
-function FCKPanel_Window_OnBlur( e )
-{
-	var oPanel = this.Panel ;
-	oPanel.HasFocus = false ;
+	var oChildPanel = new FCKPanel( oWindow, true ) ;
+	oChildPanel.ParentPanel = this ;
 	
-	FCKTools.RunFunction( oPanel.Hide, oPanel._IFrame.contentWindow ) ;
+	return oChildPanel ;
 }
 
-var FCKPanel_ActivePopupInfo = new Object() ;
-
-function CheckPopupOnHide()
+FCKPanel.prototype.Lock = function()
 {
-	var oPanel = FCKPanel_ActivePopupInfo.Panel ;
+	this._LockCounter++ ;
+}
+
+FCKPanel.prototype.Unlock = function()
+{
+	if ( --this._LockCounter == 0 && !this.HasFocus )
+		this.Hide() ;
+}
+
+/* Events */
+
+function FCKPanel_Window_OnFocus( e, panel )
+{
+	panel.HasFocus = true ;
+}
+
+function FCKPanel_Window_OnBlur( e, panel )
+{
+	panel.HasFocus = false ;
 	
-	if ( oPanel && !oPanel._Popup.isOpen )
+	if ( panel._LockCounter == 0 )
+		FCKTools.RunFunction( panel.Hide, panel ) ;
+}
+
+function CheckPopupOnHide( forceHide )
+{
+	if ( forceHide || !this._Popup.isOpen )
 	{
-		window.clearInterval( FCKPanel_ActivePopupInfo.Timer ) ;
-		
-		if ( oPanel.OnHide )
-			oPanel.OnHide.call( oPanel ) ;
-		
-		FCKPanel_ActivePopupInfo.Timer = null ;
-		FCKPanel_ActivePopupInfo.Panel = null ;
+		window.clearInterval( this._Timer ) ;
+		this._Timer = null ;
+	
+		FCKTools.RunFunction( this.OnHide, this ) ;
 	}
 }
 
-// Used just by Safari.
-
-function FCKPanel_WatchOnDocumentClick( targetWindow )
+function FCKPanel_Cleanup()
 {
-	// Try/Catch must be used to avoit an error when using a frameset
-	// on a different domain:
-	// "Permission denied to get property Window.frameElement".
-	try
-	{
-		if ( targetWindow == null || ( targetWindow.frameElement && targetWindow.frameElement.IsFCKPanel ) )
-			return ;
-
-		targetWindow.document.addEventListener( 'click', FCKPanel_OnDocumentClick, false ) ;
-	}
-	catch (e) {}
-
-	for ( var i = 0 ; i < targetWindow.frames.length ; i++ )
-		FCKPanel_WatchOnDocumentClick( targetWindow.frames[i] ) ;
-}
-
-// Used just by Safari.
-
-function FCKPanel_OnDocumentClick( e )
-{
-	var oWindow = FCKTools.GetElementWindow( e.target ) ;
-
-	if ( ! oWindow.IsFCKPanel )
-	{
-		function RemoveOnClickListener( targetWindow )
-		{
-			if ( targetWindow == null )
-				return ;
-
-			// Try/Catch must be used to avoit an error when using a frameset
-			// on a different domain:
-			// "Permission denied to get property Window.frameElement".
-			try
-			{
-				if ( targetWindow.IsFCKPanel )
-				{
-					targetWindow.Panel.Hide() ;
-					return ;
-				}
-				else
-					targetWindow.document.removeEventListener( 'click', FCKPanelEventHandlers.OnDocumentClick, false ) ;
-			}
-			catch (e) {}
-
-			for ( var i = 0 ; i < targetWindow.frames.length ; i++ )
-				RemoveOnClickListener( targetWindow.frames[i] ) ;
-		}
-		RemoveOnClickListener( window.top ) ;
-	}
+	this._Popup = null ;
+	this._Window = null ;
+	this.Document = null ;
+	this.MainNode = null ;
 }

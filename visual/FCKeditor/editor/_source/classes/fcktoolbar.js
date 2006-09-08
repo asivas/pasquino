@@ -21,6 +21,9 @@
 var FCKToolbar = function()
 {
 	this.Items = new Array() ;
+
+	if ( FCK.IECleanup )
+		FCK.IECleanup.AddItem( this, FCKToolbar_Cleanup ) ;
 }
 
 FCKToolbar.prototype.AddItem = function( item )
@@ -63,7 +66,7 @@ FCKToolbar.prototype.Create = function( parentElement )
 		this.MainElement = null ;
 	}
 
-	var oDoc = parentElement.ownerDocument ;	// This is IE 6+
+	var oDoc = FCKTools.GetElementDocument( parentElement ) ;
 
 	var e = this.MainElement = oDoc.createElement( 'table' ) ;
 	e.className = 'TB_Toolbar' ;
@@ -98,10 +101,16 @@ FCKToolbar.prototype.Create = function( parentElement )
 	parentElement.appendChild( e ) ;
 }
 
+function FCKToolbar_Cleanup()
+{
+	this.MainElement = null ;
+	this.RowElement = null ;
+}
+
 var FCKToolbarSeparator = function()
 {}
 
 FCKToolbarSeparator.prototype.Create = function( parentElement )
 {
-	parentElement.appendChild( parentElement.ownerDocument.createElement( 'div' ) ).className = 'TB_Separator' ;
+	FCKTools.AppendElement( parentElement, 'div' ).className = 'TB_Separator' ;
 }

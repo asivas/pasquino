@@ -20,16 +20,28 @@
 
 var FCKIcon = function( iconPathOrStripInfoArray )
 {
-	if ( !iconPathOrStripInfoArray )
-		this.Path = FCK_SPACER_PATH ;
-	else if ( typeof( iconPathOrStripInfoArray ) == 'string' )
-		this.Path		= iconPathOrStripInfoArray ;
-	else
+	var sTypeOf = iconPathOrStripInfoArray ? typeof( iconPathOrStripInfoArray ) : 'undefined' ;
+	switch ( sTypeOf )
 	{
-		// It is an array in the format [ 'StripImagePath.gif', IconSize, IconPosition ]
-		this.Path		= iconPathOrStripInfoArray[0] ;
-		this.Size		= iconPathOrStripInfoArray[1] ;
-		this.Position	= iconPathOrStripInfoArray[2] ;
+		case 'number' :
+			this.Path = FCKConfig.SkinPath + 'fck_strip.gif' ;
+			this.Size = 16 ;
+			this.Position = iconPathOrStripInfoArray ;
+			break ;
+		
+		case 'undefined' :
+			this.Path = FCK_SPACER_PATH ;
+			break ;
+		
+		case 'string' :
+			this.Path = iconPathOrStripInfoArray ;
+			break ;
+		
+		default :
+			// It is an array in the format [ StripFilePath, IconSize, IconPosition ]
+			this.Path		= iconPathOrStripInfoArray[0] ;
+			this.Size		= iconPathOrStripInfoArray[1] ;
+			this.Position	= iconPathOrStripInfoArray[2] ;
 	}
 }
 

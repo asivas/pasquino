@@ -119,7 +119,7 @@ _HTML_TAG_
 
 	#// Automatically calculates the editor base path based on the _samples directory.
 	#// This is usefull only for these samples. A real application should use something like this:
-	#// $oFCKeditor->BasePath = '/FCKeditor/' ;	// '/FCKeditor/' is the default value.
+	#// $oFCKeditor->BasePath = '/fckeditor/' ;	// '/fckeditor/' is the default value.
 
 	$sBasePath = $ServerPath;
 	$sBasePath = substr($sBasePath, 0, index( $sBasePath, "_samples" ));

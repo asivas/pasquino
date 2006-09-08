@@ -43,7 +43,7 @@ var FCKSpecialCombo = function( caption, fieldWidth, panelWidth, panelMaxHeight,
 	this._ItemsHolderEl = this._PanelBox.getElementsByTagName('TD')[0] ;
 
 	if ( FCK.IECleanup )
-		FCK.IECleanup.AddItem( this, this._Cleanup ) ;
+		FCK.IECleanup.AddItem( this, FCKSpecialCombo_Cleanup ) ;
 
 //	this._Panel.StyleSheet = FCKConfig.SkinPath + 'fck_contextmenu.css' ;
 //	this._Panel.Create() ;
@@ -167,7 +167,8 @@ FCKSpecialCombo.prototype.SetEnabled = function( isEnabled )
 
 FCKSpecialCombo.prototype.Create = function( targetElement )
 {
-	var eOuterTable = this._OuterTable = targetElement.appendChild( targetElement.ownerDocument.createElement( 'TABLE' ) ) ;
+	var oDoc = FCKTools.GetElementDocument( targetElement ) ;
+	var eOuterTable = this._OuterTable = targetElement.appendChild( oDoc.createElement( 'TABLE' ) ) ;
 	eOuterTable.cellPadding = 0 ;
 	eOuterTable.cellSpacing = 0 ;
 	
@@ -199,7 +200,7 @@ FCKSpecialCombo.prototype.Create = function( targetElement )
 	}
 	
 	// Create the main DIV element.
-	var oField = eOuterTable.rows[0].insertCell(-1).appendChild( targetElement.ownerDocument.createElement( 'DIV' ) ) ;
+	var oField = FCKTools.AppendElement( eOuterTable.rows[0].insertCell(-1), 'div' ) ;
 	if ( bShowLabel )
 	{
 		oField.className = 'SC_Field' ;
@@ -240,11 +241,18 @@ FCKSpecialCombo.prototype.Create = function( targetElement )
 	FCKTools.DisableSelection( this._Panel.Document.body ) ;
 }
 
-FCKSpecialCombo.prototype._Cleanup = function()
+function FCKSpecialCombo_Cleanup()
 {
 	this._LabelEl = null ;
 	this._OuterTable = null ;
 	this._ItemsHolderEl = null ;
+	this._PanelBox = null ;
+	
+	if ( this.Items )
+	{
+		for ( var key in this.Items )
+			this.Items[key] = null ;
+	}
 }	
 
 function FCKSpecialCombo_OnMouseOver()
@@ -307,7 +315,7 @@ function FCKSpecialCombo_OnClick( e )
 		// This is a tricky thing. We must call the "Load" function, otherwise
 		// it will not be possible to retrieve "oItemsHolder.offsetHeight" (IE only).
 		if ( FCKBrowserInfo.IsIE )
-			oPanel.Load( 0, this.offsetHeight, this ) ;
+			oPanel.Preload( 0, this.offsetHeight, this ) ;
 
 		if ( oItemsHolder.offsetHeight > iMaxHeight )
 //		{
@@ -324,7 +332,7 @@ function FCKSpecialCombo_OnClick( e )
 		oPanel.Show( 0, this.offsetHeight, this ) ;
 	}
 
-	return false ;
+//	return false ;
 }
 
 /* 

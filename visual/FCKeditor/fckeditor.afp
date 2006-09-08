@@ -31,7 +31,7 @@ DEFINE CLASS goFckeditor AS CONTAINER OLEPUBLIC
 	FUNCTION fckeditor( tcInstanceName )
 		LOCAL lnLoop,lnLoop2
 		THIS.cInstanceName	= tcInstanceName
-		THIS.BasePath	= '/FCKeditor/'
+		THIS.BasePath	= '/fckeditor/'
 		THIS.cWIDTH		= '100%'
 		THIS.cHEIGHT	= '200'
 		THIS.ToolbarSet	= 'Default'

@@ -98,13 +98,13 @@ Button			: "Bouton",
 SelectionField	: "Liste/menu",
 ImageButton		: "Bouton image",
 
-FitWindow		: "Maximize the editor size",	//MISSING
+FitWindow		: "Edition pleine page",
 
 // Context Menu
 EditLink			: "Modifier le lien",
-CellCM				: "Cell",	//MISSING
-RowCM				: "Row",	//MISSING
-ColumnCM			: "Column",	//MISSING
+CellCM				: "Cellule",
+RowCM				: "Ligne",
+ColumnCM			: "Colonne",
 InsertRow			: "Insérer une ligne",
 DeleteRows			: "Supprimer des lignes",
 InsertColumn		: "Insérer une colonne",
@@ -151,12 +151,12 @@ DlgBtnCancel		: "Annuler",
 DlgBtnClose			: "Fermer",
 DlgBtnBrowseServer	: "Parcourir le serveur",
 DlgAdvancedTag		: "Avancé",
-DlgOpOther			: "&lt;Autre&gt;",
+DlgOpOther			: "<Autre>",
 DlgInfoTab			: "Info",
 DlgAlertUrl			: "Veuillez saisir l'URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;Par défaut&gt;",
+DlgGenNotSet		: "<Par défaut>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Sens d'écriture",
 DlgGenLangDirLtr	: "De la gauche vers la droite (LTR)",
@@ -220,12 +220,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Ancre dans cette page",
 DlgLnkTypeEMail		: "E-Mail",
 DlgLnkProto			: "Protocole",
-DlgLnkProtoOther	: "&lt;autre&gt;",
+DlgLnkProtoOther	: "<autre>",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Sélectionner une ancre",
 DlgLnkAnchorByName	: "Par nom d'ancre",
 DlgLnkAnchorById	: "Par Id d'élément",
-DlgLnkNoAnchors		: "&lt;Pas d'ancre disponible dans le document&gt;",
+DlgLnkNoAnchors		: "<Pas d'ancre disponible dans le document>",
 DlgLnkEMail			: "Adresse E-Mail",
 DlgLnkEMailSubject	: "Sujet du message",
 DlgLnkEMailBody		: "Corps du message",
@@ -233,8 +233,8 @@ DlgLnkUpload		: "Télécharger",
 DlgLnkBtnUpload		: "Envoyer sur le serveur",
 
 DlgLnkTarget		: "Destination",
-DlgLnkTargetFrame	: "&lt;cadre&gt;",
-DlgLnkTargetPopup	: "&lt;fenêtre popup&gt;",
+DlgLnkTargetFrame	: "<cadre>",
+DlgLnkTargetPopup	: "<fenêtre popup>",
 DlgLnkTargetBlank	: "Nouvelle fenêtre (_blank)",
 DlgLnkTargetParent	: "Fenêtre mère (_parent)",
 DlgLnkTargetSelf	: "Même fenêtre (_self)",
@@ -479,7 +479,7 @@ DlgTemplatesNoTpl	: "(Aucun modèle disponible)",
 // About Dialog
 DlgAboutAboutTab	: "A propos de",
 DlgAboutBrowserInfoTab	: "Navigateur",
-DlgAboutLicenseTab	: "License",	//MISSING
+DlgAboutLicenseTab	: "License",
 DlgAboutVersion		: "version",
 DlgAboutLicense		: "License selon les termes de GNU Lesser General Public License",
 DlgAboutInfo		: "Pour plus d'informations, aller à"

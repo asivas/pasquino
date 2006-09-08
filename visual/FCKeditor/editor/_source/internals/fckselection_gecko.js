@@ -33,7 +33,7 @@ FCKSelection.GetType = function()
 		if ( oSel && oSel.rangeCount == 1 )
 		{
 			var oRange = oSel.getRangeAt(0) ;
-			if ( oRange.startContainer == oRange.endContainer && (oRange.endOffset - oRange.startOffset) == 1 )
+			if ( oRange.startContainer == oRange.endContainer && (oRange.endOffset - oRange.startOffset) == 1 && oRange.startContainer.nodeType != Node.TEXT_NODE )
 				this._Type = 'Control' ;
 		}
 //	}
@@ -72,7 +72,7 @@ FCKSelection.GetParentElement = function()
 
 FCKSelection.SelectNode = function( element )
 {
-	FCK.Focus() ;
+//	FCK.Focus() ;
 
 	var oRange = FCK.EditorDocument.createRange() ;
 	oRange.selectNode( element ) ;

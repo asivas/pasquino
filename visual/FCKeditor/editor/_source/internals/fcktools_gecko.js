@@ -110,16 +110,78 @@ FCKTools.GetScrollPosition = function( relativeWindow )
 	return { X : relativeWindow.pageXOffset, Y : relativeWindow.pageYOffset } ;
 }
 
-FCKTools.AddEventListener = function( targetObject, eventName, listener )
+FCKTools.AddEventListener = function( sourceObject, eventName, listener )
 {
-	targetObject.addEventListener( eventName, listener, false ) ;
+	sourceObject.addEventListener( eventName, listener, false ) ;
 }
 
-FCKTools.RemoveEventListener = function( targetObject, eventName, listener )
+FCKTools.RemoveEventListener = function( sourceObject, eventName, listener )
 {
-	targetObject.removeEventListener( eventName, listener, false ) ;
+	sourceObject.removeEventListener( eventName, listener, false ) ;
 }
 
+// Listeners attached with this function cannot be detached.
+FCKTools.AddEventListenerEx = function( sourceObject, eventName, listener, paramsArray )
+{
+	sourceObject.addEventListener( 
+		eventName, 
+		function( e )
+		{
+			listener.apply( sourceObject, [ e ].concat( paramsArray || [] ) ) ;
+		},
+		false 
+	) ;
+}
+
+// Returns and object with the "Width" and "Height" properties.
+FCKTools.GetViewPaneSize = function( win )
+{
+	return { Width : win.innerWidth, Height : win.innerHeight } ;
+}
+
+FCKTools.SaveStyles = function( element )
+{
+	var oSavedStyles = new Object() ;
+	
+	if ( element.className.length > 0 )
+	{
+		oSavedStyles.Class = element.className ;
+		element.className = '' ;
+	}
+
+	var sInlineStyle = element.getAttribute( 'style' ) ;
+
+	if ( sInlineStyle && sInlineStyle.length > 0 )
+	{
+		oSavedStyles.Inline = sInlineStyle ;
+		element.setAttribute( 'style', '', 0 ) ;	// 0 : Case Insensitive
+	}
+
+	return oSavedStyles ;
+}
+
+FCKTools.RestoreStyles = function( element, savedStyles )
+{
+	element.className = savedStyles.Class || '' ;
+
+	if ( savedStyles.Inline )
+		element.setAttribute( 'style', savedStyles.Inline, 0 ) ;	// 0 : Case Insensitive
+	else
+		element.removeAttribute( 'style', 0 ) ;
+}
+
+FCKTools.RegisterDollarFunction = function( targetWindow )
+{
+	targetWindow.$ = function( id ) 
+	{ 
+		return this.document.getElementById( id ) ;
+	} ;
+}
+
+FCKTools.AppendElement = function( target, elementName )
+{
+	return target.appendChild( target.ownerDocument.createElement( elementName ) ) ;
+}
 
 // START iCM Modifications
 /*
