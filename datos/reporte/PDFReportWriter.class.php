@@ -47,7 +47,12 @@ class pdfReportWriter extends reportWriter
     var $fileNamesList;
     var $cellWidth;
     var $rowHeight;
+    var $defRowHeight;
     var $reportName;
+    var $pageOrientation;
+    
+    var $fontHeightNormal;
+    var $fontHeightBig;
     
     /**
      * Crea un nuevo objeto excelReportWriter y seteando las variables e inicializando
@@ -68,7 +73,13 @@ class pdfReportWriter extends reportWriter
         $this->pdf->AliasNbPages();
         
         $this->cellWidth = 35;
+        $this->defRowHeight = cRowHeight;
         $this->rowHeight = cRowHeight;
+        
+        $this->pageOrientation = 'L';
+
+        $this->fontHeightNormal = 12;
+        $this->fontHeightBig = 20;
         
     }
     
@@ -129,10 +140,10 @@ class pdfReportWriter extends reportWriter
 	function startReport($cellspacing=3,$cellpadding=0,$reportName="Econtrol",$link="")
 	{
 	    //print "Nueva Sección ". $reportName."<br>";
-	    $this->pdf->AddPage('L');
-	    $this->pdf->SetFont('Arial','',20);	    
+	    $this->pdf->AddPage($this->pageOrientation);
+	    $this->pdf->SetFont('Arial','',$this->fontHeightBig);	    
 	    $this->pdf->Cell(0,10,$reportName,0,1,'L',0,$link);
-	    $this->pdf->SetFont('Arial','',12);	    
+	    $this->pdf->SetFont('Arial','',$this->fontHeightNormal);	    
 	    $this->reportName = $reportName;
 
 	    //print "$this->reportName <br>";
@@ -169,7 +180,7 @@ class pdfReportWriter extends reportWriter
 	function writeRow($style=NULL)
 	{
 	    $this->pdf->Ln($this->rowHeight);
-	    $this->rowHeight = 7;
+	    $this->rowHeight = $this->defRowHeight;
 	}
 	
 	/**
@@ -222,7 +233,7 @@ class pdfReportWriter extends reportWriter
         {
             $nuevoX = $this->pdf->GetX() + $width;
             $nuevoY = $this->pdf->GetY();
-            $this->pdf->MultiCell($width,cRowHeight,$value,"T",'L');
+            $this->pdf->MultiCell($width,$this->defRowHeight,$value,"T",'L');
             $yResultante = $this->pdf->GetY();
             if(($yResultante - $nuevoY) >= $this->rowHeight)
                 $this->rowHeight = $yResultante - $nuevoY;
