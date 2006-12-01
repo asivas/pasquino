@@ -45,6 +45,11 @@
 		*/
 		var $usr_id;
 		
+        /**
+         * @var boolean determina si hacer refresh si hace login via post o no 
+         */
+        var $refreshAfterLogin;
+         
 		/**
 		 * @var string nombre de la sesion de php
 		 */
@@ -90,6 +95,7 @@
 			$this->usr_label = "usr";
 			$this->pass_label = "pass";
 			$this->cookie_min= 15;
+            $this->refreshAfterLogin = true;
 			$this->passCaseSensitive = true;
 		}
 		
@@ -114,6 +120,8 @@
             
             // HTTP/1.0
             header("Pragma: no-cache");
+            
+            $this->session_data = $_SESSION;
 		}	
 		
 		/**
@@ -124,41 +132,43 @@
 		*/
 		function LogIn($username = "",$password = "")
 		{
-			if(!$this->IsLoged())
-			{
-				if($username != "" && $password!= "")
-				{
-					return $this->CheckUser($username,$password,true);
-				}
-				//print_r($_POST);
-				if(isset($_POST[$this->usr_label],$_POST[$this->pass_label]))
-				{ 
-					if($this->CheckUser($_POST[$this->usr_label],$_POST[$this->pass_label],true))
-					{
-					    
-						$_SESSION[$this->usr_label] = $_POST[$this->usr_label];
-						$_SESSION[$this->pass_label] = md5($_POST[$this->pass_label]);
-						$_SESSION[$this->usr_id_label] = $this->usr_id;
+			if($this->IsLoged())
+            {
+                $this->usr_id = $_SESSION[$this->usr_id_label];
+                return true;
+            }
 
-						if(isset($this->logobj))
-						    $this->logobj->log(date("Y-m-d H:i")." - {$_SESSION[$this->usr_label]}: Inicio sessión $_SERVER[REMOTE_ADDR]",CH_LOG_NOTICE);
-						
-						//como hizo el login para quee si actualiza no vuelva a enviar los datos
+			if($username != "" && $password!= "")
+			{
+				return $this->CheckUser($username,$password,true);
+			}
+			//print_r($_POST);
+			if(isset($_POST[$this->usr_label],$_POST[$this->pass_label]))
+			{ 
+				if($this->CheckUser($_POST[$this->usr_label],$_POST[$this->pass_label],true))
+				{
+					if(isset($this->logobj))
+					    $this->logobj->log(date("Y-m-d H:i")." - {$_SESSION[$this->usr_label]}: Inicio sessión $_SERVER[REMOTE_ADDR]",CH_LOG_NOTICE);
+					
+					if($this->refreshAfterLogin)
+                    {
+                        //como hizo el login para quee si actualiza no vuelva a enviar los datos
 						//cargo de nuevo la página actual sin las cosas de $_POST
 						$loc = "http://$_SERVER[SERVER_NAME]$_SERVER[PHP_SELF]";
 						if(!empty($_SERVER['QUERY_STRING'])) $loc .= '?'.$_SERVER['QUERY_STRING'];
 						//if(!headers_sent()) no uso esto porque uso buffer en el PHP
+                        //el true se va a retornar en el refresh luego de $this->IsLogeg
 						header("Location: $loc");
-					}
-				}					
-				return false;			
-			}
-			else
-			{
-				$this->usr_id = $_SESSION[$this->usr_id_label];
-				return true;
-			}
+                    }
+                    else
+                    {
+                    	return true;
+                    }
+				}
+			}					
+			return false;			
 		}	
+        
 		/**
 		* Verifica si hay un usuario logueado en la maquina cliente que esté logueado
 		* @return bool
@@ -193,6 +203,7 @@
 		* Verifica que el usuario exista y que su contraseña sea valida
 		* @param string $usr
 		* @param string $pass
+        * @param boolean $rec_id graba el id en la variable $this->usr_id
 		* @return bool
 		*/
 		function CheckUser($usr,$pass,$rec_id = false)
@@ -210,6 +221,9 @@
 			if($numrows != "0")
 			{
 				if($rec_id) $this->usr_id = $res->fields[$this->usr_id_label];
+                $_SESSION[$this->usr_label] = $_POST[$this->usr_label];
+                $_SESSION[$this->pass_label] = md5($_POST[$this->pass_label]);
+                $_SESSION[$this->usr_id_label] = $this->usr_id;                
 				return true;
 			}
 			if(!empty($usr) || !empty($pass))
