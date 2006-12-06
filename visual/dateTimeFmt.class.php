@@ -34,7 +34,7 @@ class dateTimeFmt {
     /**
      * Convierte una fecha en el formato
      */
-    function fechaArgtotime($fecha)
+    static function fechaArgtotime($fecha)
     {
         if(ereg ("([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})", $fecha, $dmY))
            return strtotime("{$dmY[3]}-{$dmY[2]}-{$dmY[1]}");
