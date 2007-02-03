@@ -36,7 +36,9 @@ class dateTimeFmt {
      */
     static function fechaArgtotime($fecha)
     {
-        if(ereg ("([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})", $fecha, $dmY))
+        if(ereg ("([0-9]{1,2})/([0-9]{1,2})/([0-9]{4}) ([0-9]{1,2}):([0-9]{1,2})", $fecha, $dmYHM))
+            return strtotime("{$dmYHM[3]}-{$dmYHM[2]}-{$dmYHM[1]} {$dmYHM[4]}:{$dmYHM[5]}");
+        elseif(ereg ("([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})", $fecha, $dmY))
            return strtotime("{$dmY[3]}-{$dmY[2]}-{$dmY[1]}");
         
         if(!empty($fecha))
