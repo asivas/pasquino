@@ -19,9 +19,13 @@
  * @param mixed
  * @return string
  */
-function smarty_modifier_printpre($var)
+function smarty_block_printpre($params,$content,&$smarty)
 {
-    return "<pre>".var_dump($var)."</pre>";
+    ob_start();
+    var_dump($params['var']);
+    $dato = ob_get_contents();
+    ob_end_clean();
+    return "<pre>{$dato}</pre>";    
 }
 
 /* vim: set expandtab: */
