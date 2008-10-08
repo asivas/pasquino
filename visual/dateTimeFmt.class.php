@@ -46,4 +46,20 @@ class dateTimeFmt {
         
         return time();
     }
+    
+    /**
+     * Calcula la diferencia de dias entre 2 fechas
+     */
+    static function diasEntreFechas($timestamp_inicio,$timestamp_fin)
+    {
+    	$inicio = strtotime(date("Y-m-d",$timestamp_inicio));
+    	$fin = strtotime(date("Y-m-d",$timestamp_fin));
+
+		if($inicio <= $fin)
+		{
+			return ($fin - $inicio)/(3600*24);	
+		}
+		else return 0;
+    }
+    
 }
