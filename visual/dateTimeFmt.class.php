@@ -23,7 +23,7 @@ class dateTimeFmt {
     function dateTimeFmt() {
     }
     
-    function segundosAStrTiempo($segundos)
+    static function segundosAStrTiempo($segundos)
     {
         $horas = $segundos>0?floor($segundos/3600):ceil($segundos/3600);
         $minutos = abs(ceil($segundos/60) - $horas*60);
