@@ -5,8 +5,7 @@
  * @since 06/10/2008
  */
 
-require_once("utils/Session.class.php");
-//require_once(dirname(__FILE__)."/../entidades/daos/usuarios.dao.php");
+require_once("clases/utils/Session.class.php"); 
 require_once('visual/smarty/libs/Smarty.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
 
