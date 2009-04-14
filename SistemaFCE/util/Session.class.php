@@ -20,7 +20,7 @@ class Session extends ssHandler{
     function Session() {
         $this->getConexion();
         $this->logobj = null;
-        $this->table = "personas";
+        $this->table = "usuarios";
         $this->usr_id_label = "id";
         $this->usr_label = "DNI";
         $this->pass_label = "password";

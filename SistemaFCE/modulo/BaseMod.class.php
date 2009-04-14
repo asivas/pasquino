@@ -5,7 +5,7 @@
  * @since 06/10/2008
  */
 
-require_once("clases/utils/Session.class.php"); 
+require_once("utils/Session.class.php"); 
 require_once('visual/smarty/libs/Smarty.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
 
@@ -33,9 +33,12 @@ class BaseMod {
         
         $this->session = new Session();
         
+        var_dump($this->session);
+        die;        
+        
         $this->_skinName = $skin;
         
-        $this->initSmarty();
+        $this->smarty = $this->initSmarty();
         
         $this->xajax = new xajax();
         

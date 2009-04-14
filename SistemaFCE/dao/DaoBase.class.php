@@ -15,4 +15,5 @@ class DaoBase {
     	return $this->_db;
     }
     
+    
 }
