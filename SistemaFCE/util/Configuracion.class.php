@@ -1,10 +1,10 @@
 <?php
 
 class Configuracion {
-    const dbHost        = 'localhost';
+    const dbHost        = '192.168.230.10';
     const dbName        = 'docentes';
-    const dbUser        = 'docentes';
-    const dbPassword    = 'dnccmad';    
+    const dbUser        = 'fichadoc';
+    const dbPassword    = 'fichadoc';    
     const dbms          = 'mysql';
     
     const version       = '0.1 alpha';

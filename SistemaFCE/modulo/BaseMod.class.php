@@ -33,12 +33,9 @@ class BaseMod {
         
         $this->session = new Session();
         
-        var_dump($this->session);
-        die;        
-        
         $this->_skinName = $skin;
         
-        $this->smarty = $this->initSmarty();
+        $this->initSmarty();
         
         $this->xajax = new xajax();
         

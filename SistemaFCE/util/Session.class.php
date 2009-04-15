@@ -7,12 +7,11 @@ class Session extends ssHandler{
     function getConexion(){
         if(!isset($this->db))
         {
-            $conf = new configuracion();
             $this->db = ADONewConnection('mysql'); # eg 'mysql' or 'postgres'
             
             $this->db->SetFetchMode(ADODB_FETCH_ASSOC);
             //$db->debug = true;
-            $this->db->Connect($conf->dbHost, $conf->dbUser, $conf->dbPassword, $conf->dbName);
+            $this->db->Connect(Configuracion::dbHost, Configuracion::dbUser, Configuracion::dbPassword, Configuracion::dbName);
         }
         return $this->db;
     }
