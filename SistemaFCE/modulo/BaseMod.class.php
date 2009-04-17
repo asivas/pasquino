@@ -62,7 +62,6 @@ class BaseMod {
         $this->smarty->assign('relative_images',"skins/{$skin}/images");
         $this->smarty->assign('version',configuracion::version);
         $this->smarty->assign('skinPath',$systemRoot.'/skins/'.$this->_skinName);
-        //$this->smarty->assign('nombre_usuario',$_SESSION['nombreOperador']);
         $this->smarty->assign('appName','CV Docentes');
     }
         
@@ -95,7 +94,7 @@ class BaseMod {
         $this->smarty->assign('usuario',$u);
 
         $this->smarty->assign('nombre_usuario',"{$u->apellido}, {$u->nombre}");
-        $this->smarty->assign('id_usuario_actual',$this->session->session_data[$this->session->usr_id_label]);
+        $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
         */
         
         return true;
