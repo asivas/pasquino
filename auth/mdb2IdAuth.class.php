@@ -4,7 +4,9 @@ require_once "Auth/Auth.php";
 abstract class Mdb2IdAuth extends Auth{
     
     var $id_label;
-    var $username_label;  
+    var $username_label;
+    var $password_label;  
+    var $userTable;
     protected $dbHost;
     protected $dbName;
     protected $dbUser;
@@ -12,18 +14,23 @@ abstract class Mdb2IdAuth extends Auth{
     
     function Mdb2IdAuth($loginFunction = "", $showLogin = false) {
         
+        if(empty($this->userTable))
+            $this->userTable = "usuarios";
+        if(empty($this->pasword_label))
+            $this->pasword_label = "password";
+        
         $params = array(
             "dsn" => "{$this->dbms}://{$this->dbUser}:{$this->dbPassword}@{$this->dbHost}/{$this->dbName}",
-            "table" => "usuarios",
+            "table" => $this->userTable,
             "usernamecol" => $this->username_label,
-            "passwordcol" => "password"
+            "passwordcol" => $this->pasword_label
             );
         return parent::Auth("MDB2", $params, $loginFunction,$showLogin); 
     }
     
     function getUserId()
     {
-        $sql = "SELECT {$this->id_label} FROM usuarios WHERE {$this->username_label} = '{$this->session['username']}'";
+        $sql = "SELECT {$this->id_label} FROM {$this->userTable} WHERE {$this->username_label} = '{$this->session['username']}'";
         
         if(!is_object($this->storage)) // si no se hizo ninguna acción no se efectuó el _loadStorage 
             $this->listUsers();        // hago el query de usuarios que llama a _loadStorage y no cambia nada 

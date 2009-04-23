@@ -7,6 +7,11 @@ class EcontrolAuth extends Mdb2IdAuth{
         
         $this->id_label       = "id";
         $this->username_label = "DNI";
+        $this->password_label = "password";
+        
+        $this->userTable      = "usuarios";
+        
+        
         $this->dbms           = "mysql";
         $this->dbHost         = "intranet.econ.unicen.edu.ar";
         $this->dbName         = "econtrol";
