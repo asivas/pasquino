@@ -8,15 +8,16 @@ class Criterio {
     protected $_expresiones;
     protected $_operador = "AND";
     
-    static function getAND($expresion1,$expresion2){ new Conjuncion($expresion1,$expresion2); }
-    static function getOR($expresion1,$expresion2){ new Disjuncion($expresion1,$expresion2); }
+    static function getAND($expresion1,$expresion2){ return new Conjuncion($expresion1,$expresion2); }
+    static function getOR($expresion1,$expresion2){ return new Disjuncion($expresion1,$expresion2); }
     
     function Criterio() {
         $_expresiones = array();
     }
     
-    function add($expresion) {
+    public function add($expresion) {
     	$this->_expresiones[] = $expresion;
+        return $this;
     }
     
     /**
@@ -43,7 +44,6 @@ class Criterio {
     	$this->_operador = "OR";
         $disj = clone $this;
         $this->_operador = "AND";
-        var_dump($disj);
         return $disj;
     }
 }
