@@ -25,26 +25,103 @@ abstract class DaoBase {
     protected $tableNale;
     
     /**
+     * @var object Objeto tipo SimpleXML para leer lo mappings de clases
+     */
+    protected $_xmlMapping;
+    
+    protected $_xmlMappingFile;
+    
+    /**
      * Constructor de DaoBase
      */
     function DaoBase() {
         $this->_db = &ADONewConnection(Configuracion::dbms); # eg 'mysql' or 'postgres'
         $this->_db->SetFetchMode(ADODB_FETCH_ASSOC);
         $this->_db->Connect(Configuracion::dbHost, Configuracion::dbUser, Configuracion::dbPassword, Configuracion::dbName);
+        
+        $this->loadMapping();
     }
+    
+    /**
+     * Carga el mapping desde el archivo XML de mappings
+     * @return object Objeto SimpleXML con el mapping
+     */
+    protected function loadMapping()
+    {
+        if(!isset($this->_xmlMapping))
+        {
+            $map = simplexml_load_file($this->_xmlMappingFile);
+            $this->_xmlMapping = $map->clase[];
+        }
+        return $this->_xmlMapping;
+    } 
     
     /**
      * Crea el arreglo buffer para guardar
      * @return array arreglo con datos con nombre de la columna de la base (nombreCol => valor)
      */
-    protected abstract function getBuffer($elem){}
+    protected function getBuffer($elem)
+    {
+        $buf = array();
+        foreach($this->_xmlMapping->propiedad as $prop)
+        {
+            $get = "get".ucfirst($prop['nombre']);
+            if(!isset($prop['tipo'])) //si es con tipo actualizo el id
+                $buf[$prop['columna']] = $elem->$get()->getId();
+            else
+                $buf[$prop['columna']] = $elem->$get;
+        }
+        return $buf;
+    }
     
     /**
      * Crea el objeto de la entidad a la cual logra el acceso el DAO
      * @return object el objeto con los datos a partir de $row
      * @param array $row arreglo con los datos obtenidos de la base en forma nombreCol => valor
      */
-    protected abstract function crearObjetoEntidad($row) {}
+    protected function crearObjetoEntidad($row) 
+    {
+        $elem = new $this->_xmlMapping['nombre']();
+
+        //cargo las propiedades
+        foreach($this->_xmlMapping->propiedad as $prop)
+        {
+            $set = "set".ucfirst($prop['nombre']);
+            if(!isset($prop['tipo'])) //si es con tipo actualizo el id
+            {
+                $nombreDao = "Dao{$prop['tipo']}";
+                if(file_exists("daos/{$nombreDao}.class.php"))
+                    require_once("daos/{$nombreDao}.class.php");
+                if(file_exists("daos/docente/{$nombreDao}.class.php"))
+                    require_once("daos/docente/{$nombreDao}.class.php");
+                
+                $dao = new $nombreDao();
+                $elemRelac = $dao->findById($row[$prop['columna']]);
+                $elem->$set($elemRelac);
+            }
+            else
+                $elem->$set($row[$prop['columna']]);
+        }
+        
+        //cargo las listas
+        foreach($clase->unoAMuchos as $prop)
+        {
+            $set = "set".ucfirst($prop['nombre']);
+            if(isset($prop['tipo'])) //todos deben tener tipo
+            {
+                $nombreDao = "Dao{$prop['tipo']}";
+                if(file_exists("daos/{$nombreDao}.class.php"))
+                    require_once("daos/{$nombreDao}.class.php");
+                if(file_exists("daos/docente/{$nombreDao}.class.php"))
+                    require_once("daos/docente/{$nombreDao}.class.php");
+                
+                $dao = new $nombreDao();
+                
+                $elemsRelac = $dao->findBy(new Criterio("`{$prop['columna']}` = ".$elem->getId().""));
+                $elem->$set($elemsRelac);
+            }
+        }
+    }
     
     /**
      * Obtiene la referencia a la base de datos
@@ -83,7 +160,7 @@ abstract class DaoBase {
     
     function save($elem) {
         
-        $buf = $this->_buffer($elem);
+        $buf = $this->getBuffer($elem);
         
         $mode   = 'INSERT';
         $where  = false;
