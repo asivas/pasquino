@@ -37,7 +37,7 @@ abstract class DaoBase {
      * Crea el arreglo buffer para guardar
      * @return array arreglo con datos con nombre de la columna de la base (nombreCol => valor)
      */
-    protected abstract function _buffer($elem){}
+    protected abstract function getBuffer($elem){}
     
     /**
      * Crea el objeto de la entidad a la cual logra el acceso el DAO
