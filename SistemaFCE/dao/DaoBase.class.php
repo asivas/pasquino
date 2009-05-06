@@ -18,7 +18,7 @@ abstract class DaoBase {
     /**
      * var String $tableName nomrbe de la tabla
      */
-    protected $tableNale;
+    protected $tableName;
     
     /**
      * @var object Objeto tipo SimpleXML para leer lo mappings de clases
@@ -30,6 +30,11 @@ abstract class DaoBase {
     protected $_xmlMappingFile;
     
     /**
+     * @var string ruta donde se encuentra el archivo que define la clase de entidad 
+     */
+    private $_pathEntidad;
+    
+    /**
      * Constructor de DaoBase
      */
     function DaoBase() {
@@ -38,6 +43,20 @@ abstract class DaoBase {
         $this->_db->Connect(Configuracion::dbHost, Configuracion::dbUser, Configuracion::dbPassword, Configuracion::dbName);
         
         $this->loadMapping();
+        
+        $this->tableName = $this->_xmlMapping['tabla'];
+        $this->defaultOrder = $this->_xmlMapping['orden'];
+    }
+    
+    private function incluirArchivoEntidad()
+    {
+        require_once($this->_pathEntidad);
+    } 
+    
+    private function _getMapperConfig()
+    {
+    	$config = simplexml_load_file(dirname(__FILE__).'/../mappings-config.xml');
+        return $config;
     }
     
     /**
@@ -48,8 +67,33 @@ abstract class DaoBase {
     {
         if(!isset($this->_xmlMapping))
         {
+            if(empty($this->_xmlMappingFile))
+            {
+            	$archivoMappings = "";
+                $nombreEntidad = str_replace("Dao","",__CLASS__);
+                $mapConf = $this->_getMapperConfig();
+                foreach($mapConf->mapping as $map)
+                {
+                	if($map['clase']==$nombreEntidad)
+                    {
+                        $archivoMappings = "{$mapConf['mappings-path']}/{$map['archivo']}";
+                        break;
+                    }
+                }
+                //el archivo obtenido está puesto relativo a la raiz del proyecto
+                $this->_xmlMappingFile = dirname(__FILE__)."/../../{$archivoMappings}";
+            }
+            
             $map = simplexml_load_file($this->_xmlMappingFile);
             $this->_xmlMapping = $map->clase[];
+            
+            $path = $map['path'];
+            
+            if(isset($this->_xmlMapping['path']))
+                $path = $this->_xmlMapping['path'];
+            
+            $this->_pathEntidad = "{$path}/{$this->_xmlMapping['nombre']}.class.php";
+            
         }
         return $this->_xmlMapping;
     } 
@@ -111,7 +155,7 @@ abstract class DaoBase {
         }
         
         //cargo las listas
-        foreach($clase->unoAMuchos as $prop)
+        foreach($this->_xmlMapping->{"uno-a-muchos"} as $prop)
         {
             $set = "set".ucfirst($prop['nombre']);
             if(isset($prop['tipo'])) //todos deben tener tipo
@@ -146,7 +190,13 @@ abstract class DaoBase {
      */
     function findBy($filtro = null,$order=null){
         
-        $sql = $this->baseFindBySQL;
+        if(!empty($this->baseFindBySQL))
+            $sql = $this->baseFindBySQL;
+        else
+        {
+            $tabla = $this->tableName;
+            $sql = "SELECT * FROM `{$tabla}`";
+        }
         
         $sql .= $filtro->getCondicion();
         
@@ -171,21 +221,12 @@ abstract class DaoBase {
      */
     function findById($idElemento) 
     {
-        $sql = $this->baseFindBySQL;
+        $c = $this->getCriterioId($idElemento);
         
-        $id = $this->_xmlMapping->id;
-        $nombreColId = $id['columna'];
+        $arr = $this->findBy($c);
         
-        $c = new Criterio();
-        
-        $c->add("{$nombreColId} = '$idElemento'");
-        
-        $sql .= $c->getCondicion();
-        
-        if(!($rs = $this->_db->Execute($sql)))
-            die($this->_db->ErrorMsg()." $sql");
-        else
-            return $this->crearObjetoEntidad($rs->FetchRow());
+        if(!empty($arr) && is_array($arr))
+           return current($arr);
         
         return null;
     }
@@ -201,14 +242,40 @@ abstract class DaoBase {
         $mode   = 'INSERT';
         $where  = false;
         /*
-         * buscar si existe el codigo postal, si existe lo actualizo 
+         * Busco el elemento por id, si existe debo actualizarlo 
          */
-        if($this->findById())
+        if($this->findById($elem->getId()))
         {   
             $mode  = 'UPDATE';
-            $where = $this->buildCond();
+            $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
         
         return $this->_db->AutoExecute($this->tableName,$buf,$mode,$where);
+    }
+    
+    /**
+     * Genera la el criterio de condición de id usada para la actualización y eliminación
+     * @return object instancia de Criterio para filtrar por id
+     * @param mixed $id
+     */
+    protected function getCriterioId($id)
+    {	
+        $id = $this->_xmlMapping->id;
+        
+        $nombreColId = $id['columna'];
+                
+        $c = new Criterio();        
+        $c->add("{$nombreColId} = '{$id}'");
+        
+        return $c;
+    }
+    
+    /**
+     * Elimina de la base de datos el elemento con el id dado
+     * @param integer $id 
+     */
+    function deletePorId($id)
+    {
+    	return $this->_db->Execute("DELETE FROM `{$this->tableName}` WHERE ".$this->getCriterioId($id)->getCondicion());
     }
 }
