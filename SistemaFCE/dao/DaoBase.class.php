@@ -62,7 +62,7 @@ abstract class DaoBase {
     {
         $buf = array();
         
-        $id = $this->_xmlMapping->id[0];
+        $id = $this->_xmlMapping->id;
         $get = "get".ucfirst($id['nombre']);
         $buf[$id['columna']] = $elem->$get();
         
@@ -86,7 +86,7 @@ abstract class DaoBase {
     {
         $elem = new $this->_xmlMapping['nombre']();
         
-        $id = $this->_xmlMapping->id[0];
+        $id = $this->_xmlMapping->id;
         $set = "set".ucfirst($id['nombre']);
         $elem->$set($row[$id['columna']]);
         
@@ -173,7 +173,7 @@ abstract class DaoBase {
     {
         $sql = $this->baseFindBySQL;
         
-        $id = $this->_xmlMapping->id[0];
+        $id = $this->_xmlMapping->id;
         $nombreColId = $id['columna'];
         
         $c = new Criterio();
