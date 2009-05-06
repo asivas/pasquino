@@ -46,12 +46,9 @@ abstract class DaoBase {
         
         $this->tableName = $this->_xmlMapping['tabla'];
         $this->defaultOrder = $this->_xmlMapping['orden'];
-    }
-    
-    private function incluirArchivoEntidad()
-    {
+        
         require_once($this->_pathEntidad);
-    } 
+    }
     
     private function _getMapperConfig()
     {
