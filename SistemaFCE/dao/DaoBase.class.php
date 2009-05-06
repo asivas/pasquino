@@ -158,6 +158,22 @@ abstract class DaoBase {
         return $lista;
     }
     
+    function findById($idElemento) 
+    {
+        $sql = $this->baseFindBySQL;
+        
+        $c = new Criterio()->add($this->filtroId . $idElemento);
+        
+        $sql .= $c->getCondicion();
+        
+        if(!($rs = $this->_db->Execute($sql)))
+            die($this->_db->ErrorMsg()." $sql");
+        else
+            return $this->crearObjetoEntidad($rs->FetchRow());
+        
+        return null;
+    }
+    
     function save($elem) {
         
         $buf = $this->getBuffer($elem);
