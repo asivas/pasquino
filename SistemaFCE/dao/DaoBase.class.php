@@ -16,10 +16,6 @@ abstract class DaoBase {
      */
     protected $baseFindBySQL;    
     /**
-     * var array $filtroId
-     */     
-    protected $filtroId;
-    /**
      * var String $tableName nomrbe de la tabla
      */
     protected $tableNale;
@@ -28,7 +24,9 @@ abstract class DaoBase {
      * @var object Objeto tipo SimpleXML para leer lo mappings de clases
      */
     protected $_xmlMapping;
-    
+    /**
+     * @var string Ruta del archivo de mappings de la clase
+     */
     protected $_xmlMappingFile;
     
     /**
@@ -63,6 +61,11 @@ abstract class DaoBase {
     protected function getBuffer($elem)
     {
         $buf = array();
+        
+        $id = $this->_xmlMapping->id[0];
+        $get = "get".ucfirst($id['nombre']);
+        $buf[$id['columna']] = $elem->$get();
+        
         foreach($this->_xmlMapping->propiedad as $prop)
         {
             $get = "get".ucfirst($prop['nombre']);
@@ -82,7 +85,11 @@ abstract class DaoBase {
     protected function crearObjetoEntidad($row) 
     {
         $elem = new $this->_xmlMapping['nombre']();
-
+        
+        $id = $this->_xmlMapping->id[0];
+        $set = "set".ucfirst($id['nombre']);
+        $elem->$set($row[$id['columna']]);
+        
         //cargo las propiedades
         foreach($this->_xmlMapping->propiedad as $prop)
         {
@@ -158,13 +165,20 @@ abstract class DaoBase {
         return $lista;
     }
     
+    /**
+     * Obtiene una instancia de la entidad a partir de un id dado
+     * @param integer $idElemento
+     */
     function findById($idElemento) 
     {
         $sql = $this->baseFindBySQL;
         
+        $id = $this->_xmlMapping->id[0];
+        $nombreColId = $id['columna'];
+        
         $c = new Criterio();
         
-        $c->add($this->filtroId . $idElemento);
+        $c->add("{$nombreColId} = '$idElemento'");
         
         $sql .= $c->getCondicion();
         
@@ -176,6 +190,10 @@ abstract class DaoBase {
         return null;
     }
     
+    /**
+     * Guarda creando si no existe o actualizando si existe a partir de una instancia de la entidad
+     * @param object $elem
+     */
     function save($elem) {
         
         $buf = $this->getBuffer($elem);
@@ -193,6 +211,4 @@ abstract class DaoBase {
         
         return $this->_db->AutoExecute($this->tableName,$buf,$mode,$where);
     }
-    
-    
 }
