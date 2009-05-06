@@ -1,0 +1,31 @@
+<!ELEMENT mapping (clase*)>
+<!ATTLIST mapping 
+	path CDATA #REQUIRED
+>
+<!ELEMENT clase (id* , (propiedad|uno-a-muchos)*)>
+<!ATTLIST clase 
+	nombre CDATA #REQUIRED
+	tabla CDATA #REQUIRED
+	path CDATA #IMPLIED
+	orden CDATA #IMPLIED
+>
+<!ELEMENT id EMPTY >
+<!ATTLIST id 
+	nombre CDATA #REQUIRED
+	columna CDATA #REQUIRED
+	tipo CDATA #IMPLIED
+>
+
+<!ELEMENT propiedad EMPTY >
+<!ATTLIST propiedad 
+	nombre CDATA #REQUIRED
+	columna CDATA #REQUIRED
+	tipo CDATA #IMPLIED
+>
+
+<!ELEMENT uno-a-muchos EMPTY >
+<!ATTLIST uno-a-muchos 
+	nombre CDATA #REQUIRED
+	columna CDATA #REQUIRED
+	tipo CDATA #REQUIRED
+>
