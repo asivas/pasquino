@@ -162,7 +162,9 @@ abstract class DaoBase {
     {
         $sql = $this->baseFindBySQL;
         
-        $c = new Criterio()->add($this->filtroId . $idElemento);
+        $c = new Criterio();
+        
+        $c->add($this->filtroId . $idElemento);
         
         $sql .= $c->getCondicion();
         
