@@ -67,8 +67,10 @@ abstract class DaoBase {
             if(empty($this->_xmlMappingFile))
             {
             	$archivoMappings = "";
-                $nombreEntidad = str_replace("Dao","",__CLASS__);
+                $nombreEntidad = str_replace("Dao","",get_class($this));
+                
                 $mapConf = $this->_getMapperConfig();
+                
                 foreach($mapConf->mapping as $map)
                 {
                 	if($map['clase']==$nombreEntidad)
@@ -77,20 +79,28 @@ abstract class DaoBase {
                         break;
                     }
                 }
+                
                 //el archivo obtenido está puesto relativo a la raiz del proyecto
                 $this->_xmlMappingFile = dirname(__FILE__)."/../../{$archivoMappings}";
             }
-            
+            			
             $map = simplexml_load_file($this->_xmlMappingFile);
-            $this->_xmlMapping = $map->clase[];
-            
+        			
+			$hijos = $map->children()->attributes();//asi se leen los hijos
+ 
+           	$this->_xmlMapping = $hijos['clase'];
+            print "<pre>";
+            var_dump($hijos);
+            print "</pre>";
+            print "<br><br>";
+                     
             $path = $map['path'];
             
-            if(isset($this->_xmlMapping['path']))
-                $path = $this->_xmlMapping['path'];
-            
+ 			print $path;           
+            print "<br><br>";
             $this->_pathEntidad = "{$path}/{$this->_xmlMapping['nombre']}.class.php";
-            
+            print $this->_xmlMapping['nombre'];
+            print "<br><br>";
         }
         return $this->_xmlMapping;
     } 
