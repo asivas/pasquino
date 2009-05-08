@@ -1,6 +1,7 @@
 <?php
 
 require_once('datos/criterio/Criterio.class.php');
+require_once('datos/adodb/adodb.inc.php');
 
 abstract class DaoBase {
     /**
@@ -38,9 +39,9 @@ abstract class DaoBase {
      * Constructor de DaoBase
      */
     function DaoBase() {
-        $this->_db = &ADONewConnection(Configuracion::dbms); # eg 'mysql' or 'postgres'
+        $this->_db = &ADONewConnection(Configuracion::getDBMS()); # eg 'mysql' or 'postgres'
         $this->_db->SetFetchMode(ADODB_FETCH_ASSOC);
-        $this->_db->Connect(Configuracion::dbHost, Configuracion::dbUser, Configuracion::dbPassword, Configuracion::dbName);
+        $this->_db->Connect(Configuracion::getDbHost(), Configuracion::getDbUser(), Configuracion::getDbPassword(), Configuracion::getDbName());
         
         $this->loadMapping();
         
@@ -52,8 +53,8 @@ abstract class DaoBase {
     
     private function _getMapperConfig()
     {
-    	$config = simplexml_load_file(dirname(__FILE__).'/../mappings-config.xml');
-        return $config;
+        $config = Configuracion::getConfigXML();
+        return $config->mappings;
     }
     
     /**
@@ -69,13 +70,12 @@ abstract class DaoBase {
             	$archivoMappings = "";
                 $nombreEntidad = str_replace("Dao","",get_class($this));
                 
-                $mapConf = $this->_getMapperConfig();
-                
-                foreach($mapConf->mapping as $map)
+                $mappings = $this->_getMapperConfig();
+                foreach($mappings->mapping as $map)
                 {
-                	if($map['clase']==$nombreEntidad)
+                    if(strtoupper($map['clase'])==strtoupper($nombreEntidad))
                     {
-                        $archivoMappings = "{$mapConf['mappings-path']}/{$map['archivo']}";
+                        $archivoMappings = "{$mappings['path']}/{$map['archivo']}";
                         break;
                     }
                 }
@@ -83,14 +83,14 @@ abstract class DaoBase {
                 //el archivo obtenido está puesto relativo a la raiz del proyecto
                 $this->_xmlMappingFile = dirname(__FILE__)."/../../{$archivoMappings}";
             }
-            			
+            
             $map = simplexml_load_file($this->_xmlMappingFile);
         			
            	$this->_xmlMapping = $map->clase;
                       
             $path = $map['path'];
             
-            $this->_pathEntidad = dirname(__FILE__)."/../../{$path}/{$this->_xmlMapping['nombre']}.class.php";
+            $this->_pathEntidad = "{$path}/{$this->_xmlMapping['nombre']}.class.php";
         }
         return $this->_xmlMapping;
     } 
@@ -206,7 +206,7 @@ abstract class DaoBase {
         }
         
         if($filtro != null) 
-        	$sql .= $filtro->getCondicion();
+        	$sql .= " WHERE " . $filtro->getCondicion();
         
         if(!isset($order)) 
         	$order = $this->defaultOrder;
@@ -267,14 +267,14 @@ abstract class DaoBase {
      * @return object instancia de Criterio para filtrar por id
      * @param mixed $id
      */
-    protected function getCriterioId($id)
+    protected function getCriterioId($idElemento)
     {	
         $id = $this->_xmlMapping->id;
         
         $nombreColId = $id['columna'];
                 
         $c = new Criterio();        
-        $c->add("{$nombreColId} = '{$id}'");
+        $c->add("{$nombreColId} = '{$idElemento}'");
         
         return $c;
     }

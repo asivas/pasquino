@@ -1,0 +1,98 @@
+<!ELEMENT sistema (mappings,data-sources?,modulos?,templates?)>
+<!ATTLIST sistema 
+	nombre CDATA #REQUIRED
+	version CDATA #IMPLIED
+>
+
+<!ELEMENT mappings (mapping*)>
+
+<!ATTLIST mappings
+	path CDATA #REQUIRED
+> 
+
+<!ELEMENT mapping EMPTY>
+<!ATTLIST mapping 
+	archivo CDATA #REQUIRED
+	clase CDATA #REQUIRED
+>
+
+<!ELEMENT data-sources (data-source*)>
+<!ELEMENT data-source EMPTY>
+<!ATTLIST data-source 
+	name CDATA #REQUIRED
+	dbms CDATA #REQUIRED
+	host CDATA #REQUIRED
+	db-name CDATA #IMPLIED
+	username CDATA #IMPLIED
+	password CDATA #IMPLIED
+	port CDATA #IMPLIED
+>
+
+<!ELEMENT modulos (modulo*)>
+
+<!ATTLIST modulos
+	path CDATA #REQUIRED
+	default CDATA #REQUIRED
+> 
+
+<!ELEMENT modulo (archivos,menuPrincipal)>
+<!ATTLIST modulo 
+	nombre CDATA #REQUIRED
+	dir CDATA #IMPLIED
+	versionSistema CDATA #IMPLIED
+>
+
+<!ELEMENT templates (template*)>
+<!ATTLIST templates
+	path CDATA #REQUIRED
+	default CDATA #REQUIRED
+	wwwdir CDATA #IMPLIED
+>
+
+<!ELEMENT archivos (coreDir,template?,dir*)>
+<!ATTLIST archivos
+	dir CDATA #IMPLIED
+>
+<!ELEMENT coreDir (archivoPrincipal,archivo*)>
+<!ATTLIST coreDir
+	ruta CDATA #IMPLIED
+>
+<!ELEMENT archivoPrincipal EMPTY>
+<!ATTLIST archivoPrincipal
+	nombre CDATA #REQUIRED
+>
+<!ELEMENT template (archivo|dir)*>
+<!ATTLIST template
+	dir CDATA #REQUIRED
+	nombre CDATA #IMPLIED
+	wwwdir CDATA #IMPLIED
+>
+<!ELEMENT dir (archivo*)>
+<!ATTLIST dir
+	ruta CDATA #REQUIRED
+>
+
+<!ELEMENT archivo EMPTY>
+<!ATTLIST archivo
+	nombre CDATA #REQUIRED
+	sys-name (Base|Default|Lista|Formulario|Info|FormFiltro|Menu) #IMPLIED
+>
+
+<!ELEMENT menuPrincipal (menuItem*,permisos?)>
+<!ATTLIST menuPrincipal
+	name CDATA #REQUIRED
+	url CDATA #REQUIRED
+	tag CDATA #REQUIRED
+>
+
+<!ELEMENT menuItem (permisos?)>
+<!ATTLIST menuItem
+	name CDATA #REQUIRED
+	url CDATA #REQUIRED
+	tag CDATA #REQUIRED
+>
+
+<!ELEMENT permisos (permiso*)>
+<!--Relaciona el menu con una etiqueta de permiso
+-->
+<!ELEMENT permiso #CDATA>

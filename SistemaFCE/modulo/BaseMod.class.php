@@ -12,7 +12,7 @@ require_once('visual/xajax/xajax_core/xajax.inc.php');
 class BaseMod {
 	
     var $smarty;
-    var $_skinName; 
+    var $_skinConfig;  
     var $_orderListado;
     var $_sentidoOrderListado;
     
@@ -29,12 +29,12 @@ class BaseMod {
     var $usuario;
     
     
-    function BaseMod($skin='default') {
+    function BaseMod($skinDirName=null) {
         
         $this->session = new Session();
         
-        $this->_skinName = $skin;
-        
+        $this->_skinConfig = Configuracion::getTemplateByDir($skinDirName);
+            
         $this->initSmarty();
         
         $this->xajax = new xajax();
@@ -53,15 +53,15 @@ class BaseMod {
     	$systemRoot = dirname(dirname(dirname(__FILE__)));
         
         $this->smarty = new Smarty(); // Handler de smarty
-        $this->smarty->template_dir = $systemRoot.'/skins/'.$this->_skinName; // configuro directorio de templates
+        $this->smarty->template_dir = $systemRoot.'/skins/'.$this->_skinConfig['dir']; // configuro directorio de templates
         $this->smarty->compile_dir = $systemRoot.'/tmp/skins/templates_c'; // configuro directorio de compilacion
         $this->smarty->cache_dir = $systemRoot.'/tmp/skins/cache'; // configuro directorio de cache
         $this->smarty->config_dir = $systemRoot.'/skins/configs'; // configuro directorio de configuraciones
         
-        $this->smarty->assign('skin',$this->_skinName);
-        $this->smarty->assign('relative_images',"skins/{$skin}/images");
+        $this->smarty->assign('skin',$this->_skinConfig['dir']);
+        $this->smarty->assign('relative_images',"skins/{$this->_skinConfig['dir']}/images");
         $this->smarty->assign('version',configuracion::version);
-        $this->smarty->assign('skinPath',$systemRoot.'/skins/'.$this->_skinName);
+        $this->smarty->assign('skinPath',$systemRoot.'/skins/'.$this->_skinConfig['dir']);
         $this->smarty->assign('appName','CV Docentes');
     }
         

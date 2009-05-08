@@ -1,7 +1,6 @@
 <?php
 require_once("datos/ssHandler/ssHandler.class.php");
 require_once("auth/econtrolAuth.class.php");
-require_once('datos/adodb/adodb.inc.php');
 
 class Session extends ssHandler{
     
