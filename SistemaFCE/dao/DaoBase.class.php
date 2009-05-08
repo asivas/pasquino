@@ -86,21 +86,11 @@ abstract class DaoBase {
             			
             $map = simplexml_load_file($this->_xmlMappingFile);
         			
-			$hijos = $map->children()->attributes();//asi se leen los hijos
- 
-           	$this->_xmlMapping = $hijos['clase'];
-            print "<pre>";
-            var_dump($hijos);
-            print "</pre>";
-            print "<br><br>";
-                     
+           	$this->_xmlMapping = $map->clase;
+                      
             $path = $map['path'];
             
- 			print $path;           
-            print "<br><br>";
-            $this->_pathEntidad = "{$path}/{$this->_xmlMapping['nombre']}.class.php";
-            print $this->_xmlMapping['nombre'];
-            print "<br><br>";
+            $this->_pathEntidad = dirname(__FILE__)."/../../{$path}/{$this->_xmlMapping['nombre']}.class.php";
         }
         return $this->_xmlMapping;
     } 
@@ -135,36 +125,45 @@ abstract class DaoBase {
      */
     protected function crearObjetoEntidad($row) 
     {
-        $elem = new $this->_xmlMapping['nombre']();
-        
+        $elem_name = "".$this->_xmlMapping['nombre'];// el "". es para forzar string
+        $elem = new $elem_name();
+ 
         $id = $this->_xmlMapping->id;
-        $set = "set".ucfirst($id['nombre']);
-        $elem->$set($row[$id['columna']]);
+        $set = "set".ucfirst("".$id['nombre']);
+		
+        $elem->$set($row["".$id['columna']]);
         
         //cargo las propiedades
-        foreach($this->_xmlMapping->propiedad as $prop)
+        $tmp = $this->_xmlMapping->propiedad;
+   
+        foreach($tmp as $prop)
         {
-            $set = "set".ucfirst($prop['nombre']);
-            if(!isset($prop['tipo'])) //si es con tipo actualizo el id
+            $set = "set".ucfirst("".$prop['nombre']);
+            if(isset($prop['tipo'])) //si es con tipo actualizo el id
             {
-                $nombreDao = "Dao{$prop['tipo']}";
+                $nombreDao = "Dao".$prop['tipo'];
+                
                 if(file_exists("daos/{$nombreDao}.class.php"))
                     require_once("daos/{$nombreDao}.class.php");
                 if(file_exists("daos/docente/{$nombreDao}.class.php"))
                     require_once("daos/docente/{$nombreDao}.class.php");
                 
                 $dao = new $nombreDao();
-                $elemRelac = $dao->findById($row[$prop['columna']]);
+                $elemRelac = $dao->findById($row["".$prop['columna']]);
                 $elem->$set($elemRelac);
             }
             else
-                $elem->$set($row[$prop['columna']]);
+            {
+                 $elem->$set($row["".$prop['columna']]);
+             }
         }
-        
+ 
         //cargo las listas
-        foreach($this->_xmlMapping->{"uno-a-muchos"} as $prop)
+        $tmp = $this->_xmlMapping->uno-a-muchos;
+        if($tmp != null) 
+        foreach($tmp as $prop)
         {
-            $set = "set".ucfirst($prop['nombre']);
+            $set = "set".ucfirst("".$prop['nombre']);
             if(isset($prop['tipo'])) //todos deben tener tipo
             {
                 $nombreDao = "Dao{$prop['tipo']}";
@@ -179,6 +178,7 @@ abstract class DaoBase {
                 $elem->$set($elemsRelac);
             }
         }
+    	return $elem;
     }
     
     /**
@@ -205,9 +205,11 @@ abstract class DaoBase {
             $sql = "SELECT * FROM `{$tabla}`";
         }
         
-        $sql .= $filtro->getCondicion();
+        if($filtro != null) 
+        	$sql .= $filtro->getCondicion();
         
-        if(!isset($order)) $order = $this->defaultOrder;
+        if(!isset($order)) 
+        	$order = $this->defaultOrder;
             
         $sql .= " ORDER BY {$order}";
         
