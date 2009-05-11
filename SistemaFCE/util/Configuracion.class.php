@@ -39,7 +39,12 @@ class Configuracion {
     private static function getDBAttribute($attribName,$nombreDataSource)
     {
         $config = Configuracion::getConfigXML();
-        $dataSources = $config->{"data-sources"};
+
+        //busco si exite un archivo exclusivo para datasources
+        $dataSources = @simplexml_load_file(dirname(__FILE__).'/../../conf/data-sources.xml');
+
+        if(!$dataSources)
+            $dataSources = $config->{"data-sources"};
         foreach($dataSources->{"data-source"} as $ds)
         {
             if($ds['name'] == $nombreDataSource)
