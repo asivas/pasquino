@@ -106,11 +106,8 @@ class BaseMod {
     
     function checkPermisos()
     {
-    	//comentario provisorio, para hacer pruebas
-    	
     	if(!$this->session->LogIn())
         {   
-            //die( acá );
             $this->_tilePath = 'decorators/base.tpl';
             $this->mostrar('formLogin.tpl');
             exit();
