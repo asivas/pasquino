@@ -28,6 +28,10 @@ class BaseMod {
     
     var $usuario;
     
+    var $_form;
+    
+    var $_formFiltro;
+    
     
     function BaseMod($skinDirName=null) {
         
@@ -200,7 +204,7 @@ class BaseMod {
                     $this->alta($_POST);
                     $this->redirectHomeModulo();
                 }
-                $this->form(/*$req['item']*/);   
+                $this->form(/*$req*/);   
                 break;
             case "modif":
                 if(!empty($_POST))
@@ -208,14 +212,14 @@ class BaseMod {
                     $this->modificacion($req);                    
                     $this->redirectHomeModulo();
                 }                
-                $this->form($req['item']);
+                $this->form($req);
                 break;
             case "baja":
-                $this->baja($req['item']);
+                $this->baja($req);
                 $this->redirectHomeModulo();
                 break; 
             case "info":
-                $this->info($req['item']);
+                $this->info($req);
                 break;
             case "listar":
             default:
