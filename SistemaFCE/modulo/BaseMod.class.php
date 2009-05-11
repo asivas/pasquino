@@ -33,7 +33,7 @@ class BaseMod {
         
         $this->session = new Session();
         
-        $this->_skinConfig = Configuracion::getTemplateByDir($skinDirName);
+        $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
             
         $this->initSmarty();
         
@@ -60,7 +60,7 @@ class BaseMod {
         
         $this->smarty->assign('skin',$this->_skinConfig['dir']);
         $this->smarty->assign('relative_images',"skins/{$this->_skinConfig['dir']}/images");
-        $this->smarty->assign('version',configuracion::version);
+        $this->smarty->assign('version',configuracion::getVersion());
         $this->smarty->assign('skinPath',$systemRoot.'/skins/'.$this->_skinConfig['dir']);
         $this->smarty->assign('appName','CV Docentes');
     }
@@ -102,8 +102,11 @@ class BaseMod {
     
     function checkPermisos()
     {
+    	//comentario provisorio, para hacer pruebas
+    	
     	if(!$this->session->LogIn())
         {   
+            //die( acá );
             $this->_tilePath = 'decorators/base.tpl';
             $this->mostrar('formLogin.tpl');
             exit();
@@ -197,7 +200,7 @@ class BaseMod {
                     $this->alta($_POST);
                     $this->redirectHomeModulo();
                 }
-                $this->form($req['item']);   
+                $this->form(/*$req['item']*/);   
                 break;
             case "modif":
                 if(!empty($_POST))
