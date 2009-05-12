@@ -86,15 +86,17 @@
 <!ELEMENT menuPrincipal (menuItem*,permisos?)>
 <!ATTLIST menuPrincipal
 	name CDATA #REQUIRED
-	url CDATA #REQUIRED
+	accion CDATA #REQUIRED
 	tag CDATA #REQUIRED
+	url CDATA #IMPLIED
 >
 
 <!ELEMENT menuItem (permisos?)>
 <!ATTLIST menuItem
 	name CDATA #REQUIRED
-	url CDATA #REQUIRED
+	accion CDATA #REQUIRED	
 	tag CDATA #REQUIRED
+	url CDATA #IMPLIED
 >
 
 <!ELEMENT permisos (permiso*)>
