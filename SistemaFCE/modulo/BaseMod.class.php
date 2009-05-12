@@ -8,6 +8,8 @@
 require_once("utils/Session.class.php"); 
 require_once('visual/smarty/libs/Smarty.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
+require_once("HTML/QuickForm.php");
+require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
 
 class BaseMod {
 	
@@ -15,9 +17,8 @@ class BaseMod {
     var $_skinConfig;  
     var $_orderListado;
     var $_sentidoOrderListado;
-    
     var $_menuModTplPath;
-    
+   
     var $session;
     
     var $xajax;
@@ -32,6 +33,9 @@ class BaseMod {
     
     var $_formFiltro;
     
+    var $_dateFormat;
+    var $_dateTimeFormat;
+    var $_timeFormat;
     
     function BaseMod($skinDirName=null) {
         
@@ -45,6 +49,10 @@ class BaseMod {
         
         $this->_orderListado = $_SESSION[get_class($this)]['sort'];
         $this->_sentidoOrderListado = $_SESSION[get_class($this)]['sortSentido'];
+        
+        $this->_dateFormat = Configuracion::getDateFormat();
+        $this->_dateTimeFormat = Configuracion::getDateTimeFormat();
+        $this->_timeFormat = Configuracion::getTimeFormat();
         
         $this->_tilePath = 'decorators/default.tpl';
         

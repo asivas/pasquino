@@ -1,8 +1,13 @@
-<!ELEMENT sistema (mappings,data-sources?,modulos?,templates?)>
+<!ELEMENT sistema (date-formats?,mappings,data-sources?,modulos?,templates?)>
 <!ATTLIST sistema 
 	nombre CDATA #REQUIRED
 	version CDATA #IMPLIED
 >
+
+<!ELEMENT date-formats (date-format,datetime-format?,time-format?)>
+<!ELEMENT date-format CDATA>
+<!ELEMENT datetime-format CDATA>
+<!ELEMENT time-format CDATA>
 
 <!ELEMENT mappings (mapping*)>
 
