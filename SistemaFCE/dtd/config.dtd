@@ -5,9 +5,9 @@
 >
 
 <!ELEMENT date-formats (date-format,datetime-format?,time-format?)>
-<!ELEMENT date-format CDATA>
-<!ELEMENT datetime-format CDATA>
-<!ELEMENT time-format CDATA>
+<!ELEMENT date-format (#PCDATA)>
+<!ELEMENT datetime-format (#PCDATA)>
+<!ELEMENT time-format (#PCDATA)>
 
 <!ELEMENT mappings (mapping*)>
 
