@@ -81,6 +81,80 @@ class BaseMod {
         $this->smarty->assign('appName','CV Docentes');
 		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
     }
+    
+    /**
+     * Genera un arreglo con [url,tag] si el operador tiene permisos
+     */
+    private function _getMenuItemArray($nombreModulo,$item,$operador)
+    {
+    	if(!empty($item->permisos))
+        {
+            $tienePermiso = false;
+            foreach($item->permisos->permiso as $perm)
+            {
+                $strPermFunc = "get".(string)$perm;
+                $tienePermiso |= $pperador->$strPermFunc();
+            }
+            
+            if(!$tienePermiso)
+                return null;
+        }
+
+        $mtag = (string)$item['tag'];
+        $murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}accion={$item['accion']}";
+        if(!empty($item['url']))
+            $murl = (string)$item['url'];
+        
+        return array('url'=>$murl,'tag'=>$mtag);
+    }
+    
+    /**
+     * Genera a partir de una config de menu un arreglo para crear un menu en smarty
+     * @return array Arreglo para que smarty pueda generar el menu definido en $menuConf
+     * @param String $nombreModulo Nombre del modulo al cual pertenece el menú
+     * @param object $menuConf Configuración en SimpleXML de menu
+     */
+    private function _getMenuModuloArray($nombreModulo,$menuConf)
+    {	
+        $menuItems = array();
+        $menu = $menuConf;
+        if(!empty($menu))
+        {   
+            if(($mItem = $this->_getMenuItemArray($nombreModulo,$menu,$this->usuario))==null)
+                return $menuItems;
+                    
+            $menuItems['_'] = $mItem;
+            foreach($menu->menuItem as $item)
+            { 
+                if(($mItem = $this->_getMenuItemArray($nombreModulo,$item,$this->usuario))==null)
+                    continue;
+
+                $name = (string) $item['name'];
+                if(isset($item->menuItem))
+                    $menuItems[$name] = $this->_getMenuModuloArray($item);                 
+                else
+                    $menuItems[$name] = $mItem;
+                    
+           }
+        }
+        return $menuItems;
+    }
+    
+    /**
+     * @return array Arreglo para que smarty pueda generar el Menu Principal
+     */
+    public function getMenuPrincipal()
+    {
+    	$modulosConfig = Configuracion::getModulosConfig();
+        foreach($modulosConfig->modulo as $mod)
+        {
+            $n = (string)$mod['nombre'];
+            $m = $this->_getMenuModuloArray($n,$mod->menuPrincipal);
+            if(!empty($m))
+              $menuPpal[$n] = $m;
+        }
+        return $menuPpal;
+    }
         
     function addError($strError)
     {
@@ -104,6 +178,7 @@ class BaseMod {
             }
             return false;
         }
+
         /*
          * Esto debería hacerse cuando exista el DaoUsuario
         $daoU = new DaoUsuario();
@@ -148,6 +223,11 @@ class BaseMod {
         $this->smarty->Display($this->_tilePath);
     }
     
+    /**
+     * Retorna un string el criterio y senditdo de ordenamiento en los listados a partir del request
+     * @param array $req Arreglo del request
+     * @return string Cadena de "criterio sentido" de ordenamiento (tipo SQL)
+     */
     function getOrder($req){
         if(!empty($req['sort']))
         {
@@ -176,14 +256,24 @@ class BaseMod {
         return "{$this->_orderListado} {$this->_sentidoOrderListado}";  
     }
     
+    /**
+     * Genera un objeto Criterio a partir de los filtros pasados por request
+     * @param array $req
+     */
     function getFiltro($req){}
     
+    /**
+     * redirecciona a la home del modulo 
+     */
     function redirectHomeModulo()
     {
         header("Location: {$_SERVER['PHP_SELF']}?mod={$_GET['mod']}");
         exit();
     }
     
+    /**
+     * Redirecciona a la home del sistema 
+     */
     function redirectHomeSistema()
     {
         setcookie('mod',null);
@@ -191,8 +281,16 @@ class BaseMod {
         exit();
     }
     
+    /**
+     * Asigna valores a las variables miembro que guardan información recibida de request
+     * @param array $req
+     */
     function setMiembros($req) { }
     
+    /**
+     * Ejecuta la acción del modulo, a partir de la variable accion recibida por request
+     * @param array $req 
+     */
     function ejecutar($req)
     {
     	$accion = $req["accion"];
@@ -245,11 +343,19 @@ class BaseMod {
         return strtr($str,$tr);
     }
     
+    /**
+     * Obtiene el código html de un template utilizando smarty
+     * @param string $tpl nombre de archivo del template
+     * @return string código html procesado por smarty  
+     */
     function fetch($tpl)
     {
     	return $this->caracteres_html($this->smarty->fetch($tpl));
     }
     
+    /**
+     * Muestra un mensaje usando xajax
+     */
     function displayMensaje(&$xajaxObjResponse,$mensaje,$className='message')
     {
     	
@@ -259,11 +365,17 @@ class BaseMod {
         $xajaxObjResponse->script("tMsg = setTimeout('xajax_hideMensaje()',3000)");
     }
     
+    /**
+     * Muestra un mensaje de error usando xajax
+     */
     function displayError(&$xajaxObjResponse,$mensaje)
     {
         $this->displayMensaje($xajaxObjResponse,$mensaje,'error');
     }
     
+    /**
+     * Oculta un mensaje mostrado utilizando xajax 
+     */
     function hideMensaje()
     {
     	// Instantiate the xajaxResponse object

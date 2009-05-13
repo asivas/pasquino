@@ -173,4 +173,10 @@ class Configuracion {
     }
     
     //TODO: discutir si habría que hacer las funciones de ABM de data-sources
+    
+    public static function getModulosConfig()
+    {
+        $config = Configuracion::getConfigXML();
+        return $config->modulos;
+    }
 }
