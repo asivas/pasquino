@@ -10,6 +10,7 @@ require_once('visual/smarty/libs/Smarty.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
 require_once("HTML/QuickForm.php");
 require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
+require_once('utils/calendar/calendar.class.php'); 
 
 class BaseMod {
 	
@@ -42,6 +43,8 @@ class BaseMod {
         $this->session = new Session();
         
         $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
+
+		$this->_calendar = new DHTML_Calendar('js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
             
         $this->initSmarty();
         
@@ -55,6 +58,7 @@ class BaseMod {
         $this->_timeFormat = Configuracion::getTimeFormat();
         
         $this->_tilePath = 'decorators/default.tpl';
+		$this->_form = new HTML_QuickForm('form','post',$_SERVER.PHP_SELF);
         
         //metodos de xajax (se debe llamar a processRequest para que esto funcione)
         $this->xajax->register(XAJAX_FUNCTION,array('hideMensaje',&$this,'hideMensaje'));
@@ -75,6 +79,7 @@ class BaseMod {
         $this->smarty->assign('version',configuracion::getVersion());
         $this->smarty->assign('skinPath',$systemRoot.'/skins/'.$this->_skinConfig['dir']);
         $this->smarty->assign('appName','CV Docentes');
+		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
     }
         
     function addError($strError)
@@ -139,7 +144,7 @@ class BaseMod {
         $this->smarty->assign('menuMod',$this->_menuModTplPath);
         $this->smarty->assign('pantalla',$tpl);
         $this->smarty->assign('ajax',$this->xajax->getJavascript('js/'));
-        
+        $this->_form = new HTML_QuickForm('form','post',$_SERVER.PHP_SELF);
         $this->smarty->Display($this->_tilePath);
     }
     
@@ -270,6 +275,28 @@ class BaseMod {
         
         return $objResponse;
     }
+
+   /**
+     * Crea el input con el calendario selector de fecha
+     * @return String con el html listo para insertar en el template
+     */
+    function getCalendarInput($name, $value = "", $format = null)
+	{
+		if(is_null($format)) $format = $this->_dateFormat;
+		ob_start();
+    	$this->_calendar->make_input_field(
+    	// calendar options go here; see the documentation and/or calendar-setup.js
+        array('firstDay'       => 1, // show Monday first
+              'showsTime'      => false,
+              'singleClick'    => true,
+              'showOthers'     => true,
+              'ifFormat'       => $format
+             ),
+        // field attributes go here
+        array('name'        => $name,
+              'value'       => $value));
+		return ob_get_clean();
+	}
     
     /* funciones abstractas */
     function alta($req){}
