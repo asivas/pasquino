@@ -60,9 +60,15 @@ class BaseMod {
         $this->_tilePath = 'decorators/default.tpl';
 		$this->_form = new HTML_QuickForm('form','post',$_SERVER.PHP_SELF);
         
-        //metodos de xajax (se debe llamar a processRequest para que esto funcione)
-        $this->xajax->register(XAJAX_FUNCTION,array('hideMensaje',&$this,'hideMensaje'));
+        $this->registerXajax();
+        $this->xajax->processRequest();
 	}
+    
+    protected function registerXajax()
+    {
+    	//metodos de xajax (se debe llamar a processRequest para que esto funcione)
+        $this->xajax->register(XAJAX_FUNCTION,array('hideMensaje',&$this,'hideMensaje'));
+    }
     
     protected function initSmarty()
     {
@@ -80,6 +86,10 @@ class BaseMod {
         $this->smarty->assign('skinPath',$systemRoot.'/skins/'.$this->_skinConfig['dir']);
         $this->smarty->assign('appName','CV Docentes');
 		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
+        
+        $this->smarty->assign('dir_images',"skins/{$this->_skinConfig['dir']}/images");
+        //menu
+        $this->smarty->assign('menuItems',$this->getMenuPrincipal());
     }
     
     /**
@@ -93,15 +103,18 @@ class BaseMod {
             foreach($item->permisos->permiso as $perm)
             {
                 $strPermFunc = "get".(string)$perm;
-                $tienePermiso |= $pperador->$strPermFunc();
+                $tienePermiso |= $operador->$strPermFunc();
             }
+            
+            $tienePermiso |= $this->_checkPermisoAccion((string)$item['accion']);    
             
             if(!$tienePermiso)
                 return null;
         }
+         
 
         $mtag = (string)$item['tag'];
-        $murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}accion={$item['accion']}";
+        $murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}&accion={$item['accion']}";
         if(!empty($item['url']))
             $murl = (string)$item['url'];
         
@@ -155,6 +168,22 @@ class BaseMod {
         }
         return $menuPpal;
     }
+    
+    /**
+     * Obtiene la configuación del módulo
+     */
+    protected function getConfigModulo()
+    {
+    	$nombreMod = get_class($this);
+        
+        $modulos = Configuracion::getModulosConfig();
+        foreach($modulos->modulo as $mod)
+        {	
+            if("{$mod['nombre']}Mod" == $nombreMod)
+                return $mod;
+        }
+        return null;
+    }
         
     function addError($strError)
     {
@@ -192,7 +221,37 @@ class BaseMod {
         return true;
     }
     
-    function checkPermisos()
+    
+    private function _checkPermisoAccion($accion)
+    {
+
+        // chequeo a partir de la config del módulo  
+        $conf = $this->getConfigModulo();
+        
+        //   Busco los permisos para la acción
+        $acciones = $conf->acciones;
+        foreach($acciones->accion as $acc)
+        {
+            $nombreAccion = (string)$acc['nombre'];
+            if($nombreAccion = $accion)
+            {
+                $tienePermiso = false;
+                
+                $perms = $acc->permisos;
+                foreach($perms as  $p)
+                {
+                	// TODO: chequear cuando esté bien definido el tema de usuarios si el usuario tiene
+                    //  permiso para la acción
+                    // $tienePermiso |= $this->_usuario->tienePermiso((string)$perm);
+                        
+                }
+                return $tienePermiso;
+            }
+        }
+        return false;
+    }
+    
+    function checkPermisos($req)
     {
     	if(!$this->session->LogIn())
         {   
@@ -200,8 +259,8 @@ class BaseMod {
             $this->mostrar('formLogin.tpl');
             exit();
         }
-        
-        if(!$this->ajaxCheckPermisos())
+        //TODO:descomentar el checkPermisosAccion
+        if( !$this->ajaxCheckPermisos() /*|| !$this->_checkPermisoAccion($req['accion'])*/ )
         {
         	$this->_menuModTplPath = '';
             $this->mostrar('sinPermisos.tpl');
@@ -294,46 +353,95 @@ class BaseMod {
     function ejecutar($req)
     {
     	$accion = $req["accion"];
+        
         if(isset($req['logout']) || $accion == 'logout')
         {
             $this->session->LogOut();
             $this->redirectHomeSistema();
         }
         
-        $this->checkPermisos();
+        if(empty($accion)) $accion = 'listar';
+        
+        $this->checkPermisos($req);
         $this->setMiembros($req);
         
         $this->smarty->assign('accion',$accion);
-        switch($accion)
+        
+        $metodoAccion = "accion".ucfirst($accion);
+        
+        if(!method_exists($this,$metodoAccion) && $accion != 'listar')
         {
-            case "alta":
-                if(!empty($_POST))
-                {
-                    $this->alta($_POST);
-                    $this->redirectHomeModulo();
-                }
-                $this->form(/*$req*/);   
-                break;
-            case "modif":
-                if(!empty($_POST))
-                {
-                    $this->modificacion($req);                    
-                    $this->redirectHomeModulo();
-                }                
-                $this->form($req);
-                break;
-            case "baja":
-                $this->baja($req);
-                $this->redirectHomeModulo();
-                break; 
-            case "info":
-                $this->info($req);
-                break;
-            case "listar":
-            default:
-                $this->lista();
-        }   
+            $req['accion'] = 'listar';
+            $this->ejecutar($req);
+            return;
+        } 
+        
+        $this->$metodoAccion($req);
+           
     }
+    
+    /**
+     * Ejecuta una acción de alta de un elemento 
+     * lo guarda llamando al metodo alta si viene por post, 
+     * sino muestra el formulario
+     */
+    protected function accionAlta($req)
+    {
+    	if(!empty($_POST))
+        {
+            $this->alta($_POST);
+            $this->redirectHomeModulo();
+        }
+        $this->form();
+    }
+    
+    /**
+     * Ejecuta una acción de modificación de un elemento,
+     * lo guarda llamando al metodo modificacion si viene por post,
+     * sino muestra el formulario
+     */
+    protected function accionModif($req)
+    {
+    	if(!empty($_POST))
+        {
+            $this->modificacion($req);                    
+            $this->redirectHomeModulo();
+        }                
+        $this->form($req);
+    }
+    
+    /**
+     * Ejecuta una acción de baja de un elemento llamando al metodo baja
+     * luego redirecciona a la home del módulo
+     */
+    protected function accionBaja($req)
+    {
+    	$this->baja($req);
+        $this->redirectHomeModulo();
+    }
+    
+    /**
+     * Ejecuta una acción de información de un elemento llamando al metodo info
+     */
+    protected function accionInfo($req)
+    {
+    	$this->info($req);
+    }
+
+    /**
+     * Ejecuta una acción de listar los elementos llamando al metodo lista
+     */    
+    protected function accionListar($req)
+    {
+    	 $this->lista();
+    }
+    
+    /* funciones abstractas */
+    function alta($req){}
+    function baja($req){}
+    function lista(){}
+    function form($req){}
+    function modificacion(){}
     
     function caracteres_html($str)
     {
@@ -409,11 +517,4 @@ class BaseMod {
               'value'       => $value));
 		return ob_get_clean();
 	}
-    
-    /* funciones abstractas */
-    function alta($req){}
-    function baja($idItem){}
-    function lista(){}
-    function form($idItem){}
-    function modificacion(){}
 }

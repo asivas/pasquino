@@ -40,12 +40,19 @@
 	default CDATA #REQUIRED
 > 
 
-<!ELEMENT modulo (archivos,menuPrincipal)>
+<!ELEMENT modulo (archivos,acciones?,menuPrincipal)>
 <!ATTLIST modulo 
 	nombre CDATA #REQUIRED
 	dir CDATA #IMPLIED
 	versionSistema CDATA #IMPLIED
 >
+
+<!ELEMENT acciones (accion*)>
+<!ELEMENT accion (permisos?)>
+<!ATTLIST accion 
+	nombre CDATA #REQUIRED
+>
+
 
 <!ELEMENT templates (template*)>
 <!ATTLIST templates
@@ -91,7 +98,7 @@
 	url CDATA #IMPLIED
 >
 
-<!ELEMENT menuItem (permisos?)>
+<!ELEMENT menuItem (permisos?,menuItem*)>
 <!ATTLIST menuItem
 	name CDATA #REQUIRED
 	accion CDATA #REQUIRED	
