@@ -31,25 +31,28 @@ class Configuracion {
         return null;
     }
     
+    public static function getAppName()
+    {
+    	$config = Configuracion::getConfigXML();
+        return $config['nombre'];
+    }
+    
     public static function getDateFormat()
     {
         $config = Configuracion::getConfigXML();
 		return "{$config->{'date-formats'}->{'date-format'}}";
-
     }
 
     public static function getDateTimeFormat()
     {
         $config = Configuracion::getConfigXML();
 		return "{$config->{'date-formats'}->{'datetime-format'}}";
-
     }
 
     public static function getTimeFormat()
     {
         $config = Configuracion::getConfigXML();
 		return "{$config->{'date-formats'}->{'time-format'}}";
-
     }
     
     public static function getDefaultTemplateConfig()

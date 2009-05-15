@@ -82,9 +82,9 @@ class BaseMod {
         
         $this->smarty->assign('skin',$this->_skinConfig['dir']);
         $this->smarty->assign('relative_images',"skins/{$this->_skinConfig['dir']}/images");
-        $this->smarty->assign('version',configuracion::getVersion());
+        $this->smarty->assign('version',Configuracion::getVersion());
         $this->smarty->assign('skinPath',$systemRoot.'/skins/'.$this->_skinConfig['dir']);
-        $this->smarty->assign('appName','CV Docentes');
+        $this->smarty->assign('appName',Configuracion::getAppName());
 		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
         
         $this->smarty->assign('dir_images',"skins/{$this->_skinConfig['dir']}/images");
@@ -232,9 +232,11 @@ class BaseMod {
         $acciones = $conf->acciones;
         foreach($acciones->accion as $acc)
         {
+            
             $nombreAccion = (string)$acc['nombre'];
-            if($nombreAccion = $accion)
+            if($nombreAccion == $accion)
             {
+                
                 $tienePermiso = false;
                 
                 $perms = $acc->permisos;
@@ -245,7 +247,8 @@ class BaseMod {
                     // $tienePermiso |= $this->_usuario->tienePermiso((string)$perm);
                         
                 }
-                return $tienePermiso;
+                return true;
+                //return $tienePermiso;
             }
         }
         return false;
@@ -260,7 +263,7 @@ class BaseMod {
             exit();
         }
         //TODO:descomentar el checkPermisosAccion
-        if( !$this->ajaxCheckPermisos() /*|| !$this->_checkPermisoAccion($req['accion'])*/ )
+        if( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion']) )
         {
         	$this->_menuModTplPath = '';
             $this->mostrar('sinPermisos.tpl');
@@ -352,6 +355,8 @@ class BaseMod {
      */
     function ejecutar($req)
     {
+    	if(empty($req["accion"])) $req["accion"] = 'listar';
+    	
     	$accion = $req["accion"];
         
         if(isset($req['logout']) || $accion == 'logout')
@@ -360,7 +365,7 @@ class BaseMod {
             $this->redirectHomeSistema();
         }
         
-        if(empty($accion)) $accion = 'listar';
+        
         
         $this->checkPermisos($req);
         $this->setMiembros($req);

@@ -12,7 +12,7 @@ class Session extends ssHandler{
     {
     	parent::initMembers();
 
-        $this->cookie_min= 15;
+        $this->cookie_min= 0;
         $this->sessionName = "ficha_docente";
     }
 }
