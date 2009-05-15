@@ -144,7 +144,7 @@ class BaseMod {
 
                 $name = (string) $item['name'];
                 if(isset($item->menuItem))
-                    $menuItems[$name] = $this->_getMenuModuloArray($item);                 
+                    $menuItems[$name] = $this->_getMenuModuloArray($nombreModulo,$item);                 
                 else
                     $menuItems[$name] = $mItem;
                     
