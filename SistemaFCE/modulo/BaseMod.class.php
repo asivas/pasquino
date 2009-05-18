@@ -90,6 +90,7 @@ class BaseMod {
         $this->smarty->assign('dir_images',"skins/{$this->_skinConfig['dir']}/images");
         //menu
         $this->smarty->assign('menuItems',$this->getMenuPrincipal());
+        $this->smarty->assign('menu',$this->getMenuPrincipal());
     }
     
     /**
