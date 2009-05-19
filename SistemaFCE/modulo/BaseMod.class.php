@@ -12,6 +12,8 @@ require_once("HTML/QuickForm.php");
 require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
 require_once('utils/calendar/calendar.class.php'); 
 
+require_once('daos/DaoUsuario.class.php');
+
 class BaseMod {
 	
     var $smarty;
@@ -45,7 +47,15 @@ class BaseMod {
         $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
 
 		$this->_calendar = new DHTML_Calendar('js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
-            
+        
+        /*
+         * Esto debería hacerse cuando exista el DaoUsuario
+         */
+        $daoU = new DaoUsuario();
+        $this->_usuario = $daoU->findById($this->session->getIdUsuario());
+        //$this->smarty->assign('nombre_usuario',"{$u->apellido}, {$u->nombre}");
+        /**/
+        
         $this->initSmarty();
         
         $this->xajax = new xajax();
@@ -88,31 +98,34 @@ class BaseMod {
 		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
         
         $this->smarty->assign('dir_images',"skins/{$this->_skinConfig['dir']}/images");
+        
+        $mp = $this->getMenuPrincipal();
         //menu
-        $this->smarty->assign('menuItems',$this->getMenuPrincipal());
-        $this->smarty->assign('menu',$this->getMenuPrincipal());
+        $this->smarty->assign('menuItems',$mp);
+        $this->smarty->assign('menu',$mp);
+        
+        $this->smarty->assign('usuario',$this->_usuario);
+        $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
     }
     
     /**
      * Genera un arreglo con [url,tag] si el operador tiene permisos
      */
-    private function _getMenuItemArray($nombreModulo,$item,$operador)
-    {
-    	if(!empty($item->permisos))
-        {
-            $tienePermiso = false;
+    private function _getMenuItemArray($nombreModulo,$item)
+    {	
+        $tienePermiso = false;
+        if(!empty($item->permisos))
+        {   
             foreach($item->permisos->permiso as $perm)
             {
-                $strPermFunc = "get".(string)$perm;
-                $tienePermiso |= $operador->$strPermFunc();
-            }
-            
-            $tienePermiso |= $this->_checkPermisoAccion((string)$item['accion']);    
-            
-            if(!$tienePermiso)
-                return null;
-        }
-         
+                $tienePermiso |= $$this->_usuario->tienePermiso((string)$perm);
+            }  
+        }  
+        $permAccion = $this->_checkPermisoAccion((string)$item['accion'],$nombreModulo);
+        $tienePermiso |= $permAccion;
+        
+        if(!$tienePermiso)
+            return null;
 
         $mtag = (string)$item['tag'];
         $murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}&accion={$item['accion']}";
@@ -134,13 +147,13 @@ class BaseMod {
         $menu = $menuConf;
         if(!empty($menu))
         {   
-            if(($mItem = $this->_getMenuItemArray($nombreModulo,$menu,$this->usuario))==null)
+            if(($mItem = $this->_getMenuItemArray($nombreModulo,$menu))==null)
                 return $menuItems;
-                    
+               
             $menuItems['_'] = $mItem;
             foreach($menu->menuItem as $item)
             { 
-                if(($mItem = $this->_getMenuItemArray($nombreModulo,$item,$this->usuario))==null)
+                if(($mItem = $this->_getMenuItemArray($nombreModulo,$item))==null)
                     continue;
 
                 $name = (string) $item['name'];
@@ -161,7 +174,7 @@ class BaseMod {
     {
     	$modulosConfig = Configuracion::getModulosConfig();
         foreach($modulosConfig->modulo as $mod)
-        {
+        {   
             $n = (string)$mod['nombre'];
             $m = $this->_getMenuModuloArray($n,$mod->menuPrincipal);
             if(!empty($m))
@@ -173,10 +186,16 @@ class BaseMod {
     /**
      * Obtiene la configuación del módulo
      */
-    protected function getConfigModulo()
+    protected function getConfigModulo($nombreMod = null)
     {
-    	$nombreMod = get_class($this);
-        
+    	if(!isset($nombreMod))
+            $nombreMod = get_class($this);
+        else
+        {
+        	if(strpos($nombreMod,'Mod')===FALSE)
+                $nombreMod .= 'Mod';
+        }
+           
         $modulos = Configuracion::getModulosConfig();
         foreach($modulos->modulo as $mod)
         {	
@@ -209,28 +228,19 @@ class BaseMod {
             return false;
         }
 
-        /*
-         * Esto debería hacerse cuando exista el DaoUsuario
-        $daoU = new DaoUsuario();
-        $this->usuario = $u = $daoU->findById($this->session->getIdUsuario());
-        $this->smarty->assign('usuario',$u);
-
-        $this->smarty->assign('nombre_usuario',"{$u->apellido}, {$u->nombre}");
-        $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
-        */
-        
         return true;
     }
     
     
-    private function _checkPermisoAccion($accion)
+    private function _checkPermisoAccion($accion,$nombreModulo=null)
     {
 
         // chequeo a partir de la config del módulo  
-        $conf = $this->getConfigModulo();
+        $conf = $this->getConfigModulo($nombreModulo);
         
         //   Busco los permisos para la acción
         $acciones = $conf->acciones;
+        if(empty($acciones->accion)) return false;
         foreach($acciones->accion as $acc)
         {
             
@@ -241,15 +251,19 @@ class BaseMod {
                 $tienePermiso = false;
                 
                 $perms = $acc->permisos;
-                foreach($perms as  $p)
+                
+                //si no tiene restricciones cualquiera tiene permisos
+                if(empty($perms->permiso))
+                    return true;
+                    
+                foreach($perms->permiso as  $p)
                 {
-                	// TODO: chequear cuando esté bien definido el tema de usuarios si el usuario tiene
-                    //  permiso para la acción
-                    // $tienePermiso |= $this->_usuario->tienePermiso((string)$perm);
+                    $perm = (string)$p;
+                    $tienePermiso |= $this->_usuario->tienePermiso($perm);
                         
                 }
-                return true;
-                //return $tienePermiso;
+                
+                return $tienePermiso;
             }
         }
         return false;
@@ -263,7 +277,6 @@ class BaseMod {
             $this->mostrar('formLogin.tpl');
             exit();
         }
-        //TODO:descomentar el checkPermisosAccion
         if( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion']) )
         {
         	$this->_menuModTplPath = '';
@@ -447,7 +460,7 @@ class BaseMod {
     function baja($req){}
     function lista(){}
     function form($req){}
-    function modificacion(){}
+    function modificacion($req){}
     
     function caracteres_html($str)
     {

@@ -105,15 +105,17 @@ abstract class DaoBase {
         
         $id = $this->_xmlMapping->id;
         $get = "get".ucfirst($id['nombre']);
-        $buf[$id['columna']] = $elem->$get();
+        $buf[(string)$id['columna']] = $elem->$get();
         
         foreach($this->_xmlMapping->propiedad as $prop)
         {
             $get = "get".ucfirst($prop['nombre']);
-            if(!isset($prop['tipo'])) //si es con tipo actualizo el id
-                $buf[$prop['columna']] = $elem->$get()->getId();
+            $p = $elem->$get();
+            $col = (string)$prop['columna'];
+            if(isset($prop['tipo'])) //si es con tipo actualizo el id
+                $buf[$col] = $p->getId();
             else
-                $buf[$prop['columna']] = $elem->$get;
+                $buf[$col] = $p;
         }
         return $buf;
     }
@@ -210,8 +212,9 @@ abstract class DaoBase {
         
         if(!isset($order)) 
         	$order = $this->defaultOrder;
-            
-        $sql .= " ORDER BY {$order}";
+        
+        if(isset($order))    
+            $sql .= " ORDER BY {$order}";
         
         if(!($rs = $this->_db->Execute($sql)))
             die($this->_db->ErrorMsg()." $sql");
