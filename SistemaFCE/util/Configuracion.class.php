@@ -60,6 +60,19 @@ class Configuracion {
         return Configuracion::getTemplateConfigByDir("");
     }
     
+    public static function getDefaultDataSource()
+    {
+        $config = Configuracion::getConfigXML();
+
+        //busco si exite un archivo exclusivo para datasources
+        $dataSources = @simplexml_load_file(dirname(__FILE__).'/../../conf/data-sources.xml');
+
+        if(!$dataSources)
+            $dataSources = $config->{"data-sources"};
+        
+        return (string)$dataSources['default'];
+    }
+    
     private static function getDBAttribute($attribName,$nombreDataSource)
     {
         $config = Configuracion::getConfigXML();
@@ -69,6 +82,9 @@ class Configuracion {
 
         if(!$dataSources)
             $dataSources = $config->{"data-sources"};
+            
+        if(!isset($nombreDataSource))
+            $nombreDataSource = Configuracion::getDefaultDataSource();
         foreach($dataSources->{"data-source"} as $ds)
         {
             if($ds['name'] == $nombreDataSource)
@@ -78,32 +94,32 @@ class Configuracion {
         return "";
     }
     
-    public static function getDBMS($nombreDataSource = "CVDocentes")
+    public static function getDBMS($nombreDataSource = null)
     {
         return Configuracion::getDBAttribute("dbms",$nombreDataSource); 
     }
     
-    public static function getDbHost($nombreDataSource = "CVDocentes")
+    public static function getDbHost($nombreDataSource = null)
     {
         return Configuracion::getDBAttribute("host",$nombreDataSource); 
     }
     
-    public static function getDbName($nombreDataSource = "CVDocentes")
+    public static function getDbName($nombreDataSource = null)
     {
         return Configuracion::getDBAttribute("db-name",$nombreDataSource); 
     }
     
-    public static function getDbUser($nombreDataSource = "CVDocentes")
+    public static function getDbUser($nombreDataSource = null)
     {
         return Configuracion::getDBAttribute("username",$nombreDataSource); 
     }
     
-    public static function getDbPassword($nombreDataSource = "CVDocentes")
+    public static function getDbPassword($nombreDataSource = null)
     {
         return Configuracion::getDBAttribute("password",$nombreDataSource); 
     }
     
-    public static function getDbPort($nombreDataSource = "CVDocentes")
+    public static function getDbPort($nombreDataSource = null)
     {
         return Configuracion::getDBAttribute("port",$nombreDataSource); 
     }

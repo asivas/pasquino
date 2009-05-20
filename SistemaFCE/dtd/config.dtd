@@ -22,6 +22,10 @@
 >
 
 <!ELEMENT data-sources (data-source*)>
+<!ATTLIST data-sources
+	default CDATA #REQUIRED
+>
+
 <!ELEMENT data-source EMPTY>
 <!ATTLIST data-source 
 	name CDATA #REQUIRED

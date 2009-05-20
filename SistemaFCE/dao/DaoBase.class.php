@@ -39,9 +39,7 @@ abstract class DaoBase {
      * Constructor de DaoBase
      */
     function DaoBase() {
-        $this->_db = &ADONewConnection(Configuracion::getDBMS()); # eg 'mysql' or 'postgres'
-        $this->_db->SetFetchMode(ADODB_FETCH_ASSOC);
-        $this->_db->Connect(Configuracion::getDbHost(), Configuracion::getDbUser(), Configuracion::getDbPassword(), Configuracion::getDbName());
+        $this->_db = $this->getConexion();
         
         $this->loadMapping();
         
@@ -49,6 +47,17 @@ abstract class DaoBase {
         $this->defaultOrder = $this->_xmlMapping['orden'];
         
         require_once($this->_pathEntidad);
+    }
+    
+    function getConexion($dataSource=null)
+    {	
+        if(!isset($dataSource))
+            $dataSource = Configuracion::getDefaultDataSource();
+        
+        $db = &ADONewConnection(Configuracion::getDBMS($dataSource)); # eg 'mysql' or 'postgres'
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+        $db->Connect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
+        return $db;
     }
     
     private function _getMapperConfig()
@@ -127,20 +136,33 @@ abstract class DaoBase {
      */
     protected function crearObjetoEntidad($row) 
     {
-        $elem_name = "".$this->_xmlMapping['nombre'];// el "". es para forzar string
+        $elem_name = (string)$this->_xmlMapping['nombre'];// el "". es para forzar string
         $elem = new $elem_name();
  
         $id = $this->_xmlMapping->id;
-        $set = "set".ucfirst("".$id['nombre']);
+        $set = "set".ucfirst((string)$id['nombre']);
 		
-        $elem->$set($row["".$id['columna']]);
+        $elem->$set($row[(string)$id['columna']]);
         
         //cargo las propiedades
-        $tmp = $this->_xmlMapping->propiedad;
+        $propiedades = $this->_xmlMapping->propiedad;
    
-        foreach($tmp as $prop)
+        foreach($propiedades as $prop)
         {
-            $set = "set".ucfirst("".$prop['nombre']);
+            $set = "set".ucfirst((string)$prop['nombre']);
+            $valor = $row[(string)$prop['columna']];
+            
+            if(isset($prop->{"data-source"})) //busco el valor para la propiedad del datasource especificado
+            {
+                $ds = $prop->{"data-source"};
+                $db = $this->getConexion((string)$ds['nombre']);
+                if($rs = $db->Execute("SELECT {$prop['columna']} FROM {$ds['tabla']} WHERE {$ds['clave']} = {$elem->getId()}"))
+                {
+                    if($r = $rs->FetchRow())
+                        $valor = $r[(string)$prop['columna']];
+                }
+            }
+            
             if(isset($prop['tipo'])) //si es con tipo actualizo el id
             {
                 $nombreDao = "Dao".$prop['tipo'];
@@ -151,21 +173,22 @@ abstract class DaoBase {
                     require_once("daos/docente/{$nombreDao}.class.php");
                 
                 $dao = new $nombreDao();
-                $elemRelac = $dao->findById($row["".$prop['columna']]);
+                $elemRelac = $dao->findById($valor);
                 $elem->$set($elemRelac);
             }
-            else
+            else 
+            //si está definida otra data source no espero que esté en el row
             {
-                 $elem->$set($row["".$prop['columna']]);
-             }
+                 $elem->$set($valor);
+            }
         }
  
         //cargo las listas
-        $tmp = $this->_xmlMapping->uno-a-muchos;
-        if($tmp != null) 
-        foreach($tmp as $prop)
+        $propiedades = $this->_xmlMapping->uno-a-muchos;
+        if($propiedades != null) 
+        foreach($propiedades as $prop)
         {
-            $set = "set".ucfirst("".$prop['nombre']);
+            $set = "set".ucfirst((string)$prop['nombre']);
             if(isset($prop['tipo'])) //todos deben tener tipo
             {
                 $nombreDao = "Dao{$prop['tipo']}";

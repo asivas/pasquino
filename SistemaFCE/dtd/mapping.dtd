@@ -16,12 +16,20 @@
 	tipo CDATA #IMPLIED
 >
 
-<!ELEMENT propiedad EMPTY >
+<!ELEMENT propiedad (data-source?) >
 <!ATTLIST propiedad 
 	nombre CDATA #REQUIRED
 	columna CDATA #REQUIRED
 	tipo CDATA #IMPLIED
 >
+
+<!ELEMENT data-source EMPTY >
+<!ATTLIST data-source 
+	nombre CDATA #REQUIRED
+	tabla CDATA #REQUIRED
+	clave CDATA #REQUIRED
+>
+
 
 <!ELEMENT uno-a-muchos EMPTY >
 <!ATTLIST uno-a-muchos 

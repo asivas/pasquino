@@ -234,7 +234,8 @@ class BaseMod {
     
     private function _checkPermisoAccion($accion,$nombreModulo=null)
     {
-
+        if(!isset($this->_usuario))
+            return false;
         // chequeo a partir de la config del módulo  
         $conf = $this->getConfigModulo($nombreModulo);
         
@@ -260,7 +261,6 @@ class BaseMod {
                 {
                     $perm = (string)$p;
                     $tienePermiso |= $this->_usuario->tienePermiso($perm);
-                        
                 }
                 
                 return $tienePermiso;
@@ -459,7 +459,7 @@ class BaseMod {
     function alta($req){}
     function baja($req){}
     function lista(){}
-    function form($req){}
+    function form($req=null){}
     function modificacion($req){}
     
     function caracteres_html($str)
