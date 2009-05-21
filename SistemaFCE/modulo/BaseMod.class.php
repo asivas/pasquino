@@ -247,21 +247,17 @@ class BaseMod {
             
             $nombreAccion = (string)$acc['nombre'];
             if($nombreAccion == $accion)
-            {
-                
-                $tienePermiso = false;
-                
+            {   
+                $tienePermiso = true;
                 $perms = $acc->permisos;
                 
                 //si no tiene restricciones cualquiera tiene permisos
-                if(empty($perms->permiso))
-                    return true;
-                    
-                foreach($perms->permiso as  $p)
-                {
-                    $perm = (string)$p;
-                    $tienePermiso |= $this->_usuario->tienePermiso($perm);
-                }
+                if(!empty($perms->permiso))
+                    foreach($perms->permiso as  $p)
+                    {
+                        $perm = (string)$p;
+                        $tienePermiso &= $this->_usuario->tienePermiso($perm);
+                    }
                 
                 return $tienePermiso;
             }
@@ -341,9 +337,11 @@ class BaseMod {
     /**
      * redirecciona a la home del modulo 
      */
-    function redirectHomeModulo()
+    function redirectHomeModulo($req=null)
     {
-        header("Location: {$_SERVER['PHP_SELF']}?mod={$_GET['mod']}");
+        if(!isset($req)) $req = $_GET;
+        
+        header("Location: {$_SERVER['PHP_SELF']}?mod={$req['mod']}");
         exit();
     }
     
@@ -424,7 +422,7 @@ class BaseMod {
     	if(!empty($_POST))
         {
             $this->modificacion($req);                    
-            $this->redirectHomeModulo();
+            $this->redirectHomeModulo($req);
         }                
         $this->form($req);
     }

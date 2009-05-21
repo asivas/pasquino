@@ -118,13 +118,16 @@ abstract class DaoBase {
         
         foreach($this->_xmlMapping->propiedad as $prop)
         {
-            $get = "get".ucfirst($prop['nombre']);
-            $p = $elem->$get();
-            $col = (string)$prop['columna'];
-            if(isset($prop['tipo'])) //si es con tipo actualizo el id
-                $buf[$col] = $p->getId();
-            else
-                $buf[$col] = $p;
+            if(!isset($prop->{'data-source'})) // si es de otra base no hay que ponerlo en el bufer
+            {
+                $get = "get".ucfirst($prop['nombre']);
+                $p = $elem->$get();
+                $col = (string)$prop['columna'];
+                if(isset($prop['tipo'])) //si es con tipo actualizo el id
+                    $buf[$col] = $p->getId();
+                else
+                    $buf[$col] = $p;
+            }
         }
         return $buf;
     }
