@@ -169,10 +169,10 @@ abstract class DaoBase {
             if(isset($prop['tipo'])) //si es con tipo actualizo el id
             {
                 $nombreDao = "Dao".$prop['tipo'];
-                
-                if(file_exists("daos/{$nombreDao}.class.php"))
+               	
+                if(file_exists(dirname(__FILE__)."/{$nombreDao}.class.php"))
                     require_once("daos/{$nombreDao}.class.php");
-                if(file_exists("daos/docente/{$nombreDao}.class.php"))
+                if(file_exists(dirname(__FILE__)."/docente/{$nombreDao}.class.php"))
                     require_once("daos/docente/{$nombreDao}.class.php");
                 
                 $dao = new $nombreDao();
