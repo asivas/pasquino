@@ -10,7 +10,7 @@ class DaoUsuario extends DaoBase {
     function findPosiblesUsuarios()
     {	
         $db = $this->getConexion('econtrol');
-        $rs = $db->Execute("SELECT id as idUsuario,nombre,apellido FROM usuarios");
+        $rs = $db->Execute("SELECT id as idUsuario,nombre,apellido FROM usuarios WHERE borrado IS NULL ORDER BY apellido,nombre");
         while($row = $rs->FetchRow())
         {
         	if(!$this->findById($row['idUsuario']))
