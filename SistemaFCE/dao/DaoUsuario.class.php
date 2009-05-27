@@ -1,6 +1,6 @@
 <?php
 
-require_once('daos/DaoBase.class.php'); 
+require_once('SistemaFCE/dao/DaoBase.class.php'); 
 
 class DaoUsuario extends DaoBase {
     

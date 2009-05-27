@@ -66,6 +66,19 @@ abstract class DaoBase {
         return $config->mappings;
     }
     
+    private function _getMappingConfig($clase)
+    {
+        $mappings = $this->_getMapperConfig();
+        foreach($mappings->mapping as $map)
+        {
+            if(strtoupper($map['clase'])==strtoupper($clase))
+            {
+                return $map;
+            }
+        }
+        return null;
+    }
+    
     /**
      * Carga el mapping desde el archivo XML de mappings
      * @return object Objeto SimpleXML con el mapping
@@ -80,17 +93,19 @@ abstract class DaoBase {
                 $nombreEntidad = str_replace("Dao","",get_class($this));
                 
                 $mappings = $this->_getMapperConfig();
-                foreach($mappings->mapping as $map)
+                $map = $this->_getMappingConfig($nombreEntidad);
+                if(isset($map))
                 {
-                    if(strtoupper($map['clase'])==strtoupper($nombreEntidad))
+                	$archivo = $map['archivo'];
+                    if(isset($map['dir']))
                     {
-                        $archivoMappings = "{$mappings['path']}/{$map['archivo']}";
-                        break;
+                        $archivo = "{$map['dir']}/{$archivo}";
                     }
+                    $archivoMappings = "{$mappings['path']}/{$archivo}";
                 }
                 
                 //el archivo obtenido está puesto relativo a la raiz del proyecto
-                $this->_xmlMappingFile = dirname(__FILE__)."/../../{$archivoMappings}";
+                $this->_xmlMappingFile = Configuracion::getSystemRootDir()."/{$archivoMappings}";
             }
             
             $map = simplexml_load_file($this->_xmlMappingFile);
@@ -132,6 +147,21 @@ abstract class DaoBase {
         return $buf;
     }
     
+    private function _newDaoClase($clase)
+    {
+    	$nombreDao = $nombreDaoFile = "Dao".$clase;
+        
+        $map = $this->_getMappingConfig($clase);
+        
+        if(isset($map) && isset($map['dir']))
+           $nombreDaoFile = "{$map['dir']}/{$nombreDaoFile}";
+        
+        //Siempre se espera la misma estructura para los mappings que para los daos
+        require_once("daos/{$nombreDaoFile}.class.php");
+        
+        return new $nombreDao();
+    }
+    
     /**
      * Crea el objeto de la entidad a la cual logra el acceso el DAO
      * @return object el objeto con los datos a partir de $row
@@ -168,14 +198,7 @@ abstract class DaoBase {
             
             if(isset($prop['tipo'])) //si es con tipo actualizo el id
             {
-                $nombreDao = "Dao".$prop['tipo'];
-               	
-                if(file_exists(dirname(__FILE__)."/{$nombreDao}.class.php"))
-                    require_once("daos/{$nombreDao}.class.php");
-                if(file_exists(dirname(__FILE__)."/docente/{$nombreDao}.class.php"))
-                    require_once("daos/docente/{$nombreDao}.class.php");
-                
-                $dao = new $nombreDao();
+                $dao = $this->_newDaoClase($prop['tipo']);
                 $elemRelac = $dao->findById($valor);
                 $elem->$set($elemRelac);
             }
@@ -194,14 +217,7 @@ abstract class DaoBase {
             $set = "set".ucfirst((string)$prop['nombre']);
             if(isset($prop['tipo'])) //todos deben tener tipo
             {
-                $nombreDao = "Dao{$prop['tipo']}";
-                if(file_exists("daos/{$nombreDao}.class.php"))
-                    require_once("daos/{$nombreDao}.class.php");
-                if(file_exists("daos/docente/{$nombreDao}.class.php"))
-                    require_once("daos/docente/{$nombreDao}.class.php");
-                
-                $dao = new $nombreDao();
-                
+                $dao = $this->_newDaoClase($prop['tipo']);
                 $elemsRelac = $dao->findBy(new Criterio("`{$prop['columna']}` = ".$elem->getId().""));
                 $elem->$set($elemsRelac);
             }

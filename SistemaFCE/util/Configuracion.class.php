@@ -6,6 +6,19 @@ class Configuracion {
         
     }
     
+    public static function initSistema($rutaArchivoIndex)
+    {
+        
+        if(Configuracion::getSystemRootDir()==null)
+            Configuracion::setSystemRootDir(dirname(dirname($rutaArchivoIndex)));
+        
+        Configuracion::setIncludePath();
+
+        //{{{ Incluir modulos
+        Configuracion::incluirModulos();    
+        ///}}}
+    } 
+    
     public static function getDefaultMod()
     {
     	$config = Configuracion::getConfigXML();
@@ -65,7 +78,7 @@ class Configuracion {
         $config = Configuracion::getConfigXML();
 
         //busco si exite un archivo exclusivo para datasources
-        $dataSources = @simplexml_load_file(dirname(__FILE__).'/../../conf/data-sources.xml');
+        $dataSources = @simplexml_load_file(Configuracion::getSystemRootDir().'/conf/data-sources.xml');
 
         if(!$dataSources)
             $dataSources = $config->{"data-sources"};
@@ -78,7 +91,7 @@ class Configuracion {
         $config = Configuracion::getConfigXML();
 
         //busco si exite un archivo exclusivo para datasources
-        $dataSources = @simplexml_load_file(dirname(__FILE__).'/../../conf/data-sources.xml');
+        $dataSources = @simplexml_load_file(Configuracion::getSystemRootDir().'/conf/data-sources.xml');
 
         if(!$dataSources)
             $dataSources = $config->{"data-sources"};
@@ -130,6 +143,16 @@ class Configuracion {
         return $config['version'];
     }
     
+    public static function setSystemRootDir($rootDir)
+    {
+    	$GLOBALS['ROOT_DIR'] = $rootDir;
+    }
+    
+    public static function getSystemRootDir()
+    {   
+        return $GLOBALS['ROOT_DIR'];
+    }
+    
     public static function setIncludePath()
     {
         if(strpos(strtoupper(PHP_OS),'WIN')!==FALSE)
@@ -137,7 +160,7 @@ class Configuracion {
         else
             $pathSep = ':';
         
-        $sysRoot = dirname(dirname(dirname(__FILE__)));
+        $sysRoot = Configuracion::getSystemRootDir();
         
         $inc_path = ini_get("include_path");
         $inc_path .= $pathSep.$sysRoot.'/clases';
@@ -164,7 +187,7 @@ class Configuracion {
     
     public static function getConfigXML()
     {
-    	$config = simplexml_load_file(dirname(__FILE__).'/../../conf/config.xml');
+    	$config = simplexml_load_file(Configuracion::getSystemRootDir().'/conf/config.xml');
         return $config;
     }
     
@@ -181,10 +204,8 @@ class Configuracion {
                 {   
                     return (string)$arch['nombre'];
                 }
-                
             }
         }
-        
         //recorro los dir si los tiene
         if(!empty($tConf->{'dir'}))
         {

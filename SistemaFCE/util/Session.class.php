@@ -5,8 +5,8 @@ require_once("auth/econtrolAuth.class.php");
 class Session extends ssHandler{
     
     function Session($sessName) {
-        parent::__construct(new EcontrolAuth());
         $this->sessionName = $sessName;
+        parent::__construct(new EcontrolAuth());        
     }
     
     function initMembers()

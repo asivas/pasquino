@@ -5,14 +5,15 @@
  * @since 06/10/2008
  */
 
-require_once("utils/Session.class.php"); 
+require_once('SistemaFCE/util/Session.class.php'); 
 require_once('visual/smarty/libs/Smarty.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
+require_once('visual/jscalendar/calendar.php'); 
+require_once('SistemaFCE/dao/DaoUsuario.class.php');
+
 require_once("HTML/QuickForm.php");
 require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
-require_once('utils/calendar/calendar.class.php'); 
 
-require_once('daos/DaoUsuario.class.php');
 
 class BaseMod {
 	
@@ -42,7 +43,7 @@ class BaseMod {
     
     function BaseMod($skinDirName=null) {
         
-        $this->session = new Session();
+        $this->session = new Session(Configuracion::getAppName());
         
         $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
 
@@ -82,7 +83,7 @@ class BaseMod {
     
     protected function initSmarty()
     {
-    	$systemRoot = dirname(dirname(dirname(__FILE__)));
+    	$systemRoot = Configuracion::getSystemRootDir();
         
         $this->smarty = new Smarty(); // Handler de smarty
         $this->smarty->template_dir = $systemRoot.'/skins/'.$this->_skinConfig['dir']; // configuro directorio de templates

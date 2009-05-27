@@ -19,6 +19,7 @@
 <!ATTLIST mapping 
 	archivo CDATA #REQUIRED
 	clase CDATA #REQUIRED
+	dir CDATA #IMPLIED
 >
 
 <!ELEMENT data-sources (data-source*)>
