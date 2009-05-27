@@ -534,4 +534,12 @@ class BaseMod {
               'value'       => $value));
 		return ob_get_clean();
 	}
+	
+	function getSelectInput($name,$options,$attributes)
+	{
+		$this->smarty->assign('name',$name);
+		$this->smarty->assign('options',$options);
+		$this->smarty->assign('attributes',$attributes);
+		return $this->fetch('dialogo','decorators/select.tpl');
+	}
 }
