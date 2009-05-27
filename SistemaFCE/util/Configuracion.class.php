@@ -168,6 +168,51 @@ class Configuracion {
         return $config;
     }
     
+    private static function findTplPath($tConf,$sysName = 'Default')
+    {
+        //recorro los archivos
+        if(isset($tConf->archivo))
+        {
+            $archivos = $tConf->archivo;
+            foreach($archivos as $arch)
+            {
+                $sn = $arch['sys-name'];
+                if(isset($sn) && $sn == $sysName)
+                {   
+                    return (string)$arch['nombre'];
+                }
+                
+            }
+        }
+        
+        //recorro los dir si los tiene
+        if(!empty($tConf->{'dir'}))
+        {
+            foreach($tConf->{'dir'} as $dir)
+            {
+                $path = Configuracion::findTplPath($dir,$sysName);
+                if(!empty($path))
+                {   
+                    return "{$dir['ruta']}/$path";
+                }
+            }
+        } 
+    }
+    
+    public static function getDefaultTplPath($templateDir="")
+    {
+    	//$tplPath = "";
+        $tConf = Configuracion::getTemplateConfigByDir($templateDir);
+        return Configuracion::findTplPath($tConf,'Default');
+    }
+    
+    public static function getBaseTplPath($templateDir="")
+    {
+        //$tplPath = "";
+        $tConf = Configuracion::getTemplateConfigByDir($templateDir);
+        return Configuracion::findTplPath($tConf,'Base');
+    }
+    
     
     public static function agregarModulo()
     {

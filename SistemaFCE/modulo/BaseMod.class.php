@@ -67,7 +67,7 @@ class BaseMod {
         $this->_dateTimeFormat = Configuracion::getDateTimeFormat();
         $this->_timeFormat = Configuracion::getTimeFormat();
         
-        $this->_tilePath = 'decorators/default.tpl';
+        $this->_tilePath = Configuracion::getDefaultTplPath($skinDirName);//'decorators/default.tpl';
 		$this->_form = new HTML_QuickForm('form','post',$_SERVER.PHP_SELF);
         
         $this->registerXajax();
@@ -269,7 +269,7 @@ class BaseMod {
     {
     	if(!$this->session->LogIn())
         {   
-            $this->_tilePath = 'decorators/base.tpl';
+            $this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['dir']);
             $this->mostrar('formLogin.tpl');
             exit();
         }
