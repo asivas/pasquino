@@ -541,6 +541,6 @@ class BaseMod {
 		$this->smarty->assign('name',$name);
 		$this->smarty->assign('options',$options);
 		$this->smarty->assign('attributes',$attributes);
-		return $this->fetch('dialogo','decorators/select.tpl');
+		return $this->fetch('decorators/select.tpl');
 	}
 }
