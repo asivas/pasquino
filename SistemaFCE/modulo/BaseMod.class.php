@@ -69,10 +69,13 @@ class BaseMod {
         $this->_timeFormat = Configuracion::getTimeFormat();
         
         $this->_tilePath = Configuracion::getDefaultTplPath($skinDirName);//'decorators/default.tpl';
-		$this->_form = new HTML_QuickForm('form','post',$_SERVER.PHP_SELF);
+		$this->_form = new HTML_QuickForm('form','post',$_SERVER['PHP_SELF']);
         
         $this->registerXajax();
+        
         $this->xajax->processRequest();
+        
+        $this->smarty->assign('xajax',$this->xajax->getJavascript('js'));
 	}
     
     protected function registerXajax()
@@ -535,6 +538,34 @@ class BaseMod {
               'value'       => $value));
 		return ob_get_clean();
 	}
+    
+    /**
+     * Genera un arreglo con opciones para un select
+     * @param array $listaElementos Lista de elementos que deben tener getId y getNombre definidos
+     * @param integre $vacio si se debe crear una opcion vacia
+     * @param integre $otro si se debe crear una opcion de "Otro", si está definido el nro será el id
+     * @return array arreglo asociativo id => nombre 
+     */
+    function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra')
+    {
+    	$arregloOpciones = array();
+        
+        if($vacio)
+            $arregloOpciones[0] = '';
+        
+        
+        if(is_array($listaElementos))     
+            foreach($listaElementos as $elem)
+            {
+                if(method_exists($elem,'getId') && method_exists($elem,'getNombre'))
+                    $arregloOpciones[$elem->getId()] = $elem->getNombre();
+            }
+        
+        if(isset($otro))
+            $arregloOpciones[$otro] = $otroLabel;
+        
+        return $arregloOpciones;
+    }
 	
 	function getSelectInput($name,$options,$attributes)
 	{
@@ -546,4 +577,17 @@ class BaseMod {
        
 		return $rendered[$name]['html'];
 	}
+    
+    /**
+     * Genera el arreglo renderizado para smarty del form
+     * @return array arreglo renderizado con el renderer de array de smarty
+     */
+    protected function getRenderedForm()
+    {
+        $renderer= new HTML_QuickForm_Renderer_ArraySmarty($this->smarty);// creacion del renderer para smarty
+        
+        $this->_form->accept($renderer);// inclusion en el form del renderer
+        
+        return $renderer->toArray();// pasaje a arreglo del renderer   	
+    }
 }

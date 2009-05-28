@@ -6,13 +6,13 @@ class Configuracion {
         
     }
     
-    public static function initSistema($rutaArchivoIndex)
+    public static function initSistema($rutaSysRoot,$pathsIncludePath=null)
     {
         
         if(Configuracion::getSystemRootDir()==null)
-            Configuracion::setSystemRootDir(dirname(dirname($rutaArchivoIndex)));
+            Configuracion::setSystemRootDir($rutaSysRoot);
         
-        Configuracion::setIncludePath();
+        Configuracion::setIncludePath($pathsIncludePath);
 
         //{{{ Incluir modulos
         Configuracion::incluirModulos();    
@@ -153,7 +153,7 @@ class Configuracion {
         return $GLOBALS['ROOT_DIR'];
     }
     
-    public static function setIncludePath()
+    public static function setIncludePath($otrosPaths=null)
     {
         if(strpos(strtoupper(PHP_OS),'WIN')!==FALSE)
             $pathSep = ';';
@@ -163,7 +163,15 @@ class Configuracion {
         $sysRoot = Configuracion::getSystemRootDir();
         
         $inc_path = ini_get("include_path");
+        
+        //siempre agrego para todos los sistemas la carpeta de clases 
         $inc_path .= $pathSep.$sysRoot.'/clases';
+        
+        if(isset($otrosPaths) && is_array($otrosPaths))
+        {
+        	foreach($otrosPaths as $path)
+                $inc_path .= $pathSep.$sysRoot."/".$path;
+        }
 
         $inc_path = ini_set("include_path",$inc_path);
     }
