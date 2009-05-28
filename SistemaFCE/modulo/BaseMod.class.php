@@ -538,9 +538,12 @@ class BaseMod {
 	
 	function getSelectInput($name,$options,$attributes)
 	{
-		$this->smarty->assign('name',$name);
-		$this->smarty->assign('options',$options);
-		$this->smarty->assign('attributes',$attributes);
-		return $this->fetch('decorators/select.tpl');
+        $this->_form->addElement('select',$name,'label:',$options,$attributes);
+        
+        $renderer= new HTML_QuickForm_Renderer_ArraySmarty($this->smarty);// creacion del renderer para smarty
+        $this->_form->accept($renderer);// inclusion en el form del renderer
+        $rendered = $renderer->toArray();// pasaje a arreglo del renderer
+       
+		return $rendered[$name]['html'];
 	}
 }
