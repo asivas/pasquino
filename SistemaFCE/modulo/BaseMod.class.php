@@ -567,13 +567,22 @@ class BaseMod {
         return $arregloOpciones;
     }
 	
-	function getSelectInput($name,$options,$attributes)
+    /**
+     * Obtiene el código HTML de un input select
+     * @param string $name
+     * @param array $options opciones compatibles con las opciones de HTML_QuickForm_select
+     * @param mixed $attributes atributos compatibles con los atributos de HTML_QuickForm_select
+     */
+	function getSelectInput($name,$options,$attributes,$selected=null)
 	{
         $this->_form->addElement('select',$name,'label:',$options,$attributes);
         
-        $renderer= new HTML_QuickForm_Renderer_ArraySmarty($this->smarty);// creacion del renderer para smarty
-        $this->_form->accept($renderer);// inclusion en el form del renderer
-        $rendered = $renderer->toArray();// pasaje a arreglo del renderer
+        if(isset($selected))
+        {
+            $this->_form->setDefaults(array($name=>$selected));	
+        }   
+        
+        $rendered = $this->getRenderedForm();
        
 		return $rendered[$name]['html'];
 	}
@@ -589,5 +598,14 @@ class BaseMod {
         $this->_form->accept($renderer);// inclusion en el form del renderer
         
         return $renderer->toArray();// pasaje a arreglo del renderer   	
+    }
+    
+    /**
+     * Asigna el formulairo pasado para smarty a la variable fomrulario de $this->smarty
+     * @param string $nombreVarSmarty Nombre de la variable que será asignada en smarty con el contenido del formulario 
+     */
+    protected function renderForm($nombreVarSmarty = 'formulario')
+    {
+    	$this->smarty->assign($nombreVarSmarty,$this->getRenderedForm());
     }
 }
