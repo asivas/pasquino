@@ -485,12 +485,16 @@ class BaseMod {
     /**
      * Muestra un mensaje usando xajax
      */
-    function displayMensaje(&$xajaxObjResponse,$mensaje,$className='message')
+    function displayMensaje(&$xajaxObjResponse,$mensaje,$className='message',$xPos=null,$yPos=null,$idDiv='message')
     {
     	
         $xajaxObjResponse->script("clearTimeout(tMsg)");
-        $xajaxObjResponse->assign("message","innerHTML", "<div style='float:right; font-size:5px;'><button onclick='xajax_hideMensaje()'>X</button></div>".$this->caracteres_html($mensaje));
-        $xajaxObjResponse->assign("message","className", $className);
+        $xajaxObjResponse->assign($idDiv,"innerHTML", "<div style='float:right; font-size:5px;'><button onclick='xajax_hideMensaje()'>X</button></div>".$this->caracteres_html($mensaje));
+        $xajaxObjResponse->assign($idDiv,"className", $className);
+        if(isset($xPos))
+            $xajaxObjResponse->assign($idDiv,"style.left", $xPos+"px");
+        if(isset($yPos))
+            $xajaxObjResponse->assign($idDiv,"style.top", $yPos+"px");
         $xajaxObjResponse->script("tMsg = setTimeout('xajax_hideMensaje()',3000)");
     }
     
@@ -505,14 +509,14 @@ class BaseMod {
     /**
      * Oculta un mensaje mostrado utilizando xajax 
      */
-    function hideMensaje()
+    function hideMensaje($idDiv='message')
     {
     	// Instantiate the xajaxResponse object
         $objResponse = new xajaxResponse();
         
         $objResponse->script("clearTimeout(tMsg)");
-        $objResponse->assign("message","className", "");
-        $objResponse->assign("message","innerHTML", "");
+        $objResponse->assign($idDiv,"className", "");
+        $objResponse->assign($idDiv,"innerHTML", "");
         
         return $objResponse;
     }
