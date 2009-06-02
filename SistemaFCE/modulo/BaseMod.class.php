@@ -75,7 +75,7 @@ class BaseMod {
         
         $this->registerXajax();
         
-        //$this->xajax->processRequest();
+        $this->xajax->processRequest();
         
         $this->smarty->assign('xajax',$this->xajax->getJavascript('js'));
 	}
