@@ -43,7 +43,8 @@ class BaseMod {
     
     function BaseMod($skinDirName=null) {
         
-        $this->session = new Session(Configuracion::getAppName());
+        if(!isset($this->session))
+            $this->session = new Session(Configuracion::getAppName());
         
         $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
 
@@ -199,7 +200,7 @@ class BaseMod {
         	if(strpos($nombreMod,'Mod')===FALSE)
                 $nombreMod .= 'Mod';
         }
-           
+   
         $modulos = Configuracion::getModulosConfig();
         foreach($modulos->modulo as $mod)
         {	
@@ -243,13 +244,15 @@ class BaseMod {
         // chequeo a partir de la config del módulo  
         $conf = $this->getConfigModulo($nombreModulo);
         
+        
         //   Busco los permisos para la acción
-        $acciones = $conf->acciones;
-        if(empty($acciones->accion)) return false;
+        $acciones = $conf->acciones;        
+        if(!isset($acciones->accion)) return false;
+        
         foreach($acciones->accion as $acc)
-        {
-            
+        {   
             $nombreAccion = (string)$acc['nombre'];
+            
             if($nombreAccion == $accion)
             {   
                 $tienePermiso = true;
@@ -277,9 +280,10 @@ class BaseMod {
             $this->mostrar('formLogin.tpl');
             exit();
         }
+        
         if( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion']) )
         {
-        	$this->_menuModTplPath = '';
+            $this->_menuModTplPath = '';
             $this->mostrar('sinPermisos.tpl');
             die();
         }

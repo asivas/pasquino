@@ -35,7 +35,7 @@ abstract class Mdb2IdAuth extends Auth{
         if(!is_object($this->storage)) // si no se hizo ninguna acción no se efectuó el _loadStorage 
             $this->listUsers();        // hago el query de usuarios que llama a _loadStorage y no cambia nada 
         
-        if($this->storage->db)
+        if(isset($this->storage->db) && !PEAR::isError($this->storage->db))
         {
             if($res = $this->storage->db->query($sql))
             {	

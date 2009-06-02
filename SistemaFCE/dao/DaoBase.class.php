@@ -109,12 +109,14 @@ abstract class DaoBase {
             }
             
             $map = simplexml_load_file($this->_xmlMappingFile);
-        			
-           	$this->_xmlMapping = $map->clase;
-                      
-            $path = $map['path'];
             
-            $this->_pathEntidad = "{$path}/{$this->_xmlMapping['nombre']}.class.php";
+            $this->_xmlMapping = $map->clase;
+                      
+            $path = (string)$map['path'];
+            
+            if(!empty($path))  $path.="/";
+                        
+            $this->_pathEntidad = "{$path}{$this->_xmlMapping['nombre']}.class.php";
         }
         return $this->_xmlMapping;
     } 
