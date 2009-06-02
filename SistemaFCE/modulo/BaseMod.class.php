@@ -9,7 +9,8 @@ require_once('SistemaFCE/util/Session.class.php');
 require_once('visual/smarty/libs/Smarty.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
 require_once('visual/jscalendar/calendar.php'); 
-require_once('SistemaFCE/dao/DaoUsuario.class.php');
+if(!class_exists('DaoUsuario')) //Si el sistema implementa otro DaoUsuario no lo defino
+    require_once('SistemaFCE/dao/DaoUsuario.class.php');
 
 require_once("HTML/QuickForm.php");
 require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
@@ -74,7 +75,7 @@ class BaseMod {
         
         $this->registerXajax();
         
-        $this->xajax->processRequest();
+        //$this->xajax->processRequest();
         
         $this->smarty->assign('xajax',$this->xajax->getJavascript('js'));
 	}

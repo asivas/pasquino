@@ -106,6 +106,7 @@ abstract class DaoBase {
                 
                 //el archivo obtenido está puesto relativo a la raiz del proyecto
                 $this->_xmlMappingFile = Configuracion::getSystemRootDir()."/{$archivoMappings}";
+                
             }
             
             $map = simplexml_load_file($this->_xmlMappingFile);
@@ -158,8 +159,8 @@ abstract class DaoBase {
         if(isset($map) && isset($map['dir']))
            $nombreDaoFile = "{$map['dir']}/{$nombreDaoFile}";
         
-        //Siempre se espera la misma estructura para los mappings que para los daos
-        require_once("daos/{$nombreDaoFile}.class.php");
+        //Siempre se espera la misma estructura para los mappings que para los daos 
+        require_once("daos/{$nombreDaoFile}.class.php");        
         
         return new $nombreDao();
     }
@@ -171,7 +172,7 @@ abstract class DaoBase {
      */
     protected function crearObjetoEntidad($row) 
     {
-        $elem_name = (string)$this->_xmlMapping['nombre'];// el "". es para forzar string
+        $elem_name = (string)$this->_xmlMapping['nombre'];
         $elem = new $elem_name();
  
         $id = $this->_xmlMapping->id;
@@ -181,6 +182,8 @@ abstract class DaoBase {
         
         //cargo las propiedades
         $propiedades = $this->_xmlMapping->propiedad;
+        
+        $antes = time();
    
         foreach($propiedades as $prop)
         {
@@ -224,6 +227,8 @@ abstract class DaoBase {
                 $elem->$set($elemsRelac);
             }
         }
+        
+        //print "Tiempo $elem_name: ".(time()-$antes). "<br>";
     	return $elem;
     }
     
@@ -251,7 +256,7 @@ abstract class DaoBase {
             $sql = "SELECT * FROM `{$tabla}`";
         }
         
-        if($filtro != null) 
+        if($filtro != null && $filtro->getCondicion()!='') 
         	$sql .= " WHERE " . $filtro->getCondicion();
         
         if(!isset($order)) 
