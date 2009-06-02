@@ -17,6 +17,11 @@ class Configuracion {
         //{{{ Incluir modulos
         Configuracion::incluirModulos();    
         ///}}}
+        
+        if(strpos(strtoupper($_SERVER['SERVER_SIGNATURE']),"WIN")!==FALSE) /*servidor Windows*/
+            setlocale (LC_TIME, "spanish"); 
+        elseif(strpos(strtoupper($_SERVER['SERVER_SIGNATURE']),"UNIX")!==FALSE)/*sevidor unix*/
+            setlocale (LC_TIME, "es_AR");
     } 
     
     public static function getDefaultMod()
