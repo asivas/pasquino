@@ -600,11 +600,14 @@ class BaseMod {
      * Genera el arreglo renderizado para smarty del form
      * @return array arreglo renderizado con el renderer de array de smarty
      */
-    protected function getRenderedForm()
+    protected function getRenderedForm($form=null)
     {
+        if(!isset($form))
+            $form = $this->_form;
+        
         $renderer= new HTML_QuickForm_Renderer_ArraySmarty($this->smarty);// creacion del renderer para smarty
         
-        $this->_form->accept($renderer);// inclusion en el form del renderer
+        $form->accept($renderer);// inclusion en el form del renderer
         
         return $renderer->toArray();// pasaje a arreglo del renderer   	
     }
@@ -613,8 +616,8 @@ class BaseMod {
      * Asigna el formulairo pasado para smarty a la variable fomrulario de $this->smarty
      * @param string $nombreVarSmarty Nombre de la variable que será asignada en smarty con el contenido del formulario 
      */
-    protected function renderForm($nombreVarSmarty = 'formulario')
+    protected function renderForm($nombreVarSmarty = 'formulario',$form=null)
     {
-    	$this->smarty->assign($nombreVarSmarty,$this->getRenderedForm());
+    	$this->smarty->assign($nombreVarSmarty,$this->getRenderedForm($form));
     }
 }
