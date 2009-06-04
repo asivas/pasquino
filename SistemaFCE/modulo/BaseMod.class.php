@@ -71,7 +71,7 @@ class BaseMod {
         $this->_timeFormat = Configuracion::getTimeFormat();
         
         $this->_tilePath = Configuracion::getDefaultTplPath($skinDirName);//'decorators/default.tpl';
-		$this->_form = new HTML_QuickForm('form','post',$_SERVER['PHP_SELF']);
+		$this->crearForm();
         
         $this->registerXajax();
         
@@ -79,6 +79,24 @@ class BaseMod {
         
         $this->smarty->assign('xajax',$this->xajax->getJavascript('js'));
 	}
+    
+    /**
+     * Creación del HTML_QuickForm y sus elementos 
+     */
+    protected function crearFrom()
+    {
+    	$this->_form = new HTML_QuickForm('form','post',$_SERVER['PHP_SELF']);
+    }
+    
+    /**
+     * Setea los defaults del formualario principal a partir de el parametro $elem
+     * @param mixed $elem Array con formato de defaults del formulario en caso de reemplazar puede ser un  objeto al cual hay que hacerle gets
+     */
+    protected function setFormDefaults($elem)
+    {
+    	if(is_array($elem))
+            $this->_form->setDefaults($elem);
+    }
     
     protected function registerXajax()
     {
