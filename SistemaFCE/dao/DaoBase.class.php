@@ -166,6 +166,31 @@ abstract class DaoBase {
     }
     
     /**
+     * Crea el objeto de la entidad a partir de un arreglo que tiene los mismos nombres de elementos
+     * que los nombres de las propiedades.
+     * 
+     * Este no tiene en cuenta las relaciones tipadas a no ser que la entidad tenga la variable id y 
+     * obtenga el objeto relacionado direcatemente desde el get, sin tenerlo como propiedad
+     * 
+     * @return object el objeto con los datos a partir de $row
+     * @param array $arreeglo arreglo con los datos que cada clave es identica que un nombre de propiedad nombrePropiedad => valor
+     */
+    protected function crearDesdeArreglo($arreglo) 
+    {
+        $elem_name = (string)$this->_xmlMapping['nombre'];
+        $elem = new $elem_name();
+        
+        foreach($arreglo as $nombreProp => $valor)
+        {
+        	$set = "set".ucfirst($nombreProp);
+            if(method_exists($elem,$set))
+                $elem->$set($valor);
+        }
+        
+        return $elem;
+    }
+    
+    /**
      * Crea el objeto de la entidad a la cual logra el acceso el DAO
      * @return object el objeto con los datos a partir de $row
      * @param array $row arreglo con los datos obtenidos de la base en forma nombreCol => valor

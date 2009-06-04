@@ -83,7 +83,7 @@ class BaseMod {
     /**
      * Creación del HTML_QuickForm y sus elementos 
      */
-    protected function crearFrom()
+    public function crearForm()
     {
     	$this->_form = new HTML_QuickForm('form','post',$_SERVER['PHP_SELF']);
     }
@@ -92,7 +92,7 @@ class BaseMod {
      * Setea los defaults del formualario principal a partir de el parametro $elem
      * @param mixed $elem Array con formato de defaults del formulario en caso de reemplazar puede ser un  objeto al cual hay que hacerle gets
      */
-    protected function setFormDefaults($elem)
+    public function setFormDefaults($elem)
     {
     	if(is_array($elem))
             $this->_form->setDefaults($elem);
@@ -636,6 +636,8 @@ class BaseMod {
      */
     protected function renderForm($nombreVarSmarty = 'formulario',$form=null)
     {
-    	$this->smarty->assign($nombreVarSmarty,$this->getRenderedForm($form));
+    	$rf = $this->getRenderedForm($form);
+        $this->smarty->assign($nombreVarSmarty,$rf);
+        return $rf;
     }
 }
