@@ -12,9 +12,7 @@ require_once('visual/jscalendar/calendar.php');
 if(!class_exists('DaoUsuario')) //Si el sistema implementa otro DaoUsuario no lo defino
     require_once('SistemaFCE/dao/DaoUsuario.class.php');
 
-require_once("HTML/QuickForm.php");
-require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
-
+require_once 'SistemaFCE/modulo/BaseForm.class.php';
 
 class BaseMod {
 	
@@ -85,17 +83,7 @@ class BaseMod {
      */
     public function crearForm()
     {
-    	$this->_form = new HTML_QuickForm('form','post',$_SERVER['PHP_SELF']);
-    }
-    
-    /**
-     * Setea los defaults del formualario principal a partir de el parametro $elem
-     * @param mixed $elem Array con formato de defaults del formulario en caso de reemplazar puede ser un  objeto al cual hay que hacerle gets
-     */
-    public function setFormDefaults($elem)
-    {
-    	if(is_array($elem))
-            $this->_form->setDefaults($elem);
+    	$this->_form = new BaseForm('form');
     }
     
     protected function registerXajax()
@@ -614,29 +602,17 @@ class BaseMod {
 		return $rendered[$name]['html'];
 	}
     
-    /**
-     * Genera el arreglo renderizado para smarty del form
-     * @return array arreglo renderizado con el renderer de array de smarty
-     */
-    protected function getRenderedForm($form=null)
-    {
-        if(!isset($form))
-            $form = $this->_form;
-        
-        $renderer= new HTML_QuickForm_Renderer_ArraySmarty($this->smarty);// creacion del renderer para smarty
-        
-        $form->accept($renderer);// inclusion en el form del renderer
-        
-        return $renderer->toArray();// pasaje a arreglo del renderer   	
-    }
     
     /**
      * Asigna el formulairo pasado para smarty a la variable fomrulario de $this->smarty
      * @param string $nombreVarSmarty Nombre de la variable que será asignada en smarty con el contenido del formulario 
      */
-    protected function renderForm($nombreVarSmarty = 'formulario',$form=null)
+    function renderForm($nombreVarSmarty = 'formulario',$form=null)
     {
-    	$rf = $this->getRenderedForm($form);
+    	if(!isset($form))
+            $form = $this->_form;
+            
+    	$rf = $form->renderSmarty($this->smarty);
         $this->smarty->assign($nombreVarSmarty,$rf);
         return $rf;
     }
