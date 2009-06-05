@@ -3,11 +3,12 @@ require_once("HTML/QuickForm.php");
 require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
 
 class BaseForm extends HTML_QuickForm {
-    
     function __construct($nombre, $metodo='POST', $accion='',$target='',$attributos='') {
     	
     	if(empty($accion)) $accion = $_SERVER['PHP_SELF'];
     	parent::__construct($nombre,$metodo,$accion,$target,$attributos);
+        
+        $this->addElement('hidden','accion',$_REQUEST['accion']);
     }
     
     /**
@@ -27,11 +28,12 @@ class BaseForm extends HTML_QuickForm {
      * Crea el input con el calendario selector de fecha
      * @return String con el html listo para insertar en el template
      */
-    function getCalendarInput($name, $value = "", $format = null)
+    function getCalendarInput($objCal ,$name, $value = "", $format = null)
     {
         if(is_null($format)) $format = $this->_dateFormat;
         ob_start();
-        $this->_calendar->make_input_field(
+        
+        $objCal->make_input_field(
         // calendar options go here; see the documentation and/or calendar-setup.js
         array('firstDay'       => 1, // show Monday first
               'showsTime'      => false,

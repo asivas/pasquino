@@ -4,11 +4,11 @@
  * @author lucas.vidaguren
  * @since 06/10/2008
  */
-
+require_once('visual/jscalendar/calendar.php');
 require_once('SistemaFCE/util/Session.class.php'); 
 require_once('visual/smarty/libs/Smarty.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
-require_once('visual/jscalendar/calendar.php'); 
+
 if(!class_exists('DaoUsuario')) //Si el sistema implementa otro DaoUsuario no lo defino
     require_once('SistemaFCE/dao/DaoUsuario.class.php');
 
@@ -535,11 +535,10 @@ class BaseMod {
    /**
      * Crea el input con el calendario selector de fecha
      * @return String con el html listo para insertar en el template
-     * @deprecated 1.3- 05/06/2009
      */
     function getCalendarInput($name, $value = "", $format = null)
 	{
-		return $this->_form->getCalendarInput($name,$value,$format);
+		return $this->_form->getCalendarInput($this->_calendar,$name,$value,$format);
 	}
     
     /**
