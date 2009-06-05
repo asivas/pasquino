@@ -538,20 +538,7 @@ class BaseMod {
      */
     function getCalendarInput($name, $value = "", $format = null)
 	{
-		if(is_null($format)) $format = $this->_dateFormat;
-		ob_start();
-    	$this->_calendar->make_input_field(
-    	// calendar options go here; see the documentation and/or calendar-setup.js
-        array('firstDay'       => 1, // show Monday first
-              'showsTime'      => false,
-              'singleClick'    => true,
-              'showOthers'     => true,
-              'ifFormat'       => $format
-             ),
-        // field attributes go here
-        array('name'        => $name,
-              'value'       => $value));
-		return ob_get_clean();
+		return $this->_form->getCalendarInput($name,$value,$format);
 	}
     
     /**
@@ -563,23 +550,7 @@ class BaseMod {
      */
     function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra')
     {
-    	$arregloOpciones = array();
-        
-        if($vacio)
-            $arregloOpciones[0] = '';
-        
-        
-        if(is_array($listaElementos))     
-            foreach($listaElementos as $elem)
-            {
-                if(method_exists($elem,'getId') && method_exists($elem,'getNombre'))
-                    $arregloOpciones[$elem->getId()] = $elem->getNombre();
-            }
-        
-        if(isset($otro))
-            $arregloOpciones[$otro] = $otroLabel;
-        
-        return $arregloOpciones;
+    	return $this->_form->getArregloSelect($listaElementos,$vacio,$otro,$otroLabel);
     }
 	
     /**
@@ -590,16 +561,7 @@ class BaseMod {
      */
 	function getSelectInput($name,$options,$attributes,$selected=null)
 	{
-        $this->_form->addElement('select',$name,'label:',$options,$attributes);
-        
-        if(isset($selected))
-        {
-            $this->_form->setDefaults(array($name=>$selected));	
-        }   
-        
-        $rendered = $this->getRenderedForm();
-       
-		return $rendered[$name]['html'];
+        return $this->_form->getSelectInput($name,$options,$attributes,$selected);
 	}
     
     
