@@ -94,4 +94,17 @@ class BaseForm extends HTML_QuickForm {
        
         return $rendered[$name]['html'];
     }
+    
+    /**
+     * Asigna un valor a un hidden, si este no existe lo crea
+     */
+    function setHidden($nombre,$valor)
+    {
+    	$elem = $this->getElement($nombre);
+         
+        if(isset($elem) && !$this->isError($elem))
+           $elem->setValue($valor);
+        else
+           $this->addElement('hidden',$nombre,$valor);
+    }
 }

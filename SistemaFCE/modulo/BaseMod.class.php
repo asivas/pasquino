@@ -320,7 +320,7 @@ class BaseMod {
         {
             if($req['sort']!=$this->_orderListado)
             {
-            	$this->_orderListado = $req['sort'];
+                $this->_orderListado = $req['sort'];
                 $this->_sentidoOrderListado = "ASC";
             }
             else{
@@ -337,10 +337,26 @@ class BaseMod {
             return null;
         }
         
+        if(isset($req['sortSentido']))
+        {
+        	$this->_sentidoOrderListado = $req['sortSentido'];
+        }
+        
         $_SESSION[get_class($this)]['sort'] = $this->_orderListado;
         $_SESSION[get_class($this)]['sortSentido'] = $this->_sentidoOrderListado; 
         
-        return "{$this->_orderListado} {$this->_sentidoOrderListado}";  
+        $this->smarty->assign('sort',$this->_orderListado);
+        $this->smarty->assign('sortSentido',$this->_sentidoOrderListado);
+        
+        $order = '';
+        $multi = split(',',$this->_orderListado);
+        foreach($multi as $orden)
+        {
+        	if(!empty($order)) $order .= ',';
+            $order .= "{$orden} {$this->_sentidoOrderListado}";
+        }
+        
+        return $order;  
     }
     
     /**

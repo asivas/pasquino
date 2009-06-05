@@ -125,6 +125,7 @@
                     $loc = "http://$_SERVER[SERVER_NAME]$_SERVER[PHP_SELF]";
                     if(!empty($_SERVER['QUERY_STRING'])) $loc .= '?'.$_SERVER['QUERY_STRING'];
                     header("Location: $loc");
+                    exit();
                 }
                 return true;
             }								

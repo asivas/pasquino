@@ -175,10 +175,13 @@ abstract class DaoBase {
      * @return object el objeto con los datos a partir de $row
      * @param array $arreeglo arreglo con los datos que cada clave es identica que un nombre de propiedad nombrePropiedad => valor
      */
-    protected function crearDesdeArreglo($arreglo) 
+    function crearDesdeArreglo($arreglo) 
     {
         $elem_name = (string)$this->_xmlMapping['nombre'];
         $elem = new $elem_name();
+        
+        if(!is_array($arreglo))
+            return $elem;   
         
         foreach($arreglo as $nombreProp => $valor)
         {
@@ -289,7 +292,7 @@ abstract class DaoBase {
         
         if(isset($order))    
             $sql .= " ORDER BY {$order}";
-        
+                
         if(!($rs = $this->_db->Execute($sql)))
             die($this->_db->ErrorMsg()." $sql");
             
