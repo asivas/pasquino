@@ -15,7 +15,7 @@ class BaseForm extends HTML_QuickForm {
      * Genera el arreglo renderizado para smarty del form
      * @return array arreglo renderizado con el renderer de array de smarty
      */
-    protected function renderSmarty($smarty)
+    function renderSmarty($smarty)
     {
         $renderer= new HTML_QuickForm_Renderer_ArraySmarty($smarty);// creacion del renderer para smarty
         
