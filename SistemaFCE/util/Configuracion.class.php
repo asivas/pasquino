@@ -20,8 +20,8 @@ class Configuracion {
         
         if(strpos(strtoupper($_SERVER['SERVER_SIGNATURE']),"WIN")!==FALSE) /*servidor Windows*/
             setlocale (LC_TIME, "spanish"); 
-        elseif(strpos(strtoupper($_SERVER['SERVER_SIGNATURE']),"UNIX")!==FALSE)/*sevidor unix*/
-            setlocale (LC_TIME, "es_AR");
+        else //supongo unix //if(strpos(strtoupper($_SERVER['SERVER_SIGNATURE']),"UNIX")!==FALSE)/*sevidor unix*/
+            setlocale (LC_TIME, "es_AR", "es_AR.UTF-8");
     } 
     
     public static function getDefaultMod()
