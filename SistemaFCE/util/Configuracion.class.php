@@ -192,6 +192,8 @@ class Configuracion {
             $inc = "{$pathModulos}/";
             if(!empty($mod['dir']))
              $inc .= "{$mod['dir']}/";
+            if(!empty($mod->archivos->coreDir['ruta']))
+                $inc .= "{$mod->archivos->coreDir['ruta']}/";
             $inc .= $mod->archivos->coreDir->archivoPrincipal['nombre'];
             
             require_once($inc);   	
