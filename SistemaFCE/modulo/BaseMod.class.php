@@ -535,6 +535,7 @@ class BaseMod {
    /**
      * Crea el input con el calendario selector de fecha
      * @return String con el html listo para insertar en el template
+     * @deprecated 1.3- 05/06/2009
      */
     function getCalendarInput($name, $value = "", $format = null)
 	{
@@ -546,7 +547,8 @@ class BaseMod {
      * @param array $listaElementos Lista de elementos que deben tener getId y getNombre definidos
      * @param integre $vacio si se debe crear una opcion vacia
      * @param integre $otro si se debe crear una opcion de "Otro", si está definido el nro será el id
-     * @return array arreglo asociativo id => nombre 
+     * @return array arreglo asociativo id => nombre
+     * @deprecated 1.3- 05/06/2009
      */
     function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra')
     {
@@ -558,6 +560,7 @@ class BaseMod {
      * @param string $name
      * @param array $options opciones compatibles con las opciones de HTML_QuickForm_select
      * @param mixed $attributes atributos compatibles con los atributos de HTML_QuickForm_select
+     * @deprecated 1.3- 05/06/2009
      */
 	function getSelectInput($name,$options,$attributes,$selected=null)
 	{
