@@ -2,6 +2,8 @@
 <!ATTLIST sistema 
 	nombre CDATA #REQUIRED
 	version CDATA #IMPLIED
+	version-pasquino CDATA #REQUIRED
+	nombre-session CDATA #IMPLIED
 >
 
 <!ELEMENT date-formats (date-format,datetime-format?,time-format?)>
@@ -114,4 +116,4 @@
 <!ELEMENT permisos (permiso*)>
 <!--Relaciona el menu con una etiqueta de permiso
 -->
-<!ELEMENT permiso #CDATA>
+<!ELEMENT permiso (#PCDATA)>

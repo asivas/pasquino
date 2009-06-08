@@ -2,7 +2,7 @@
 <!ATTLIST mapping 
 	path CDATA #REQUIRED
 >
-<!ELEMENT clase (id* , (propiedad|uno-a-muchos)*)>
+<!ELEMENT clase (id, id* , (propiedad|uno-a-muchos)*)>
 <!ATTLIST clase 
 	nombre CDATA #REQUIRED
 	tabla CDATA #REQUIRED
