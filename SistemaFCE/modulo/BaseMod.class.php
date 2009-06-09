@@ -40,7 +40,7 @@ class BaseMod {
     var $_dateTimeFormat;
     var $_timeFormat;
     
-    function BaseMod($skinDirName=null) {
+    function BaseMod($skinDirName=null,$conXajax=true) {
         
         if(!isset($this->session))
             $this->session = new Session(Configuracion::getAppName());
@@ -58,8 +58,9 @@ class BaseMod {
         /**/
         
         $this->initSmarty();
-        
-        $this->xajax = new xajax();
+        print $conXajax;
+        if($conXajax)
+            $this->xajax = new xajax();
         
         $this->_orderListado = $_SESSION[get_class($this)]['sort'];
         $this->_sentidoOrderListado = $_SESSION[get_class($this)]['sortSentido'];
@@ -71,11 +72,15 @@ class BaseMod {
         $this->_tilePath = Configuracion::getDefaultTplPath($skinDirName);//'decorators/default.tpl';
 		$this->crearForm();
         
-        $this->registerXajax();
         
-        $this->xajax->processRequest();
-        
-        $this->smarty->assign('xajax',$this->xajax->getJavascript('js'));
+        if($conXajax)
+        {
+            $this->registerXajax();
+            
+            $this->xajax->processRequest();
+            
+            $this->smarty->assign('xajax',$this->xajax->getJavascript('js'));
+        }
 	}
     
     /**
@@ -88,7 +93,7 @@ class BaseMod {
     
     protected function registerXajax()
     {
-    	//metodos de xajax (se debe llamar a processRequest para que esto funcione)
+        //metodos de xajax (se debe llamar a processRequest para que esto funcione)
         $this->xajax->register(XAJAX_FUNCTION,array('hideMensaje',&$this,'hideMensaje'));
     }
     
@@ -243,6 +248,36 @@ class BaseMod {
         return true;
     }
     
+    private function _esPublica($accion,$nombreModulo=null)
+    {
+        // chequeo a partir de la config del módulo  
+        $conf = $this->getConfigModulo($nombreModulo);
+        
+        //   Busco los permisos para la acción
+        $acciones = $conf->acciones;        
+        if(!isset($acciones->accion)) return false;
+        
+        foreach($acciones->accion as $acc)
+        {   
+            $nombreAccion = (string)$acc['nombre'];
+            
+            if($nombreAccion == $accion)
+            {   
+                $perms = $acc->permisos;
+                //si no tiene restricciones cualquiera tiene permisos
+                if(!empty($perms->permiso))
+                {
+                    foreach($perms->permiso as  $p)
+                    {
+                        $perm = (string)$p;
+                        if($perm == 'publico' || $perm == 'publica')
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
     
     private function _checkPermisoAccion($accion,$nombreModulo=null)
     {
@@ -281,15 +316,16 @@ class BaseMod {
     
     function checkPermisos($req)
     {
-    	if(!$this->session->LogIn())
+    	if(!$this->_esPublica($req['accion']) && !$this->session->LogIn())
         {   
             $this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['dir']);
             $this->mostrar('formLogin.tpl');
             exit();
         }
         
-        if( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion']) )
-        {
+        if( !$this->_esPublica($req['accion']) && ( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion'])) )
+        {   
+            print $req['accion'] ;
             $this->_menuModTplPath = '';
             $this->mostrar('sinPermisos.tpl');
             die();
@@ -407,7 +443,6 @@ class BaseMod {
             $this->session->LogOut();
             $this->redirectHomeSistema();
         }
-        
         
         
         $this->checkPermisos($req);

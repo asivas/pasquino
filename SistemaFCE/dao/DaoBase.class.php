@@ -116,6 +116,11 @@ abstract class DaoBase {
             $path = (string)$map['path'];
             
             if(!empty($path))  $path.="/";
+            
+            if(!empty($map->clase['path']))
+            {  
+                $path .= "{$map->clase['path']}/";
+            }
                         
             $this->_pathEntidad = "{$path}{$this->_xmlMapping['nombre']}.class.php";
         }
@@ -215,30 +220,36 @@ abstract class DaoBase {
    
         foreach($propiedades as $prop)
         {
-            $set = "set".ucfirst((string)$prop['nombre']);
-            $valor = $row[(string)$prop['columna']];
-            
-            if(isset($prop->{"data-source"})) //busco el valor para la propiedad del datasource especificado
+            $nombreProp = (string)$prop['nombre'];
+            if(!empty($nombreProp))
             {
-                $ds = $prop->{"data-source"};
-                $db = $this->getConexion((string)$ds['nombre']);
-                if($rs = $db->Execute("SELECT {$prop['columna']} FROM {$ds['tabla']} WHERE {$ds['clave']} = {$elem->getId()}"))
+                $set = "set".ucfirst($nombreProp);
+                $valor = $row[(string)$prop['columna']];
+                
+                if(isset($prop->{"data-source"})) //busco el valor para la propiedad del datasource especificado
                 {
-                    if($r = $rs->FetchRow())
-                        $valor = $r[(string)$prop['columna']];
+                    $ds = $prop->{"data-source"};
+                    $db = $this->getConexion((string)$ds['nombre']);
+                    if($rs = $db->Execute("SELECT {$prop['columna']} FROM {$ds['tabla']} WHERE {$ds['clave']} = {$elem->getId()}"))
+                    {
+                        if($r = $rs->FetchRow())
+                            $valor = $r[(string)$prop['columna']];
+                    }
                 }
-            }
-            
-            if(isset($prop['tipo'])) //si es con tipo actualizo el id
-            {
-                $dao = $this->_newDaoClase($prop['tipo']);
-                $elemRelac = $dao->findById($valor);
-                $elem->$set($elemRelac);
-            }
-            else 
-            //si está definida otra data source no espero que esté en el row
-            {
-                 $elem->$set($valor);
+                if(method_exists($elem,$set))
+                {
+                    if(isset($prop['tipo'])) //si es con tipo actualizo el id
+                    {
+                        $dao = $this->_newDaoClase($prop['tipo']);
+                        $elemRelac = $dao->findById($valor);
+                        $elem->$set($elemRelac);
+                    }
+                    else 
+                    //si está definida otra data source no espero que esté en el row
+                    {
+                         $elem->$set($valor);
+                    }
+                }
             }
         }
  
