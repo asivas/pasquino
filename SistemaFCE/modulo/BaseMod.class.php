@@ -58,7 +58,6 @@ class BaseMod {
         /**/
         
         $this->initSmarty();
-        print $conXajax;
         if($conXajax)
             $this->xajax = new xajax();
         
