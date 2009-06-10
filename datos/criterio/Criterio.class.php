@@ -2,11 +2,13 @@
 
 require_once('datos/criterio/Conjuncion.class.php');
 require_once('datos/criterio/Disjuncion.class.php');
+require_once('datos/criterio/Restricciones.class.php');
 
 class Criterio {
     
     protected $_expresiones;
     protected $_operador = "AND";
+    protected $_operadorH = "y";
     
     static function getAND($expresion1,$expresion2){ return new Conjuncion($expresion1,$expresion2); }
     static function getOR($expresion1,$expresion2){ return new Disjuncion($expresion1,$expresion2); }
@@ -24,7 +26,7 @@ class Criterio {
      * Genera la condición de SQL a partir de los datos que existen en $this->_expresiones
      * @return string la condición generada
      */
-    function getCondicion()
+    function getCondicion($clase=null)
     {
     	$cond = "";
         foreach($this->_expresiones as $exp)
@@ -32,8 +34,12 @@ class Criterio {
         	if(!empty($cond)) $cond .= " {$this->_operador} ";
             
             if(is_string($exp))
+            {   
                 $cond .= $exp;
-            else //si no es string si o si debe ser alguna clase de Criterio
+            }
+            elseif(is_a($exp,"Restriccion"))
+                $cond .= $exp->toSqlString($clase);
+            elseif(is_a($exp,"Criterio")) //si no es string si o si debe ser alguna clase de Criterio
             	$cond .= "(". $exp->getCondicion() .")";
         }
         return $cond;
@@ -45,5 +51,24 @@ class Criterio {
         $disj = clone $this;
         $this->_operador = "AND";
         return $disj;
+    }
+    
+    /**
+     * Genera una cadena entendible por los humanos del criterio
+     */
+    function toString()
+    {
+    	$str = "";
+                
+        foreach($this->_expresiones as $exp)
+        {
+            if(!empty($str)) $str .= " {$this->_operadorH} ";
+
+            if(is_string($exp))
+                $str .= $exp;
+            else
+                $str .= $exp->toString();
+        }
+        return $str;
     }
 }

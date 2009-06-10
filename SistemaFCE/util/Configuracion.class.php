@@ -279,4 +279,48 @@ class Configuracion {
         $config = Configuracion::getConfigXML();
         return $config->modulos;
     }
+    
+    public static function getMappingConfigClase($clase)
+    {
+        $config = Configuracion::getConfigXML();
+        $mappings = $config->mappings;
+        foreach($mappings->mapping as $map)
+        {
+            if(strtoupper($map['clase'])==strtoupper($clase))
+            {
+                return $map;
+            }
+        }
+        return null;
+    }
+    
+    public static function getMappingClase($nombreClase,$xmlMappingFile = null)
+    {    
+        if(empty($xmlMappingFile))
+        {
+            $archivoMappings = "";
+            $config = Configuracion::getConfigXML();
+            
+            $config = Configuracion::getConfigXML();
+            $mappings = $config->mappings;
+            
+            $map = Configuracion::getMappingConfigClase($nombreClase);
+            if(isset($map))
+            {
+                $archivo = $map['archivo'];
+                if(isset($map['dir']))
+                {
+                    $archivo = "{$map['dir']}/{$archivo}";
+                }
+                $archivoMappings = "{$mappings['path']}/{$archivo}";
+            }
+            
+            //el archivo obtenido está puesto relativo a la raiz del proyecto
+            $xmlMappingFile = Configuracion::getSystemRootDir()."/{$archivoMappings}";
+        }
+        
+        $map = simplexml_load_file($xmlMappingFile);
+        return $map;	
+    }
+    
 }

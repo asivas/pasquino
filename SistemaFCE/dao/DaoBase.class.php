@@ -85,45 +85,21 @@ abstract class DaoBase {
      */
     protected function loadMapping()
     {
-        if(!isset($this->_xmlMapping))
-        {
-            if(empty($this->_xmlMappingFile))
-            {
-            	$archivoMappings = "";
-                $nombreEntidad = str_replace("Dao","",get_class($this));
-                
-                $mappings = $this->_getMapperConfig();
-                $map = $this->_getMappingConfig($nombreEntidad);
-                if(isset($map))
-                {
-                	$archivo = $map['archivo'];
-                    if(isset($map['dir']))
-                    {
-                        $archivo = "{$map['dir']}/{$archivo}";
-                    }
-                    $archivoMappings = "{$mappings['path']}/{$archivo}";
-                }
-                
-                //el archivo obtenido está puesto relativo a la raiz del proyecto
-                $this->_xmlMappingFile = Configuracion::getSystemRootDir()."/{$archivoMappings}";
-                
-            }
-            
-            $map = simplexml_load_file($this->_xmlMappingFile);
-            
-            $this->_xmlMapping = $map->clase;
-                      
-            $path = (string)$map['path'];
-            
-            if(!empty($path))  $path.="/";
-            
-            if(!empty($map->clase['path']))
-            {  
-                $path .= "{$map->clase['path']}/";
-            }
-                        
-            $this->_pathEntidad = "{$path}{$this->_xmlMapping['nombre']}.class.php";
+        $map = Configuracion::getMappingClase(str_replace("Dao","",get_class($this)),$this->_xmlMappingFile);
+        
+        $this->_xmlMapping = $map->clase;
+        
+        $path = (string)$map['path'];
+        
+        if(!empty($path))  $path.="/";
+        
+        if(!empty($map->clase['path']))
+        {  
+            $path .= "{$map->clase['path']}/";
         }
+        
+        $this->_pathEntidad = "{$path}{$this->_xmlMapping['nombre']}.class.php";
+        
         return $this->_xmlMapping;
     } 
     
@@ -159,7 +135,7 @@ abstract class DaoBase {
     {
     	$nombreDao = $nombreDaoFile = "Dao".$clase;
         
-        $map = $this->_getMappingConfig($clase);
+        $map = Configuracion::getMappingConfigClase($clase);
         
         if(isset($map) && isset($map['dir']))
            $nombreDaoFile = "{$map['dir']}/{$nombreDaoFile}";
