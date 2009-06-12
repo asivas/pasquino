@@ -613,7 +613,7 @@ class BaseMod {
      */
 	function getSelectInput($name,$options,$attributes,$selected=null)
 	{
-        return $this->_form->getSelectInput($name,$options,$attributes,$selected);
+        return $this->_form->getSelectInput($this->smarty,$name,$options,$attributes,$selected);
 	}
     
     

@@ -81,16 +81,16 @@ class BaseForm extends HTML_QuickForm {
      * @param array $options opciones compatibles con las opciones de HTML_QuickForm_select
      * @param mixed $attributes atributos compatibles con los atributos de HTML_QuickForm_select
      */
-    function getSelectInput($name,$options,$attributes,$selected=null)
+    function getSelectInput($smarty,$name,$options,$attributes,$selected=null)
     {
-        $this->_form->addElement('select',$name,'label:',$options,$attributes);
+        $this->addElement('select',$name,'label:',$options,$attributes);
         
         if(isset($selected))
         {
-            $this->_form->setDefaults(array($name=>$selected)); 
+            $this->setDefaults(array($name=>$selected)); 
         }   
         
-        $rendered = $this->getRenderedForm();
+        $rendered = $this->renderSmarty($smarty);
        
         return $rendered[$name]['html'];
     }
