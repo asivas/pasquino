@@ -11,4 +11,9 @@ class IsEmpty extends Eq {
     {
     	return "{$this->propiedad} es vacio";
     }
+    
+    function toArray()
+    {
+    	return array("EMPTY"=>$this->propiedad);
+    }
 }

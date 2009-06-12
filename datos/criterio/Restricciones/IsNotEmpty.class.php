@@ -11,4 +11,9 @@ class IsNotEmpty extends Ne {
     {
         return "{$this->propiedad} no es vacio";
     }
+    
+    function toArray()
+    {
+        return array("NOTEMPTY"=>$this->propiedad);
+    }
 }

@@ -25,6 +25,7 @@ class Between extends Restriccion {
     }
     
     function toArray(){
-        return array($this->operador=>array($this->propiedad,$this->valor,$this->valor2));
+        
+        return array($this->operador=>array($this->propiedad,array($this->valor,$this->valor2)));
     }
 }

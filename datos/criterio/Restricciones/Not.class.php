@@ -28,4 +28,9 @@ class Not extends Restriccion {
         
         return " no cumple (".$aNegar.")";
     }
+    
+    function toArray()
+    {
+        return array("NOT"=>$this->_restriccion->toArray());
+    }
 }

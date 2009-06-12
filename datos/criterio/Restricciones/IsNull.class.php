@@ -18,4 +18,9 @@ class IsNull extends Restriccion {
     {
         return "{$this->propiedad} es NULL";
     }
+    
+    function toArray()
+    {
+        return array("ISNULL"=>$this->propiedad);
+    }
 }
