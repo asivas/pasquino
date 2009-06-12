@@ -12,8 +12,9 @@
 
 /*
 	@package xajax
-	@version $Id: xajaxUserFunction.inc.php,v 1.1 2008-08-26 20:53:19 martinezdiaz Exp $
-	@copyright Copyright (c) 2005-2006 by Jared White & J. Max Wilson
+	@version $Id: xajaxUserFunction.inc.php,v 1.2 2009-06-12 22:09:48 vidaguren Exp $
+	@copyright Copyright (c) 2005-2007 by Jared White & J. Max Wilson
+	@copyright Copyright (c) 2008-2009 by Joseph Woolley, Steffen Konerow, Jared White  & J. Max Wilson
 	@license http://www.xajaxproject.org/bsd_license.txt BSD License
 */
 

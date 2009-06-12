@@ -12,8 +12,9 @@
 
 /*
 	@package xajax
-	@version $Id: xajax_legacy_uncompressed.js,v 1.1 2008-08-26 20:53:19 martinezdiaz Exp $
-	@copyright Copyright (c) 2005-2006 by Jared White & J. Max Wilson
+	@version $Id: xajax_legacy_uncompressed.js,v 1.2 2009-06-12 22:09:48 vidaguren Exp $
+	@copyright Copyright (c) 2005-2007 by Jared White & J. Max Wilson
+	@copyright Copyright (c) 2008-2009 by Joseph Woolley, Steffen Konerow, Jared White  & J. Max Wilson
 	@license http://www.xajaxproject.org/bsd_license.txt BSD License
 */
 
@@ -29,10 +30,14 @@ try
 		xajax.legacy = {}
 
 	/*
-		Function: call
+		Function: xajax.legacy.call
 		
 		Convert call parameters from the 0.2.x syntax to the new *improved*
 		call format.
+		
+		Parameters: 
+			sFunction - (string): Registered PHP Functionname to be called
+			objParametes - (object): Paramter object for the request.
 		
 		This is a wrapper function around the standard <xajax.call> function.
 	*/

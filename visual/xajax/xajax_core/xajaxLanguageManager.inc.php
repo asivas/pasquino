@@ -14,8 +14,9 @@
 
 /*
 	@package xajax
-	@version $Id: xajaxLanguageManager.inc.php,v 1.1 2008-08-26 20:53:19 martinezdiaz Exp $
-	@copyright Copyright (c) 2005-2006 by Jared White & J. Max Wilson
+	@version $Id: xajaxLanguageManager.inc.php,v 1.2 2009-06-12 22:09:48 vidaguren Exp $
+	@copyright Copyright (c) 2005-2007 by Jared White & J. Max Wilson
+	@copyright Copyright (c) 2008-2009 by Joseph Woolley, Steffen Konerow, Jared White  & J. Max Wilson
 	@license http://www.xajaxproject.org/bsd_license.txt BSD License
 */
 
@@ -134,7 +135,8 @@ class xajaxLanguageManager
 		
 		Called by the main xajax object as configuration options are set.  See also:
 		<xajax::configure>.  The <xajaxLanguageManager> tracks the following configuration
-		options:
+		options.
+		Parameters:
 		
 		- language (string, default 'en'): The currently selected language.
 	*/
@@ -155,8 +157,10 @@ class xajaxLanguageManager
 		
 		Called to register an array of alternate language messages.
 		
-		sLanguage - (string) the character code which represents the language being registered.
-		aMessages - (array) the array of translated debug and error messages
+		Parameters:
+		
+		sLanguage - (string): the character code which represents the language being registered.
+		aMessages - (array): the array of translated debug and error messages
 	*/
 	function register($sLanguage, $aMessages) {
 		$this->aMessages[$sLanguage] = $aMessages;
