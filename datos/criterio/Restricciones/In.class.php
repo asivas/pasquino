@@ -34,4 +34,13 @@ class In extends Restriccion {
         $listaIn = $this->_getListaIn();
         return "{$this->propiedad} está en la lista ($listaIn)";
     }
+    
+    function toArray(){
+        $valores = array();
+        foreach($this->valor as $v)
+        {
+            $valores[] = $v;
+        }
+        return array($this->operador=>array($this->propiedad,$valores));
+    }
 }

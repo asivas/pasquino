@@ -36,4 +36,13 @@ class AllEq extends Restriccion {
         }
         return $str;
     }
+    
+    function toArray(){
+        $a =  array("AND"=>array());
+        foreach($this->_nombresValores as $nombre => $valor)
+        {
+        	$a['AND'][] = array($this->operador=>array($nombre,$valor));
+        }
+        return;
+    }
 }

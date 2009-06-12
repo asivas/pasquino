@@ -47,4 +47,8 @@ class Restriccion {
     	return "{$this->propiedad} {$this->operadorH} {$this->valor}";
     }
     
+    function toArray(){
+    	return array($this->operador=>array($this->propiedad,$this->valor));
+    }
+    
 }

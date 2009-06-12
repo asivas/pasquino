@@ -71,4 +71,16 @@ class Criterio {
         }
         return $str;
     }
+    
+    function toArray()
+    {
+     	$a = array();
+        $a[$this->_operador] = array();
+        foreach($this->_expresiones as $exp)
+        {
+            if(!is_string($exp) && !is_array($exp)) $exp = $exp->toArray();
+            $a[$this->_operador][] = $exp;
+        }
+        return $a;
+    }
 }

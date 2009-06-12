@@ -23,4 +23,8 @@ class Between extends Restriccion {
     {
         return "{$this->propiedad} {$this->operadorH} '{$this->valor}' y '{$this->valor2}'"; 
     }
+    
+    function toArray(){
+        return array($this->operador=>array($this->propiedad,$this->valor,$this->valor2));
+    }
 }
