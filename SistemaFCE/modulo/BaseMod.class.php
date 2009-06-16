@@ -40,7 +40,7 @@ class BaseMod {
     var $_dateTimeFormat;
     var $_timeFormat;
     
-    function BaseMod($skinDirName=null,$conXajax=true) {
+    function __construct($skinDirName=null,$conXajax=true) {
         
         if(!isset($this->session))
             $this->session = new Session(Configuracion::getAppName());
@@ -85,7 +85,7 @@ class BaseMod {
     /**
      * Creación del HTML_QuickForm y sus elementos 
      */
-    public function crearForm()
+    protected function crearForm()
     {
     	$this->_form = new BaseForm('form');
     }
@@ -186,7 +186,7 @@ class BaseMod {
     /**
      * @return array Arreglo para que smarty pueda generar el Menu Principal
      */
-    public function getMenuPrincipal()
+    protected function getMenuPrincipal()
     {
     	$modulosConfig = Configuracion::getModulosConfig();
         foreach($modulosConfig->modulo as $mod)
@@ -221,18 +221,18 @@ class BaseMod {
         return null;
     }
         
-    function addError($strError)
+    protected function addError($strError)
     {
     	$this->errors[] = $strError;
     }
     
-    function ajaxNoPermisos(&$objResponse)
+    protected function ajaxNoPermisos(&$objResponse)
     {
         if(isset($objResponse))
             $this->displayError($objResponse,"No tiene permisos suficientes para esa acción");
     }
     
-    function ajaxCheckPermisos(&$objResponse=null)
+    protected function ajaxCheckPermisos(&$objResponse=null)
     {
         if(!$this->session->LogIn())
         {   
@@ -313,7 +313,7 @@ class BaseMod {
         return false;
     }
     
-    function checkPermisos($req)
+    protected function checkPermisos($req)
     {
     	if(!$this->_esPublica($req['accion']) && !$this->session->LogIn())
         {   
@@ -333,7 +333,7 @@ class BaseMod {
         return true;
     }
     
-    function mostrar($tpl)
+    protected function mostrar($tpl)
     {
         if(!empty($this->errors))
             $this->smarty->assign('errores',$this->errors);
@@ -350,7 +350,7 @@ class BaseMod {
      * @param array $req Arreglo del request
      * @return string Cadena de "criterio sentido" de ordenamiento (tipo SQL)
      */
-    function getOrder($req){
+    protected function getOrder($req){
         if(!empty($req['sort']))
         {
             if($req['sort']!=$this->_orderListado)
@@ -398,12 +398,12 @@ class BaseMod {
      * Genera un objeto Criterio a partir de los filtros pasados por request
      * @param array $req
      */
-    function getFiltro($req){}
+    protected function getFiltro($req){}
     
     /**
      * redirecciona a la home del modulo 
      */
-    function redirectHomeModulo($req=null)
+    protected function redirectHomeModulo($req=null)
     {
         if(!isset($req)) $req = $_GET;
         
@@ -414,7 +414,7 @@ class BaseMod {
     /**
      * Redirecciona a la home del sistema 
      */
-    function redirectHomeSistema()
+    protected function redirectHomeSistema()
     {
         setcookie('mod',null);
         header("Location: {$_SERVER['PHP_SELF']}");
@@ -425,7 +425,7 @@ class BaseMod {
      * Asigna valores a las variables miembro que guardan información recibida de request
      * @param array $req
      */
-    function setMiembros($req) { }
+    protected function setMiembros($req) { }
     
     /**
      * Ejecuta la acción del modulo, a partir de la variable accion recibida por request
@@ -519,13 +519,13 @@ class BaseMod {
     }
     
     /* funciones abstractas */
-    function alta($req){}
-    function baja($req){}
-    function lista(){}
-    function form($req=null){}
-    function modificacion($req){}
+    protected function alta($req){}
+    protected function baja($req){}
+    protected function lista(){}
+    protected function form($req=null){}
+    protected function modificacion($req){}
     
-    function caracteres_html($str)
+    protected function caracteres_html($str)
     {
     	$tr = array('á'=>'&aacute;','é'=>'&eacute;','í'=>'&iacute;','ó'=>'&oacute;','ú'=>'&uacute;',
                     'Á'=>'&Aacute;','É'=>'&eacute;','Í'=>'&iacute;','Ó'=>'&oacute;','Ú'=>'&uacute;',
@@ -538,7 +538,7 @@ class BaseMod {
      * @param string $tpl nombre de archivo del template
      * @return string código html procesado por smarty  
      */
-    function fetch($tpl)
+    protected function fetch($tpl)
     {
     	return $this->caracteres_html($this->smarty->fetch($tpl));
     }
@@ -546,7 +546,7 @@ class BaseMod {
     /**
      * Muestra un mensaje usando xajax
      */
-    function displayMensaje(&$xajaxObjResponse,$mensaje,$className='message',$xPos=null,$yPos=null,$idDiv='message')
+    protected function displayMensaje(&$xajaxObjResponse,$mensaje,$className='message',$xPos=null,$yPos=null,$idDiv='message')
     {
     	
         $xajaxObjResponse->script("clearTimeout(tMsg)");
@@ -562,7 +562,7 @@ class BaseMod {
     /**
      * Muestra un mensaje de error usando xajax
      */
-    function displayError(&$xajaxObjResponse,$mensaje)
+    protected function displayError(&$xajaxObjResponse,$mensaje)
     {
         $this->displayMensaje($xajaxObjResponse,$mensaje,'error');
     }
@@ -586,7 +586,7 @@ class BaseMod {
      * Crea el input con el calendario selector de fecha
      * @return String con el html listo para insertar en el template
      */
-    function getCalendarInput($name, $value = "", $format = null)
+    protected function getCalendarInput($name, $value = "", $format = null)
 	{
 		return $this->_form->getCalendarInput($this->_calendar,$name,$value,$format);
 	}
@@ -599,7 +599,7 @@ class BaseMod {
      * @return array arreglo asociativo id => nombre
      * @deprecated 1.3- 05/06/2009
      */
-    function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra')
+    protected function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra')
     {
     	return $this->_form->getArregloSelect($listaElementos,$vacio,$otro,$otroLabel);
     }
@@ -611,7 +611,7 @@ class BaseMod {
      * @param mixed $attributes atributos compatibles con los atributos de HTML_QuickForm_select
      * @deprecated 1.3- 05/06/2009
      */
-	function getSelectInput($name,$options,$attributes,$selected=null)
+	protected function getSelectInput($name,$options,$attributes,$selected=null)
 	{
         return $this->_form->getSelectInput($this->smarty,$name,$options,$attributes,$selected);
 	}
@@ -621,7 +621,7 @@ class BaseMod {
      * Asigna el formulairo pasado para smarty a la variable fomrulario de $this->smarty
      * @param string $nombreVarSmarty Nombre de la variable que será asignada en smarty con el contenido del formulario 
      */
-    function renderForm($nombreVarSmarty = 'formulario',$form=null)
+    protected function renderForm($nombreVarSmarty = 'formulario',$form=null)
     {
     	if(!isset($form))
             $form = $this->_form;
