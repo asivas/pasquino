@@ -527,10 +527,7 @@ class BaseMod {
     
     protected function caracteres_html($str)
     {
-    	$tr = array('á'=>'&aacute;','é'=>'&eacute;','í'=>'&iacute;','ó'=>'&oacute;','ú'=>'&uacute;',
-                    'Á'=>'&Aacute;','É'=>'&eacute;','Í'=>'&iacute;','Ó'=>'&oacute;','Ú'=>'&uacute;',
-                    'ñ'=>'&ntilde;','Ñ'=>'&Ntilde;','ü'=>'&uuml;','Ü'=>'&Uuml;');
-        return strtr($str,$tr);
+    	return $this->_form->caracteres_html($str);
     }
     
     /**
