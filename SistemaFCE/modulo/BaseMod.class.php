@@ -41,7 +41,6 @@ class BaseMod {
     var $_timeFormat;
     
     function __construct($skinDirName=null,$conXajax=true) {
-        
         if(!isset($this->session))
             $this->session = new Session(Configuracion::getAppName());
         
@@ -69,7 +68,7 @@ class BaseMod {
         $this->_timeFormat = Configuracion::getTimeFormat();
         
         $this->_tilePath = Configuracion::getDefaultTplPath($skinDirName);//'decorators/default.tpl';
-		$this->crearForm();
+		//$this->crearForm();
         
         
         if($conXajax)
@@ -474,6 +473,7 @@ class BaseMod {
             $this->alta($_POST);
             $this->redirectHomeModulo();
         }
+        $this->crearForm();
         $this->form();
     }
     
@@ -488,7 +488,8 @@ class BaseMod {
         {
             $this->modificacion($req);                    
             $this->redirectHomeModulo($req);
-        }                
+        }      
+        $this->crearForm();          
         $this->form($req);
     }
     
