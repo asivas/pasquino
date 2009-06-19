@@ -58,7 +58,7 @@ class BaseMod {
         
         $this->initSmarty();
         if($conXajax)
-            $this->xajax = new xajax();
+            $this->xajax = new xajax(null,'es');
         
         $this->_orderListado = $_SESSION[get_class($this)]['sort'];
         $this->_sentidoOrderListado = $_SESSION[get_class($this)]['sortSentido'];
@@ -468,12 +468,12 @@ class BaseMod {
      */
     protected function accionAlta($req)
     {
-    	if(!empty($_POST))
+    	$this->crearForm();
+        if(!empty($_POST) && $_POST['accion']=='alta')
         {
             $this->alta($_POST);
             $this->redirectHomeModulo();
         }
-        $this->crearForm();
         $this->form();
     }
     
@@ -484,12 +484,12 @@ class BaseMod {
      */
     protected function accionModif($req)
     {
-    	if(!empty($_POST))
+    	$this->crearForm();
+        if(!empty($_POST) && $_POST['accion']=='modif')
         {
             $this->modificacion($req);                    
             $this->redirectHomeModulo($req);
-        }      
-        $this->crearForm();          
+        }         
         $this->form($req);
     }
     
