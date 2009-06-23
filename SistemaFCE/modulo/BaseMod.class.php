@@ -350,7 +350,7 @@ class BaseMod {
         $this->smarty->assign('menuMod',$this->_menuModTplPath);
         $this->smarty->assign('pantalla',$tpl);
         $this->smarty->assign('ajax',$this->xajax->getJavascript('js/'));
-        $this->_form = new HTML_QuickForm('form','post',$_SERVER.PHP_SELF);
+        
         $this->smarty->Display($this->_tilePath);
     }
     
@@ -478,7 +478,6 @@ class BaseMod {
      */
     protected function accionAlta($req)
     {
-    	$this->crearForm();
         if(!empty($_POST) && $_POST['accion']=='alta')
         {
             $this->alta($_POST);
@@ -494,7 +493,6 @@ class BaseMod {
      */
     protected function accionModif($req)
     {
-    	$this->crearForm();
         if(!empty($_POST) && $_POST['accion']=='modif')
         {
             $this->modificacion($req);                    
@@ -538,7 +536,7 @@ class BaseMod {
     
     protected function caracteres_html($str)
     {
-    	return $this->_form->caracteres_html($str);
+    	return $this->getForm()->caracteres_html($str);
     }
     
     /**
@@ -596,7 +594,7 @@ class BaseMod {
      */
     protected function getCalendarInput($name, $value = "", $format = null)
 	{
-		return $this->_form->getCalendarInput($this->_calendar,$name,$value,$format);
+		return $this->getForm()->getCalendarInput($this->_calendar,$name,$value,$format);
 	}
     
     /**
@@ -609,7 +607,7 @@ class BaseMod {
      */
     protected function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra')
     {
-    	return $this->_form->getArregloSelect($listaElementos,$vacio,$otro,$otroLabel);
+    	return $this->getForm()->getArregloSelect($listaElementos,$vacio,$otro,$otroLabel);
     }
 	
     /**
@@ -621,7 +619,7 @@ class BaseMod {
      */
 	protected function getSelectInput($name,$options,$attributes,$selected=null)
 	{
-        return $this->_form->getSelectInput($this->smarty,$name,$options,$attributes,$selected);
+        return $this->getForm()->getSelectInput($this->smarty,$name,$options,$attributes,$selected);
 	}
     
     
@@ -632,7 +630,7 @@ class BaseMod {
     protected function renderForm($nombreVarSmarty = 'formulario',$form=null)
     {
     	if(!isset($form))
-            $form = $this->_form;
+            $form = $this->getForm();
             
     	$rf = $form->renderSmarty($this->smarty);
         $this->smarty->assign($nombreVarSmarty,$rf);

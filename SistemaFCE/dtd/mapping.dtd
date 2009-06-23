@@ -8,6 +8,7 @@
 	tabla CDATA #REQUIRED
 	path CDATA #IMPLIED
 	orden CDATA #IMPLIED
+	data-source CDATA #IMPLIED
 >
 <!ELEMENT id EMPTY >
 <!ATTLIST id 

@@ -39,9 +39,13 @@ abstract class DaoBase {
      * Constructor de DaoBase
      */
     function DaoBase() {
-        $this->_db = $this->getConexion();
-        
         $this->loadMapping();
+        
+        $dataSource = null;
+        if(isset($this->_xmlMapping['data-source']))
+            $dataSource = (string)$this->_xmlMapping['data-source'];
+        
+        $this->_db = $this->getConexion($dataSource);
         
         $this->tableName = $this->_xmlMapping['tabla'];
         $this->defaultOrder = $this->_xmlMapping['orden'];
@@ -238,7 +242,12 @@ abstract class DaoBase {
             if(isset($prop['tipo'])) //todos deben tener tipo
             {
                 $dao = $this->_newDaoClase($prop['tipo']);
-                $elemsRelac = $dao->findBy(new Criterio("`{$prop['columna']}` = ".$elem->getId().""));
+                
+                $colName = "{$prop['columna']}";
+                if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
+                    $colName = "`{$colName}`";
+                
+                $elemsRelac = $dao->findBy(new Criterio("{$colName} = ".$elem->getId().""));
                 $elem->$set($elemsRelac);
             }
         }
@@ -268,7 +277,11 @@ abstract class DaoBase {
         else
         {
             $tabla = $this->tableName;
-            $sql = "SELECT * FROM `{$tabla}`";
+            
+            if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
+                $tabla = "`{$tabla}`";
+            
+            $sql = "SELECT * FROM {$tabla}";
         }
         
         if($filtro != null && $filtro->getCondicion()!='') 
@@ -352,6 +365,10 @@ abstract class DaoBase {
      */
     function deletePorId($id)
     {
-    	return $this->_db->Execute("DELETE FROM `{$this->tableName}` WHERE ".$this->getCriterioId($id)->getCondicion());
+    	$tn = "{$this->tableName}";
+        if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
+           $tn = "`{$tn}`";
+        
+        return $this->_db->Execute("DELETE FROM {$tn} WHERE ".$this->getCriterioId($id)->getCondicion());
     }
 }
