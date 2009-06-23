@@ -31,9 +31,8 @@ class BaseForm extends HTML_QuickForm {
     function getCalendarInput($objCal ,$name, $value = "", $format = null)
     {
         if(is_null($format)) $format = $this->_dateFormat;
-        ob_start();
         
-        $objCal->make_input_field(
+        $cal = $objCal->get_input_field(
         // calendar options go here; see the documentation and/or calendar-setup.js
         array('firstDay'       => 1, // show Monday first
               'showsTime'      => false,
@@ -44,7 +43,7 @@ class BaseForm extends HTML_QuickForm {
         // field attributes go here
         array('name'        => $name,
               'value'       => $value));
-        return ob_get_clean();
+        return $cal;
     }
     
     /**

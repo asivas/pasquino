@@ -15,17 +15,14 @@ class FCEcalendar extends DHTML_Calendar{
         $options = array_merge($cal_options,
                                array('inputField' => $this->_field_id($id),
                                      'button'     => $this->_trigger_id($id)));
-		return $html;
+		$respuesta['html'] = $html;
+		$respuesta['js'] = $this->_make_js_calendar($options);
+		return $respuesta;
    }
 
-    function get_script($cal_options = array(), $field_attributes = array()) {
-        $id = $this->_gen_id();
-        $attrstr = $this->_make_html_attr(array_merge($field_attributes,
-                                                      array('id'   => $this->_field_id($id),
-                                                            'type' => 'text')));
-        $options = array_merge($cal_options,
-                               array('inputField' => $this->_field_id($id),
-                                     'button'     => $this->_trigger_id($id)));
-		return $this->_make_calendar($options);
-   }
+     function _make_js_calendar($other_options = array()) {
+        $js_options = $this->_make_js_hash(array_merge($this->calendar_options, $other_options));
+        $code  = ( 'Calendar.setup({'.$js_options.'})');
+        return $code;
+    }
 }

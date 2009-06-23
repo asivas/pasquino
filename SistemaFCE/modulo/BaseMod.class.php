@@ -4,7 +4,7 @@
  * @author lucas.vidaguren
  * @since 06/10/2008
  */
-require_once('visual/jscalendar/calendar.php');
+require_once('visual/jscalendar/FCEcalendar.class.php');
 require_once('SistemaFCE/util/Session.class.php'); 
 require_once('visual/smarty/libs/Smarty.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
@@ -46,7 +46,7 @@ class BaseMod {
         
         $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
 
-		$this->_calendar = new DHTML_Calendar('js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
+		$this->_calendar = new FCEcalendar('js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
         
         /*
          * Esto debería hacerse cuando exista el DaoUsuario
