@@ -80,6 +80,16 @@ class BaseMod {
             $this->smarty->assign('xajax',$this->xajax->getJavascript('js'));
         }
 	}
+    /**
+     * Provee una referencia al formulario del modulo
+     * Si el formualrio no está aun creado lo crea
+     */
+    function getForm()
+    {
+    	if($this->_form==null)
+            $this->crearForm();
+        return $this->_form;
+    }
     
     /**
      * Creación del HTML_QuickForm y sus elementos 
