@@ -322,21 +322,30 @@ class BaseMod {
         return false;
     }
     
+    public function formLogin()
+    {
+    	$this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['dir']);
+        $this->mostrar('formLogin.tpl');
+        exit();
+    }
+    
+    public function sinPermisos()
+    {
+        $this->_menuModTplPath = '';
+        $this->mostrar('sinPermisos.tpl');
+        die();
+    }
+    
     protected function checkPermisos($req)
     {
     	if(!$this->_esPublica($req['accion']) && !$this->session->LogIn())
         {   
-            $this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['dir']);
-            $this->mostrar('formLogin.tpl');
-            exit();
+            $this->formLogin();
         }
         
         if( !$this->_esPublica($req['accion']) && ( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion'])) )
         {   
-            print $req['accion'] ;
-            $this->_menuModTplPath = '';
-            $this->mostrar('sinPermisos.tpl');
-            die();
+            $this->sinPermisos();   
         }
         
         return true;
