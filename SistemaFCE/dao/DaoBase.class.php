@@ -324,7 +324,7 @@ abstract class DaoBase {
      * Guarda creando si no existe o actualizando si existe a partir de una instancia de la entidad
      * @param object $elem
      */
-    function save($elem) {
+    function save(&$elem) {
         
         $buf = $this->getBuffer($elem);
         
@@ -339,7 +339,16 @@ abstract class DaoBase {
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
         
-        return $this->_db->AutoExecute($this->tableName,$buf,$mode,$where);
+        $ret = $this->_db->AutoExecute($this->tableName,$buf,$mode,$where);
+        
+        if($mode == 'INSERT')
+        {
+            $id = $this->_xmlMapping->id;
+            $set = "set".ucfirst($id['nombre']);
+            $elem->$set($this->_db->Insert_ID());
+        }
+        
+        return $ret;
     }
     
     /**

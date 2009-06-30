@@ -38,7 +38,7 @@ require_once("datos/reporte/reportWriter.class.php");
 
 define(cRowHeight,7);
 
-class pdfReportWriter extends reportWriter
+class PDFReportWriter extends reportWriter
 {
     var $pdfFileName;
     var $pdfFilePath;
@@ -58,10 +58,11 @@ class pdfReportWriter extends reportWriter
      * Crea un nuevo objeto excelReportWriter y seteando las variables e inicializando
      * el excelWriter
      */
-    function pdfReportWriter($filePath="",$fileName="")
+    function __construct($filePath="",$fileName="")
     {
         $this->pdfFilePath = $filePath;
-        chmod($this->pdfFilePath,0777);
+        if(is_dir($this->pdfFilePath))
+            chmod($this->pdfFilePath,0777);
         
         /*if(empty($fileName))
             $fileName = "(" . date("Y-m-d H;i;s").").pdf";
@@ -218,11 +219,13 @@ class pdfReportWriter extends reportWriter
 	 * @param integer $colspan la cantidad de columnas que ocupa el header
 	 * @param string $style la clase CSS que define el estilo de la celda
 	 */
-	function writeCell($value,$link=NULL,$style=NULL,$colspan=NULL)
+	function writeCell($value,$link=NULL,$style=NULL,$colspan=NULL,$border="T")
 	{
         $value = str_replace('&nbsp;',' ',$value);
         $width = $this->cellWidth;
         if(!empty($colspan)) $width *= $colspan; 
+        
+        $this->pdf->SetFont('');
         
         $nStrWidth = $this->pdf->GetStringWidth($value);
         
@@ -233,7 +236,7 @@ class pdfReportWriter extends reportWriter
         {
             $nuevoX = $this->pdf->GetX() + $width;
             $nuevoY = $this->pdf->GetY();
-            $this->pdf->MultiCell($width,$this->defRowHeight,$value,"T",'L');
+            $this->pdf->MultiCell($width,$this->defRowHeight,$value,$border,'L');
             $yResultante = $this->pdf->GetY();
             if(($yResultante - $nuevoY) >= $this->rowHeight)
                 $this->rowHeight = $yResultante - $nuevoY;
@@ -241,7 +244,7 @@ class pdfReportWriter extends reportWriter
         }            
         else
         {        
-            $this->pdf->Cell($width,$this->rowHeight,$value,"T",0,'L',0,$link);
+            $this->pdf->Cell($width,$this->rowHeight,$value,$border,0,'L',0,$link);
         }
         //$this->pdf->MultiCell(25,7,$value,1,'L');
 	}
@@ -253,7 +256,7 @@ class pdfReportWriter extends reportWriter
 	 * @param string $link la URL a donde apunta si el header es un link 
 	 * @param integer $colspan la cantidad de columnas que ocupa el header
 	 */	
-	function writeHeader($value,$link = NULL,$colspan=NULL)
+	function writeHeader($value,$link = NULL,$colspan=NULL,$border=1)
 	{
 	    $this->pdf->tag = 1;
 	    $this->pdf->SetFont('','B');
@@ -261,7 +264,7 @@ class pdfReportWriter extends reportWriter
 	    //print round($this->pdf->GetX()) . " " . ($this->cellWidth * 2) .  " $value <br>";
 	    if($this->reportName == 'Fuera Por Trabajo' && round($this->pdf->GetX()) >= $this->cellWidth * 2 && round($this->pdf->GetX()) <= $this->cellWidth * 3)
             $width *= 4;
-        $this->pdf->Cell($width,$this->rowHeight,$value,1,0,'L',0,$link);
+        $this->pdf->Cell($width,$this->rowHeight,$value,$border,0,'L',0,$link);
         //$this->pdf->MultiCell(25,7,$value,1,'L');
         $this->pdf->tag = -1;
         $this->pdf->SetFont('','B');
