@@ -127,7 +127,10 @@ abstract class DaoBase {
                 $p = $elem->$get();
                 $col = (string)$prop['columna'];
                 if(isset($prop['tipo'])) //si es con tipo actualizo el id
-                    $buf[$col] = $p->getId();
+                    if(is_object($p))
+                    {
+                    	$buf[$col] = $p->getId();
+                    }
                 else
                     $buf[$col] = $p;
             }
