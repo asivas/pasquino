@@ -354,6 +354,11 @@ abstract class DaoBase {
         return $ret;
     }
     
+    function getLastInsertId()
+    {
+    	return $this->_db->Insert_ID();
+    }
+    
     /**
      * Genera la el criterio de condición de id usada para la actualización y eliminación
      * @return object instancia de Criterio para filtrar por id
