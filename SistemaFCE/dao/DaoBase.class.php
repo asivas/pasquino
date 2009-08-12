@@ -126,11 +126,8 @@ abstract class DaoBase {
                 $get = "get".ucfirst($prop['nombre']);
                 $p = $elem->$get();
                 $col = (string)$prop['columna'];
-                if(isset($prop['tipo'])) //si es con tipo actualizo el id
-                    if($p != null)
-                    {
-                    	$buf[$col] = $p->getId();
-                    }
+                if(isset($prop['tipo']) && $p != null) //si es con tipo actualizo el id
+                   $buf[$col] = $p->getId();
                 else
                     $buf[$col] = $p;
             }
