@@ -34,6 +34,10 @@ abstract class DaoBase {
      * @var string ruta donde se encuentra el archivo que define la clase de entidad 
      */
     private $_pathEntidad;
+    /**
+     * @var string Ultimo mensaje de error que sucedió en un save  
+     */
+    private $_lastError;
     
     /**
      * Constructor de DaoBase
@@ -114,7 +118,7 @@ abstract class DaoBase {
     protected function getBuffer($elem)
     {
         $buf = array();
-        
+      
         $id = $this->_xmlMapping->id;
         $get = "get".ucfirst($id['nombre']);
         $buf[(string)$id['columna']] = $elem->$get();
@@ -327,6 +331,7 @@ abstract class DaoBase {
     function save(&$elem) {
         
         $buf = $this->getBuffer($elem);
+
         
         $mode   = 'INSERT';
         $where  = false;
@@ -338,8 +343,11 @@ abstract class DaoBase {
             $mode  = 'UPDATE';
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
-        
-        $ret = $this->_db->AutoExecute($this->tableName,$buf,$mode,$where);
+
+        $ret = $this->_db->AutoExecute((string)$this->tableName,$buf,$mode,$where);
+		
+		if(!$ret)
+			$this->_lastError =  $this->_db->ErrorMsg();
         
         if($mode == 'INSERT')
         {
@@ -371,6 +379,11 @@ abstract class DaoBase {
         $c->add("{$nombreColId} = '{$idElemento}'");
         
         return $c;
+    }
+    
+    public function getLastError()
+    {
+    	print $this->_lastError;
     }
     
     /**
