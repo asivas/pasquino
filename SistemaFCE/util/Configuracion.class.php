@@ -323,4 +323,27 @@ class Configuracion {
         return $map;	
     }
     
+    
+    public static function ejecutarSistema($req=null,$m=null)
+    {
+        if(!isset($req))
+            $req = $_REQUEST;
+        
+        if(!isset($m))
+        {
+            $m = $req['mod'];
+            if(!empty($_GET['mod'])) $m = $_GET['mod'];
+            if(!empty($_POST['mod'])) $m = $_POST['mod'];
+        }
+        
+        $modName = ucfirst($m)."Mod";
+        
+        if(!class_exists($modName))
+            $modName = Configuracion::getDefaultMod().'Mod';
+        
+        $mod = new $modName();
+        
+        $mod->ejecutar($_REQUEST);	
+    }
+    
 }
