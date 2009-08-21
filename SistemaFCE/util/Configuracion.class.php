@@ -328,6 +328,21 @@ class Configuracion {
     {
         if(!isset($req))
             $req = $_REQUEST;
+        /*
+         Experimental, para poder usar una URL amigable a buscadores
+         
+        $ruta = str_replace($_SERVER['SCRIPT_NAME'],'',$_SERVER['REQUEST_URI']);
+
+        $ruta = str_replace("?{$_SERVER['QUERY_STRING']}",'',$ruta);
+
+        if(!empty($ruta))
+        {
+            $modAcc = split("/",$ruta);
+            $m = $modAcc[1];
+            $req['accion'] = $modAcc[2]; 
+        }
+        
+        */
         
         if(!isset($m))
         {
@@ -343,7 +358,7 @@ class Configuracion {
         
         $mod = new $modName();
         
-        $mod->ejecutar($_REQUEST);	
+        $mod->ejecutar($req);	
     }
     
 }
