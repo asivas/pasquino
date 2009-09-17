@@ -46,7 +46,7 @@ class BaseMod {
         
         $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
 
-		$this->_calendar = new FCEcalendar('js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
+		$this->_calendar = new FCEcalendar('/js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
         
         /*
          * Esto debería hacerse cuando exista el DaoUsuario
@@ -77,7 +77,7 @@ class BaseMod {
             
             $this->xajax->processRequest();
             
-            $this->smarty->assign('xajax',$this->xajax->getJavascript('js'));
+            $this->smarty->assign('xajax',$this->xajax->getJavascript('/js'));
         }
 	}
     /**
