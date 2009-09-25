@@ -35,7 +35,7 @@ class FCKeditor
 	function __construct( $instanceName )
  	{
 		$this->InstanceName	= $instanceName ;
-		$this->BasePath		= '/fckeditor/' ;
+		$this->BasePath		= '/js/fckeditor/' ;
 		$this->Width		= '100%' ;
 		$this->Height		= '200' ;
 		$this->ToolbarSet	= 'Default' ;
@@ -121,6 +121,10 @@ class FCKeditor
 			$iVersion = (int)substr($sAgent, strpos($sAgent, 'Gecko/') + 6, 8) ;
 			return ($iVersion >= 20030210) ;
 		}
+        else if ( strpos($sAgent, 'Chrome/') !== false )
+        {
+            return true;    
+        }
 		else
 			return false ;
 	}
