@@ -6,7 +6,7 @@ function agregarDialogo(nombreDialogo,idContenedor,loaderImgSrc)//id del dialogo
 	if(idContenedor == null) 
 		idContenedor = 'todo';
 	if(loaderImgSrc == null)
-		loaderImgSrc = 'js/sistemafce/ajax-loader.gif';
+		loaderImgSrc = '/js/sistemafce/ajax-loader.gif';
 	
 	contenedor = document.getElementById(idContenedor);
 	
