@@ -119,9 +119,11 @@ abstract class DaoBase {
     {
         $buf = array();
       
-        $id = $this->_xmlMapping->id;
-        $get = "get".ucfirst($id['nombre']);
-        $buf[(string)$id['columna']] = $elem->$get();
+        foreach($this->_xmlMapping->id as $id)
+        {   
+            $get = "get".ucfirst($id['nombre']);
+            $buf[(string)$id['columna']] = $elem->$get();
+        }
         
         foreach($this->_xmlMapping->propiedad as $prop)
         {
@@ -343,11 +345,13 @@ abstract class DaoBase {
             $mode  = 'UPDATE';
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
-
+        
         $ret = $this->_db->AutoExecute((string)$this->tableName,$buf,$mode,$where);
 		
 		if(!$ret)
-			$this->_lastError =  $this->_db->ErrorMsg();
+        {
+            $this->_lastError =  $this->_db->ErrorMsg();
+        }
         
         if($mode == 'INSERT')
         {
