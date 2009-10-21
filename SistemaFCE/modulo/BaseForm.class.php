@@ -107,6 +107,12 @@ class BaseForm extends HTML_QuickForm {
            $this->addElement('hidden',$nombre,$valor);
     }
     
+    function getSelectValue($nombreCampo)
+    {
+    	$arrVal = $this->getElementValue($nombreCampo);
+    	return current($arrVal);
+    }
+    
     function caracteres_html($str)
     {
         $tr = array('á'=>'&aacute;','é'=>'&eacute;','í'=>'&iacute;','ó'=>'&oacute;','ú'=>'&uacute;',
