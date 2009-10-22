@@ -49,11 +49,11 @@ abstract class BaseDialogo extends BaseMod
 	{	
 		$this->crearDialogoConFondo($this->nombreDlg);
 		
-		$this->crearForm();
+		$f = $this->getForm();
 		
 		if($idItem > 0)
 		{
-			$this->_form->setDefaults($idItem);
+			$f->setDefaults($idItem);
 		}
 		
 		$this->assignsSmarty();
