@@ -647,4 +647,9 @@ class BaseMod {
         $this->smarty->assign($nombreVarSmarty,$rf);
         return $rf;
     }
+    
+    protected function getUsuario()
+    {
+    	return $this->_usuario;
+    }
 }
