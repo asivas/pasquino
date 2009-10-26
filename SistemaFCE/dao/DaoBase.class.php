@@ -327,6 +327,14 @@ abstract class DaoBase {
     }
     
     /**
+     * Genera una lista de todos los objetos de los cuales accede a datos esta clase
+     */
+    function findAll()
+    {
+    	return $this->findBy();
+    }
+    
+    /**
      * Guarda creando si no existe o actualizando si existe a partir de una instancia de la entidad
      * @param object $elem
      */
