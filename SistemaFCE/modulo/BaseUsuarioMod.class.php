@@ -102,11 +102,11 @@ class BaseUsuarioMod extends BaseMod{
             $n = (string)$mod['nombre'];
             //busco los permisos de las acciones
             $accionesMod = $mod->acciones;
-            if(!empty($accionesMod->accion))
-            {
-            	foreach($accionesMod->accion as $acc)
-                {
-                	$this->_getArrPermisos($permisos,$acc->permisos);
+            if(isset($accionesMod->accion))
+            {       
+                foreach($accionesMod->accion as $acc)
+                {   
+                    $this->_getArrPermisos($permisos,$acc->permisos);
                 }
             }
             
