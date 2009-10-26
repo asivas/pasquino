@@ -145,7 +145,7 @@ class BaseMod {
         {   
             foreach($item->permisos->permiso as $perm)
             {
-                $tienePermiso |= $$this->_usuario->tienePermiso((string)$perm);
+                $tienePermiso |= $this->_usuario->tienePermiso((string)$perm);
             }  
         }  
         $permAccion = $this->_checkPermisoAccion((string)$item['accion'],$nombreModulo);
@@ -492,7 +492,7 @@ class BaseMod {
         if(!empty($_POST) && $_POST['accion']=='alta')
         {
             $this->alta($_POST);
-            $this->redirectHomeModulo();
+            $this->redirectHomeModulo($req);
         }
         $this->form();
     }
