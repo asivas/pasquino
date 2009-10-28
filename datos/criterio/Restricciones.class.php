@@ -126,5 +126,11 @@ class Restricciones {
         return new Not($restriccion);
     }
     
+    public static function like($nombreProp, $valor)
+    {
+    	require_once('datos/criterio/Restricciones/Like.class.php');
+        return new Like($nombreProp,$valor);
+    }
+    
     
 }

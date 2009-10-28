@@ -1,5 +1,5 @@
 <?php
-require_once('../Restriccion.class.php');
+require_once('datos/criterio/Restriccion.class.php');
 
 class Like extends Restriccion{
 
