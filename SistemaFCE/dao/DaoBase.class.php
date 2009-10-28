@@ -194,10 +194,11 @@ abstract class DaoBase {
         $elem_name = (string)$this->_xmlMapping['nombre'];
         $elem = new $elem_name();
  
-        $id = $this->_xmlMapping->id;
-        $set = "set".ucfirst((string)$id['nombre']);
-		
-        $elem->$set($row[(string)$id['columna']]);
+        foreach($this->_xmlMapping->id as $id)
+        {
+	        $set = "set".ucfirst((string)$id['nombre']);			
+	        $elem->$set($row[(string)$id['columna']]);
+        }
         
         //cargo las propiedades
         $propiedades = $this->_xmlMapping->propiedad;
