@@ -541,9 +541,15 @@ class BaseMod {
     /* funciones abstractas */
     protected function alta($req){}
     protected function baja($req){}
-    protected function lista(){}
+    protected function lista(){
+    	if(method_exists($this,'listar'))
+          $this->listar();
+    }
     protected function form($req=null){}
-    protected function modificacion($req){}
+    protected function modificacion($req){
+    	if(method_exists($this,'modif'))
+          $this->modif($req);
+    }
     
     protected function caracteres_html($str)
     {
