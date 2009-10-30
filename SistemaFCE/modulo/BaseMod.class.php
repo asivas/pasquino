@@ -441,6 +441,12 @@ class BaseMod {
         exit();
     }
     
+    protected function getAccionPredeterminada()
+    {
+    	return 'listar';
+    }
+    
+    
     /**
      * Asigna valores a las variables miembro que guardan información recibida de request
      * @param array $req
@@ -453,7 +459,7 @@ class BaseMod {
      */
     function ejecutar($req)
     {
-    	if(empty($req["accion"])) $req["accion"] = 'listar';
+    	if(empty($req["accion"])) $req["accion"] = $this->getAccionPredeterminada();
     	
     	$accion = $req["accion"];
         
@@ -471,9 +477,9 @@ class BaseMod {
         
         $metodoAccion = "accion".ucfirst($accion);
         
-        if(!method_exists($this,$metodoAccion) && $accion != 'listar')
+        if(!method_exists($this,$metodoAccion) && $accion != $this->getAccionPredeterminada())
         {
-            $req['accion'] = 'listar';
+            $req['accion'] = $this->getAccionPredeterminada();
             $this->ejecutar($req);
             return;
         } 
