@@ -665,8 +665,11 @@ class BaseMod {
     	return $this->_usuario;
     }
     
-    
-    function arrayHtmlDecode($array)
+    /**
+     * Decodifica cualquier tag html encontrado en los strings del arreglo de entrada
+     * @param array $array Arreglo con datos de formulrio con html de simbolos embebido 
+     */
+     function arrayHtmlDecode($array)
 	{
 		foreach($array as $key => $value)
 		{

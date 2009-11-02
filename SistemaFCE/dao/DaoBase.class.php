@@ -64,7 +64,7 @@ abstract class DaoBase {
         
         $db = &ADONewConnection(Configuracion::getDBMS($dataSource)); # eg 'mysql' or 'postgres'
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
-        $db->Connect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
+        $db->NConnect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
         return $db;
     }
     
@@ -408,7 +408,7 @@ abstract class DaoBase {
     	$tn = "{$this->tableName}";
         if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
            $tn = "`{$tn}`";
-        
-        return $this->_db->Execute("DELETE FROM {$tn} WHERE ".$this->getCriterioId($id)->getCondicion());
+        $sql = "DELETE FROM {$tn} WHERE ".$this->getCriterioId($id)->getCondicion();
+        return $this->_db->Execute($sql) or $this->_lastError = $this->_db->ErrorMsg();
     }
 }
