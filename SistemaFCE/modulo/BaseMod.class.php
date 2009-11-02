@@ -664,4 +664,14 @@ class BaseMod {
     {
     	return $this->_usuario;
     }
+    
+    
+    function arrayHtmlDecode($array)
+	{
+		foreach($array as $key => $value)
+		{
+			$array[$key] = html_entity_decode($value,ENT_NOQUOTES,'ISO-8859-1');
+		}
+		return $array;
+	}
 }
