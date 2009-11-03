@@ -32,6 +32,8 @@ class BaseForm extends HTML_QuickForm {
     {
         if(empty($format)) $format = Configuracion::getDateFormat();
         
+        if(empty($format)) $format = "%Y-%m-%d";
+        
         $cal = $objCal->get_input_field(
         // calendar options go here; see the documentation and/or calendar-setup.js
         array('firstDay'       => 1, // show Monday first
