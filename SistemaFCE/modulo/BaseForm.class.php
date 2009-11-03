@@ -30,7 +30,7 @@ class BaseForm extends HTML_QuickForm {
      */
     function getCalendarInput($objCal ,$name, $value = "", $format = null)
     {
-        if(is_null($format)) $format = Configuracion::getDateFormat();
+        if(empty($format)) $format = Configuracion::getDateFormat();
         
         $cal = $objCal->get_input_field(
         // calendar options go here; see the documentation and/or calendar-setup.js
