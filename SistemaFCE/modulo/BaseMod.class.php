@@ -617,7 +617,8 @@ class BaseMod {
      */
     protected function getCalendarInput($name, $value = "", $format = null)
 	{
-		return $this->getForm()->getCalendarInput($this->_calendar,$name,$value,$format);
+		if(is_null($format)) $format = $this->_dateFormat;
+        return $this->getForm()->getCalendarInput($this->_calendar,$name,$value,$format);
 	}
     
     /**
