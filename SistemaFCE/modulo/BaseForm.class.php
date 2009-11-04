@@ -2,11 +2,30 @@
 require_once("HTML/QuickForm.php");
 require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
 
+if(!function_exists('esFecha'))
+{
+    /**
+     * Funcion de regla para validar fechas en quickform
+     */
+    function esFecha($fecha,$puedeSerVacia = false)
+    {
+        $vacio = empty($fecha);
+        if($puedeSerVacia) $vacio = false; 
+        
+        return !$vacio && dateTimeFmt::fechaArgtotime($fecha)!==FALSE;
+    }
+}
+
+/**
+ * Base para los formularios de modulo de pasquino
+ */
 class BaseForm extends HTML_QuickForm {
     function __construct($nombre, $metodo='POST', $accion='',$target='',$attributos='') {
     	
     	if(empty($accion)) $accion = $_SERVER['PHP_SELF'];
     	parent::__construct($nombre,$metodo,$accion,$target,$attributos);
+        
+        $this->registerRule('fecha','callback','esFecha');
         
         $this->addElement('hidden','accion',$_REQUEST['accion']);
     }
