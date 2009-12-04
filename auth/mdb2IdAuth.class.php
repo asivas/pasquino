@@ -12,19 +12,26 @@ abstract class Mdb2IdAuth extends Auth{
     protected $dbUser;
     protected $dbPassword;
     
-    function Mdb2IdAuth($loginFunction = "", $showLogin = false) {
+    function Mdb2IdAuth($loginFunction = "", $showLogin = false, $options=null) {
         
         if(empty($this->userTable))
             $this->userTable = "usuarios";
-        if(empty($this->pasword_label))
-            $this->pasword_label = "password";
+        if(empty($this->password_label))
+            $this->password_label = "password";
         
         $params = array(
             "dsn" => "{$this->dbms}://{$this->dbUser}:{$this->dbPassword}@{$this->dbHost}/{$this->dbName}",
             "table" => $this->userTable,
             "usernamecol" => $this->username_label,
-            "passwordcol" => $this->pasword_label
+            "passwordcol" => $this->password_label
             );
+        if(is_array($options))
+        {
+        	foreach($options as $clave => $valor)
+        	{
+        		$params[$clave] = $valor;
+        	}
+        }
         return parent::Auth("MDB2", $params, $loginFunction,$showLogin); 
     }
     
