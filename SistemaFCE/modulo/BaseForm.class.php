@@ -47,7 +47,7 @@ class BaseForm extends HTML_QuickForm {
      * Crea el input con el calendario selector de fecha
      * @return String con el html listo para insertar en el template
      */
-    function getCalendarInput($objCal ,$name, $value = "", $format = null)
+    function getCalendarInput($objCal ,$name, $value = "", $format = null, $baseID = null)
     {
         if(empty($format)) $format = Configuracion::getDateFormat();
         
@@ -63,7 +63,8 @@ class BaseForm extends HTML_QuickForm {
              ),
         // field attributes go here
         array('name'        => $name,
-              'value'       => $value));
+              'value'       => $value),
+        $baseID);
         return $cal;
     }
     

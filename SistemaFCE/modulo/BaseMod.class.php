@@ -615,10 +615,10 @@ class BaseMod {
      * Crea el input con el calendario selector de fecha
      * @return String con el html listo para insertar en el template
      */
-    protected function getCalendarInput($name, $value = "", $format = null)
+    protected function getCalendarInput($name, $value = "", $format = null, $baseID = null)
 	{
 		if(is_null($format)) $format = $this->_dateFormat;
-        return $this->getForm()->getCalendarInput($this->_calendar,$name,$value,$format);
+        return $this->getForm()->getCalendarInput($this->_calendar,$name,$value,$format,$baseID);
 	}
     
     /**
