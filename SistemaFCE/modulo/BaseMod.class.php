@@ -30,7 +30,7 @@ class BaseMod {
     
     var $_tilePath;
     
-    var $usuario;
+    var $_usuario;
     
     var $_form;
     
