@@ -104,11 +104,11 @@ class BaseForm extends HTML_QuickForm {
      */
     function getSelectInput($smarty,$name,$options,$attributes,$selected=null)
     {
-        $this->addElement('select',$name,'label:',$options,$attributes);
+        $element = $this->addElement('select',$name,'label:',$options,$attributes);
         
         if(isset($selected))
         {
-            $this->setDefaults(array($name=>$selected)); 
+            $element->setSelected($selected); 
         }   
         
         $rendered = $this->renderSmarty($smarty);
