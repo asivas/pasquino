@@ -48,13 +48,8 @@ class BaseMod {
 
 		$this->_calendar = new FCEcalendar('/js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
         
-        /*
-         * Esto debería hacerse cuando exista el DaoUsuario
-         */
         $daoU = new DaoUsuario();
         $this->_usuario = $daoU->findById($this->session->getIdUsuario());
-        //$this->smarty->assign('nombre_usuario',"{$u->apellido}, {$u->nombre}");
-        /**/
         
         $this->initSmarty();
         if($conXajax)
@@ -68,8 +63,6 @@ class BaseMod {
         $this->_timeFormat = Configuracion::getTimeFormat();
         
         $this->_tilePath = Configuracion::getDefaultTplPath($skinDirName);//'decorators/default.tpl';
-		//$this->crearForm();
-        
         
         if($conXajax)
         {
