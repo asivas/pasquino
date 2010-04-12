@@ -1,5 +1,5 @@
 var funcionesInputs = new Array();
-function llamarFuncionAjax(nombreFuncion)
+function _llamarFuncion(nombreFuncion)
 {
 	if(funcionesInputs[nombreFuncion]!= null)
 	{ 
@@ -12,7 +12,7 @@ function llamarFuncionAjax(nombreFuncion)
 	}
 }
 
-function funcionAjaxCondicional(funcion,inputQueCambia,msEspera)
+function llamarOnChange(funcion,inputQueCambia,msEspera)
 {
 	var nombreFuncion = funcion.substring(0,funcion.indexOf('('));	
 	if(funcionesInputs[nombreFuncion]==null)
@@ -23,6 +23,6 @@ function funcionAjaxCondicional(funcion,inputQueCambia,msEspera)
 	
 	if(msEspera == null) msEspera = 500;
 	
-	setTimeout("llamarFuncionAjax('"+nombreFuncion+"')",msEspera);
+	setTimeout("_llamarFuncion('"+nombreFuncion+"')",msEspera);
 	
 }
