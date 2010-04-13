@@ -280,7 +280,7 @@ abstract class DaoBase {
      * @param object $filtro Objeto de clase Criterio
      * @param string $order Columna o columnas separadas por coma (,) para ordenar la busqueda 
      */
-    function findBy($filtro = null,$order=null){
+    function findBy($filtro = null,$order=null,$count=null,$limit=null){
         
         if(!empty($this->baseFindBySQL))
             $sql = $this->baseFindBySQL;
@@ -302,6 +302,13 @@ abstract class DaoBase {
         
         if(isset($order))    
             $sql .= " ORDER BY {$order}";
+            
+         if(isset($count))             
+         {
+            $sql .= " LIMIT {$count}";
+            if(isset($limit))
+            	$sql .= " OFFSET {$limit}";
+         }
                 
         if(!($rs = $this->_db->Execute($sql)))
             die($this->_db->ErrorMsg()." $sql");
