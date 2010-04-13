@@ -1,4 +1,4 @@
-﻿/*
+/*
  * FCKeditor - The text editor for internet
  * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
@@ -94,11 +94,14 @@ FCKConfig.ToolbarSets["Default"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Basic"] = [
-	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About']
+	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About']	
+
 ] ;
 
 FCKConfig.ToolbarSets["FCEBasic"] = [
-	['Bold','Italic','-','OrderedList','UnorderedList','-','Outdent','Indent','-','Link','Unlink','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','SpellCheck']
+	['Bold','Italic','-','OrderedList','UnorderedList','-','Outdent','Indent','-','Link','Unlink','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','SpellCheck','-','FitWindow'],
+	'/',
+	['Style','FontFormat','FontName','FontSize']
 ] ;
 
 FCKConfig.ContextMenu = ['Generic','Link','Anchor','Image','Flash','Select','Textarea','Checkbox','Radio','TextField','HiddenField','ImageButton','Button','BulletedList','NumberedList','Table','Form'] ;
