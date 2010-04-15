@@ -294,8 +294,15 @@ abstract class DaoBase {
             $sql = "SELECT * FROM {$tabla}";
         }
         
-        if($filtro != null && $filtro->getCondicion()!='') 
-        	$sql .= " WHERE " . $filtro->getCondicion();
+        if($filtro != null && $filtro->getCondicion()!='')
+        { 
+        	if(stripos($sql," WHERE ")===false || stripos($sql," WHERE ")==-1)
+                $sql .= " WHERE ";
+            else
+                $sql .= " AND "; 
+                
+            $sql .= $filtro->getCondicion();
+        }
         
         if(!isset($order)) 
         	$order = $this->defaultOrder;
