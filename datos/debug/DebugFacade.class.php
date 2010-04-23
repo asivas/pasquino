@@ -20,4 +20,12 @@ class DebugFacade {
     		print "Inicio: {$GLOBALS['debug_inicio']}<br>Fin: $fin<br>Tiempo Transcurrido: $tiempo<br>";
     	return $tiempo;
     }
+    
+    static function dump($var,$die = false)
+    {
+    	print "<pre>";
+    	var_dump($var);
+    	print "</pre>";
+    	if($die) die;
+    }
 }
