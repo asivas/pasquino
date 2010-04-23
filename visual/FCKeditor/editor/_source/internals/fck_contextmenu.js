@@ -1,21 +1,25 @@
 ﻿/*
- * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2006 Frederico Caldeira Knabben
- * 
- * Licensed under the terms of the GNU Lesser General Public License:
- * 		http://www.opensource.org/licenses/lgpl-license.php
- * 
- * For further information visit:
- * 		http://www.fckeditor.net/
- * 
- * "Support Open Source software. What about a donation today?"
- * 
- * File Name: fck_contextmenu.js
- * 	Defines the FCK.ContextMenu object that is responsible for all
- * 	Context Menu operations in the editing area.
- * 
- * File Authors:
- * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
+ * FCKeditor - The text editor for Internet - http://www.fckeditor.net
+ * Copyright (C) 2003-2010 Frederico Caldeira Knabben
+ *
+ * == BEGIN LICENSE ==
+ *
+ * Licensed under the terms of any of the following licenses at your
+ * choice:
+ *
+ *  - GNU General Public License Version 2 or later (the "GPL")
+ *    http://www.gnu.org/licenses/gpl.html
+ *
+ *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+ *    http://www.gnu.org/licenses/lgpl.html
+ *
+ *  - Mozilla Public License Version 1.1 or later (the "MPL")
+ *    http://www.mozilla.org/MPL/MPL-1.1.html
+ *
+ * == END LICENSE ==
+ *
+ * Defines the FCK.ContextMenu object that is responsible for all
+ * Context Menu operations in the editing area.
  */
 
 FCK.ContextMenu = new Object() ;
@@ -29,7 +33,8 @@ FCK.ContextMenu.RegisterListener = function( listener )
 
 function FCK_ContextMenu_Init()
 {
-	var oInnerContextMenu = FCK.ContextMenu._InnerContextMenu = new FCKContextMenu( FCKBrowserInfo.IsIE ? window : window.parent, FCK.EditorWindow, FCKLang.Dir ) ;
+	var oInnerContextMenu = FCK.ContextMenu._InnerContextMenu = new FCKContextMenu( FCKBrowserInfo.IsIE ? window : window.parent, FCKLang.Dir ) ;
+	oInnerContextMenu.CtrlDisable	= FCKConfig.BrowserContextMenuOnCtrl ;
 	oInnerContextMenu.OnBeforeOpen	= FCK_ContextMenu_OnBeforeOpen ;
 	oInnerContextMenu.OnItemClick	= FCK_ContextMenu_OnItemClick ;
 
@@ -60,26 +65,42 @@ function FCK_ContextMenu_GetListener( listenerName )
 			{
 				var bIsTable	= ( tagName == 'TABLE' ) ;
 				var bIsCell		= ( !bIsTable && FCKSelection.HasAncestorNode( 'TABLE' ) ) ;
-				
+
 				if ( bIsCell )
 				{
 					menu.AddSeparator() ;
 					var oItem = menu.AddItem( 'Cell'	, FCKLang.CellCM ) ;
-					oItem.AddItem( 'TableInsertCell'	, FCKLang.InsertCell, 58 ) ;
+					oItem.AddItem( 'TableInsertCellBefore'	, FCKLang.InsertCellBefore, 69 ) ;
+					oItem.AddItem( 'TableInsertCellAfter'	, FCKLang.InsertCellAfter, 58 ) ;
 					oItem.AddItem( 'TableDeleteCells'	, FCKLang.DeleteCells, 59 ) ;
-					oItem.AddItem( 'TableMergeCells'	, FCKLang.MergeCells, 60 ) ;
-					oItem.AddItem( 'TableSplitCell'		, FCKLang.SplitCell, 61 ) ;
+					if ( FCKBrowserInfo.IsGecko )
+						oItem.AddItem( 'TableMergeCells'	, FCKLang.MergeCells, 60,
+							FCKCommands.GetCommand( 'TableMergeCells' ).GetState() == FCK_TRISTATE_DISABLED ) ;
+					else
+					{
+						oItem.AddItem( 'TableMergeRight'	, FCKLang.MergeRight, 60,
+							FCKCommands.GetCommand( 'TableMergeRight' ).GetState() == FCK_TRISTATE_DISABLED ) ;
+						oItem.AddItem( 'TableMergeDown'		, FCKLang.MergeDown, 60,
+							FCKCommands.GetCommand( 'TableMergeDown' ).GetState() == FCK_TRISTATE_DISABLED ) ;
+					}
+					oItem.AddItem( 'TableHorizontalSplitCell'	, FCKLang.HorizontalSplitCell, 61,
+						FCKCommands.GetCommand( 'TableHorizontalSplitCell' ).GetState() == FCK_TRISTATE_DISABLED ) ;
+					oItem.AddItem( 'TableVerticalSplitCell'	, FCKLang.VerticalSplitCell, 61,
+						FCKCommands.GetCommand( 'TableVerticalSplitCell' ).GetState() == FCK_TRISTATE_DISABLED ) ;
 					oItem.AddSeparator() ;
-					oItem.AddItem( 'TableCellProp'		, FCKLang.CellProperties, 57 ) ;
+					oItem.AddItem( 'TableCellProp'		, FCKLang.CellProperties, 57,
+						FCKCommands.GetCommand( 'TableCellProp' ).GetState() == FCK_TRISTATE_DISABLED ) ;
 
 					menu.AddSeparator() ;
 					oItem = menu.AddItem( 'Row'			, FCKLang.RowCM ) ;
-					oItem.AddItem( 'TableInsertRow'		, FCKLang.InsertRow, 62 ) ;
+					oItem.AddItem( 'TableInsertRowBefore'		, FCKLang.InsertRowBefore, 70 ) ;
+					oItem.AddItem( 'TableInsertRowAfter'		, FCKLang.InsertRowAfter, 62 ) ;
 					oItem.AddItem( 'TableDeleteRows'	, FCKLang.DeleteRows, 63 ) ;
-					
+
 					menu.AddSeparator() ;
 					oItem = menu.AddItem( 'Column'		, FCKLang.ColumnCM ) ;
-					oItem.AddItem( 'TableInsertColumn'	, FCKLang.InsertColumn, 64 ) ;
+					oItem.AddItem( 'TableInsertColumnBefore', FCKLang.InsertColumnBefore, 71 ) ;
+					oItem.AddItem( 'TableInsertColumnAfter'	, FCKLang.InsertColumnAfter, 64 ) ;
 					oItem.AddItem( 'TableDeleteColumns'	, FCKLang.DeleteColumns, 65 ) ;
 				}
 
@@ -95,10 +116,22 @@ function FCK_ContextMenu_GetListener( listenerName )
 			return {
 			AddItems : function( menu, tag, tagName )
 			{
-				if ( FCK.GetNamedCommandState( 'Unlink' ) != FCK_TRISTATE_DISABLED )
+				var bInsideLink = ( tagName == 'A' || FCKSelection.HasAncestorNode( 'A' ) ) ;
+
+				if ( bInsideLink || FCK.GetNamedCommandState( 'Unlink' ) != FCK_TRISTATE_DISABLED )
 				{
+					// Go up to the anchor to test its properties
+					var oLink = FCKSelection.MoveToAncestorNode( 'A' ) ;
+					var bIsAnchor = ( oLink && oLink.name.length > 0 && oLink.href.length == 0 ) ;
+					// If it isn't a link then don't add the Link context menu
+					if ( bIsAnchor )
+						return ;
+
 					menu.AddSeparator() ;
-					menu.AddItem( 'Link'	, FCKLang.EditLink		, 34 ) ;
+					menu.AddItem( 'VisitLink', FCKLang.VisitLink ) ;
+					menu.AddSeparator() ;
+					if ( bInsideLink )
+						menu.AddItem( 'Link', FCKLang.EditLink		, 34 ) ;
 					menu.AddItem( 'Unlink'	, FCKLang.RemoveLink	, 35 ) ;
 				}
 			}} ;
@@ -118,10 +151,15 @@ function FCK_ContextMenu_GetListener( listenerName )
 			return {
 			AddItems : function( menu, tag, tagName )
 			{
-				if ( tagName == 'IMG' && tag.getAttribute( '_fckanchor' ) )
+				// Go up to the anchor to test its properties
+				var oLink = FCKSelection.MoveToAncestorNode( 'A' ) ;
+				var bIsAnchor = ( oLink && oLink.name.length > 0 ) ;
+
+				if ( bIsAnchor || ( tagName == 'IMG' && tag.getAttribute( '_fckanchor' ) ) )
 				{
 					menu.AddSeparator() ;
 					menu.AddItem( 'Anchor', FCKLang.AnchorProp, 36 ) ;
+					menu.AddItem( 'AnchorDelete', FCKLang.AnchorDelete ) ;
 				}
 			}} ;
 
@@ -184,7 +222,7 @@ function FCK_ContextMenu_GetListener( listenerName )
 			return {
 			AddItems : function( menu, tag, tagName )
 			{
-				if ( tagName == 'INPUT' && tag.type == 'hidden' )
+				if ( tagName == 'IMG' && tag.getAttribute( '_fckinputhidden' ) )
 				{
 					menu.AddSeparator() ;
 					menu.AddItem( 'HiddenField', FCKLang.HiddenFieldProp, 56 ) ;
@@ -256,18 +294,35 @@ function FCK_ContextMenu_GetListener( listenerName )
 					menu.AddItem( 'NumberedList', FCKLang.NumberedListProp, 26 ) ;
 				}
 			}} ;
+
+		case 'DivContainer':
+			return {
+			AddItems : function( menu, tag, tagName )
+			{
+				var currentBlocks = FCKDomTools.GetSelectedDivContainers() ;
+
+				if ( currentBlocks.length > 0 )
+				{
+					menu.AddSeparator() ;
+					menu.AddItem( 'EditDiv', FCKLang.EditDiv, 75 ) ;
+					menu.AddItem( 'DeleteDiv', FCKLang.DeleteDiv, 76 ) ;
+				}
+			}} ;
+
 	}
+	return null ;
 }
 
 function FCK_ContextMenu_OnBeforeOpen()
 {
 	// Update the UI.
-	FCK.Events.FireEvent( "OnSelectionChange" ) ;
+	FCK.Events.FireEvent( 'OnSelectionChange' ) ;
 
-  	// Get the actual selected tag (if any).
+	// Get the actual selected tag (if any).
 	var oTag, sTagName ;
-	
-	if ( oTag = FCKSelection.GetSelectedElement() )
+
+	// The extra () is to avoid a warning with strict error checking. This is ok.
+	if ( (oTag = FCKSelection.GetSelectedElement()) )
 		sTagName = oTag.tagName ;
 
 	// Cleanup the current menu items.
@@ -282,6 +337,9 @@ function FCK_ContextMenu_OnBeforeOpen()
 
 function FCK_ContextMenu_OnItemClick( item )
 {
-	FCK.Focus() ;
-	FCKCommands.GetCommand( item.Name ).Execute() ;
+	// IE might work incorrectly if we refocus the editor #798
+	if ( !FCKBrowserInfo.IsIE )
+		FCK.Focus() ;
+
+	FCKCommands.GetCommand( item.Name ).Execute( item.CustomData ) ;
 }

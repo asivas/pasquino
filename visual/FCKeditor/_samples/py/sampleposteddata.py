@@ -1,22 +1,26 @@
 #!/usr/bin/env python
 
 """
-FCKeditor - The text editor for internet
-Copyright (C) 2003-2006 Frederico Caldeira Knabben
+FCKeditor - The text editor for Internet - http://www.fckeditor.net
+Copyright (C) 2003-2010 Frederico Caldeira Knabben
 
-Licensed under the terms of the GNU Lesser General Public License:
-		http://www.opensource.org/licenses/lgpl-license.php
+== BEGIN LICENSE ==
 
-For further information visit:
-		http://www.fckeditor.net/
+Licensed under the terms of any of the following licenses at your
+choice:
 
-"Support Open Source software. What about a donation today?"
+ - GNU General Public License Version 2 or later (the "GPL")
+   http://www.gnu.org/licenses/gpl.html
 
-File Name: sampleposteddata.py
-	This page lists the data posted by a form.
+ - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+   http://www.gnu.org/licenses/lgpl.html
 
-File Authors:
-		Andrew Liu (andrew@liuholdings.com)
+ - Mozilla Public License Version 1.1 or later (the "MPL")
+   http://www.mozilla.org/MPL/MPL-1.1.html
+
+== END LICENSE ==
+
+This page lists the data posted by a form.
 """
 
 import cgi
@@ -44,35 +48,38 @@ print """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 	<body>
 """
 
-# This is the real work 
+# This is the real work
 print """
 		<h1>FCKeditor - Samples - Posted Data</h1>
 		This page lists all data posted by the form.
 		<hr>
-		<table width="100%" border="1" cellspacing="0" bordercolor="#999999">
-			<tr style="FONT-WEIGHT: bold; COLOR: #dddddd; BACKGROUND-COLOR: #999999">
-				<td nowrap>Field Name&nbsp;&nbsp;</td>
-				<td>Value</td>
-			</tr>
+		<table border="1" cellspacing="0" id="outputSample">
+			<colgroup><col width="80"><col></colgroup>
+			<thead>
+				<tr>
+					<th>Field Name</th>
+					<th>Value</th>
+				</tr>
+			</thead>
 """
 for key in form.keys():
 	try:
 		value = form[key].value
 		print """
 				<tr>
-					<td valign="top" nowrap><b>%s</b></td>
-					<td width="100%%">%s</td>
+					<th>%s</th>
+					<td><pre>%s</pre></td>
 				</tr>
-			""" % (key, value)
+			""" % (cgi.escape(key), cgi.escape(value))
 	except Exception, e:
 		print e
 print "</table>"
 
 # For testing your environments
-print "<hr>"
-for key in os.environ.keys():
-	print "%s: %s<br>" % (key, os.environ.get(key, ""))
-print "<hr>"
+#print "<hr>"
+#for key in os.environ.keys():
+#	print "%s: %s<br>" % (key, os.environ.get(key, ""))
+#print "<hr>"
 
 # Document footer
 print """
