@@ -33,7 +33,7 @@ function cerrarDialogoDeFondo(e)
 {	
 	if(e.target.id=='fondo_'+(_indice-10))
 	{
-		if(confirm('Se cerrará el dialgo actual ¿está seguro?'))
+		if(confirm('Se cerrarï¿½ el dialgo actual ï¿½estï¿½ seguro?'))
 			cerrarDialogo(e);
 	}	
 }
@@ -43,4 +43,12 @@ function cerrarDialogo(e)
 	_indice = _indice - 10;
 	contenedor = document.getElementById(_idContenedor);
 	contenedor.removeChild(document.getElementById('fondo_'+_indice));
+}
+
+function cerrarTodosLosDialogos()
+{
+	while (_indice != 100)
+	{
+		cerrarDialogo();
+	}	
 }
