@@ -33,7 +33,7 @@ function cerrarDialogoDeFondo(e)
 {	
 	if(e.target.id=='fondo_'+(_indice-10))
 	{
-		if(confirm('Se cerrarï¿½ el dialgo actual ï¿½estï¿½ seguro?'))
+		if(confirm('Se cerrará el dialgo actual ¿está seguro?'))
 			cerrarDialogo(e);
 	}	
 }
