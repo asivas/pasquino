@@ -117,6 +117,11 @@ class Configuracion {
         return Configuracion::getDBAttribute("dbms",$nombreDataSource); 
     }
     
+    public static function getDbDSN($nombreDataSource = null)
+    {
+        return Configuracion::getDBAttribute("DSN",$nombreDataSource); 
+    }
+    
     public static function getDbHost($nombreDataSource = null)
     {
         return Configuracion::getDBAttribute("host",$nombreDataSource); 
