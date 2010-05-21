@@ -38,6 +38,7 @@
 	username CDATA #IMPLIED
 	password CDATA #IMPLIED
 	port CDATA #IMPLIED
+	DSN CDATA #IMPLIED
 >
 
 <!ELEMENT modulos (modulo*)>
