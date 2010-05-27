@@ -535,15 +535,15 @@ class BaseMod {
      */    
     protected function accionListar($req)
     {
-    	 $this->lista();
+    	 $this->lista($req);
     }
     
     /* funciones abstractas */
     protected function alta($req){}
     protected function baja($req){}
-    protected function lista(){
+    protected function lista($req=null){
     	if(method_exists($this,'listar'))
-          $this->listar();
+          $this->listar($req);
     }
     protected function form($req=null){}
     protected function modificacion($req){
