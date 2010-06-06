@@ -75,7 +75,7 @@ class BaseForm extends HTML_QuickForm {
      * @param integre $otro si se debe crear una opcion de "Otro", si está definido el nro será el id
      * @return array arreglo asociativo id => nombre 
      */
-    function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra')
+    function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra',$getNombreFunc='getNombre',$getIdFunc='getId')
     {
         $arregloOpciones = array();
         
@@ -87,7 +87,7 @@ class BaseForm extends HTML_QuickForm {
             foreach($listaElementos as $elem)
             {
                 if(method_exists($elem,'getId') && method_exists($elem,'getNombre'))
-                    $arregloOpciones[$elem->getId()] = $elem->getNombre();
+                    $arregloOpciones[$elem->$getIdFunc()] = $elem->$getNombreFunc();
             }
         
         if(isset($otro))
