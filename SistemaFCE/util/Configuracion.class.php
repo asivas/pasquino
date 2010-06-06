@@ -306,7 +306,6 @@ class Configuracion {
             $archivoMappings = "";
             $config = Configuracion::getConfigXML();
             
-            $config = Configuracion::getConfigXML();
             $mappings = $config->mappings;
             
             $map = Configuracion::getMappingConfigClase($nombreClase);
