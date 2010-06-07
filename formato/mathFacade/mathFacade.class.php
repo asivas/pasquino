@@ -9,7 +9,7 @@ class mathFacade
 	  @result string - Devuelve el numero escrito en letras. 
 	
 	*/ 
-	function numeroEnPalabras($num, $fem = false, $dec = false) 
+	static function numeroEnPalabras($num, $fem = false, $dec = false) 
 	{ 
 	//if (strlen($num) > 14) die("El n?mero introducido es demasiado grande"); 
 	   $matuni[2]  = "dos"; 
