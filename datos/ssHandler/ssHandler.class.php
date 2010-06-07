@@ -124,7 +124,12 @@
                 {
                     if(isset($_SERVER['SERVER_PORT']))
                         $port = ":{$_SERVER['SERVER_PORT']}";
-                    $loc = "http://$_SERVER[SERVER_NAME]{$port}$_SERVER[PHP_SELF]";
+                    $server = $_SERVER['SERVER_NAME'];
+                    
+                    if(isset($_SERVER["HTTP_X_FORWARDED_SERVER"]))
+                    	$server = $_SERVER["HTTP_X_FORWARDED_SERVER"];
+                    
+                    $loc = "http://{$server}{$port}$_SERVER[PHP_SELF]";
                     if(!empty($_SERVER['QUERY_STRING'])) $loc .= '?'.$_SERVER['QUERY_STRING'];
                     header("Location: $loc");
                     exit();
