@@ -51,6 +51,10 @@ class BaseMod {
         
         $daoU = new DaoUsuario();
         $this->_usuario = $daoU->findById($this->session->getIdUsuario());
+
+        $this->_dateFormat = Configuracion::getDateFormat();
+        $this->_dateTimeFormat = Configuracion::getDateTimeFormat();
+        $this->_timeFormat = Configuracion::getTimeFormat();
         
         $this->initSmarty();
         if($conXajax)
@@ -58,10 +62,6 @@ class BaseMod {
         
         $this->_orderListado = $_SESSION[get_class($this)]['sort'];
         $this->_sentidoOrderListado = $_SESSION[get_class($this)]['sortSentido'];
-        
-        $this->_dateFormat = Configuracion::getDateFormat();
-        $this->_dateTimeFormat = Configuracion::getDateTimeFormat();
-        $this->_timeFormat = Configuracion::getTimeFormat();
         
         $this->_tilePath = Configuracion::getDefaultTplPath($skinDirName);//'decorators/default.tpl';
         
@@ -125,6 +125,11 @@ class BaseMod {
         //menu
         $this->smarty->assign('menuItems',$mp);
         $this->smarty->assign('menu',$mp);
+        
+        $this->smarty->assign('dateFormat',$this->_dateFormat);
+        $this->smarty->assign('timeFormat',$this->_timeFormat);
+        $this->smarty->assign('dateTimeFormat',$this->_dateTimeFormat);
+        
         
         $this->smarty->assign('usuario',$this->_usuario);
         $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
