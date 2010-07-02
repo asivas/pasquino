@@ -27,8 +27,9 @@ class dateTimeFmt {
     {
         $horas = $segundos>0?floor($segundos/3600):ceil($segundos/3600);
         $minutos = abs(ceil($segundos/60) - $horas*60);
-        
-        return sprintf("%02d:%02d",$horas,$minutos);
+        $horasFmt = "%02d";
+        if($horas<0) $horasFmt = "%03d";
+        return sprintf("{$horasFmt}:%02d",$horas,$minutos);
     }
     
     /**
