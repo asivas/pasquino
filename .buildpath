@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="auth"/>
+	<buildpathentry kind="src" path="datos/adodb"/>
+	<buildpathentry kind="src" path="datos/criterio"/>
+	<buildpathentry kind="src" path="datos/debug"/>
+	<buildpathentry kind="src" path="datos/logger"/>
+	<buildpathentry kind="src" path="datos/phpDocumentor"/>
+	<buildpathentry kind="src" path="datos/reporte"/>
+	<buildpathentry kind="src" path="datos/sqlQueryBuilder"/>
+	<buildpathentry kind="src" path="datos/ssHandler"/>
+	<buildpathentry kind="src" path="formato/feedcreator"/>
+	<buildpathentry kind="src" path="formato/html2text"/>
+	<buildpathentry kind="src" path="formato/pdf"/>
+	<buildpathentry kind="src" path="formato/xls"/>
+	<buildpathentry kind="src" path="SistemaFCE/dao"/>
+	<buildpathentry kind="src" path="SistemaFCE/entidad"/>
+	<buildpathentry kind="src" path="SistemaFCE/modulo"/>
+	<buildpathentry kind="src" path="SistemaFCE/util"/>
+	<buildpathentry kind="src" path="visual"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+</buildpath>
