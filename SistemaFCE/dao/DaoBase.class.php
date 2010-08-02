@@ -429,6 +429,9 @@ abstract class DaoBase {
         if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
            $tn = "`{$tn}`";
         $sql = "DELETE FROM {$tn} WHERE ".$this->getCriterioId($id)->getCondicion();
-        return $this->_db->Execute($sql) or $this->_lastError = $this->_db->ErrorMsg();
+        $ret = $this->_db->Execute($sql);
+        if(!$ret)
+        	$this->_lastError = $this->_db->ErrorMsg() . " {$sql}";
+        return $ret;
     }
 }
