@@ -125,6 +125,12 @@ FCKConfig.ToolbarSets["FCEBasic"] = [
    ['Style','FontFormat','FontName','FontSize']
 ] ;
 
+FCKConfig.ToolbarSets["FCETiny"] = [
+	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','SpellCheck','-','FitWindow']
+	 ,'/',['FontName','FontSize']
+] ;
+
+
 FCKConfig.EnterMode = 'p' ;			// p | div | br
 FCKConfig.ShiftEnterMode = 'br' ;	// p | div | br
 
