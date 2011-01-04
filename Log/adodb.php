@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.1 2010-12-28 14:44:38 martinezdiaz Exp $
+ * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.2 2011-01-04 13:47:16 martinezdiaz Exp $
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * @package Log
  */
 require_once("datos/adodb/adodb.inc.php");
@@ -53,11 +53,33 @@ class Log_adodb extends Log
         }
         else
         {
-        	$this->_options = array();
-			$this->_options['db_host'] = DB_HOST;
-			$this->_options['db_user'] = DB_USER;
-			$this->_options['db_pass'] = DB_PASS;
-			$this->_options['db_schema'] = DB_SCHEMA;
+        	try 
+        	{
+	        	if(Configuracion::getDbHost() != "")
+	        	{
+	        	   	$this->_options = array();
+					$this->_options['db_host'] = Configuracion::getDbHost();
+					$this->_options['db_user'] = Configuracion::getDbUser();
+					$this->_options['db_pass'] = Configuracion::getDbPassword();
+					$this->_options['db_schema'] = Configuracion::getDbName();
+	        	}
+	        	else
+	        	{
+		        	$this->_options = array();
+					$this->_options['db_host'] = DB_HOST;
+					$this->_options['db_user'] = DB_USER;
+					$this->_options['db_pass'] = DB_PASS;
+					$this->_options['db_schema'] = DB_SCHEMA;
+	        	}
+        	}
+        	catch(Exeption $e)
+        	{
+        		   	$this->_options = array();
+					$this->_options['db_host'] = DB_HOST;
+					$this->_options['db_user'] = DB_USER;
+					$this->_options['db_pass'] = DB_PASS;
+					$this->_options['db_schema'] = DB_SCHEMA;
+        	}
         }
  
         /* Now that the ident limit is confirmed, set the ident string. */
