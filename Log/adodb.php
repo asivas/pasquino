@@ -1,12 +1,11 @@
 <?php
 /**
- * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.3 2011-02-01 13:45:48 martinezdiaz Exp $
+ * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.4 2011-02-01 13:56:37 martinezdiaz Exp $
  *
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * @package Log
  */
 require_once("datos/adodb/adodb.inc.php");
-require_once("SistemaFCE/util/Configuracion.class.php");
 require_once("Log.php");
 
 class Log_adodb extends Log
@@ -56,23 +55,27 @@ class Log_adodb extends Log
         {
         	try 
         	{
-	        	if(Configuracion::getDbHost() != "")
+        		$puso = 0;
+	        	if(class_exists(Configuracion))
+        			if(Configuracion::getDbHost() != "")
+	        		{
+	        		   	$this->_options = array();
+						$this->_options['db_host'] = Configuracion::getDbHost();
+						$this->_options['db_user'] = Configuracion::getDbUser();
+						$this->_options['db_pass'] = Configuracion::getDbPassword();
+						$this->_options['db_schema'] = Configuracion::getDbName();
+	        			$puso = 1;
+	        		}
+
+	        	if($puso == 0)
 	        	{
-	        	   	$this->_options = array();
-					$this->_options['db_host'] = Configuracion::getDbHost();
-					$this->_options['db_user'] = Configuracion::getDbUser();
-					$this->_options['db_pass'] = Configuracion::getDbPassword();
-					$this->_options['db_schema'] = Configuracion::getDbName();
-	        	}
-	        	else
-	        	{
-		        	$this->_options = array();
+	        		$this->_options = array();
 					$this->_options['db_host'] = DB_HOST;
 					$this->_options['db_user'] = DB_USER;
 					$this->_options['db_pass'] = DB_PASS;
 					$this->_options['db_schema'] = DB_SCHEMA;
 	        	}
-        	}
+	        }
         	catch(Exeption $e)
         	{
         		   	$this->_options = array();
