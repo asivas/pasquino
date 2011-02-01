@@ -1,11 +1,12 @@
 <?php
 /**
- * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.2 2011-01-04 13:47:16 martinezdiaz Exp $
+ * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.3 2011-02-01 13:45:48 martinezdiaz Exp $
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * @package Log
  */
 require_once("datos/adodb/adodb.inc.php");
+require_once("SistemaFCE/util/Configuracion.class.php");
 require_once("Log.php");
 
 class Log_adodb extends Log
