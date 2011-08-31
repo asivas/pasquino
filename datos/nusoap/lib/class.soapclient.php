@@ -20,7 +20,7 @@
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: class.soapclient.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: class.soapclient.php,v 1.2 2011-08-31 18:01:03 martinezdiaz Exp $
 * @access   public
 */
 class nusoap_client extends nusoap_base  {
@@ -498,7 +498,7 @@ class nusoap_client extends nusoap_base  {
 			return false;
     	}
 		if (!strstr($headers['content-type'], 'text/xml')) {
-			$this->setError('Response not of type text/xml: ' . $headers['content-type']);
+    		$this->setError('Response not of type text/xml: ' . $headers['content-type']);
 			return false;
 		}
 		if (strpos($headers['content-type'], '=')) {

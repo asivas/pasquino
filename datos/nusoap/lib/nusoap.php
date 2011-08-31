@@ -1,7 +1,7 @@
 <?php
 
 /*
-$Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+$Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 
 NuSOAP - Web Services Toolkit for PHP
 
@@ -79,7 +79,7 @@ $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'] = 9;
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 * @access   public
 */
 class nusoap_base {
@@ -103,7 +103,7 @@ class nusoap_base {
 	 * @var string
 	 * @access private
 	 */
-	var $revision = '$Revision: 1.1 $';
+	var $revision = '$Revision: 1.2 $';
     /**
      * Current error string (manipulated by getError/setError)
 	 *
@@ -1001,7 +1001,7 @@ function usleepWindows($usec)
 * Mainly used for returning faults from deployed functions
 * in a server instance.
 * @author   Dietrich Ayala <dietrich@ganx4.com>
-* @version  $Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 * @access public
 */
 class nusoap_fault extends nusoap_base {
@@ -1089,7 +1089,7 @@ class soap_fault extends nusoap_fault {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 * @access   public
 */
 class nusoap_xmlschema extends nusoap_base  {
@@ -2061,7 +2061,7 @@ class XMLSchema extends nusoap_xmlschema {
 * xsd:anyType and user-defined types.
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
-* @version  $Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 * @access   public
 */
 class soapval extends nusoap_base {
@@ -2163,7 +2163,7 @@ class soapval extends nusoap_base {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 * @access public
 */
 class soap_transport_http extends nusoap_base {
@@ -3468,7 +3468,7 @@ class soap_transport_http extends nusoap_base {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 * @access   public
 */
 class nusoap_server extends nusoap_base {
@@ -4591,7 +4591,7 @@ class soap_server extends nusoap_server {
 * 
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 * @access public 
 */
 class wsdl extends nusoap_base {
@@ -6526,7 +6526,7 @@ class wsdl extends nusoap_base {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 * @access   public
 */
 class nusoap_parser extends nusoap_base {
@@ -7177,7 +7177,7 @@ class soap_parser extends nusoap_parser {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.1 2010-11-08 16:58:05 martinezdiaz Exp $
+* @version  $Id: nusoap.php,v 1.2 2011-08-31 18:01:00 martinezdiaz Exp $
 * @access   public
 */
 class nusoap_client extends nusoap_base  {
@@ -7655,7 +7655,7 @@ class nusoap_client extends nusoap_base  {
 			return false;
     	}
 		if (!strstr($headers['content-type'], 'text/xml')) {
-			$this->setError('Response not of type text/xml: ' . $headers['content-type']);
+			$this->setError('Response not of type text/xml: ' . $headers['content-type']."<br>".$data);
 			return false;
 		}
 		if (strpos($headers['content-type'], '=')) {
