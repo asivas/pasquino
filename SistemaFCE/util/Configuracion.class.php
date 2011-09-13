@@ -37,10 +37,10 @@ class Configuracion {
         
         if(empty($dir))
             $dir = $templates['default'];
-            
+        
         foreach($templates->template as $template)
         {
-        	$tDir = "{$template['dir']}"; 
+        	$tDir = "{$template['nombre']}";
             if($tDir==$dir)
             {   
                 return $template;
@@ -243,7 +243,7 @@ class Configuracion {
     public static function getDefaultTplPath($templateDir="")
     {
     	//$tplPath = "";
-        $tConf = Configuracion::getTemplateConfigByDir($templateDir);
+        $tConf = Configuracion::getTemplateConfigByDir($templateDir);        
         return Configuracion::findTplPath($tConf,'Default');
     }
     
