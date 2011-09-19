@@ -1,6 +1,8 @@
 <?php 
 function smarty_modifier_resaltar($str,$filtro)
 {	
+	$str = htmlentities($str);
+	$filtro = htmlentities($filtro);
 	$res = $str;
 	//var_dump($filtro);
 	if(isset($filtro) && trim($filtro)!="")
