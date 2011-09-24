@@ -31,8 +31,8 @@ class Configuracion {
     }
     
     public static function getTemplateConfigByDir($dir)
-    {
-        $config = Configuracion::getConfigXML();
+    {   
+    	$config = Configuracion::getConfigXML();
         $templates = $config->templates;
         
         if(empty($dir))
@@ -41,6 +41,8 @@ class Configuracion {
         foreach($templates->template as $template)
         {
         	$tDir = "{$template['nombre']}";
+        	if(empty($tDir)) $tDir = "{$template['dir']}";
+        	
             if($tDir==$dir)
             {   
                 return $template;
@@ -226,12 +228,13 @@ class Configuracion {
                 }
             }
         }
+        
         //recorro los dir si los tiene
         if(!empty($tConf->{'dir'}))
         {
             foreach($tConf->{'dir'} as $dir)
-            {
-                $path = Configuracion::findTplPath($dir,$sysName);
+            {   
+            	$path = Configuracion::findTplPath($dir,$sysName);
                 if(!empty($path))
                 {   
                     return "{$dir['ruta']}/$path";
