@@ -105,21 +105,31 @@ class BaseMod {
     protected function initSmarty()
     {
     	$systemRoot = Configuracion::getSystemRootDir();
+    	
+    	$config = Configuracion::getConfigXML();
+        $templates = $config->templates;
+        $skinsDirname = (string)$config->templates['path'];
+        
+        if(empty($skinsDirname))
+        	$skinsDirname = "skins";
         
         $this->smarty = new Smarty(); // Handler de smarty
-        $this->smarty->template_dir = $systemRoot.'/skins/'.$this->_skinConfig['dir']; // configuro directorio de templates
-        $this->smarty->compile_dir = $systemRoot.'/tmp/skins/templates_c'; // configuro directorio de compilacion
-        $this->smarty->cache_dir = $systemRoot.'/tmp/skins/cache'; // configuro directorio de cache
-        $this->smarty->config_dir = $systemRoot.'/skins/configs'; // configuro directorio de configuraciones
+        $this->smarty->template_dir = "{$systemRoot}/{$skinsDirname}/{$this->_skinConfig['dir']}"; // configuro directorio de templates
+        $this->smarty->compile_dir = "{$systemRoot}/tmp/{$skinsDirname}/templates_c"; // configuro directorio de compilacion
+        $this->smarty->cache_dir = "{$systemRoot}/tmp/{$skinsDirname}/cache"; // configuro directorio de cache
+        $this->smarty->config_dir = "{$systemRoot}/{$skinsDirname}/configs"; // configuro directorio de configuraciones
         
-        $this->smarty->assign('skin',$this->_skinConfig['dir']);
-        $this->smarty->assign('relative_images',"skins/{$this->_skinConfig['dir']}/images");
+        $publicSkinDir = $this->_skinConfig['wwwdir'];
+        if(empty($publicSkinDir))
+        	$publicSkinDir = $this->_skinConfig['dir'];        
+        $this->smarty->assign('skin',$publicSkinDir);
+        $this->smarty->assign('relative_images',"{$skinsDirname}/{$publicSkinDir}/images");
         $this->smarty->assign('version',Configuracion::getVersion());
-        $this->smarty->assign('skinPath',$systemRoot.'/skins/'.$this->_skinConfig['dir']);
+        $this->smarty->assign('skinPath',$systemRoot.'/{$skinsDirname}/'.$this->_skinConfig['dir']);
         $this->smarty->assign('appName',Configuracion::getAppName());
 		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
         
-        $this->smarty->assign('dir_images',"skins/{$this->_skinConfig['dir']}/images");
+        $this->smarty->assign('dir_images',"{$skinsDirname}/{$publicSkinDir}/images");
         
         $mp = $this->getMenuPrincipal();
         //menu
@@ -217,19 +227,8 @@ class BaseMod {
     {
     	if(!isset($nombreMod))
             $nombreMod = get_class($this);
-        else
-        {
-        	if(strpos($nombreMod,'Mod')===FALSE)
-                $nombreMod .= 'Mod';
-        }
-   
-        $modulos = Configuracion::getModulosConfig();
-        foreach($modulos->modulo as $mod)
-        {	
-            if("{$mod['nombre']}Mod" == $nombreMod)
-                return $mod;
-        }
-        return null;
+        
+        return Configuracion::getConfigModulo($nombreMod);
     }
         
     protected function addError($strError)
@@ -362,7 +361,10 @@ class BaseMod {
         $this->smarty->assign('pantalla',$tpl);
         $this->smarty->assign('ajax',$this->xajax->getJavascript('js/'));
         
-        $this->smarty->Display($this->_tilePath);
+        $disp = $this->_tilePath;        
+        if(empty($this->_tilePath))
+        	$disp = $tpl;
+        $this->smarty->Display($disp);
     }
     
     /**
@@ -443,7 +445,7 @@ class BaseMod {
     
     protected function getAccionPredeterminada()
     {
-    	return 'listar';
+    	return Configuracion::getAccionPerdeterminada(get_class($this));
     }
     
     
@@ -576,8 +578,8 @@ class BaseMod {
      */
     protected function displayMensaje(&$xajaxObjResponse,$mensaje,$className='message',$xPos=null,$yPos=null,$idDiv='message')
     {
-    	
-        $xajaxObjResponse->script("clearTimeout(tMsg)");
+        $xajaxObjResponse->script("if(document.getElementById('{$idDiv}')==null) { var _body = document.getElementsByTagName('body') [0]; var _div = document.createElement('div'); _div.id = '{$idDiv}'; _body.appendChild(_div);}");
+    	$xajaxObjResponse->script("clearTimeout(tMsg)");
         $xajaxObjResponse->assign($idDiv,"innerHTML", "<div style='float:right; font-size:5px;'><button onclick='xajax_hideMensaje()'>X</button></div>".$this->caracteres_html($mensaje));
         $xajaxObjResponse->assign($idDiv,"className", $className);
         if(isset($xPos))

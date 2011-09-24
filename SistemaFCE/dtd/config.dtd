@@ -56,6 +56,9 @@
 >
 
 <!ELEMENT acciones (accion*)>
+<!ATTLIST acciones	
+	default CDATA #IMPLIED
+>
 <!ELEMENT accion (permisos?)>
 <!ATTLIST accion 
 	nombre CDATA #REQUIRED

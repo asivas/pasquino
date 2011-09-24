@@ -365,4 +365,38 @@ class Configuracion {
         $mod->ejecutar($req);	
     }
     
+    /**
+     * Obtiene la configuración del modulo cuyo nombre es dado
+     * 
+     * @param string $mod nombre del modulo
+     */
+    public static function getConfigModulo($nombreMod)
+    {
+    	if(strpos($nombreMod,'Mod')===FALSE)
+          $nombreMod .= 'Mod';
+        
+        $modulos = Configuracion::getModulosConfig();
+        foreach($modulos->modulo as $mod)
+        {	
+            if("{$mod['nombre']}Mod" == $nombreMod)
+                return $mod;
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * Obtiene el nombre de la accion predeterminada del modulo dado
+     * @param string $mod nombre del modulo
+     * @return string el nombre de la accion predeterminada
+     */
+    public static function getAccionPerdeterminada($mod)
+    {
+    	$modConfig = Configuracion::getConfigModulo($mod);
+    	$accion = (string)$modConfig->acciones['default'];
+    	if(empty($accion)) $accion = 'listar';
+    	
+    	return $accion;
+    }
+    
 }
