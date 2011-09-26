@@ -121,7 +121,7 @@ class BaseMod {
         
         $publicSkinDir = $this->_skinConfig['wwwdir'];
         if(empty($publicSkinDir))
-        	$publicSkinDir = $this->_skinConfig['dir'];        
+        	$publicSkinDir = $this->_skinConfig['dir'];
         $this->smarty->assign('skin',$publicSkinDir);
         $this->smarty->assign('relative_images',"{$skinsDirname}/{$publicSkinDir}/images");
         $this->smarty->assign('version',Configuracion::getVersion());
@@ -131,7 +131,7 @@ class BaseMod {
         
         $this->smarty->assign('dir_images',"{$skinsDirname}/{$publicSkinDir}/images");
         
-        $mp = $this->getMenuPrincipal();
+        $mp = $this->getMenuPrincipal();    
         //menu
         $this->smarty->assign('menuItems',$mp);
         $this->smarty->assign('menu',$mp);
@@ -150,7 +150,7 @@ class BaseMod {
      */
     private function _getMenuItemArray($nombreModulo,$item)
     {	
-        $tienePermiso = false;
+    	$tienePermiso = false;
         if(!empty($item->permisos))
         {   
             foreach($item->permisos->permiso as $perm)
@@ -160,7 +160,7 @@ class BaseMod {
         }  
         $permAccion = $this->_checkPermisoAccion((string)$item['accion'],$nombreModulo);
         $tienePermiso |= $permAccion;
-        
+                
         if(!$tienePermiso)
             return null;
 
@@ -168,7 +168,7 @@ class BaseMod {
         $murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}&accion={$item['accion']}";
         if(!empty($item['url']))
             $murl = (string)$item['url'];
-        
+
         return array('url'=>$murl,'tag'=>$mtag);
     }
     
@@ -290,7 +290,9 @@ class BaseMod {
     
     private function _checkPermisoAccion($accion,$nombreModulo=null)
     {
-        if(!isset($this->_usuario))
+        if($this->_esPublica($accion,$nombreModulo))
+        	return true;
+    	if(!isset($this->_usuario))
             return false;
         // chequeo a partir de la config del módulo  
         $conf = $this->getConfigModulo($nombreModulo);
@@ -338,16 +340,19 @@ class BaseMod {
     }
     
     protected function checkPermisos($req)
-    {
-    	if(!$this->_esPublica($req['accion']) && !$this->session->LogIn())
-        {   
-            $this->formLogin();
-        }
+    {	
+    	if(!$this->_esPublica($req['accion']))
+    	{
+    	 	if(!$this->session->LogIn())
+	        {   
+	            $this->formLogin();
+	        }
         
-        if( !$this->_esPublica($req['accion']) && ( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion'])) )
-        {   
-            $this->sinPermisos();   
-        }
+	        if( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion']) ) 
+	        {   
+	            $this->sinPermisos();   
+	        }
+    	}
         
         return true;
     }

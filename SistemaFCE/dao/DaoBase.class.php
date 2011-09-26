@@ -434,4 +434,12 @@ abstract class DaoBase {
         	$this->_lastError = $this->_db->ErrorMsg() . " {$sql}";
         return $ret;
     }
+    
+    function findFirst($filtro = null,$order=null) {
+    	$l = $this->findBy($filtro,$order);
+    	if(is_array($l) && !empty($l))
+    		return $l[0];
+    	
+    	return null;
+    }
 }
