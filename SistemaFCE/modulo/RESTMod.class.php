@@ -31,7 +31,7 @@ class RESTMod {
 		$this->methodMap = array();
 		
 		$this->methodMap['GET']['lista'] = 'lista';
-		$this->methodMap['PUT'] = 'modificar';
+		$this->methodMap['PUT'] = 'modificacion';
 		$this->methodMap['POST'] = 'alta';
 		$this->methodMap['DELETE'] = 'baja';
 		$this->methodMap['GET']['recurso'] = 'info';
@@ -124,7 +124,6 @@ class RESTMod {
 	{
 		$crit = new Criterio();
 		$mapping =  Configuracion::getMappingClase($this->getNombreRecurso());
-		//var_dump($req);
 		foreach($mapping->clase->propiedad as $prop)
 		{
 			$col = (string)$prop['columna'];
@@ -149,6 +148,38 @@ class RESTMod {
 	function getOrden($req)
 	{
 		
+	}
+	
+	/**
+	 * 
+	 * Obtiene las variables en un arreglo para pasar a json de un recurso dado
+	 * @param object $recurso el recurso al que se le consultan las variables
+	 * @param xml $mappingClase el mapping de la clase del recurso
+	 */
+	private function getVars($recurso,$mappingClase=null)
+	{
+		if($mappingClase==null)
+			$mappingClase =  Configuracion::getMappingClase($this->getNombreRecurso());
+		$vars = array();
+		foreach($mappingClase->clase->id as $prop)
+		{	
+			$nombreProp = (string)$prop['nombre'];			
+			$getFn = "get".ucfirst($prop['nombre']);
+			if(method_exists($recurso, $getFn))
+				$vars[$nombreProp] = $recurso->$getFn();
+		}
+		//si ninguna propiedad de las ids se llama id y hay un metodo getId lo agrego
+		if(empty($vars['id']) && method_exists($recurso, "getId"))
+			$vars['id'] = $recurso->getId();
+		
+		foreach($mappingClase->clase->propiedad as $prop)
+		{
+			$nombreProp = (string)$prop['nombre'];
+			$getFn = "get".ucfirst($prop['nombre']);
+			if(method_exists($recurso, $getFn))
+				$vars[$nombreProp] = $recurso->$getFn();
+		}
+		return $vars;
 	}
 	
 	/**
@@ -181,11 +212,12 @@ class RESTMod {
 		
 		$lista = $dao->findBy($crit,$orden,$limitCant,$limitOffset);
 		$arr = array();
+		$mapping =  Configuracion::getMappingClase($this->getNombreRecurso());
 		foreach($lista as $recurso)
-		{
-			if(method_exists($recurso, "getVars"))
-				$arr[] = $recurso->getVars();
-		}	$json = json_encode($arr);
+		{	
+			$arr[] = $this->getVars($recurso,$mapping);
+		}	
+		$json = json_encode($arr);
 
 		return $json;
 	}
@@ -193,7 +225,7 @@ class RESTMod {
 	/**
 	 * 
 	 * Obtiene un objeto entidad 
-	 * @param string $datos los datos enviados en el request (json)
+	 * @param array $datos los datos enviados en el request (json) decodificados a un arreglo
 	 * @param array $req el arreglo de request (obtenido de la query string)
 	 * @return string la cadena json que representa la lista buscada
 	 */
@@ -207,10 +239,45 @@ class RESTMod {
 		
 		$recurso = $dao->findById($idRecurso);
 		
-		if(method_exists($recurso, "getVars"))
-			$json = json_encode($recurso->getVars());
+		$json = json_encode($this->getVars($recurso));
 
 		return $json;
+	}
+	
+	/**
+	 * 
+	 * Crea un nuevo recurso
+	 * @param array $datos datos decodificados de lo enviado via jquery por post
+	 * @param array $req
+	 */
+	function alta($datos,$req)
+	{
+		//TODO: implementar el alta
+		print "no implementado aun";
+	}
+	
+	/**
+	 * 
+	 * Elimina un recurso
+	 * @param array $datos no se tiene en cuenta
+	 * @param array $req no se tiene en cuenta
+	 */
+	function baja($datos,$req)
+	{
+		//TODO: implementar el baja
+		print "no implementado aun";
+	}
+	
+	/**
+	 * 
+	 * Elimina un recurso
+	 * @param array $datos datos decodificados de lo enviado via jquery por PUT
+	 * @param array $req
+	 */
+	function modificacion($datos,$req)
+	{
+		//TODO: implementar el modificacion
+		print "no implementado aun";
 	}
 	
 	
