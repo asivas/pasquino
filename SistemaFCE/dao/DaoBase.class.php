@@ -279,13 +279,16 @@ abstract class DaoBase {
     }
     
     /**
-     * Obtiene una lista de objetos de la entidad
-     * @param object $filtro Objeto de clase Criterio
-     * @param string $order Columna o columnas separadas por coma (,) para ordenar la busqueda 
+     * 
+     * Genera el sql utilizado para buscar elementos 
+     * @param mixed $filtro puede ser string o Criterio
+     * @param string $order
+     * @param int $count cantidad de elementos a buscar
+     * @param int $limit limite inicial desde donde buscar (offset)
      */
-    function findBy($filtro = null,$order=null,$count=null,$limit=null){
-        
-        if(!empty($this->baseFindBySQL))
+    private function getFindBySql($filtro = null,$order=null,$count=null,$limit=null)
+    {
+    	if(!empty($this->baseFindBySQL))
             $sql = $this->baseFindBySQL;
         else
         {
@@ -318,8 +321,40 @@ abstract class DaoBase {
             $sql .= " LIMIT {$count}";
             if(isset($limit))
             	$sql .= " OFFSET {$limit}";
-         }
-                
+         }      
+         //print $sql;
+         
+         return $sql;
+    	
+    }
+    
+    /**
+     * 
+     * Cuenta la cantidad de elementos
+     * @param unknown_type $filtro
+     * @param unknown_type $order
+     */
+    function count($filtro = null,$order=null)
+    {
+
+    	$sql = $this->getFindBySql($filtro,$order);
+    	//TODO reemplazar lo que está entre select y from por count(*)
+    	$sql = substr($sql, stripos($sql,"select "),7). " COUNT(*) as cant " . substr($sql, stripos($sql, "from"));
+    	
+    	if(!($rs = $this->_db->Execute($sql)))
+            die($this->_db->ErrorMsg()." $sql");
+        return $rs->fields['cant'];
+    }
+    
+    /**
+     * Obtiene una lista de objetos de la entidad
+     * @param object $filtro Objeto de clase Criterio
+     * @param string $order Columna o columnas separadas por coma (,) para ordenar la busqueda 
+     */
+    function findBy($filtro = null,$order=null,$count=null,$limit=null){
+        
+        $sql = $this->getFindBySql($filtro,$order,$count,$limit);
+        
         if(!($rs = $this->_db->Execute($sql)))
             die($this->_db->ErrorMsg()." $sql");
             
@@ -409,7 +444,7 @@ abstract class DaoBase {
         $nombreColId = $id['columna'];
                 
         $c = new Criterio();        
-        $c->add("{$nombreColId} = '{$idElemento}'");
+        $c->add("`{$nombreColId}` = '{$idElemento}'");
         
         return $c;
     }

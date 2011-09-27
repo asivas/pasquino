@@ -48,8 +48,10 @@ class Criterio {
     function disjuncion()
     {
     	$this->_operador = "OR";
+    	$this->_operadorH = "o";
         $disj = clone $this;
         $this->_operador = "AND";
+        $this->_operadorH = "y";
         return $disj;
     }
     

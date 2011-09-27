@@ -485,8 +485,8 @@ class BaseMod {
         $this->setMiembros($req);
         
         if($this->REST->esUriRecurso())
-        {
-        	//TODO: corroborar si hay definidos recursos rest y ejecutar la accion rest
+        {	
+        	$rec = $this->REST->ejecutar($req);
         }
         else
         {   
