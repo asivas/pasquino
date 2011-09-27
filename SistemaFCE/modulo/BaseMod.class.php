@@ -14,6 +14,7 @@ if(!class_exists('DaoUsuario')) //Si el sistema implementa otro DaoUsuario no lo
     require_once('SistemaFCE/dao/DaoUsuario.class.php');
 
 require_once 'SistemaFCE/modulo/BaseForm.class.php';
+require_once 'SistemaFCE/modulo/RESTMod.class.php';
 
 class BaseMod {
 	
@@ -41,6 +42,8 @@ class BaseMod {
     var $_dateTimeFormat;
     var $_timeFormat;
     
+    var $REST;
+    
     function __construct($skinDirName=null,$conXajax=true) {
         if(!isset($this->session))
             $this->session = new Session(Configuracion::getAppName());
@@ -48,6 +51,8 @@ class BaseMod {
         $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
 
 		$this->_calendar = new FCEcalendar('/js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
+		
+		$this->REST = new RESTMod();
         
         $daoU = new DaoUsuario();
         $this->_usuario = $daoU->findById($this->session->getIdUsuario());
@@ -479,18 +484,25 @@ class BaseMod {
         $this->checkPermisos($req);
         $this->setMiembros($req);
         
-        $this->smarty->assign('accion',$accion);
-        
-        $metodoAccion = "accion".ucfirst($accion);
-        
-        if(!method_exists($this,$metodoAccion) && $accion != $this->getAccionPredeterminada())
+        if($this->REST->esUriRecurso())
         {
-            $req['accion'] = $this->getAccionPredeterminada();
-            $this->ejecutar($req);
-            return;
-        } 
-        
-        $this->$metodoAccion($req);
+        	//TODO: corroborar si hay definidos recursos rest y ejecutar la accion rest
+        }
+        else
+        {   
+	        $this->smarty->assign('accion',$accion);
+	        
+	        $metodoAccion = "accion".ucfirst($accion);
+	        
+	        if(!method_exists($this,$metodoAccion) && $accion != $this->getAccionPredeterminada())
+	        {
+	            $req['accion'] = $this->getAccionPredeterminada();
+	            $this->ejecutar($req);
+	            return;
+	        } 
+	        
+	        $this->$metodoAccion($req);
+        }
            
     }
     
