@@ -130,7 +130,7 @@ class BaseMod {
         $this->smarty->assign('skin',$publicSkinDir);
         $this->smarty->assign('relative_images',"{$skinsDirname}/{$publicSkinDir}/images");
         $this->smarty->assign('version',Configuracion::getVersion());
-        $this->smarty->assign('skinPath',$systemRoot.'/{$skinsDirname}/'.$this->_skinConfig['dir']);
+        $this->smarty->assign('skinPath',$systemRoot."/{$skinsDirname}/".$this->_skinConfig['dir']);
         $this->smarty->assign('appName',Configuracion::getAppName());
 		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
         
@@ -232,7 +232,7 @@ class BaseMod {
     {
     	if(!isset($nombreMod))
             $nombreMod = get_class($this);
-        
+
         return Configuracion::getConfigModulo($nombreMod);
     }
         
@@ -301,15 +301,14 @@ class BaseMod {
             return false;
         // chequeo a partir de la config del módulo  
         $conf = $this->getConfigModulo($nombreModulo);
-        
-        
+
         //   Busco los permisos para la acción
         $acciones = $conf->acciones;        
         if(!isset($acciones->accion)) return false;
         
         foreach($acciones->accion as $acc)
         {   
-            $nombreAccion = (string)$acc['nombre'];
+        	$nombreAccion = (string)$acc['nombre'];
             
             if($nombreAccion == $accion)
             {   
@@ -322,11 +321,10 @@ class BaseMod {
                     {
                         $perm = (string)$p;
                         $tienePermiso &= $this->_usuario->tienePermiso($perm);
-                    }
-                
+                    }                
                 return $tienePermiso;
             }
-        }
+        }        
         return false;
     }
     
@@ -355,7 +353,7 @@ class BaseMod {
         
 	        if( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion']) ) 
 	        {   
-	            $this->sinPermisos();   
+	        	$this->sinPermisos();   
 	        }
     	}
         
