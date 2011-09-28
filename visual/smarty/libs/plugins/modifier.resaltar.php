@@ -35,7 +35,7 @@ function smarty_modifier_resaltar($str,$filtro,$parameter = array('background-co
 			$res = str_replace(chr(254),"<span style='{$modify}'>",$res);
 			$res = str_replace(chr(255),"</span>",$res);
 		}
-		elseif(is_)
+		elseif(is_string($parameter))
 		{
 			$res = str_replace(chr(254),"<span class='{$parameter}'>",$res);
 			$res = str_replace(chr(255),"</span>",$res);
