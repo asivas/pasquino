@@ -1,5 +1,5 @@
 <?php 
-function smarty_modifier_resaltar($str,$filtro)
+function smarty_modifier_resaltar($str,$filtro,$parameter = array('background-color' => '#FFFFBF'))
 {	
 	$str = htmlentities($str);
 	$filtro = htmlentities($filtro);
@@ -23,8 +23,23 @@ function smarty_modifier_resaltar($str,$filtro)
 				$offset = $pos + $lengthf + 2 ;
 			}
 		}
-		$res = str_replace(chr(254),"<span style='background-color:#FFFFBF;'>",$res);
-		$res = str_replace(chr(255),"</span>",$res);
+		
+		/*
+		 * en el caso que el parametro sea un arreglo de parametros:valor
+		 */
+		if(is_array($parameter))
+		{
+			$modify = '';
+			foreach ($parameter as $modifier => $value)
+				$modify .= "{$modifier}:{$value};";
+			$res = str_replace(chr(254),"<span style='{$modify}'>",$res);
+			$res = str_replace(chr(255),"</span>",$res);
+		}
+		elseif(is_)
+		{
+			$res = str_replace(chr(254),"<span class='{$parameter}'>",$res);
+			$res = str_replace(chr(255),"</span>",$res);
+		}
 	}
 	return $res;
 }
