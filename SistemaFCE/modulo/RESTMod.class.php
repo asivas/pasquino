@@ -43,7 +43,14 @@ class RESTMod {
 	 */
 	public function getRecursoSolicitado()
 	{
-		$uri = $_SERVER['REQUEST_URI'];
+		/*	posibles casos (sin probar):
+		 *     <host>/entidad[s|es][/id]
+		 *     <host>/<aplicacion>/entidad[s|es][/id]
+		 *     <host>/<aplicacion>/index.php/entidad[s|es][/id]
+		 */
+		
+		//Este str_replace puede ser malo
+		$uri = str_replace($_SERVER['SCRIPT_NAME'],'',$_SERVER['REQUEST_URI']);
 		
 		if(isset($_SERVER['PATH_INFO'])) $uri = $_SERVER['PATH_INFO'];
 		
@@ -56,6 +63,7 @@ class RESTMod {
 				$this->nombreRecurso = $rec[1];
 			}
 		}
+		
 		return $this->nombreRecurso; 
 	}
 	
@@ -88,7 +96,7 @@ class RESTMod {
 	 */
 	function getNombreRecurso()
 	{
-		$rec = $this->getRecursoSolicitado();				
+		$rec = $this->getRecursoSolicitado();						
 		//por si no se está usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
 		if($rec!=null) {
 			$plural = false;
@@ -124,10 +132,11 @@ class RESTMod {
 	{
 		$crit = new Criterio();
 		$mapping =  Configuracion::getMappingClase($this->getNombreRecurso());
+		
 		foreach($mapping->clase->propiedad as $prop)
 		{
 			$col = (string)$prop['columna'];
-			$val = 	$req[$col];		
+			$val = 	$req[$col];
 			if(isset($val))
 			{
 				$val = str_replace("*", "%", $val);				
@@ -138,6 +147,7 @@ class RESTMod {
 	
 			}
 		}
+		//$c= count($mapping->clase->propiedad);
 		return $crit;
 	}
 	
@@ -161,6 +171,7 @@ class RESTMod {
 		if($mappingClase==null)
 			$mappingClase =  Configuracion::getMappingClase($this->getNombreRecurso());
 		$vars = array();
+				
 		foreach($mappingClase->clase->id as $prop)
 		{	
 			$nombreProp = (string)$prop['nombre'];			
@@ -290,7 +301,6 @@ class RESTMod {
 		$method = $_SERVER['REQUEST_METHOD'];
 		
 		$idRecurso = $this->getIdRecursoSolicitado();
-		//var_dump($idRecurso);		
 		
 		if($method=='GET')
 		{

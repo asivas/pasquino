@@ -6,6 +6,10 @@ class Configuracion {
         
     }
     
+	static public function autoload_entidad($nombre) {
+        @include_once("entidades/{$nombre}.class.php");
+    }
+    
     public static function initSistema($rutaSysRoot,$pathsIncludePath=null)
     {
         
@@ -350,6 +354,7 @@ class Configuracion {
         }
         
         */
+        spl_autoload_register('Configuracion::autoload_entidad');
         
         if(!isset($m))
         {
@@ -359,13 +364,14 @@ class Configuracion {
         }
         
         $modName = ucfirst($m)."Mod";
-        
+       
         if(!class_exists($modName))
             $modName = Configuracion::getDefaultMod().'Mod';
-        
+       
         $mod = new $modName();
+	        
+	    $mod->ejecutar($req);	
         
-        $mod->ejecutar($req);	
     }
     
     /**

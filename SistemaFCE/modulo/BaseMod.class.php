@@ -479,8 +479,7 @@ class BaseMod {
             $this->redirectHomeSistema();
         }
                 
-        $this->checkPermisos($req);
-        $this->setMiembros($req);
+        
         
         if($this->REST->esUriRecurso())
         {	
@@ -488,7 +487,9 @@ class BaseMod {
         }
         else
         {   
-	        $this->smarty->assign('accion',$accion);
+			$this->checkPermisos($req);
+        	$this->setMiembros($req);
+        	$this->smarty->assign('accion',$accion);
 	        
 	        $metodoAccion = "accion".ucfirst($accion);
 	        
