@@ -161,7 +161,37 @@ class RESTMod {
 	 */
 	function getOrden($req)
 	{
-		
+		foreach($req as $key => $val)
+		{
+			if(strpos($key,'sort')!==false)
+			{
+				$key = str_replace("sort", '', $key);
+				$key = trim($key,"()");
+				//print $key;
+				if($key{0}=='-')
+					$sentido = "DESC";
+				else
+					$sentido = "ASC";
+				$key = substr($key, 1);
+				$col = $this->getColumna($key);
+				return "`{$col}` {$sentido}";	
+			}
+		}
+		return null;
+	}
+	
+	private function getColumna($nombrePropiedad)
+	{	
+		$mappingClase =  Configuracion::getMappingClase($this->getNombreRecurso());
+		foreach(array('id','propiedad') as $tipoProp)
+		{
+			foreach($mappingClase->clase->$tipoProp as $prop)
+			{	
+				$nombreProp = (string)$prop['nombre'];
+				if($nombreProp==$nombrePropiedad)
+					return (string)$prop['columna'];
+			}
+		}
 	}
 	
 	/**
@@ -220,7 +250,7 @@ class RESTMod {
 			$posMenos = strpos($this->range,'-',$posItems);
 			
 			$limitOffset = substr($this->range, $posItems ,$posMenos-$posItems);
-			$limitCant = substr($this->range, $posMenos+1 ) - $limitOffset;
+			$limitCant = (substr($this->range, $posMenos+1 ) - $limitOffset)+1;
 
 			header("Content-Range: items {$limitOffset}-{$limitCant}/{$cant}");
 		}
@@ -266,16 +296,14 @@ class RESTMod {
 	 * @param array $req
 	 */
 	function alta($datos,$req)
-	{
-		//TODO: implementar el alta
-		$nombreRec = $this->getNombreRecurso();
-		$nombreDao = "Dao".ucfirst($nombreRec);
+	{	
+		$nombreRec = ucfirst($this->getNombreRecurso());
+		$nombreDao = "Dao".$nombreRec;
 		$dao = new $nombreDao();
-		$idRecurso = $this->getIdRecursoSolicitado();
-		if(isset($idRecurso))		
-		{	
-			$result = $dao->deletePorId($idRecurso);
-		}
+		$arregloDatos = json_decode($data);
+		$entoidad = $dao->crearDesdeArreglo($arregloDatos);
+		$result = $dao->save($entidad);
+		
 		if($result)
 			$resultado['status'] = "SUCCESS";
 		else 
@@ -296,8 +324,23 @@ class RESTMod {
 	 */
 	function baja($datos,$req)
 	{
-		//TODO: implementar el baja
-		print "no implementado aun";
+		$nombreRec = $this->getNombreRecurso();
+		$nombreDao = "Dao".ucfirst($nombreRec);
+		$dao = new $nombreDao();
+		$idRecurso = $this->getIdRecursoSolicitado();
+		if(isset($idRecurso))		
+		{	
+			$result = $dao->deletePorId($idRecurso);
+		}
+		if($result)
+			$resultado['status'] = "SUCCESS";
+		else 
+		{
+			$resultado['status'] = "ERROR";
+			$resultado['message'] = $dao->getLastError();
+		}
+		
+		return json_encode($resultado); 
 	}
 	
 	/**
@@ -308,8 +351,25 @@ class RESTMod {
 	 */
 	function modificacion($datos,$req)
 	{
-		//TODO: implementar el modificacion
-		print "no implementado aun";
+		$nombreRec = ucfirst($this->getNombreRecurso());
+		$nombreDao = "Dao".$nombreRec;
+		$dao = new $nombreDao();
+		$arregloDatos = json_decode($data);
+		$entoidad = $dao->crearDesdeArreglo($arregloDatos);
+		$idRecurso = $this->getIdRecursoSolicitado();
+		
+		$entidad->setId($idRecurso);
+		$result = $dao->save($entidad);
+		
+		if($result)
+			$resultado['status'] = "SUCCESS";
+		else 
+		{
+			$resultado['status'] = "ERROR";
+			$resultado['message'] = $dao->getLastError();
+		}
+		
+		return json_encode($resultado); 
 	}
 	
 	
@@ -346,11 +406,10 @@ class RESTMod {
 			
 	        // 	execute the function/method and return the results
 	        header("{$_SERVER['SERVER_PROTOCOL']} 200 OK");
-/*	        if(strpos($this->accept_encoding, "application/json")!==false)
+	        if(strpos($this->accept_encoding, "application/json")!==false)
 	        	header('Content-Type: application/json');
 	        else
 	        	header('Content-Type: text/plain');
-*/
 	        print $this->$callback($datos, $req);
 		}
 		else 
