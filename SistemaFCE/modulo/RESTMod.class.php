@@ -136,18 +136,22 @@ class RESTMod {
 		foreach($mapping->clase->propiedad as $prop)
 		{
 			$col = (string)$prop['columna'];
-			$val = 	$req[$col];
-			if(isset($val))
+			foreach(array('columna','nombre') as $k)
 			{
-				$val = str_replace("*", "%", $val);				
-				if(strpos($val, "%")!==false)
-					$crit->add(Restricciones::like($col, $val));
-				else
-					$crit->add(Restricciones::eq($col, $val));
-	
+				$p = (string)$prop[$k];
+				$val = 	$req[$p];  
+				if(isset($val))
+				{
+					$val = str_replace("*", "%", $val);				
+					if(strpos($val, "%")!==false)
+						$crit->add(Restricciones::like($col, $val));
+					else
+						$crit->add(Restricciones::eq($col, $val));
+					break;		
+				}
 			}
-		}
-		//$c= count($mapping->clase->propiedad);
+			
+		}		
 		return $crit;
 	}
 	
@@ -342,10 +346,11 @@ class RESTMod {
 			
 	        // 	execute the function/method and return the results
 	        header("{$_SERVER['SERVER_PROTOCOL']} 200 OK");
-	        if(strpos($this->accept_encoding, "application/json")!==false)
+/*	        if(strpos($this->accept_encoding, "application/json")!==false)
 	        	header('Content-Type: application/json');
 	        else
 	        	header('Content-Type: text/plain');
+*/
 	        print $this->$callback($datos, $req);
 		}
 		else 

@@ -38,7 +38,8 @@ class Restriccion {
             $val = "'{$this->valor}'";
 
         $columna = $this->buscarNombreColumna($clase,$this->propiedad); 
-
+    	if(strpos($columna,' ')!==false)
+    		$columna = "`{$columna}`";
         return "{$columna} {$this->operador} {$val}";	
     }
     

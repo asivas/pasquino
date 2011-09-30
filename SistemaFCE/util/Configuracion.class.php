@@ -8,6 +8,7 @@ class Configuracion {
     
 	static public function autoload_entidad($nombre) {
         @include_once("entidades/{$nombre}.class.php");
+        @include_once("{$nombre}.class.php");
     }
     
     public static function initSistema($rutaSysRoot,$pathsIncludePath=null)
