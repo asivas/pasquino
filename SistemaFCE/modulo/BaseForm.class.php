@@ -71,8 +71,8 @@ class BaseForm extends HTML_QuickForm {
     /**
      * Genera un arreglo con opciones para un select
      * @param array $listaElementos Lista de elementos que deben tener getId y getNombre definidos
-     * @param integre $vacio si se debe crear una opcion vacia
-     * @param integre $otro si se debe crear una opcion de "Otro", si está definido el nro será el id
+     * @param integer $vacio si se debe crear una opcion vacia
+     * @param integer $otro si se debe crear una opcion de "Otro", si está definido el nro será el id
      * @return array arreglo asociativo id => nombre 
      */
     function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra',$getNombreFunc='getNombre',$getIdFunc='getId')
@@ -86,7 +86,7 @@ class BaseForm extends HTML_QuickForm {
         if(is_array($listaElementos))     
             foreach($listaElementos as $elem)
             {
-                if(method_exists($elem,'getId') && method_exists($elem,'getNombre'))
+                if(method_exists($elem,$getIdFunc) && method_exists($elem,$getNombreFunc))
                     $arregloOpciones[$elem->$getIdFunc()] = $elem->$getNombreFunc();
             }
         

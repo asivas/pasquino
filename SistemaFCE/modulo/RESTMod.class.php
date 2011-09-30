@@ -264,7 +264,24 @@ class RESTMod {
 	function alta($datos,$req)
 	{
 		//TODO: implementar el alta
-		print "no implementado aun";
+		$nombreRec = $this->getNombreRecurso();
+		$nombreDao = "Dao".ucfirst($nombreRec);
+		$dao = new $nombreDao();
+		$idRecurso = $this->getIdRecursoSolicitado();
+		if(isset($idRecurso))		
+		{	
+			$result = $dao->deletePorId($idRecurso);
+		}
+		if($result)
+			$resultado['status'] = "SUCCESS";
+		else 
+		{
+			$resultado['status'] = "ERROR";
+			$resultado['message'] = $dao->getLastError();
+		}
+		
+		return json_encode($resultado); 
+		
 	}
 	
 	/**
