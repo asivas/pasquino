@@ -99,6 +99,7 @@
 <!ATTLIST archivo
 	nombre CDATA #REQUIRED
 	sys-name (Base|Default|Lista|Formulario|Info|FormFiltro|Menu) #IMPLIED
+	type (javascript|css) #IMPLIED
 >
 
 <!ELEMENT menuPrincipal (menuItem*,permisos?)>
