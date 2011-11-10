@@ -6,9 +6,11 @@
  */
 require_once('visual/jscalendar/FCEcalendar.class.php');
 require_once('SistemaFCE/util/Session.class.php'); 
-require_once('visual/smarty/libs/Smarty.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
 require_once('datos/debug/DebugFacade.class.php');
+
+if(!class_exists('Smarty'))
+	require_once('visual/smarty/libs/Smarty.class.php');
 
 if(!class_exists('DaoUsuario')) //Si el sistema implementa otro DaoUsuario no lo defino
     require_once('SistemaFCE/dao/DaoUsuario.class.php');
