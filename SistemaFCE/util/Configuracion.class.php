@@ -8,6 +8,7 @@ class Configuracion {
     
 	static public function autoload_entidad($nombre) {
         @include_once("entidades/{$nombre}.class.php");
+		@include_once("SistemaFCE/entidad/{$nombre}.class.php");
         @include_once("{$nombre}.class.php");
     }
     
@@ -18,7 +19,8 @@ class Configuracion {
             Configuracion::setSystemRootDir($rutaSysRoot);
         
         Configuracion::setIncludePath($pathsIncludePath);
-
+		
+        spl_autoload_register('Configuracion::autoload_entidad');
         //{{{ Incluir modulos
         Configuracion::incluirModulos();    
         ///}}}
@@ -355,8 +357,6 @@ class Configuracion {
         }
         
         */
-        spl_autoload_register('Configuracion::autoload_entidad');
-        
         if(!isset($m))
         {
             $m = $req['mod'];
