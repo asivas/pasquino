@@ -65,6 +65,6 @@ class BaseUsuario {
     
     function tienePermiso($permiso)
     {
-        return strpos($this->permisos,$permiso)!==FALSE;
+    	return strpos($this->getPermisos(),$permiso)!==FALSE;
     }
 }

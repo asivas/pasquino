@@ -251,7 +251,7 @@ class BaseMod {
     
     protected function ajaxCheckPermisos(&$objResponse=null)
     {
-        if(!$this->session->LogIn())
+        if(!$this->LogIn())
         {   
             if(isset($objResponse))
             {
@@ -303,7 +303,7 @@ class BaseMod {
             return false;
         // chequeo a partir de la config del módulo  
         $conf = $this->getConfigModulo($nombreModulo);
-
+        
         //   Busco los permisos para la acción
         $acciones = $conf->acciones;        
         if(!isset($acciones->accion)) return false;
@@ -344,11 +344,18 @@ class BaseMod {
         die();
     }
     
+    protected function LogIn()
+    {
+    	return $this->session->LogIn();
+   	}
+     
+    
     protected function checkPermisos($req)
     {	
+    	$isLogedIn = $this->LogIn();
     	if(!$this->_esPublica($req['accion']))
     	{
-    	 	if(!$this->session->LogIn())
+    	 	if(!$isLogedIn)
 	        {   
 	            $this->formLogin();
 	        }
@@ -369,7 +376,8 @@ class BaseMod {
         
         $this->smarty->assign('menuMod',$this->_menuModTplPath);
         $this->smarty->assign('pantalla',$tpl);
-        $this->smarty->assign('ajax',$this->xajax->getJavascript('js/'));
+        if($this->xajax!=null)
+        	$this->smarty->assign('ajax',$this->xajax->getJavascript('js/'));
         
         $disp = $this->_tilePath;        
         if(empty($this->_tilePath))
@@ -489,7 +497,7 @@ class BaseMod {
         }
         else
         {   
-			$this->checkPermisos($req);
+        	$this->checkPermisos($req);
         	$this->setMiembros($req);
         	$this->smarty->assign('accion',$accion);
 	        
