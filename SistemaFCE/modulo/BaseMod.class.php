@@ -527,7 +527,7 @@ class BaseMod {
             $this->alta($_POST);
             $this->redirectHomeModulo($req);
         }
-        $this->form();
+        $this->form($req);
     }
     
     /**
