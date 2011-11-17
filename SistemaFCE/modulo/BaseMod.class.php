@@ -332,7 +332,7 @@ class BaseMod {
     
     public function formLogin()
     {
-    	$this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['dir']);
+    	$this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['nombre']);    	
         $this->mostrar('formLogin.tpl');
         exit();
     }
