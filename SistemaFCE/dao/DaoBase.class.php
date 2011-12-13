@@ -194,12 +194,16 @@ abstract class DaoBase {
      * Crea el objeto de la entidad a la cual logra el acceso el DAO
      * @return object el objeto con los datos a partir de $row
      * @param array $row arreglo con los datos obtenidos de la base en forma nombreCol => valor
+     * @param object $elem elemento pre-creado en el cual se deben cargar los parametros
      */
-    protected function crearObjetoEntidad($row) 
+    protected function crearObjetoEntidad($row,$elem = null) 
     {
-        $elem_name = (string)$this->_xmlMapping['nombre'];
-        $elem = new $elem_name();
- 
+        if($elem == null)
+        {
+        	$elem_name = (string)$this->_xmlMapping['nombre'];
+        	$elem = new $elem_name();
+        }
+        
         foreach($this->_xmlMapping->id as $id)
         {
 	        $set = "set".ucfirst((string)$id['nombre']);			
@@ -264,6 +268,17 @@ abstract class DaoBase {
                 $elem->$set($elemsRelac);
             }
         }
+        $extiende = (string)$this->_xmlMapping['extiende'];
+        if($extiende != null)
+        {
+        	$classDaoExtiende = "Dao".$extiende;
+        	$daoExtiende = new $classDaoExtiende();
+        	$criterioId = $daoExtiende->getCriterioId($elem->getId());
+	       	$sql = $daoExtiende->getFindBySql($criterioId);
+			$rs = $this->_db->Execute($sql);
+			$row = $rs->FetchRow();
+	      	$elem = $daoExtiende->crearObjetoEntidad($row,$elem);
+        }
         
         //print "Tiempo $elem_name: ".(time()-$antes). "<br>";
     	return $elem;
@@ -286,7 +301,7 @@ abstract class DaoBase {
      * @param int $count cantidad de elementos a buscar
      * @param int $limit limite inicial desde donde buscar (offset)
      */
-    private function getFindBySql($filtro = null,$order=null,$count=null,$limit=null)
+    function getFindBySql($filtro = null,$order=null,$count=null,$limit=null)
     {
     	if(!empty($this->baseFindBySQL))
             $sql = $this->baseFindBySQL;
