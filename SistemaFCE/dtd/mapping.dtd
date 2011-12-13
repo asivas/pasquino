@@ -9,6 +9,7 @@
 	path CDATA #IMPLIED
 	orden CDATA #IMPLIED
 	data-source CDATA #IMPLIED
+	extiende CDATA #IMPLIED
 >
 <!ELEMENT id EMPTY >
 <!ATTLIST id 
