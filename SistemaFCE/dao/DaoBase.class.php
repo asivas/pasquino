@@ -183,7 +183,7 @@ abstract class DaoBase {
         foreach($arreglo as $nombreProp => $valor)
         {
         	$set = "set".ucfirst($nombreProp);
-            if(method_exists($elem,$set))
+        	if(method_exists($elem,$set))
                 $elem->$set($valor);
         }
         
@@ -387,13 +387,14 @@ abstract class DaoBase {
      */
     function findById($idElemento) 
     {
-        $c = $this->getCriterioId($idElemento);
-        
-        $arr = $this->findBy($c);
-        
-        if(!empty($arr) && is_array($arr))
-           return current($arr);
-        
+        if(isset($idElemento))
+        {
+	    	$c = $this->getCriterioId($idElemento);
+	        $arr = $this->findBy($c);
+	        if(!empty($arr) && is_array($arr))
+	           return current($arr);
+        }
+
         return null;
     }
     

@@ -23,6 +23,8 @@ class BaseForm extends HTML_QuickForm {
     function __construct($nombre, $metodo='POST', $accion='',$target='',$attributos='') {
     	
     	if(empty($accion)) $accion = $_SERVER['PHP_SELF'];
+    	//me aseguro por si envian explicitamente por error null
+    	if(!isset($metodo))	$metodo = 'POST';
     	parent::__construct($nombre,$metodo,$accion,$target,$attributos);
         
         $this->registerRule('fecha','callback','esFecha');
