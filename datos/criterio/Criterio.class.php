@@ -4,7 +4,7 @@ require_once('datos/criterio/Conjuncion.class.php');
 require_once('datos/criterio/Disjuncion.class.php');
 require_once('datos/criterio/Restricciones.class.php');
 
-class Criterio {
+class Criterio{
     
     protected $_expresiones;
     protected $_operador = "AND";
@@ -20,6 +20,36 @@ class Criterio {
     public function add($expresion) {
     	$this->_expresiones[] = $expresion;
         return $this;
+    }
+    
+    public function del($posicion) {
+    	$cantExpresiones = $this->cantExpresiones();
+    	if($posicion < $cantExpresiones)
+    	{
+    		for($x=$posicion;$x<$cantExpresiones-1;$x++)
+    		{
+    			$this->_expresiones[$x] = $this->_expresiones[$x+1];
+    		}
+    		$this->_expresiones[$cantExpresiones-1] = null;
+    		unset($this->_expresiones[$cantExpresiones-1]);
+    	}
+    }
+    
+    public function insert($posicion,$expresion) {
+    	$cantExpresiones = $this->canExpresiones();
+    	if($posicion <= $cantExpresiones)
+    	{
+    		for($x=$posicion;$x<$cantExpresiones;$x++)
+    		{
+    			$this->_expresiones[$x+1] = $this->_expresiones[$x];
+    		}
+    		$this->_expresiones[$posicion] = $expresion;
+    	}
+    }
+    
+    public function cantExpresiones()
+    {
+    	return count($this->_expresiones);
     }
     
     /**
@@ -85,4 +115,35 @@ class Criterio {
         }
         return $a;
     }
+    
+    function toArraySerialize()
+    {
+     	$a = array();
+        $a[$this->_operador] = array();
+        foreach($this->_expresiones as $exp)
+        {
+            if(!is_string($exp) && !is_array($exp)) $exp = $exp->toArraySerialize();
+            $a[$this->_operador][] = $exp;
+        }
+        return $a;
+    }
+    
+	function serialize()
+	{
+		$array = $this->toArraySerialize();
+		return serialize($array);
+	}
+	
+	function unserialize($data)
+	{
+		$array = unserialize($data);
+
+		$this->_operador = key($array);
+		
+		foreach($array[$this->_operador] as $exp)
+		{
+			$res = Restriccion::fromArraySerialize($exp);
+			$this->_expresiones[] = $res;	
+		}
+	}
 }

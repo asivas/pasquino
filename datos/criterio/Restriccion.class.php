@@ -1,6 +1,6 @@
 <?php
 
-class Restriccion {
+class Restriccion{
     
     protected $operador;
     protected $propiedad;
@@ -52,4 +52,26 @@ class Restriccion {
     	return array($this->operador=>array($this->propiedad,$this->valor));
     }
     
+    function toArraySerialize()
+	{
+		return array(get_class($this)=>array($this->propiedad,$this->valor));
+	}
+	
+	static function fromArraySerialize($array)
+	{
+		$clase = key($array);
+		include_once('datos/criterio/Restricciones/'.$clase.'.class.php');
+		
+		if($clase == 'AllEq' || $clase == 'IsEmpty' || $clase == 'IsNotEmpty' 
+		|| $clase == 'IsNull' || $clase == 'IsNotNull' || $clase == 'Not') 
+		{
+			$obj = new $clase($array[key($array)][0]);
+		}
+		else
+		{
+			$obj = new $clase($array[key($array)][0],$array[key($array)][1]);
+		}
+		
+		return $obj;
+	}
 }
