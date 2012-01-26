@@ -455,13 +455,23 @@ abstract class DaoBase {
      */
     protected function getCriterioId($idElemento)
     {	
-        $id = $this->_xmlMapping->id;
-        
-        $nombreColId = $id['columna'];
-                
-        $c = new Criterio();        
-        $c->add("`{$nombreColId}` = '{$idElemento}'");
-        
+    	$c = new Criterio();
+    	
+    	$cantIds= count($this->_xmlMapping->id);		
+    	if($cantIds == 1)
+    	{
+    		$nombreCol = (string)$this->_xmlMapping->id['columna'];    					
+			$c->add(Restricciones::eq($nombreCol,$idElemento));
+    	}
+    	elseif($cantIds>1)
+    	{
+    		foreach($this->_xmlMapping->id as $prop)
+			{
+				$col = (string)$prop['columna'];
+				$c->add(Restricciones::eq($col,$idElemento[$col]));
+			}
+
+    	}
         return $c;
     }
     

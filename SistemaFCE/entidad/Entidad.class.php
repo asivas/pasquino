@@ -50,7 +50,7 @@ class Entidad implements Serializable{
 	    		foreach($mapping->clase->id as $prop)
 				{
 					$col = (string)$prop['columna'];
-					$nombre = (string)$prop['nombre'];
+					$nombreProp = (string)$prop['nombre'];
 					$getFn = "get".ucfirst($nombreProp);
 					
 					if(method_exists($this, $getFn))
