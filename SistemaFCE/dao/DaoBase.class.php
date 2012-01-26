@@ -345,6 +345,35 @@ abstract class DaoBase {
     
     /**
      * 
+     * Genera el sql utilizado para eliminar elementos 
+     * @param mixed $filtro puede ser string o Criterio
+      */
+    function getDeleteBySql($filtro = null)
+    {
+        $tabla = $this->tableName;
+            
+        if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
+                $tabla = "`{$tabla}`";
+            
+        $sql = "DELETE FROM {$tabla}";
+        
+        if($filtro != null && $filtro->getCondicion()!='')
+        { 
+        	if(stripos($sql," WHERE ")===false || stripos($sql," WHERE ")==-1)
+                $sql .= " WHERE ";
+            else
+                $sql .= " AND "; 
+                
+            $sql .= $filtro->getCondicion();
+        }
+      
+         return $sql;
+    }    
+    
+    
+    
+    /**
+     * 
      * Cuenta la cantidad de elementos
      * @param unknown_type $filtro
      * @param unknown_type $order
@@ -372,13 +401,20 @@ abstract class DaoBase {
         
         if(!($rs = $this->_db->Execute($sql)))
             die($this->_db->ErrorMsg()." $sql");
-            
+    	
         $lista = array();
         while($row = $rs->FetchRow())
         {
             $lista[] = $this->crearObjetoEntidad($row);
         }
         return $lista;
+    }
+    
+    function deleteBy($filtro = null){
+    	$sql = $this->getDeleteBySql($filtro);
+        
+        if(!($rs = $this->_db->Execute($sql)))
+            die($this->_db->ErrorMsg()." $sql");
     }
     
     /**
