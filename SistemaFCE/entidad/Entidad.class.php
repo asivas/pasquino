@@ -4,6 +4,26 @@ require_once 'SistemaFCE/util/Configuracion.class.php';
 class Entidad implements Serializable{
 	protected $_id;
 	
+	/**
+	 * Valor que representa si el objeto esta en proceso de edicion
+	 * @var boolean
+	 * true:la entidad esta siendo modificada
+	 * null/false:la entidad no esta siendo modificada 
+	 */
+	protected $_edicion;
+	
+		
+	
+	function setEdicion($valor)
+	{
+		$this->_edicion = $valor;
+	}
+	
+	function getEdicion()
+	{
+		return $this->_edicion;
+	}
+	
 	function serialize()
 	{
 		//print get_class($this);
