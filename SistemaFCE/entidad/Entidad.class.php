@@ -31,13 +31,12 @@ class Entidad implements Serializable{
 		$props = $ref->getProperties();
 		$result = array();
 	    foreach ($props as $pro) {
-	        //false && $pro = new ReflectionProperty();	        
 	        $prop = $pro->getName();
 	        if($prop != '_id')
 	        {
 		        if(strcasecmp($prop,'_edicion')==0)
 		        	$prop = 'edicion';
-	        	$getFn = "get".ucfirst($prop);	        
+	        	$getFn = "get".ucfirst($prop);
 		        $result[$prop] = $this->$getFn();
 	        }
 	    }

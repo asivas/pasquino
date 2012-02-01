@@ -358,14 +358,7 @@ abstract class DaoBase {
         $sql = "DELETE FROM {$tabla}";
         
         if($filtro != null && $filtro->getCondicion()!='')
-        { 
-        	if(stripos($sql," WHERE ")===false || stripos($sql," WHERE ")==-1)
-                $sql .= " WHERE ";
-            else
-                $sql .= " AND "; 
-                
             $sql .= $filtro->getCondicion();
-        }
       
          return $sql;
     }    
@@ -513,7 +506,7 @@ abstract class DaoBase {
     
     public function getLastError()
     {
-    	print $this->_lastError;
+    	return $this->_lastError;
     }
     
     /**
