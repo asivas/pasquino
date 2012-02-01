@@ -358,7 +358,7 @@ abstract class DaoBase {
         $sql = "DELETE FROM {$tabla}";
         
         if($filtro != null && $filtro->getCondicion()!='')
-            $sql .= $filtro->getCondicion();
+            $sql .= " WHERE ".$filtro->getCondicion();
       
          return $sql;
     }    
