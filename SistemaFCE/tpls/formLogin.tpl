@@ -2,7 +2,7 @@
 <form action="{$smarty.server.PHP_SELF}" method="POST">
 	<table>
 		<tr>
-			<td>Nombre ususario:</td><td> <input name="username"></td>
+			<td>Nombre usuario:</td><td> <input name="username"></td>
 		</tr>
 		<tr>
 			<td>Contraseña:</td> <td><input name="password" type="password"></td>
