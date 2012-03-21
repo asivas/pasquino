@@ -393,12 +393,11 @@ abstract class DaoBase {
         $sql = $this->getFindBySql($filtro,$order,$count,$limit);
         
         if(!($rs = $this->_db->Execute($sql)))
-            die($this->_db->ErrorMsg()." $sql");
-    	
+            die($this->_db->ErrorMsg()." $sql");    	
         $lista = array();
         while($row = $rs->FetchRow())
         {
-            $lista[] = $this->crearObjetoEntidad($row);
+        	$lista[] = $this->crearObjetoEntidad($row);
         }
         return $lista;
     }
@@ -419,7 +418,7 @@ abstract class DaoBase {
         if(isset($idElemento))
         {
 	    	$c = $this->getCriterioId($idElemento);
-	        $arr = $this->findBy($c);
+	        $arr = $this->findBy($c);	        
 	        if(!empty($arr) && is_array($arr))
 	           return current($arr);
         }
@@ -441,11 +440,18 @@ abstract class DaoBase {
      */
     function save(&$elem) {
         
-        $buf = $this->getBuffer($elem);
-
-        
         $mode   = 'INSERT';
         $where  = false;
+        
+    	if(($extiende = (string)$this->_xmlMapping['extiende']) != null)
+         {
+        	$classDaoExtiende = "Dao".$extiende;        	
+        	$daoExtiende = new $classDaoExtiende();
+        	if(!$daoExtiende->save($elem))
+        		$this->_lastError =  $daoExtiende->getLastError();
+         }
+        
+         $buf = $this->getBuffer($elem);
         /*
          * Busco el elemento por id, si existe debo actualizarlo 
          */
@@ -454,15 +460,15 @@ abstract class DaoBase {
             $mode  = 'UPDATE';
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
-        
+                 
         $ret = $this->_db->AutoExecute((string)$this->tableName,$buf,$mode,$where);
 		
 		if(!$ret)
         {
             $this->_lastError =  $this->_db->ErrorMsg();
         }
-        
-        if($mode == 'INSERT')
+        $id = $elem->getId(); 
+        if($mode == 'INSERT' && empty($id))
         {
             $id = $this->_xmlMapping->id;
             $set = "set".ucfirst($id['nombre']);
