@@ -46,13 +46,18 @@ abstract class Mdb2IdAuth extends Auth{
         {
             if($res = $this->storage->db->query($sql))
             {	
-                if($u = $res->fetchRow(MDB2_FETCHMODE_ASSOC))
+                if(!PEAR::isError($res))
                 {
-                    if(empty($u[$this->id_label]))
-                        return $u[strtolower($this->id_label)];
-                    else
-                        return $u[$this->id_label];
+	            	if($u = $res->fetchRow(MDB2_FETCHMODE_ASSOC))
+	                {
+	                    if(empty($u[$this->id_label]))
+	                        return $u[strtolower($this->id_label)];
+	                    else
+	                        return $u[$this->id_label];
+	                }
                 }
+                else 
+                 print $res->getMessage();
             }
         }
         

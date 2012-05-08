@@ -220,7 +220,7 @@ class Configuracion {
         return $config;
     }
     
-    private static function findTplPath($tConf,$sysName = 'Default')
+    public static function findTplPath($tConf,$sysName = 'Default')
     {
         //recorro los archivos
         if(isset($tConf->archivo))
