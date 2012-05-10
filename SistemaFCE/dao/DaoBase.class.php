@@ -271,8 +271,7 @@ abstract class DaoBase {
         $extiende = (string)$this->_xmlMapping['extiende'];
         if($extiende != null)
         {
-        	$classDaoExtiende = "Dao".$extiende;
-        	$daoExtiende = new $classDaoExtiende();
+        	$daoExtiende = $this->_newDaoClase($extiende);
         	$criterioId = $daoExtiende->getCriterioId($elem->getId());
 	       	$sql = $daoExtiende->getFindBySql($criterioId);
 			$rs = $this->_db->Execute($sql);
@@ -445,8 +444,7 @@ abstract class DaoBase {
         
     	if(($extiende = (string)$this->_xmlMapping['extiende']) != null)
          {
-        	$classDaoExtiende = "Dao".$extiende;        	
-        	$daoExtiende = new $classDaoExtiende();
+        	$daoExtiende = $this->_newDaoClase($extiende);
         	if(!$daoExtiende->save($elem))
         		$this->_lastError =  $daoExtiende->getLastError();
          }
