@@ -137,6 +137,7 @@ class BaseMod {
 		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
         
         $this->smarty->assign('dir_images',"{$skinsDirname}/{$publicSkinDir}/images");
+        $this->smarty->assign('dir_js',"{$skinsDirname}/{$publicSkinDir}/js");
         
         $mp = $this->getMenuPrincipal();    
         //menu
