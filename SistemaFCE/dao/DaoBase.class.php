@@ -182,9 +182,13 @@ abstract class DaoBase {
         
         foreach($arreglo as $nombreProp => $valor)
         {
-        	$set = "set".ucfirst($nombreProp);
+        	$set = "set".ucfirst($nombreProp);        	
         	if(method_exists($elem,$set))
-                $elem->$set($valor);
+        	{
+                if(mb_detect_encoding($valor . 'a' , 'UTF-8, ISO-8859-1')=='UTF-8')
+               		$valor = utf8_decode($valor);	
+        	   	$elem->$set($valor);
+        	}
         }
         
         return $elem;
