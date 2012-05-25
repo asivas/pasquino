@@ -46,6 +46,12 @@ class BaseMod {
     
     var $REST;
     
+    /**
+     * 
+     * Inicializa el BaseMod
+     * @param string $skinDirName nombre de la skin/template utilizada
+     * @param boolean $conXajax determina si se utilizará xajax como motor de ajax
+     */
     function __construct($skinDirName=null,$conXajax=true) {
         if(!isset($this->session))
             $this->session = new Session(Configuracion::getAppName());

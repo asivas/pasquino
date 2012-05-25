@@ -123,4 +123,10 @@ class Entidad implements Serializable{
 	    	$this->_id = $newId;
     	}
     }
+    
+    /**
+     * 
+     * Muestra un string que identifica al elemento a nivel humano
+     */
+    function toString() { return ""; }
 }
