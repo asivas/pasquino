@@ -10,15 +10,18 @@ class In extends Restriccion {
     private function _getListaIn()
     {
     	$listaIn = "";
-        foreach($this->valor as $v)
-        {
-            if(!empty($listaIn)) $listaIn .= ",";
-            
-            if(is_string($v))
-                $v = "'{$v}'"; 
-            
-            $listaIn .= $v; 
-        }
+    	if(is_string($this->valor))
+    		$listaIn = $this->valor;
+    	else
+	        foreach($this->valor as $v)
+	        {
+	            if(!empty($listaIn)) $listaIn .= ",";
+	            
+	            if(is_string($v))
+	                $v = "'{$v}'"; 
+	            
+	            $listaIn .= $v; 
+	        }
         return $listaIn;
     }
     
