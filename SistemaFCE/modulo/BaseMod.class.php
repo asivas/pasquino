@@ -376,7 +376,21 @@ class BaseMod {
         return true;
     }
     
-    protected function mostrar($tpl)
+    /**
+     * Devuelve la ruta de un tile (plantilla) a partir de un
+     * tipo de display 
+     * @param string $displayType
+     */
+    protected function getTilePathForDisplayType($displayType) {return "";}
+    
+    /**
+     * 
+     * Muestra por pantalla el tpl con el tipo de display seleccionado o si no hay tipo se muestra
+     * con la plantilla (tile) default
+     * @param unknown_type $tpl
+     * @param unknown_type $type
+     */
+    protected function mostrar($tpl,$type=null)
     {
         if(!empty($this->errors))
             $this->smarty->assign('errores',$this->errors);
@@ -386,8 +400,15 @@ class BaseMod {
         if($this->xajax!=null)
         	$this->smarty->assign('ajax',$this->xajax->getJavascript('js/'));
         
-        $disp = $this->_tilePath;        
-        if(empty($this->_tilePath))
+        if(!isset($type) || $type=='full')
+			$disp = $this->_tilePath;
+		else
+			$disp = $this->getTilePathForDisplayType($type);
+			
+		if (isset($this->jsModulo))
+			$this->smarty->assign("jsModulo",$this->jsModulo);
+		        
+        if(empty($disp))
         	$disp = $tpl;
         $this->smarty->Display($disp);
     }
@@ -545,8 +566,8 @@ class BaseMod {
     protected function accionModif($req)
     {
         if(!empty($_POST) && $_POST['accion']=='modif')
-        {
-            $this->modificacion($req);                    
+        {   
+        	$this->modificacion($req);
             $this->redirectHomeModulo($req);
         }         
         $this->form($req);
@@ -579,13 +600,37 @@ class BaseMod {
     }
     
     /* funciones abstractas */
+    /**
+     * Metodo llamado cuando se ejecuta la acción alta via post
+     * @param array $req arreglo de variables enviadas en el request 
+     */
     protected function alta($req){}
+    
+    /**
+     * Metodo llamado cuando se ejecuta la acción baja
+     * @param array $req arreglo de variables enviadas en el request
+     */
     protected function baja($req){}
+    
+    /**
+     * Metodo llamado cuando se ejecuta la acción listar
+     * @param array $req arreglo de variables enviadas en el request
+     */
     protected function lista($req=null){
     	if(method_exists($this,'listar'))
           $this->listar($req);
     }
+    
+    /**
+     * Metodo llamado cuando se ejecutan las acciones alta o modif sin ser enviado por post
+     * @param array $req arreglo de variables enviadas en el request
+     */
     protected function form($req=null){}
+    
+    /**
+     * Metodo llamado cuando se ejecuta la acción modif y es enviado por post 
+     * @param array $req arreglo de variables enviadas en el request
+     */
     protected function modificacion($req){
     	if(method_exists($this,'modif'))
           $this->modif($req);
@@ -608,6 +653,7 @@ class BaseMod {
     
     /**
      * Muestra un mensaje usando xajax
+     * @deprecated los mensajes se usan via jquery
      */
     protected function displayMensaje(&$xajaxObjResponse,$mensaje,$className='message',$xPos=null,$yPos=null,$idDiv='message')
     {
@@ -624,6 +670,7 @@ class BaseMod {
     
     /**
      * Muestra un mensaje de error usando xajax
+     * @deprecated los mensajes se usan via jquery
      */
     protected function displayError(&$xajaxObjResponse,$mensaje)
     {
@@ -632,6 +679,7 @@ class BaseMod {
     
     /**
      * Oculta un mensaje mostrado utilizando xajax 
+     * @deprecated los mensajes se usan via jquery
      */
     function hideMensaje($idDiv='message')
     {
@@ -648,6 +696,7 @@ class BaseMod {
    /**
      * Crea el input con el calendario selector de fecha
      * @return String con el html listo para insertar en el template
+     * @deprecated como se usa jquery ya no tiene sentido
      */
     protected function getCalendarInput($name, $value = "", $format = null, $baseID = null)
 	{
