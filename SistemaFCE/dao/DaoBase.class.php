@@ -512,6 +512,44 @@ abstract class DaoBase {
         return $c;
     }
     
+    /**
+     * Obtiene de un arreglo que tiene el formato {"nombrePropiedad"="valorPropiedad"} el valor del id
+     * @param array $arr
+     */
+    public function getIdElementoDeArreglo($arr){
+    	
+    	$cantIds= count($this->_xmlMapping->id);
+    	
+    	$elem_name = (string)$this->_xmlMapping['nombre'];
+        $elem = new $elem_name();
+            	
+        if($cantIds == 1)
+    	{
+    		$nombreCol = (string)$this->_xmlMapping->id['columna'];
+    		$nombreProp = (string)$this->_xmlMapping->id['nombre'];
+    		if(isset($arr[$nombreCol]))
+    			$id = $arr[$nombreCol];
+    		else if(isset($arr[$nombreProp]))
+    			$id = $arr[$nombreCol];
+    		else 
+    			$id = $arr['id'];
+    		   		
+    		return $id;
+    	}
+    	elseif($cantIds>1)
+    	{
+    		$arrId=array();
+    		foreach($this->_xmlMapping->id as $prop)
+			{
+				$col = (string)$prop['columna'];
+				$nombreProp = (string)$prop['nombre'];
+    				
+				$arrId[$col]=(isset($arr[$nombreCol]))?$arr[$nombreCol]:$arr[$nombreProp];
+			}
+			return $arrId;
+    	}
+    }
+    
     public function getLastError()
     {
     	return $this->_lastError;

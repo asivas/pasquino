@@ -466,7 +466,9 @@ class BaseMod {
      * Genera un objeto Criterio a partir de los filtros pasados por request
      * @param array $req
      */
-    protected function getFiltro($req){}
+    protected function getFiltro($req){
+    	return new Criterio();
+    }
     
     /**
      * redirecciona a la home del modulo 
