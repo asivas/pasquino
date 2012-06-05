@@ -100,10 +100,11 @@ class Entidad implements Serializable{
 	    	{
 	    		$nombreProp = (string)$mapping->clase->id['nombre'];    					
 				$setFn = "set".ucfirst($nombreProp);
-				if(method_exists($this, $getFn))
+				if(method_exists($this, $setFn))
 					 $this->$setFn($newId);
 				elseif(isset($this->$nombreProp))
 					 $this->$nombreProp = $newId;
+	    	
 	    	}
 	    	elseif($cantIds>1)
 	    	{
@@ -113,7 +114,7 @@ class Entidad implements Serializable{
 					$nombre = (string)$prop['nombre'];
 					$setFn = "set".ucfirst($nombreProp);
 					
-					if(method_exists($this, $getFn))
+					if(method_exists($this, $setFn))
 						$this->$setFn($newId[$col]);			
 					elseif(isset($this->$nombreProp))
 						$this->$nombreProp = $newId[$col];
