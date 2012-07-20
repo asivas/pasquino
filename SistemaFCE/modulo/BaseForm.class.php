@@ -23,7 +23,7 @@ class BaseForm extends HTML_QuickForm {
     function __construct($nombre=NULL, $metodo='POST', $accion='',$target='',$attributos='') {
     	
     	if(!isset($nombre))
-    		$nombre = str_replace("Form", "", strtolower(get_class($this)));
+    		$nombre = str_replace("Form", "", get_class($this));
     	
     	if(empty($accion)) $accion = $_SERVER['PHP_SELF'];
     	//me aseguro por si envian explicitamente por error null
