@@ -5,7 +5,6 @@
 	<buildpathentry kind="src" path="datos/criterio"/>
 	<buildpathentry kind="src" path="datos/debug"/>
 	<buildpathentry kind="src" path="datos/logger"/>
-	<buildpathentry kind="src" path="datos/phpDocumentor"/>
 	<buildpathentry kind="src" path="datos/reporte"/>
 	<buildpathentry kind="src" path="datos/sqlQueryBuilder"/>
 	<buildpathentry kind="src" path="datos/ssHandler"/>

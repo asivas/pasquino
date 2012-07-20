@@ -20,7 +20,10 @@ if(!function_exists('esFecha'))
  * Base para los formularios de modulo de pasquino
  */
 class BaseForm extends HTML_QuickForm {
-    function __construct($nombre, $metodo='POST', $accion='',$target='',$attributos='') {
+    function __construct($nombre=NULL, $metodo='POST', $accion='',$target='',$attributos='') {
+    	
+    	if(!isset($nombre))
+    		$nombre = str_replace("Form", "", strtolower(get_class($this)));
     	
     	if(empty($accion)) $accion = $_SERVER['PHP_SELF'];
     	//me aseguro por si envian explicitamente por error null
@@ -29,7 +32,57 @@ class BaseForm extends HTML_QuickForm {
         
         $this->registerRule('fecha','callback','esFecha');
         
-        $this->addElement('hidden','accion',$_REQUEST['accion']);
+        $this->addElements();
+        $this->addRules();
+    }
+    
+    /**
+     * 
+     * Agrega los elementos por defecto del formulario
+     * 
+     * A este metodo debe hacersele override para no tener que definir la __construct en las clases que extiendan esta
+     * en caso de agregar elementos por defecto.
+     * Tener en cuenta que es aquÃ­ donde se agrega el hidden accion, por lo tanto en el override se recomienda llamar a 
+     * parent::addElements();
+     * 
+     */
+    protected function addElements()  {
+    	$this->addElement('hidden','accion',$_REQUEST['accion']);
+    }
+    
+	/**
+     * 
+     * Agrega las reglas por defecto del formulario
+     * 
+     * A este metodo debe hacersele override para no tener que definir la __construct en las clases que extiendan esta 
+     * si se quieren agregar reglas 
+     */
+    protected function addRules()  {    }
+    
+    /**
+     * Debe generar el arreglo de defaults a partir del objeto entidad $elem
+     * 
+     * A este metodo debe hacersele override para poder usar correctamente el setDefaults implementado en BaseForm
+     * 
+     * @param objet $elem el objeto de la entidad principal del form
+     *  
+     */
+    protected  function getDefaultsArray($elem) {   return array(); }
+    
+    /**
+     * Extiende el setDefaults de Quickform permitiendo pasar como parametro un objeto elemento o un array
+     * 
+     * @param mixed $objOArr puede ser un objeto de elemento conocido en getDefaultsArray o un arreglo
+     */
+    function setDefaults($objOArr) {
+    	$defaultValues = array();
+		if(is_array($objOArr)){
+			$defaultValues = $objOArr;
+		}
+		else{
+			$defaultValues = $this->getDefaultsArray($objOArr);
+		}
+		parent::setDefaults($defaultValues);
     }
     
     /**
@@ -48,6 +101,7 @@ class BaseForm extends HTML_QuickForm {
     /**
      * Crea el input con el calendario selector de fecha
      * @return String con el html listo para insertar en el template
+     * @deprecated usar jQuery para inputs de fecha http://jqueryui.com/demos/datepicker/
      */
     function getCalendarInput($objCal ,$name, $value = "", $format = null, $baseID = null)
     {
@@ -74,7 +128,7 @@ class BaseForm extends HTML_QuickForm {
      * Genera un arreglo con opciones para un select
      * @param array $listaElementos Lista de elementos que deben tener getId y getNombre definidos
      * @param integer $vacio si se debe crear una opcion vacia
-     * @param integer $otro si se debe crear una opcion de "Otro", si está definido el nro será el id
+     * @param integer $otro si se debe crear una opcion de "Otro", si estï¿½ definido el nro serï¿½ el id
      * @return array arreglo asociativo id => nombre 
      */
     function getArregloSelect($listaElementos,$vacio=true,$otro=null,$otroLabel='Otra',$getNombreFunc='getNombre',$getIdFunc='getId')
@@ -99,7 +153,7 @@ class BaseForm extends HTML_QuickForm {
     }
     
     /**
-     * Obtiene el código HTML de un input select
+     * Obtiene el cÃ³digo HTML de un input select
      * @param string $name
      * @param array $options opciones compatibles con las opciones de HTML_QuickForm_select
      * @param mixed $attributes atributos compatibles con los atributos de HTML_QuickForm_select
@@ -139,9 +193,12 @@ class BaseForm extends HTML_QuickForm {
     
     function caracteres_html($str)
     {
-        $tr = array('á'=>'&aacute;','é'=>'&eacute;','í'=>'&iacute;','ó'=>'&oacute;','ú'=>'&uacute;',
-                    'Á'=>'&Aacute;','É'=>'&eacute;','Í'=>'&iacute;','Ó'=>'&oacute;','Ú'=>'&uacute;',
-                    'ñ'=>'&ntilde;','Ñ'=>'&Ntilde;','ü'=>'&uuml;','Ü'=>'&Uuml;');
+        $tr = array('ï¿½'=>'&aacute;','ï¿½'=>'&eacute;','ï¿½'=>'&iacute;','ï¿½'=>'&oacute;','ï¿½'=>'&uacute;',
+                    'ï¿½'=>'&Aacute;','ï¿½'=>'&eacute;','ï¿½'=>'&iacute;','ï¿½'=>'&oacute;','ï¿½'=>'&uacute;',
+                    'ï¿½'=>'&ntilde;','ï¿½'=>'&Ntilde;','ï¿½'=>'&uuml;','ï¿½'=>'&Uuml;',
+                    'Ã¡'=>'&aacute;','Ã©'=>'&eacute;','Ã­'=>'&iacute;','Ã³'=>'&oacute;','Ãº'=>'&uacute;',
+                    'Ã'=>'&Aacute;','Ã‰'=>'&Eacute;','Ã'=>'&Iacute;','Ã“'=>'&Oacute;','Ãš'=>'&Uacute;',
+                    'Ã±'=>'&ntilde;','Ã‘'=>'&Ntilde;','Ã¼'=>'&uuml;','Ãœ'=>'&Uuml;');
         return strtr($str,$tr);	
     }
 }
