@@ -35,7 +35,7 @@ abstract class DaoBase {
      */
     private $_pathEntidad;
     /**
-     * @var string Ultimo mensaje de error que sucedió en un save  
+     * @var string Ultimo mensaje de error que sucediï¿½ en un save  
      */
     private $_lastError;
     
@@ -246,7 +246,7 @@ abstract class DaoBase {
                         $elem->$set($elemRelac);
                     }
                     else 
-                    //si está definida otra data source no espero que esté en el row
+                    //si estï¿½ definida otra data source no espero que estï¿½ en el row
                     {
                          $elem->$set($valor);
                     }
@@ -265,7 +265,7 @@ abstract class DaoBase {
                 $dao = $this->_newDaoClase($prop['tipo']);
                 
                 $colName = "{$prop['columna']}";
-                if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
+                if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acï¿½ me aseguro por tablas con espacios en mysql
                     $colName = "`{$colName}`";
                 
                 $elemsRelac = $dao->findBy(new Criterio("{$colName} = ".$elem->getId().""));
@@ -312,7 +312,7 @@ abstract class DaoBase {
         {
             $tabla = $this->tableName;
             
-            if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
+            if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acï¿½ me aseguro por tablas con espacios en mysql
                 $tabla = "`{$tabla}`";
             
             $sql = "SELECT * FROM {$tabla}";
@@ -355,7 +355,7 @@ abstract class DaoBase {
     {
         $tabla = $this->tableName;
             
-        if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
+        if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acï¿½ me aseguro por tablas con espacios en mysql
                 $tabla = "`{$tabla}`";
             
         $sql = "DELETE FROM {$tabla}";
@@ -378,7 +378,7 @@ abstract class DaoBase {
     {
 
     	$sql = $this->getFindBySql($filtro,$order);
-    	//TODO reemplazar lo que está entre select y from por count(*)
+    	//TODO reemplazar lo que estï¿½ entre select y from por count(*)
     	$sql = substr($sql, stripos($sql,"select "),7). " COUNT(*) as cant " . substr($sql, stripos($sql, "from"));
     	
     	if(!($rs = $this->_db->Execute($sql)))
@@ -486,7 +486,7 @@ abstract class DaoBase {
     }
     
     /**
-     * Genera la el criterio de condición de id usada para la actualización y eliminación
+     * Genera la el criterio de condiciï¿½n de id usada para la actualizaciï¿½n y eliminaciï¿½n
      * @return object instancia de Criterio para filtrar por id
      * @param mixed $id
      */
@@ -541,10 +541,10 @@ abstract class DaoBase {
     		$arrId=array();
     		foreach($this->_xmlMapping->id as $prop)
 			{
-				$col = (string)$prop['columna'];
+				$nombreCol = (string)$prop['columna'];
 				$nombreProp = (string)$prop['nombre'];
     				
-				$arrId[$col]=(isset($arr[$nombreCol]))?$arr[$nombreCol]:$arr[$nombreProp];
+				$arrId[$nombreCol]=(isset($arr[$nombreCol]))?$arr[$nombreCol]:$arr[$nombreProp];
 			}
 			return $arrId;
     	}
@@ -562,7 +562,7 @@ abstract class DaoBase {
     function deletePorId($id)
     {
     	$tn = "{$this->tableName}";
-        if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acá me aseguro por tablas con espacios en mysql
+        if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //acï¿½ me aseguro por tablas con espacios en mysql
            $tn = "`{$tn}`";
         $sql = "DELETE FROM {$tn} WHERE ".$this->getCriterioId($id)->getCondicion();
         $ret = $this->_db->Execute($sql);
