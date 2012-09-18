@@ -20,7 +20,15 @@ if(!function_exists('esFecha'))
  * Base para los formularios de modulo de pasquino
  */
 class BaseForm extends HTML_QuickForm {
-    function __construct($nombre=NULL, $metodo='POST', $accion='',$target='',$attributos='') {
+    
+    /**
+     * 
+     * Arreglo de los textos con las informaciones de los elementos que necesitan una descripción 
+     * @var array
+     */
+	protected $_elementsInfo;
+	
+	function __construct($nombre=NULL, $metodo='POST', $accion='',$target='',$attributos='') {
     	
     	if(!isset($nombre))
     		$nombre = str_replace("Form", "", get_class($this));
@@ -94,8 +102,12 @@ class BaseForm extends HTML_QuickForm {
         $renderer= new HTML_QuickForm_Renderer_ArraySmarty($smarty);// creacion del renderer para smarty
         
         $this->accept($renderer);// inclusion en el form del renderer
-        
-        return $renderer->toArray();// pasaje a arreglo del renderer   	
+        $rendered = $renderer->toArray();// pasaje a arreglo del renderer
+        foreach($this->_elementsInfo as $elemName => $info)
+        {
+        	$rendered[$elemName]['info'] = $info;
+        }
+        return $rendered;    	
     }
     
     /**
@@ -200,5 +212,40 @@ class BaseForm extends HTML_QuickForm {
                     'Á'=>'&Aacute;','É'=>'&Eacute;','Í'=>'&Iacute;','Ó'=>'&Oacute;','Ú'=>'&Uacute;',
                     'ñ'=>'&ntilde;','Ñ'=>'&Ntilde;','ü'=>'&uuml;','Ü'=>'&Uuml;');
         return strtr($str,$tr);	
+    }
+    
+    /**
+     * 
+     *  Agregar un texto o html descriptivo de información sobre un elemento
+     *  @param string $elementName nombre del elemento del cual será la información
+     *  @param string $elementInfo información para el elemento 
+     */
+    function addElementInfo($elementName,$elementInfo) 
+    {
+    	//veo si existe el elemento al que le agrego info
+    	$e = $this->getElement($elementName);
+    	if(!PEAR::isError($e))
+    		$this->_elementsInfo[$elementName] = $elementInfo;
+    }
+    
+    /**
+     * Removes an element
+     *
+     * The method "unlinks" an element from the form, returning the reference
+     * to the element object. If several elements named $elementName exist, 
+     * it removes the first one, leaving the others intact.
+     * 
+     * @param string    $elementName The element name
+     * @param boolean   $removeRules True if rules for this element are to be removed too                     
+     * @access public
+     * @since 2.0
+     * @return HTML_QuickForm_element    a reference to the removed element
+     * @throws HTML_QuickForm_Error
+     */
+    function &removeElement($elementName, $removeRules = true) 
+    {
+    	if(isset($this->_elementsInfo))
+    		unset($this->_elementsInfo[$elementName]);
+    	return parent::removeElement($elementName,$removeRules);
     }
 }
