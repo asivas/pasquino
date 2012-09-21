@@ -103,6 +103,7 @@ class BaseForm extends HTML_QuickForm {
         
         $this->accept($renderer);// inclusion en el form del renderer
         $rendered = $renderer->toArray();// pasaje a arreglo del renderer
+        if(is_array($this->_elementsInfo))
         foreach($this->_elementsInfo as $elemName => $info)
         {
         	$rendered[$elemName]['info'] = $info;
