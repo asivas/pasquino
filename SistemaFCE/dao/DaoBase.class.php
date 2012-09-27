@@ -174,7 +174,7 @@ abstract class DaoBase {
      */
     function crearDesdeArreglo($arreglo) 
     {
-        $elem_name = (string)$this->_xmlMapping['nombre'];
+        $elem_name = $this->getClaseEntidad();
         $elem = new $elem_name();
         
         if(!is_array($arreglo))
@@ -204,7 +204,7 @@ abstract class DaoBase {
     {
         if($elem == null)
         {
-        	$elem_name = (string)$this->_xmlMapping['nombre'];
+        	$elem_name = $this->getClaseEntidad();
         	$elem = new $elem_name();
         }
         
@@ -520,7 +520,7 @@ abstract class DaoBase {
     	
     	$cantIds= count($this->_xmlMapping->id);
     	
-    	$elem_name = (string)$this->_xmlMapping['nombre'];
+    	$elem_name = $this->getClaseEntidad();
         $elem = new $elem_name();
             	
         if($cantIds == 1)
@@ -577,5 +577,15 @@ abstract class DaoBase {
     		return $l[0];
     	
     	return null;
+    }
+    
+    /**
+     * 
+     * Obtiene el nombre de clase de la entidad a la cual hace el acceso a datos
+     * 
+     *  @return string el nombre de clase de la entidad
+     */
+    function getClaseEntidad() {
+    	return (string)$this->_xmlMapping['nombre'];
     }
 }
