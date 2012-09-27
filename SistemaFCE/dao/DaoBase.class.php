@@ -530,7 +530,7 @@ abstract class DaoBase {
     		if(isset($arr[$nombreCol]))
     			$id = $arr[$nombreCol];
     		else if(isset($arr[$nombreProp]))
-    			$id = $arr[$nombreCol];
+    			$id = $arr[$nombreProp];
     		else 
     			$id = $arr['id'];
     		   		

@@ -53,8 +53,8 @@ class Criterio{
     }
     
     /**
-     * Genera la condición de SQL a partir de los datos que existen en $this->_expresiones
-     * @return string la condición generada
+     * Genera la condiciï¿½n de SQL a partir de los datos que existen en $this->_expresiones
+     * @return string la condiciï¿½n generada
      */
     function getCondicion($clase=null)
     {
@@ -70,6 +70,7 @@ class Criterio{
             elseif(is_a($exp,"Restriccion"))
                 $cond .= $exp->toSqlString($clase);
             elseif(is_a($exp,"Criterio")) //si no es string si o si debe ser alguna clase de Criterio
+            //TODO: parece que serÃ­a saludable corroborar que  $exp != $this
             	$cond .= "(". $exp->getCondicion() .")";
         }
         return $cond;
