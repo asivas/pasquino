@@ -50,7 +50,7 @@ class BaseMod {
      * 
      * Inicializa el BaseMod
      * @param string $skinDirName nombre de la skin/template utilizada
-     * @param boolean $conXajax determina si se utilizará xajax como motor de ajax
+     * @param boolean $conXajax determina si se utilizarï¿½ xajax como motor de ajax
      */
     function __construct($skinDirName=null,$conXajax=true) {
         if(!isset($this->session))
@@ -89,7 +89,7 @@ class BaseMod {
 	}
     /**
      * Provee una referencia al formulario del modulo
-     * Si el formualrio no está aun creado lo crea
+     * Si el formualrio no estï¿½ aun creado lo crea
      */
     function getForm()
     {
@@ -99,7 +99,7 @@ class BaseMod {
     }
     
     /**
-     * Creación del HTML_QuickForm y sus elementos 
+     * Creaciï¿½n del HTML_QuickForm y sus elementos 
      */
     protected function crearForm()
     {
@@ -189,8 +189,8 @@ class BaseMod {
     /**
      * Genera a partir de una config de menu un arreglo para crear un menu en smarty
      * @return array Arreglo para que smarty pueda generar el menu definido en $menuConf
-     * @param String $nombreModulo Nombre del modulo al cual pertenece el menú
-     * @param object $menuConf Configuración en SimpleXML de menu
+     * @param String $nombreModulo Nombre del modulo al cual pertenece el menï¿½
+     * @param object $menuConf Configuraciï¿½n en SimpleXML de menu
      */
     private function _getMenuModuloArray($nombreModulo,$menuConf)
     {	
@@ -235,7 +235,7 @@ class BaseMod {
     }
     
     /**
-     * Obtiene la configuación del módulo
+     * Obtiene la configuaciï¿½n del mï¿½dulo
      */
     protected function getConfigModulo($nombreMod = null)
     {
@@ -253,7 +253,7 @@ class BaseMod {
     protected function ajaxNoPermisos(&$objResponse)
     {
         if(isset($objResponse))
-            $this->displayError($objResponse,"No tiene permisos suficientes para esa acción");
+            $this->displayError($objResponse,"No tiene permisos suficientes para esa acciï¿½n");
     }
     
     protected function ajaxCheckPermisos(&$objResponse=null)
@@ -273,10 +273,10 @@ class BaseMod {
     
     private function _esPublica($accion,$nombreModulo=null)
     {
-        // chequeo a partir de la config del módulo  
+        // chequeo a partir de la config del mï¿½dulo  
         $conf = $this->getConfigModulo($nombreModulo);
         
-        //   Busco los permisos para la acción
+        //   Busco los permisos para la acciï¿½n
         $acciones = $conf->acciones;        
         if(!isset($acciones->accion)) return false;
         
@@ -308,10 +308,10 @@ class BaseMod {
         	return true;
     	if(!isset($this->_usuario))
             return false;
-        // chequeo a partir de la config del módulo  
+        // chequeo a partir de la config del mï¿½dulo  
         $conf = $this->getConfigModulo($nombreModulo);
         
-        //   Busco los permisos para la acción
+        //   Busco los permisos para la acciï¿½n
         $acciones = $conf->acciones;        
         if(!isset($acciones->accion)) return false;
         
@@ -498,13 +498,13 @@ class BaseMod {
     
     
     /**
-     * Asigna valores a las variables miembro que guardan información recibida de request
+     * Asigna valores a las variables miembro que guardan informaciï¿½n recibida de request
      * @param array $req
      */
     protected function setMiembros($req) { }
     
     /**
-     * Ejecuta la acción del modulo, a partir de la variable accion recibida por request
+     * Ejecuta la acciï¿½n del modulo, a partir de la variable accion recibida por request
      * @param array $req 
      */
     function ejecutar($req)
@@ -546,7 +546,7 @@ class BaseMod {
     }
     
     /**
-     * Ejecuta una acción de alta de un elemento 
+     * Ejecuta una acciï¿½n de alta de un elemento 
      * lo guarda llamando al metodo alta si viene por post, 
      * sino muestra el formulario
      */
@@ -561,7 +561,7 @@ class BaseMod {
     }
     
     /**
-     * Ejecuta una acción de modificación de un elemento,
+     * Ejecuta una acciï¿½n de modificaciï¿½n de un elemento,
      * lo guarda llamando al metodo modificacion si viene por post,
      * sino muestra el formulario
      */
@@ -576,8 +576,8 @@ class BaseMod {
     }
     
     /**
-     * Ejecuta una acción de baja de un elemento llamando al metodo baja
-     * luego redirecciona a la home del módulo
+     * Ejecuta una acciï¿½n de baja de un elemento llamando al metodo baja
+     * luego redirecciona a la home del mï¿½dulo
      */
     protected function accionBaja($req)
     {
@@ -586,7 +586,7 @@ class BaseMod {
     }
     
     /**
-     * Ejecuta una acción de información de un elemento llamando al metodo info
+     * Ejecuta una acciï¿½n de informaciï¿½n de un elemento llamando al metodo info
      */
     protected function accionInfo($req)
     {
@@ -594,7 +594,7 @@ class BaseMod {
     }
 
     /**
-     * Ejecuta una acción de listar los elementos llamando al metodo lista
+     * Ejecuta una acciï¿½n de listar los elementos llamando al metodo lista
      */    
     protected function accionListar($req)
     {
@@ -603,19 +603,19 @@ class BaseMod {
     
     /* funciones abstractas */
     /**
-     * Metodo llamado cuando se ejecuta la acción alta via post
+     * Metodo llamado cuando se ejecuta la acciï¿½n alta via post
      * @param array $req arreglo de variables enviadas en el request 
      */
     protected function alta($req){}
     
     /**
-     * Metodo llamado cuando se ejecuta la acción baja
+     * Metodo llamado cuando se ejecuta la acciï¿½n baja
      * @param array $req arreglo de variables enviadas en el request
      */
     protected function baja($req){}
     
     /**
-     * Metodo llamado cuando se ejecuta la acción listar
+     * Metodo llamado cuando se ejecuta la acciï¿½n listar
      * @param array $req arreglo de variables enviadas en el request
      */
     protected function lista($req=null){
@@ -630,7 +630,7 @@ class BaseMod {
     protected function form($req=null){}
     
     /**
-     * Metodo llamado cuando se ejecuta la acción modif y es enviado por post 
+     * Metodo llamado cuando se ejecuta la acciï¿½n modif y es enviado por post 
      * @param array $req arreglo de variables enviadas en el request
      */
     protected function modificacion($req){
@@ -644,9 +644,9 @@ class BaseMod {
     }
     
     /**
-     * Obtiene el código html de un template utilizando smarty
+     * Obtiene el cï¿½digo html de un template utilizando smarty
      * @param string $tpl nombre de archivo del template
-     * @return string código html procesado por smarty  
+     * @return string cï¿½digo html procesado por smarty  
      */
     protected function fetch($tpl)
     {
@@ -710,7 +710,7 @@ class BaseMod {
      * Genera un arreglo con opciones para un select
      * @param array $listaElementos Lista de elementos que deben tener getId y getNombre definidos
      * @param integre $vacio si se debe crear una opcion vacia
-     * @param integre $otro si se debe crear una opcion de "Otro", si está definido el nro será el id
+     * @param integre $otro si se debe crear una opcion de "Otro", si estï¿½ definido el nro serï¿½ el id
      * @return array arreglo asociativo id => nombre
      * @deprecated 1.3- 05/06/2009
      */
@@ -720,7 +720,7 @@ class BaseMod {
     }
 	
     /**
-     * Obtiene el código HTML de un input select
+     * Obtiene el cï¿½digo HTML de un input select
      * @param string $name
      * @param array $options opciones compatibles con las opciones de HTML_QuickForm_select
      * @param mixed $attributes atributos compatibles con los atributos de HTML_QuickForm_select
@@ -734,7 +734,7 @@ class BaseMod {
     
     /**
      * Asigna el formulairo pasado para smarty a la variable fomrulario de $this->smarty
-     * @param string $nombreVarSmarty Nombre de la variable que será asignada en smarty con el contenido del formulario 
+     * @param string $nombreVarSmarty Nombre de la variable que serï¿½ asignada en smarty con el contenido del formulario 
      */
     protected function renderForm($nombreVarSmarty = 'formulario',$form=null)
     {
@@ -762,5 +762,14 @@ class BaseMod {
 			$array[$key] = html_entity_decode($value,ENT_NOQUOTES,'ISO-8859-1');
 		}
 		return $array;
+	}
+	
+	/**
+	 * 
+	 * Define que el modulo tendrÃ¡ un archivo js con el nombre de $aJsName
+	 * @param string $aJsName el nombre del archivo js del modulo sin la extensiï¿½n
+	 */
+	protected function setJsModulo($aJsName){
+		$this->jsModulo=$aJsName;	
 	}
 }
