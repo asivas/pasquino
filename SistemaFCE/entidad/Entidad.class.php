@@ -59,7 +59,8 @@ class Entidad implements Serializable{
 	    	$cantIds= count($mapping->clase->id);		
 	    	if($cantIds == 1)
 	    	{
-	    		$nombreProp = (string)$mapping->clase->id['nombre'];    					
+	    		$nombreProp = (string)$mapping->clase->id['nombre'];
+	    		 					
 				$getFn = "get".ucfirst($nombreProp);
 				if(method_exists($this, $getFn))
 					$this->_id = $this->$getFn();
@@ -87,7 +88,7 @@ class Entidad implements Serializable{
     
     /**
      * 
-     * Asignación de la id
+     * Asignaciï¿½n de la id
      * @param unknown_type $newId
      */
     function setId($newId)

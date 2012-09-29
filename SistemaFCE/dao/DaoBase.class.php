@@ -157,7 +157,9 @@ abstract class DaoBase {
            $nombreDaoFile = "{$map['dir']}/{$nombreDaoFile}";
         
         //Siempre se espera la misma estructura para los mappings que para los daos 
-        require_once("daos/{$nombreDaoFile}.class.php");        
+        
+        if(!@include_once("{$nombreDaoFile}.class.php"))
+        	require_once("daos/{$nombreDaoFile}.class.php");        
         
         return new $nombreDao();
     }
@@ -278,7 +280,7 @@ abstract class DaoBase {
         	$daoExtiende = $this->_newDaoClase($extiende);
         	$criterioId = $daoExtiende->getCriterioId($elem->getId());
 	       	$sql = $daoExtiende->getFindBySql($criterioId);
-			$rs = $this->_db->Execute($sql);
+			$rs = $this->_db->Execute($sql) or print $this->_db->ErrorMsg().$sql;
 			$row = $rs->FetchRow();
 	      	$elem = $daoExtiende->crearObjetoEntidad($row,$elem);
         }
