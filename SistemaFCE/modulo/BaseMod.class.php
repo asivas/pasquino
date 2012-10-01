@@ -46,6 +46,9 @@ class BaseMod {
     
     var $REST;
     
+    protected $jsModulo;
+    
+    
     /**
      * 
      * Inicializa el BaseMod
