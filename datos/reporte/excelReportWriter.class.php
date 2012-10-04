@@ -1,4 +1,4 @@
-<?
+<?php
 /**
 * Define la clase excelReportWriter que 
 * 'Imprime' un reporte en un archivo de excel (XML para verion XP+)
@@ -55,7 +55,7 @@ class excelReportWriter extends reportWriter
     }
     
     /**
-     * Cambia el nombre del archivo que se generará
+     * Cambia el nombre del archivo que se generarï¿½
      * @param string $fileName el nuevo nombre de archivo
      */
     function setFileName($fileName)
@@ -64,8 +64,8 @@ class excelReportWriter extends reportWriter
     }
     
     /**
-     * Recupera el nombre de archivo que generará
-     * @return string el nombre de archivo que será generado por esta clase
+     * Recupera el nombre de archivo que generarï¿½
+     * @return string el nombre de archivo que serï¿½ generado por esta clase
      */
     function getFileName($fileName)
     {
@@ -73,7 +73,7 @@ class excelReportWriter extends reportWriter
     }
     
     /**
-     * Cambia la ruta donde se generará el archivo xls
+     * Cambia la ruta donde se generarï¿½ el archivo xls
      * @param string $filePath la nueva ruta
      */
     function setFilePath($filePath)
@@ -82,8 +82,8 @@ class excelReportWriter extends reportWriter
     }
     
     /**
-     * Recupera la ruta en que se generará el archivo xls
-     * @return string la ruta donde será generado el xls por esta clase
+     * Recupera la ruta en que se generarï¿½ el archivo xls
+     * @return string la ruta donde serï¿½ generado el xls por esta clase
      */
     function getFilePath($filePath)
     {
@@ -93,7 +93,7 @@ class excelReportWriter extends reportWriter
     /**
 	 * comienza la tabla de reporte
 	 * @param integer $cellspacing el espaciado entre celdas del reporte
-	 * @param integer $cellpadding la superposición entre celdas
+	 * @param integer $cellpadding la superposiciï¿½n entre celdas
 	 * @param string $reportName El nombre base del reporte que se genera
 	 */
 	function startReport($cellspacing=3,$cellpadding=0,$reportName="Econtrol")
@@ -116,7 +116,7 @@ class excelReportWriter extends reportWriter
     }
     
     /**
-	 * comienza una linea nueva (renglón) de reporte
+	 * comienza una linea nueva (renglï¿½n) de reporte
 	 * @param string $style estilo css de la fila
 	 */	
 	function writeRow($style=NULL)

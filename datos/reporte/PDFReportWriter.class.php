@@ -1,4 +1,4 @@
-<?
+<?php
 /**
 * Define la clase PDFReportWriter que 
 * 'Genera' un reporte en un archivo PDF
@@ -12,7 +12,7 @@
 */
 
 /**
- * directorio de definición de fuentes para PDF
+ * directorio de definiciï¿½n de fuentes para PDF
  */
 define('FPDF_FONTPATH','datos/reporte/font/');
 /**
@@ -86,7 +86,7 @@ class PDFReportWriter extends reportWriter
     
     /**
      * Cambia el objeto que escribe en formato PDF (para lo que se extiende)
-     * @param object $pdf un objeto fpdf o instancia de una extensión de esa clase
+     * @param object $pdf un objeto fpdf o instancia de una extensiï¿½n de esa clase
      */
     function setPdfWriter($pdf)
     {
@@ -95,7 +95,7 @@ class PDFReportWriter extends reportWriter
     }
     
      /**
-     * Cambia el nombre del archivo que se generará
+     * Cambia el nombre del archivo que se generarï¿½
      * @param string $fileName el nuevo nombre de archivo
      */
     function setFileName($fileName)
@@ -105,8 +105,8 @@ class PDFReportWriter extends reportWriter
     }
     
     /**
-     * Recupera el nombre de archivo que generará
-     * @return string el nombre de archivo que será generado por esta clase
+     * Recupera el nombre de archivo que generarï¿½
+     * @return string el nombre de archivo que serï¿½ generado por esta clase
      */
     function getFileName($fileName)
     {
@@ -114,7 +114,7 @@ class PDFReportWriter extends reportWriter
     }
     
     /**
-     * Cambia la ruta donde se generará el archivo pdf
+     * Cambia la ruta donde se generarï¿½ el archivo pdf
      * @param string $filePath la nueva ruta
      */
     function setFilePath($filePath)
@@ -123,8 +123,8 @@ class PDFReportWriter extends reportWriter
     }
     
     /**
-     * Recupera la ruta en que se generará el archivo pdf
-     * @return string la ruta donde será generado el pdf por esta clase
+     * Recupera la ruta en que se generarï¿½ el archivo pdf
+     * @return string la ruta donde serï¿½ generado el pdf por esta clase
      */
     function getFilePath($filePath)
     {
@@ -135,12 +135,12 @@ class PDFReportWriter extends reportWriter
     /**
 	 * comienza la tabla de reporte
 	 * @param integer $cellspacing el espaciado entre celdas del reporte
-	 * @param integer $cellpadding la superposición entre celdas
+	 * @param integer $cellpadding la superposiciï¿½n entre celdas
 	 * @param string $reportName El nombre base del reporte que se genera
 	 */
 	function startReport($cellspacing=3,$cellpadding=0,$reportName="Econtrol",$link="")
 	{
-	    //print "Nueva Sección ". $reportName."<br>";
+	    //print "Nueva Secciï¿½n ". $reportName."<br>";
 	    $this->pdf->AddPage($this->pageOrientation);
 	    $this->pdf->SetFont('Arial','',$this->fontHeightBig);	    
 	    $this->pdf->Cell(0,10,$reportName,0,1,'L',0,$link);
@@ -175,7 +175,7 @@ class PDFReportWriter extends reportWriter
     
    
     /**
-	 * comienza una linea nueva (renglón) de reporte
+	 * comienza una linea nueva (renglï¿½n) de reporte
 	 * @param string $style estilo css de la fila
 	 */	
 	function writeRow($style=NULL)

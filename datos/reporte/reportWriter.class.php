@@ -1,4 +1,4 @@
-<?
+<?php
 /**
 * Se define la clase reportWriter
 *
@@ -36,7 +36,7 @@ class reportWriter
     /**
 	 * comienza la tabla de reporte
 	 * @param integer $cellspacing el espaciado entre celdas del reporte
-	 * @param integer $cellpadding la superposición entre celdas
+	 * @param integer $cellpadding la superposiciï¿½n entre celdas
 	 * @param string $reportName El nombre base del reporte que se genera
 	 */
 	function startReport($cellspacing=3,$cellpadding=0,$reportName="")
@@ -52,7 +52,7 @@ class reportWriter
     
     /**
      * finaliza el reporte
-     * @param boolean $finalize si se debe cerrar la última tabla
+     * @param boolean $finalize si se debe cerrar la ï¿½ltima tabla
      */
     function endReport($finalize = false)
     {
@@ -65,7 +65,7 @@ class reportWriter
     }
     
     /**
-	 * comienza una linea nueva (renglón) de reporte
+	 * comienza una linea nueva (renglï¿½n) de reporte
 	 * @param string $style estilo css de la fila
 	 */	
 	function writeRow($style=NULL)
