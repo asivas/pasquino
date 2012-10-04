@@ -1,6 +1,6 @@
 <?php
     /**
-    * Se define la clase provee acceso via usuario y contraseña
+    * Se define la clase provee acceso via usuario y contraseï¿½a
     * 
     * @author	    Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
     * @copyright	Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
@@ -11,7 +11,7 @@
 
     require_once("datos/logger/sqlLogger.class.php");
     /**
-    * Esta clase provée acceso via usuario y contraseña
+    * Esta clase provï¿½e acceso via usuario y contraseï¿½a
     * 
     * @author	    Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
     * @copyright	Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
@@ -43,7 +43,7 @@
 		var $error;
 		
 		/**
-		* @var bool Determina si la contraseña debe ser case-sensitive
+		* @var bool Determina si la contraseï¿½a debe ser case-sensitive
 		*/
 		var $passCaseSensitive;
 		
@@ -54,7 +54,7 @@
 		
         /**
          * @var object Objeto de clase Auth o derivado de auth que controla
-         * la autenticación por diferntes metodos
+         * la autenticaciï¿½n por diferntes metodos
          */
         var $auth;
 		
@@ -62,7 +62,7 @@
 		* constructor de la clase
 		* inicia las variables de clase
 		* @param object $auth referencia a un objeto auth que define como 
-        * se usará la autenticación
+        * se usarï¿½ la autenticaciï¿½n
 		*/
 		function ssHandler($auth) 
 		{
@@ -72,7 +72,7 @@
 		}
         
         /**
-         * Inicializa las variables miembro a definir en la construcción de la clase 
+         * Inicializa las variables miembro a definir en la construcciï¿½n de la clase 
          */
         function initMembers()
         {
@@ -110,7 +110,7 @@
         }
 		
 		/**
-		* Registra las variables de sesion de usuario si el usuario y la contraseña son correctos
+		* Registra las variables de sesion de usuario si el usuario y la contraseï¿½a son correctos
 		* @param string $username
 		* @param string $password
 		* @return bool
@@ -140,7 +140,7 @@
 		}	
         
 		/**
-		* Verifica si hay un usuario logueado en la maquina cliente que esté logueado
+		* Verifica si hay un usuario logueado en la maquina cliente que estï¿½ logueado
 		* @return bool
 		*/
 		function IsLoged()
@@ -158,7 +158,7 @@
 		function LogOut()
 		{	
             if($this->IsLoged() && isset($this->logobj))
-			    $this->logobj->log(date("Y-m-d H:i")." - {$_SESSION[$this->usr_label]}: Cerró sessión",CH_LOG_NOTICE);
+			    $this->logobj->log(date("Y-m-d H:i")." - {$_SESSION[$this->usr_label]}: Cerrï¿½ sessiï¿½n",CH_LOG_NOTICE);
 			
             $_SESSION = array();
 			
@@ -178,4 +178,72 @@
             if(method_exists($this->auth,'getUserId'))
                 return $this->auth->getUserId();
         }
+        
+        private function getStrKey($key)
+        {
+        	if(!is_array($key))
+        		return $key;
+        	$strKey="";
+    		while(($sk=current($key))!==FALSE)
+    		{
+    			if(!is_numeric($sk))
+    				$sk="'{$sk}'";
+    			$strKey.="[{$sk}]";
+    			next($key);
+    		}
+    		return $strKey;
+        }
+        
+		/**
+	 	 * 
+	 	 * Limpia la variable definida por key
+	 	 * @param mixed $key
+	 	 */
+	    function clear($key)
+	    {
+	    	if(is_array($key))
+	    	{
+	    		$strKey = $this->getStrKey($key);
+	    		if(!empty($strKey))
+	    			eval('unset($_SESSION'.$strKey.');');
+	    	}
+	    	else
+	    		unset($_SESSION[$key]);
+	    }
+	    
+	    /**
+	     * Agrega un valor a una variable en la sesiÃ³n
+	     * @key mixed clave puede ser un arreglo ordenado de claves o una clave alfanumerica
+	     * @val mixed valor a asignar
+	     */
+	    function set($key,$val)
+	    {
+	    	if(is_array($key))
+	    	{
+	    		$strKey = $this->getStrKey($key);
+	    		if(!empty($strKey))
+	    			eval('$sessVar =& $_SESSION'.$strKey.';');
+	    	}
+	    	else
+	    		$sessVar =& $_SESSION[$key];
+	    		
+	    	$sessVar = $val;
+	    }
+	    
+		/**
+	     * Agrega un valor a una variable en la sesiÃ³n 
+	     */
+	    function get($key)
+	    {
+	    	if(is_array($key))
+	    	{
+	    		$strKey = $this->getStrKey($key);
+	    		if(!empty($strKey))
+	    			eval('$sessVar = $_SESSION'.$strKey.';');
+	    	}
+	    	else
+	    		$sessVar = $_SESSION[$key];
+	    		
+	    	return $sessVar;
+	    }
 	}
