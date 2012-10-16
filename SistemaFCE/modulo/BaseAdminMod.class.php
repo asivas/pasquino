@@ -20,7 +20,7 @@ abstract class BaseAdminMod extends BaseMod {
 	protected $_tplLista;
 	protected $_tplForm;
 	
-	function __construct($form, $dao, $sessionHandler=null, $listaTplPath=null, $formTplPath=null, $skinDirname=null, $tilePathName = 'Admin')
+	function __construct($form, $dao, $skinDirname=null, $sessionHandler=null, $listaTplPath=null, $formTplPath=null, $tilePathName = 'Admin')
 	{
 		if(isset($sessionHandler))	$this->session = $sessionHandler;
 			

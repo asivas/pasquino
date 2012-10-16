@@ -85,9 +85,7 @@ jQuery.fn.keyUpFilter = function(aSourceID,aMod,aAction,aOptions){
 			  		if (status == "error") {
 			  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
 			  		}else{
-			  			//setupButtons();
-			  			if(aOptions.success)
-			  				aOptions.success();
+			  			if(aOptions.success) aOptions.success();
 			  		}
 		});
 		e.preventDefault();
