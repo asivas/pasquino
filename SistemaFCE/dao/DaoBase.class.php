@@ -332,7 +332,7 @@ abstract class DaoBase {
             $tabla = $this->tableName;
 
             if($tabla == $this->_xmlMapping['tabla'] && (is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli') ))
-            	//acá me aseguro por tablas con espacios en mysql
+            	//acï¿½ me aseguro por tablas con espacios en mysql
                 $tabla = "`{$tabla}`";
 
             $fields = $this->getSqlFields();
@@ -362,7 +362,7 @@ abstract class DaoBase {
             if(isset($limit))
             	$sql .= " OFFSET {$limit}";
          }
-         print $sql;
+         //print $sql;
 
          return $sql;
 
@@ -400,7 +400,7 @@ abstract class DaoBase {
     {
 
     	$sql = $this->getFindBySql($filtro,$order);
-    	//TODO reemplazar lo que estï¿½ entre select y from por count(*)
+    	
     	$sql = substr($sql, stripos($sql,"select "),7). " COUNT(*) as cant " . substr($sql, stripos($sql, "from"));
 
     	if(!($rs = $this->_db->Execute($sql)))
