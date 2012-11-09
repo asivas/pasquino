@@ -307,7 +307,11 @@ abstract class DaoBase {
     	foreach($this->_xmlMapping->propiedad as $prop)
     		$fields[] = $prop['columna'];
 
-    	$strFields = implode(", ", $fields);
+    	$glue = ", ";
+    	if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli'))
+    		$glue = "`, `";
+    	
+    	$strFields = implode($glue, $fields);
 
     	if(empty($fields))
     		$strFields = "*";
