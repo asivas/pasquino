@@ -308,8 +308,15 @@ abstract class DaoBase {
     		$fields[] = $prop['columna'];
 
     	$glue = ", ";
+    	
     	if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli'))
-    		$glue = "`, `";
+    	{
+    		if(is_array($fields))
+	    		foreach($fields as $k => $field)
+	    		{
+					$fields[$k] = "`$field`";    		
+	    		}
+    	}
     	
     	$strFields = implode($glue, $fields);
 
