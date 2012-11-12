@@ -305,19 +305,22 @@ abstract class DaoBase {
     		$fields[] = $id['columna'];
 
     	foreach($this->_xmlMapping->propiedad as $prop)
-    		$fields[] = $prop['columna'];
+    	{
+    		if(!isset($prop->{'data-source'}))
+    			$fields[] = $prop['columna'];
+    	}
 
     	$glue = ", ";
-    	
+
     	if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli'))
     	{
     		if(is_array($fields))
 	    		foreach($fields as $k => $field)
 	    		{
-					$fields[$k] = "`$field`";    		
+					$fields[$k] = "`$field`";
 	    		}
     	}
-    	
+
     	$strFields = implode($glue, $fields);
 
     	if(empty($fields))
@@ -411,7 +414,7 @@ abstract class DaoBase {
     {
 
     	$sql = $this->getFindBySql($filtro,$order);
-    	
+
     	$sql = substr($sql, stripos($sql,"select "),7). " COUNT(*) as cant " . substr($sql, stripos($sql, "from"));
 
     	if(!($rs = $this->_db->Execute($sql)))
