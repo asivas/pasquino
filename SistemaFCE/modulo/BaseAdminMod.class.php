@@ -3,7 +3,7 @@
 if(!class_exists('Smarty'))
 	require_once('visual/smarty3/libs/Smarty.class.php');
 
-require_once 'modulo/BaseMod.class.php';
+require_once 'SistemaFCE/modulo/BaseMod.class.php';
 
 
 /**
@@ -30,7 +30,7 @@ abstract class BaseAdminMod extends BaseMod {
 		$this->mainDao = $dao;
 		
 		$this->_tplLista = $listaTplPath;
-		$this->_tplForm = $listaTplPath;
+		$this->_tplForm = $formTplPath;
 		
 		$tConf = Configuracion::getTemplateConfigByDir($templateDir); 
 		$this->_tilePath = Configuracion::findTplPath($tConf,$tilePathName);
