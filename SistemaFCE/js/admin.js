@@ -1,7 +1,24 @@
+/**
+ * Genera una query string para llamar a una accion de un modulo
+ * @param modulo nombre del modulo
+ * @param accion nombre de la acción
+ * @param mostrar
+ * @returns {String}
+ */
 function getAccionUrl(modulo,accion,mostrar) {
 	if(mostrar==null) mostrar='full';
+	var qs = "?";
+	if(modulo!=null)
+		qs+="mod="+modulo;
+	if(qs!="?")
+		qs+="&";
 	
-	return "?mod="+modulo+"&accion="+accion+"&display="+mostrar;
+	qs += "accion="+accion;
+	
+	qs+="&";
+	qs += "display="+mostrar;
+	
+	return qs;
 }
 
 function getUrlBaja(mod,id){
