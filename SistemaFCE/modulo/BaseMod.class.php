@@ -834,4 +834,57 @@ class BaseMod {
 		return $res;
 	}
 	
+	/**
+	 * Envia (haciendo display) un mensaje de status usando el tpl de msgStatus
+	 * @param string $status
+	 * @param string $mensaje
+	 * @param array $otros
+	 */
+	protected function mensaje($status,$mensaje,$otros=null)
+	{
+		$this->smarty->assign("status",$status);
+		$this->smarty->assign("msg",$mensaje);
+		$this->smarty->assign("otros",$otros);
+		
+		if(isset($this->smarty->_version))
+			$sv = $this->smarty->_version;
+		else
+		{ 
+			$tmp = explode(" ",Smarty::SMARTY_VERSION);
+			$sv = $tmp[1];
+		}
+		if($sv[0]>2)
+			$this->smarty->display('string:<status msg="{$msg}" status="{$status}" {foreach from=$otros key=k item=valor} {$k}={$valor} {/foreach}></status>');
+		else
+		{
+			$out = "<status msg=\"{$mensaje}\" status=\"{$status}\"";
+			foreach($otros as $k => $valor)
+				$out .= "{$k}={$valor} ";
+			$out .= "></status>";
+			print $out;
+		}
+		die();
+	}
+
+	/**
+	 * Envia un mensaje de OK en xml usando mensaje
+	 * @param string $mensaje el mensaje
+	 * @param array $otros arreglo de otros atributos para agregarle al <status>
+	 */
+	protected function mensajeOK($mensaje,$otros=null)
+	{
+		$this->mensaje("OK", $mensaje, $otros);
+	}
+
+	/**
+	 *
+	 * Envia un mensaje de ERR (error) via xml usando mensaje
+	 * @param string $mensaje el mensaje
+	 * @param array $otros arreglo de otros atributos
+	 */
+	protected function mensajeERR($mensaje,$otros=null)
+	{
+		$this->mensaje("ERR", $mensaje, $otros);
+	}
+	
 }
