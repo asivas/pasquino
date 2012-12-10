@@ -624,4 +624,11 @@ abstract class DaoBase {
     function getClaseEntidad() {
     	return (string)$this->_xmlMapping['nombre'];
     }
+    
+    /**
+     * Define y devuelve el criterio base del Dao
+     */
+    protected function getCriterioBase() {
+    	return new Criterio();
+    }
 }
