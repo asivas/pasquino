@@ -102,7 +102,10 @@ jQuery.fn.keyUpFilter = function(aSourceID,aMod,aAction,aOptions){
 			  		if (status == "error") {
 			  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
 			  		}else{
-			  			if(aOptions.success) aOptions.success();
+			  			if(aOptions!=null &&
+			  			   aOptions.success!=null && 
+			  			   (typeof aOptions.success == 'function')) 
+			  				aOptions.success();
 			  		}
 		});
 		e.preventDefault();
@@ -215,7 +218,7 @@ function initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,id
 		$.dialogoGuardar(idDialogo,href+"&display=plain","Modificar "+nombreEntidadPrincipal,idForm,{success:$filtroFormSubmit});
 	};
 	$fnBindFiltro = function() {
-		$("input[name='"+nombreCampoFiltro+"']").keyUpFilter(idLista,aMod,"listar");
+		$("input[name='"+nombreCampoFiltro+"']").keyUpFilter(idLista,aMod,"listar",{success:function(){setupButtons();}});
 	};
 	setupButtons();
 }
