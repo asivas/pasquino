@@ -470,6 +470,8 @@ class BaseMod {
      * @param array $req
      */
     protected function getFiltro($req){
+    	if(isset($this->mainDao))
+    		return $this->mainDao->getCriterioBase();
     	return new Criterio();
     }
 

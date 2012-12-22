@@ -187,8 +187,10 @@ abstract class DaoBase {
         	$set = "set".ucfirst($nombreProp);
         	if(method_exists($elem,$set))
         	{
-                if(mb_detect_encoding($valor . 'a' , 'UTF-8, ISO-8859-1')=='UTF-8')
-               		$valor = utf8_decode($valor);
+                /*
+                 if(mb_detect_encoding($valor . 'a' , 'UTF-8, ISO-8859-1')=='UTF-8')
+               		$valor = $valor;
+               	*/
         	   	$elem->$set($valor);
         	}
         }
@@ -628,7 +630,7 @@ abstract class DaoBase {
     /**
      * Define y devuelve el criterio base del Dao
      */
-    protected function getCriterioBase() {
+    public function getCriterioBase() {
     	return new Criterio();
     }
 }

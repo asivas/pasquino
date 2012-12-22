@@ -10,6 +10,9 @@ class BaseUsuarioMod extends BaseMod{
     {
     	$this->_daoU =  new DaoUsuario();
         parent::__construct($skinDirName);
+        $tConf = Configuracion::getTemplateConfigByDir($templateDir);
+    	$this->_tilePath = Configuracion::findTplPath($tConf,'Admin');
+        
     }
     
     function lista()
@@ -120,7 +123,7 @@ class BaseUsuarioMod extends BaseMod{
                 }
             }
             
-            //y los del menú principal
+            //y los del menï¿½ principal
             $this->_getArrPermisos($permisos,$menuMod->permisos);
         }
         return $permisos;
