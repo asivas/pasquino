@@ -8,7 +8,7 @@ class Criterio{
     
     protected $_expresiones;
     protected $_operador = "AND";
-    protected $_operadorH = "y";
+    protected $_operadorH = "Y";
     
     static function getAND($expresion1,$expresion2){ return new Conjuncion($expresion1,$expresion2); }
     static function getOR($expresion1,$expresion2){ return new Disjuncion($expresion1,$expresion2); }
@@ -79,10 +79,10 @@ class Criterio{
     function disjuncion()
     {
     	$this->_operador = "OR";
-    	$this->_operadorH = "o";
+    	$this->_operadorH = "O";
         $disj = clone $this;
         $this->_operador = "AND";
-        $this->_operadorH = "y";
+        $this->_operadorH = "Y";
         return $disj;
     }
     
@@ -99,6 +99,8 @@ class Criterio{
 
             if(is_string($exp))
                 $str .= $exp;
+            elseif(is_a($exp,"Criterio"))
+            	$str .= "(".$exp->toString().")";
             else
                 $str .= $exp->toString();
         }

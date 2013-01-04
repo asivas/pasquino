@@ -20,7 +20,8 @@ class Restriccion{
         {
             $m = Configuracion::getMappingClase($clase);
             $mc = $m->clase;
-            $propiedades = $this->_xmlMapping->propiedad;
+            $propiedades = $m->propiedad;
+            if(is_array($propiedades))
             foreach($propiedades as $prop)
             {
                 $nombreProp = (string)$prop['nombre'];
@@ -38,7 +39,7 @@ class Restriccion{
             $val = "'{$this->valor}'";
 
         $columna = $this->buscarNombreColumna($clase,$this->propiedad); 
-    	if(strpos($columna,' ')!==false)
+    	if(strpos($columna,' ')!==false && $columna!=$this->propiedad)
     		$columna = "`{$columna}`";
         return "{$columna} {$this->operador} {$val}";	
     }

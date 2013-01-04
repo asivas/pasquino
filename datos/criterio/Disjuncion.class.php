@@ -7,7 +7,7 @@ class Disjuncion extends Criterio {
     {
         parent::__construct();
         $this->_operador = "OR";
-        $this->_operadorH = "o";
+        $this->_operadorH = "O";
         $this->_expresiones[] = $expresion1;
         $this->_expresiones[] = $expresion2;
     }

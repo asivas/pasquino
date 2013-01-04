@@ -355,15 +355,17 @@ abstract class DaoBase {
 
             $sql = "SELECT {$fields} FROM {$tabla}";
         }
+        
+        $strFiltro = ($filtro != null)?$filtro->getCondicion($this->_xmlMapping['nombre']):'';
 
-        if($filtro != null && $filtro->getCondicion()!='')
+        if($strFiltro!='')
         {
         	if(stripos($sql," WHERE ")===false || stripos($sql," WHERE ")==-1)
                 $sql .= " WHERE ";
             else
                 $sql .= " AND ";
 
-            $sql .= $filtro->getCondicion();
+            $sql .= $strFiltro;
         }
 
         if(!isset($order))
