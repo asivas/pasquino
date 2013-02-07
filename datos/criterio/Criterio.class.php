@@ -82,7 +82,7 @@ class Criterio{
     	$this->_operadorH = "O";
         $disj = clone $this;
         $this->_operador = "AND";
-        $this->_operadorH = "Y";
+        $this->_operadorH = "y";
         return $disj;
     }
     
@@ -91,6 +91,8 @@ class Criterio{
      */
     function toString()
     {
+    	//FIXME: revisar parentesis
+    	
     	$str = "";
                 
         foreach($this->_expresiones as $exp)
@@ -99,8 +101,6 @@ class Criterio{
 
             if(is_string($exp))
                 $str .= $exp;
-            elseif(is_a($exp,"Criterio"))
-            	$str .= "(".$exp->toString().")";
             else
                 $str .= $exp->toString();
         }
@@ -137,16 +137,22 @@ class Criterio{
 		return serialize($array);
 	}
 	
-	function unserialize($data)
+	static function unserialize($data)
 	{
 		$array = unserialize($data);
-
-		$this->_operador = key($array);
+		$oper = key($array);
 		
-		foreach($array[$this->_operador] as $exp)
-		{
-			$res = Restriccion::fromArraySerialize($exp);
-			$this->_expresiones[] = $res;	
-		}
+		if($oper!="OR" && $oper!="AND")
+			return Restriccion::fromArraySerialize($array);
+		
+		$c = new Criterio();
+		
+		if($oper== "OR")
+			$c = $c->disjunction();			
+		
+		foreach($array[$oper] as $exp)
+			$c->add(Criterio::unserialize(serialize($exp)));				
+		
+		return $c;
 	}
 }

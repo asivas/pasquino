@@ -8,6 +8,20 @@ class Restriccion{
     
     protected $operadorH;
     
+    public function getOperador()
+    {
+    	return $this->operador;
+    }
+    
+    public function getPropiedad()
+    {
+    	return $this->propiedad;
+    }
+    
+    public function getValor()
+    {
+    	return $this->valor;
+    }
     
     function Restriccion($nombrePropiedad,$valor) {
         $this->propiedad = $nombrePropiedad;
