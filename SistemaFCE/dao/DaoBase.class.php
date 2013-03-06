@@ -339,7 +339,7 @@ abstract class DaoBase {
      * @param int $count cantidad de elementos a buscar
      * @param int $limit limite inicial desde donde buscar (offset)
      */
-    function getFindBySql($filtro = null,$order=null,$count=null,$limit=null)
+    function getFindBySql($filtro = null,$order=null,$count=null,$limit=null,$group=null)
     {
     	if(!empty($this->baseFindBySQL))
             $sql = $this->baseFindBySQL;
@@ -367,6 +367,9 @@ abstract class DaoBase {
 
             $sql .= $strFiltro;
         }
+        
+        if(isset($group))
+        	$sql .= " GROUP BY {$group}";
 
         if(!isset($order))
         	$order = $this->defaultOrder;
@@ -431,9 +434,9 @@ abstract class DaoBase {
      * @param object $filtro Objeto de clase Criterio
      * @param string $order Columna o columnas separadas por coma (,) para ordenar la busqueda
      */
-    function findBy($filtro = null,$order=null,$count=null,$limit=null){
+    function findBy($filtro = null,$order=null,$count=null,$limit=null,$group=null){
 
-        $sql = $this->getFindBySql($filtro,$order,$count,$limit);
+        $sql = $this->getFindBySql($filtro,$order,$count,$limit,$group);
 
         if(!($rs = $this->_db->Execute($sql)))
             die($this->_db->ErrorMsg()." $sql");
