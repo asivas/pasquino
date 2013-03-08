@@ -299,31 +299,38 @@ abstract class DaoBase {
     {
     	return $this->_db;
     }
-
-    protected function getSqlFields() {
-    	$strFields = "";
-
+    
+    protected function getSqlFieldsArray() {
+    	
     	foreach($this->_xmlMapping->id as $id)
     		$fields[] = $id['columna'];
-
+    	
     	foreach($this->_xmlMapping->propiedad as $prop)
     	{
     		if(!isset($prop->{'data-source'}))
     			$fields[] = $prop['columna'];
     	}
-
-    	$glue = ", ";
-
+    	
+    	
+    	
     	if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli'))
     	{
     		if(is_array($fields))
-	    		foreach($fields as $k => $field)
-	    		{
-					$fields[$k] = "`$field`";
-	    		}
+    			foreach($fields as $k => $field)
+    			{
+    				$fields[$k] = "`$field`";
+    			}
     	}
+    	return $fields; 
+    }
 
-    	$strFields = implode($glue, $fields);
+    protected function getSqlFields() {
+    	$strFields = "";
+		
+		$fields = $this->getSqlFieldsArray();
+    	
+		$glue = ", ";
+		$strFields = implode($glue, $fields);
 
     	if(empty($fields))
     		$strFields = "*";
