@@ -160,12 +160,13 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 
 	if(nombreBotonGuardar==null)	nombreBotonGuardar = 'guardar';
 	if(valueBotonGuardar==null)		valueBotonGuardar = 'Guardar';
-	if(anchoDialogo==null)			anchoDialogo = 510;
+	if(anchoDialogo==null)			anchoDialogo = 'auto';
 	if(nombreBotonCancelar==null)	nombreBotonCancelar = 'cancelar';
-	
+		
 	if(opciones.modal==null) opciones.modal=true;
 	if(opciones.top==null) opciones.top=69;
 	if(opciones.width==null) opciones.width=anchoDialogo;
+	if(opciones.autoOpen==null) opciones.autoOpen=false;
 	
 	var dlgOpts = opciones;
 	dlgOpts.title = titulo;
@@ -205,6 +206,7 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 		var btnCancelar = $("form#"+idForm+" input[name='"+nombreBotonCancelar+"']");
 		if(btnCancelar.exists())
 			btnCancelar.button().click(function(e){dlg.html("").dialog('close');});
+	dlg.dialog('open');	
 		
 	}).dialog(dlgOpts);
 };
