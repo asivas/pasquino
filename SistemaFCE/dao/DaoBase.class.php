@@ -193,6 +193,15 @@ abstract class DaoBase {
                	*/
         	   	$elem->$set($valor);
         	}
+        	//TODO: dar la opción de que la clave del arreglo sea la columna
+        	/*
+        	 * else {
+        	 *  $nombreProp = $this->buscarNombrePropiedad($nombrePropiedad);
+        	 *  $set = "set".ucfirst($nombreProp);
+        	 *  if(method_exists($elem,$set))
+        	 *  		$elem->$set($valor);
+        	 * }
+        	 */
         }
 
         return $elem;
@@ -644,5 +653,20 @@ abstract class DaoBase {
      */
     public function getCriterioBase() {
     	return new Criterio();
+    }
+    
+    
+    protected function buscarNombrePropiedad($nombreColumna)
+    {
+    	$propiedades = $this->_xmlMapping->propiedad;
+    	if(is_array($propiedades))
+    		foreach($propiedades as $prop)
+    		{
+    			$nombreCol = (string)$prop['columna'];
+    			$nombreProp = (string)$prop['nombre'];
+    			if($nombreCol == $nombreColumna)
+    				return $nombreProp;
+    		}
+    	return $nombreColumna;
     }
 }
