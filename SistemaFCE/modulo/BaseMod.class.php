@@ -47,6 +47,17 @@ class BaseMod {
     var $REST;
 
     protected $jsModulo;
+    
+    /**
+     * Arreglo que tiene la lista de los archivos js a agrregar en el head
+     * @var array
+     */
+    protected $jsFilesList;
+    /**
+     * Arreglo que tiene la lista de los archivos css a agrregar en el head
+     * @var array
+     */
+    protected $cssFilesList;
 
 
     /**
@@ -278,11 +289,10 @@ class BaseMod {
     {
         // chequeo a partir de la config del m�dulo
         $conf = $this->getConfigModulo($nombreModulo);
-
         //   Busco los permisos para la acci�n
         $acciones = $conf->acciones;
         if(!isset($acciones->accion)) return false;
-
+        
         foreach($acciones->accion as $acc)
         {
             $nombreAccion = (string)$acc['nombre'];
@@ -385,6 +395,66 @@ class BaseMod {
      * @param string $displayType
      */
     protected function getTilePathForDisplayType($displayType) {return "";}
+    
+    /**
+     * Agrega un archivo (nombre de archivo) js para inluirlos de manera dinamica
+     * @param string $jsFile
+     * @param string $sortKey
+     */
+    protected function addJsFile($jsFile,$sortKey=null) {
+    	$this->jsFilesList[$sortKey] = $jsFile;
+    }
+    
+    /**
+     * Genera y asigna en smarty una variable a partir del listado de los jsFileList
+     */
+    private function assignHeadJs() 
+    {
+    	$jsInlcudes = "";
+    	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y 
+    	// poniendolos minified
+    	if(!empty($this->jsFilesList) && is_array($this->jsFilesList))
+    	{
+    		foreach($this->jsFilesList as $jsFileName)
+    		{
+    			$jsInlcudes .= "\n	<script type=\"text/javascript\" src=\"{$jsFileName}\"></script>";
+    		}
+    		
+    		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
+    		// si, no meterle a la fuerza la variable {$jsIncludes}
+    	}
+    	$this->smarty->assign('jsIncludes',$jsIncludes);
+    }
+    
+    /**
+     * Agrega un archivo (nombre de archivo) css para inluirlos de manera dinamica
+     * @param string $cssFile
+     * @param string $sortKey
+     */
+    protected function addCssFile($cssFile,$sortKey=null) {
+    	$this->cssFilesList[$sortKey] = $cssFile;
+    }
+    
+    /**
+     * Genera y asigna en smarty una variable a partir del listado de los cssFileList
+     */
+    private function assignHeadCss()
+    {
+    	$cssInlcudes = "";
+    	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y
+    	// poniendolos minified
+    	if(!empty($this->cssFilesList) && is_array($this->cssFilesList))
+    	{
+    		foreach($this->cssFilesList as $cssFileName)
+    		{
+    			$jsInlcudes .= "\n	<link rel=\"stylesheet\" href=\"{$cssFileName}\" type=\"text/css\" />";
+    		}
+    
+    		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
+    		// si, no meterle a la fuerza la variable {$jsIncludes}
+    	}
+    	$this->smarty->assign('cssIncludes',$cssIncludes);
+    }
 
     /**
      *
@@ -397,6 +467,9 @@ class BaseMod {
     {
         if(!empty($this->errors))
             $this->smarty->assign('errores',$this->errors);
+        
+        $this->assignHeadJs();
+        $this->assignHeadCss();
 
         $this->smarty->assign('menuMod',$this->_menuModTplPath);
         $this->smarty->assign('pantalla',$tpl);
@@ -537,14 +610,14 @@ class BaseMod {
         	$this->smarty->assign('accion',$accion);
 
 	        $metodoAccion = "accion".ucfirst($accion);
-
+	        
 	        if(!method_exists($this,$metodoAccion) && $accion != $this->getAccionPredeterminada())
 	        {
-	            $req['accion'] = $this->getAccionPredeterminada();
+	        	$req['accion'] = $this->getAccionPredeterminada();
 	            $this->ejecutar($req);
 	            return;
 	        }
-
+	        
 	        $this->$metodoAccion($req);
         }
 

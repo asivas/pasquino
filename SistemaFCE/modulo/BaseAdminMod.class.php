@@ -23,7 +23,7 @@ abstract class BaseAdminMod extends BaseMod {
 	function __construct($form, $dao, $skinDirname=null, $listaTplPath=null, $formTplPath=null, $tilePathName = 'Admin', $sessionHandler=null)
 	{
 		if(isset($sessionHandler))	$this->session = $sessionHandler;
-
+		
 		parent::__construct($skinDirname,false); // como se usa mayormente jquery se pasa por defecto el conXajax en false
 
 		$this->_form = $form;

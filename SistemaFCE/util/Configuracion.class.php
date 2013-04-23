@@ -190,7 +190,7 @@ class Configuracion {
         {
         	foreach($otrosPaths as $path)
                 $inc_path .= $pathSep.$sysRoot."/".$path;
-        }
+        }//TODO: permitir que sea string
 
         $inc_path = ini_set("include_path",$inc_path);
     }
@@ -273,7 +273,7 @@ class Configuracion {
     public static function quitarModulo($nombre)
     {
         //TODO: que a partir del $nombre lo borre del XML de sistema
-        // tambien debería borrarl los archivos 
+        // tambien deberï¿½a borrarl los archivos 
     }
     
     public static function agregarTemplate()
@@ -284,10 +284,10 @@ class Configuracion {
     public static function quitarTemplate($nombreDir)
     {
         //TODO: que a partir del $nombreDir borre la template del XML de sistema
-        // tambien debería borrarl los archivos 
+        // tambien deberï¿½a borrarl los archivos 
     }
     
-    //TODO: discutir si habría que hacer las funciones de ABM de data-sources
+    //TODO: discutir si habrï¿½a que hacer las funciones de ABM de data-sources
     
     public static function getModulosConfig()
     {
@@ -329,7 +329,7 @@ class Configuracion {
                 $archivoMappings = "{$mappings['path']}/{$archivo}";
             }
             
-            //el archivo obtenido está puesto relativo a la raiz del proyecto
+            //el archivo obtenido estï¿½ puesto relativo a la raiz del proyecto
             $xmlMappingFile = Configuracion::getSystemRootDir()."/{$archivoMappings}";
         }
         
@@ -376,7 +376,7 @@ class Configuracion {
     }
     
     /**
-     * Obtiene la configuración del modulo cuyo nombre es dado
+     * Obtiene la configuraciï¿½n del modulo cuyo nombre es dado
      * 
      * @param string $mod nombre del modulo
      */
