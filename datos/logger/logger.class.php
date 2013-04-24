@@ -1,7 +1,7 @@
 <?php
 /**
  * Se define la clase abstracta logger que permite extenderse para 
- * hacer entradas de registro para una aplicación
+ * hacer entradas de registro para una aplicaciï¿½n
  * 
  * @author	    Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
  * @copyright	Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
@@ -14,15 +14,18 @@
 /**
  * Se utiliza cuando se registra simplemente un aviso
  */
-define('LOG_NOTICE',1);
+if(!defined('LOG_NOTICE'))
+	define('LOG_NOTICE',1);
 /**
  * Se utiliza cuando se registra una adveretencia
  */
-define('LOG_WARNING',2);
+if(!defined('LOG_WARNING'))
+	define('LOG_WARNING',2);
 /**
  * Se utiliza cuando se registra un error
  */
-define('LOG_ERROR',3);
+if(!defined('LOG_ERROR'))
+	define('LOG_ERROR',3);
 
 /**
  * Define los metodos y se plantean los que deben definirse cuando se extiende esta clase
@@ -32,7 +35,7 @@ class logger {
     
     /**
      * asigna las variables de instancia
-     * @param string $modulo determina para que modulo o apliclación se registraran entradas
+     * @param string $modulo determina para que modulo o apliclaciï¿½n se registraran entradas
      */
     function logger($modulo='core')
     {
@@ -40,13 +43,13 @@ class logger {
     }
     
     /**
-     * modifica el modulo o aplicación para la cual se registran eventos
+     * modifica el modulo o aplicaciï¿½n para la cual se registran eventos
      * @param string $modulo nuevo nombre de archivo
      */
     function setModulo($modulo) { $this->_modulo = $modulo;  }
     
     /**
-     * recupera el modulo o aplicacion para la cual se están registrando eventos
+     * recupera el modulo o aplicacion para la cual se estï¿½n registrando eventos
      * @return string nombre de modulo acutal
      */
     function getModulo() { return $this->_modulo; }

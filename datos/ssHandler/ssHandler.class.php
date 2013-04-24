@@ -9,7 +9,8 @@
     * @version      0.1
     */		
 
-    require_once("datos/logger/sqlLogger.class.php");
+    // en caso de querer usar log por sql el que extiende debería incluir esto: 
+    // require_once("datos/logger/sqlLogger.class.php");
     /**
     * Esta clase prov�e acceso via usuario y contrase�a
     * 
