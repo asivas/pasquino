@@ -1,23 +1,13 @@
 <?php
+require_once 'SistemaFCE/entidad/Entidad.class.php';
 
-class BaseUsuario {
+class BaseUsuario extends Entidad {
     
-    private $id;
     private $permisos;
     private $nombre;
     private $apellido;
     
     function __construct() {
-    }
-    
-    function getId()
-    {
-        return $this->id;	
-    }
-    
-    function setId($id)
-    {
-    	$this->id = $id;
     }
     
     function getPermisos()

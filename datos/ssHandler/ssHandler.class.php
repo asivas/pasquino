@@ -105,7 +105,7 @@
             header("Pragma: no-cache");
 		}	
         
-        private function loggingIn()
+        protected function loggingIn()
         {
         	return isset($_POST[$this->auth->getPostUsernameField()],$_POST[$this->auth->getPostPasswordField()]);
         }
