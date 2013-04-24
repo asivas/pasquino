@@ -169,7 +169,8 @@ class Configuracion {
     
     public static function getSystemRootDir()
     {   
-        return $GLOBALS['ROOT_DIR'];
+        if(isset($GLOBALS['ROOT_DIR']))
+    		return $GLOBALS['ROOT_DIR'];
     }
     
     public static function setIncludePath($otrosPaths=null)
