@@ -169,7 +169,7 @@ class BaseMod {
         $this->smarty->assign('timeFormat',$this->_timeFormat);
         $this->smarty->assign('dateTimeFormat',$this->_dateTimeFormat);
 
-        $this->smarty->assign('facade',new smartyFacade(get_class($this)));
+        $this->smarty->assign('facade',new smartyFacade($this));
 		
         $this->smarty->assign('usuario',$this->_usuario);
         $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
