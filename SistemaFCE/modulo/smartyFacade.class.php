@@ -14,13 +14,13 @@ class smartyFacade
 		return new $this->modName(); 
 	}
 	
-	static function getPropiedadMod($property,$object = null)
+	function getPropiedadMod($property,$object = null)
 	{
 		$mod = $this->getMod();
 		$method = 'get'.ucfirst($property);
-		if(method_exist($mod,$method))
-			return $mod->$method();
-		if($object && method_exist($object,$method))
+		if(method_exists($mod,$method))
+			return $mod->$method($object);
+		if($object && method_exists($object,$method))
 			return $object->$method();
 		return 'undefined';
 	}
