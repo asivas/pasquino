@@ -8,6 +8,7 @@ require_once('visual/jscalendar/FCEcalendar.class.php');
 require_once('SistemaFCE/util/Session.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
 require_once('datos/debug/DebugFacade.class.php');
+require_once('SistemaFCE/modulo/smartyFacade.class.php');
 
 if(!class_exists('Smarty'))
 	require_once('visual/smarty/libs/Smarty.class.php');
@@ -168,7 +169,8 @@ class BaseMod {
         $this->smarty->assign('timeFormat',$this->_timeFormat);
         $this->smarty->assign('dateTimeFormat',$this->_dateTimeFormat);
 
-
+        $this->smarty->assign('facade',new smartyFacade(get_class($this)));
+		
         $this->smarty->assign('usuario',$this->_usuario);
         $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
     }
