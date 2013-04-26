@@ -171,7 +171,7 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 	var dlgOpts = opciones;
 	dlgOpts.title = titulo;
 	
-	$("#wrapper").crearDiv(idDialogo);
+	$("body").crearDiv(idDialogo);
 	var dlg = $("#"+idDialogo);
 	dlg.html(htmlCargando).load(url,function(){
 		if( opciones.onLoad )
