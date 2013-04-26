@@ -180,7 +180,7 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 		var $procesarForm = function(e){
 			$.post('./',$("form#"+idForm).serialize(),
 					function(data) {
-					$("#wrapper").crearDiv("tmp");
+					$("body").crearDiv("tmp");
 					
 					$("#tmp").hide().html("").html(data);
 					var status = $("#tmp status").attr('status'); 
