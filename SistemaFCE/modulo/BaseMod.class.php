@@ -49,6 +49,8 @@ class BaseMod {
 
     protected $jsModulo;
     
+    protected $pasquinoPath;
+    
     /**
      * Arreglo que tiene la lista de los archivos js a agrregar en el head
      * @var array
@@ -92,6 +94,8 @@ class BaseMod {
         $this->_sentidoOrderListado = $_SESSION[get_class($this)]['sortSentido'];
 
         $this->_tilePath = Configuracion::getDefaultTplPath($skinDirName);//'decorators/default.tpl';
+        //seteo el path de donde está pasquino
+        $this->pasquinoPath = dirname(dirname(__DIR__));
 
         if($conXajax)
         {
