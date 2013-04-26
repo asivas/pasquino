@@ -36,12 +36,13 @@ abstract class BaseAdminMod extends BaseMod {
 		$this->_tilePath = Configuracion::findTplPath($tConf,$tilePathName);
 
 		//busco el dir esperado por defecto de los tpls del modulo
-		$dir = strtolower( str_replace("Mod", "", get_class($this)) );
+		$lowerNombreEntidad = strtolower( str_replace("Mod", "", get_class($this)) );
 		//si no está seteado el tpl lista cargo un path por defecto con el dir y lista.tpl
-		if(!isset($this->_tplLista)) $this->_tplLista = "{$dir}/lista.tpl";
+		if(!isset($this->_tplLista)) $this->_tplLista = "{$lowerNombreEntidad}/lista.tpl";
 		//si no está seteado el tpl form cargo un path por defecto con el dir y form.tpl
-		if(!isset($this->_tplForm)) $this->_tplForm = "{$dir}/form.tpl";
-
+		if(!isset($this->_tplForm)) $this->_tplForm = "{$lowerNombreEntidad}/form.tpl";
+		
+		//TODO: ver de poner el js por defecto del mod
 		if(isset($nada)) //TODO: borrar esta linea y la siguiente, está para que autocomplete
 			$this->mainDao = new DaoBase();
 	}
@@ -218,6 +219,31 @@ abstract class BaseAdminMod extends BaseMod {
 		}
 		$this->renderForm();
 		$this->mostrar($this->_tplForm,$req['display']);
+	}
+	
+	/**
+	 * Devuelve la ruta del tpl de la lista de acciones para efectuar sobre una entidad 
+	 * @return string
+	 */
+	protected function getListaAccionesTpl() {
+		//FIXME: por ahora presupone una estructura estandar
+		return 'common/admin/lista_acciones.tpl';
+	}
+	
+	/**
+	 * Carga el pedazo de html de los botones de accion para la administración de una entidad
+	 * @param Entidad $entidad la entidad sobre la cual se harán las posibles acciones
+	 * @param string $listaAccionesTpl la ruta del tpl de la lista de acciones, por defecto se pide a getListaAccionesTpl
+	 * @return Ambigous <string, void, boolean, string, mixed>
+	 */
+	function getGridAccionesItem(Entidad $entidad,$listaAccionesTpl=null)
+	{
+		if(!isset($listaAccionesTpl))
+			$listaAccionesTpl = $this->getListaAccionesTpl();
+		$lowerModName = strtolower( str_replace("Mod", "", get_class($this)) );
+		$this->smarty->assign('entidad',$entidad);
+		$this->smarty->assign('modName',$lowerModName);
+		return $this->smarty->fetch($listaAccionesTpl);
 	}
 
 }

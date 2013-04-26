@@ -125,9 +125,6 @@ class BaseMod {
     {
         //metodos de xajax (se debe llamar a processRequest para que esto funcione)
         $this->xajax->register(XAJAX_FUNCTION,array('hideMensaje',&$this,'hideMensaje'));
-
-        $this->xajax->configure('characterEncoding', "ISO-8859-1");
-        $this->xajax->configure('decodeUTF8Input',true);
     }
 
     protected function initSmarty()
