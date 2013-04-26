@@ -131,7 +131,7 @@ function eliminar(id,mod){
 		data: '' , 
 		async:false,
 		success: function(data,  textStatus, jqXHR) {
-			$("#wrapper").crearDiv('tmp');
+			$("body").crearDiv('tmp');
 			$("#tmp").hide().html(data);
 			if($("#tmp status").attr('status')!='OK'){
 				alert($("#tmp status").attr('msg'));
