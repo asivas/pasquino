@@ -1,3 +1,55 @@
+(function(window,undefined) {
+	var
+	// Define a local copy of jQuery
+	pQn = function() {
+		// The jQuery object is actually just the init constructor 'enhanced'
+		return new pQn.fn.init(  );
+	};
+	
+	pQn.fn = pQn.prototype = {
+		constructor: pQn,
+		init: function(){ return this; },
+		setupButtons: function(selectorBotonera,selectorBotones) {
+			
+			if(selectorBotones==null)
+				selectorBotones='.acciones';
+			if(selectorBotonera==null)
+				selectorBotonera='li.acciones';
+			
+			$(selectorBotonera).find('div').addClass('ui-state-default ui-corner-all').css('float','left').css('margin-left','2px');
+			
+			$(selectorBotones).delegate('a>.ui-icon-pencil','click',function(e){
+				e.preventDefault();
+				if(typeof $fnBindModifBtn == 'function') {
+					$fnBindModifBtn($(this).parent("a").attr("href"));			
+				}		
+			});
+			if(typeof $fnBindAltaBtn == 'function')	$fnBindAltaBtn();
+			if(typeof $fnBindFiltro == 'function')	$fnBindFiltro();
+			
+		},
+		ultimoKeyup: null,
+		filtroAnterior: '',
+		/**
+		 * Metodo para realiar el filtro automatico, enviando el submit del form
+		 * @param tiempo
+		 * @param aInputName
+		 * @param aFormID Id del form
+		 */
+		doFilter: function(tiempo,aInputName){	
+			if(tiempo==pQn.ultimoKeyup){
+				var aInput=$("input[name="+aInputName+"]");
+				var aInputVal=aInput.val();
+				if(this.filtroAnterior!=aInputVal){	
+					this.filtroAnterior=aInputVal;
+					aInput.parent("form").submit();
+				}
+			}
+		}
+	
+	},
+	window.pQn = pQn;
+})(window);
 
 /**
  * Genera una query string para llamar a una accion de un modulo
@@ -38,24 +90,8 @@ function getUrlAlta(mod){
  * efectúa los binds de los botones de alta, modificación y filtro
  */
 jQuery['setupButtons']=function(selectorBotonera,selectorBotones) {
-	
-	if(selectorBotones==null)
-		selectorBotones='.acciones';
-	if(selectorBotonera==null)
-		selectorBotonera='li.acciones';
-	
-	$(selectorBotonera).find('div').addClass('ui-state-default ui-corner-all').css('float','left').css('margin-left','2px');
-	
-	$(selectorBotones).delegate('a>.ui-icon-pencil','click',function(e){
-		e.preventDefault();
-		if(typeof $fnBindModifBtn == 'function') {
-			$fnBindModifBtn($(this).parent("a").attr("href"));			
-		}		
-	});
-	if(typeof $fnBindAltaBtn == 'function')	$fnBindAltaBtn();
-	if(typeof $fnBindFiltro == 'function')	$fnBindFiltro();
-	
-}
+	pQn.fn.setupButtons(selectorBotonera,selectorBotones);	
+};
 
 function setupButtons(selectorBotonera,selectorBotones){
 	$.setupButtons(selectorBotonera,selectorBotones);
@@ -71,9 +107,6 @@ jQuery.fn.crearDiv = function(idDiv){
 };
 
 
-var ultimoKeyup=null;
-var filtroAnterior='';
-
 /**
  * Metodo para realiar el filtro automatico, enviando el submit del form
  * @param tiempo
@@ -81,14 +114,7 @@ var filtroAnterior='';
  * @param aFormID Id del form
  */
 jQuery['doFilter']=function(tiempo,aInputName){	
-	if(tiempo==ultimoKeyup){
-		var aInput=$("input[name="+aInputName+"]");
-		var aInputVal=aInput.val();
-		if(filtroAnterior!=aInputVal){	
-			filtroAnterior=aInputVal;
-			aInput.parent("form").submit();
-		}
-	}
+	pQn.fn.doFilter(tiempo,aInputName);
 };
 
 /**
@@ -99,17 +125,20 @@ jQuery['doFilter']=function(tiempo,aInputName){
  * @param aAction Metodo a Ejecutar
  * @param aOptions objeto con opciones (success).
  */
-jQuery.fn.keyUpFilter = function(aSourceID,aMod,aAction,aOptions){
+jQuery.fn.keyUpFilter = pQn.fn.keyUpFilter  = function(aSourceID,aMod,aAction,aOptions){
 	var form = $(this).parent("form");
 	form.unbind('submit');
 	form.submit(function(e) {
-		var srcObj = $("#"+aSourceID);
+		var selectorSource = " #"+aSourceID;
+		var srcObj = $(selectorSource);
 		if(!srcObj.exists())
+		{
+			selectorSource = aSourceID;
 			srcObj = $(aSourceID);
-		srcObj.wrap("<div></div>");
-		srcObj.parent().load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " #"+aSourceID,
-				function(response, status, xhr) {
-					$("#"+aSourceID).unwrap();
+		}
+		
+		srcObj.parent().load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
+				function(response, status, xhr) {					
 			  		if (status == "error") {
 			  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
 			  		}else{
@@ -124,8 +153,8 @@ jQuery.fn.keyUpFilter = function(aSourceID,aMod,aAction,aOptions){
 	});
 	$(this).unbind('keyup');
 	$(this).keyup(function(event){
-		setTimeout("$.doFilter("+event.timeStamp+",'"+ $(this).attr('name') +"')",800);
-		ultimoKeyup = event.timeStamp;
+		setTimeout("pQn.fn.doFilter("+event.timeStamp+",'"+ $(this).attr('name') +"')",800);
+		pQn.ultimoKeyup = event.timeStamp;
 	});
 };
 
@@ -223,8 +252,13 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 	}).dialog(dlgOpts);
 };
 
+/**
+ * 
+ */
 jQuery['initModulo'] = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod) {
-	
+	pQn.fn.initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod);
+}
+pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod) {
 	var $filtroFormSubmit = function(){$("input[name='"+nombreCampoFiltro+"']").parent("form").submit();};
 	$fnBindAltaBtn = function(){ 
 		$("#"+idBotonAlta).botonAlta(idDialogo,"Nuevo "+nombreEntidadPrincipal ,idForm,{success:$filtroFormSubmit});

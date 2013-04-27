@@ -629,7 +629,13 @@ abstract class DaoBase {
         	$this->_lastError = $this->_db->ErrorMsg() . " {$sql}";
         return $ret;
     }
-
+	
+    /**
+     * Devuelve la primera entiadad encontrada dados un criterio de filtro y un orden
+     * @param Criterio $filtro Criterio de filtro
+     * @param string $order Comlumna(s) de orden separadas por comas 
+     * @return Ambigous Entidad|NULL si no encuentra entidad devuelve null
+     */
     function findFirst($filtro = null,$order=null) {
     	$l = $this->findBy($filtro,$order);
     	if(is_array($l) && !empty($l))

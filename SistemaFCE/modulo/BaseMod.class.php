@@ -826,7 +826,11 @@ class BaseMod {
         $this->smarty->assign($nombreVarSmarty,$rf);
         return $rf;
     }
-
+	
+    /**
+     * Devuelve el usuario actual que usa el sitio
+     * @return Ambigous <NULL, Usuario>
+     */
     protected function getUsuario()
     {
     	return $this->_usuario;
