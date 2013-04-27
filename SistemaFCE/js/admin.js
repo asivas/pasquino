@@ -37,7 +37,7 @@ function getUrlAlta(mod){
 /**
  * efectúa los binds de los botones de alta, modificación y filtro
  */
-function setupButtons(selectorBotonera,selectorBotones){
+jQuery['setupButtons']=function(selectorBotonera,selectorBotones) {
 	
 	if(selectorBotones==null)
 		selectorBotones='.acciones';
@@ -56,6 +56,11 @@ function setupButtons(selectorBotonera,selectorBotones){
 	if(typeof $fnBindFiltro == 'function')	$fnBindFiltro();
 	
 }
+
+function setupButtons(selectorBotonera,selectorBotones){
+	$.setupButtons(selectorBotonera,selectorBotones);
+}
+
 
 var htmlCargando = "cargando...";
 jQuery.fn.exists = function(){return this.length>0;};
@@ -97,12 +102,15 @@ jQuery['doFilter']=function(tiempo,aInputName){
 jQuery.fn.keyUpFilter = function(aSourceID,aMod,aAction,aOptions){
 	var form = $(this).parent("form");
 	form.unbind('submit');
-	form.submit(function(e) {		
+	form.submit(function(e) {
+		$("#"+aSourceID).wrap("<div></div>");
 		$("#"+aSourceID).parent().load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " #"+aSourceID,
 				function(response, status, xhr) {
+					$("#"+aSourceID).unwrap();
 			  		if (status == "error") {
 			  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
 			  		}else{
+			  			
 			  			if(aOptions!=null &&
 			  			   aOptions.success!=null && 
 			  			   (typeof aOptions.success == 'function')) 
@@ -213,6 +221,7 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 };
 
 function initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod) {
+	
 	var $filtroFormSubmit = function(){$("input[name='"+nombreCampoFiltro+"']").parent("form").submit();};
 	$fnBindAltaBtn = function(){ 
 		$("#"+idBotonAlta).botonAlta(idDialogo,"Nuevo "+nombreEntidadPrincipal ,idForm,{success:$filtroFormSubmit});
@@ -221,9 +230,9 @@ function initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,id
 		$.dialogoGuardar(idDialogo,href+"&display=plain","Modificar "+nombreEntidadPrincipal,idForm,{success:$filtroFormSubmit});
 	};
 	$fnBindFiltro = function() {
-		$("input[name='"+nombreCampoFiltro+"']").keyUpFilter(idLista,aMod,"listar",{success:function(){setupButtons();}});
+		$("input[name='"+nombreCampoFiltro+"']").keyUpFilter(idLista,aMod,"listar",{success:function(){$.setupButtons();}});
 	};
-	setupButtons();
+	$.setupButtons();
 }
 
 /**
