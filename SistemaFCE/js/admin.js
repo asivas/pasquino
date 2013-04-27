@@ -94,7 +94,7 @@ jQuery['doFilter']=function(tiempo,aInputName){
 /**
  * Metodo agregado a los objetos jQuery para realizar bind de input de filtro, 
  * con una espera para realizar filtro automatico 
- * @param aSourceID Objeto desde el cual se carga TargetID
+ * @param aSourceID id o selector Objeto desde el cual se carga TargetID
  * @param aMod Modulo a ejecutar
  * @param aAction Metodo a Ejecutar
  * @param aOptions objeto con opciones (success).
@@ -103,8 +103,11 @@ jQuery.fn.keyUpFilter = function(aSourceID,aMod,aAction,aOptions){
 	var form = $(this).parent("form");
 	form.unbind('submit');
 	form.submit(function(e) {
-		$("#"+aSourceID).wrap("<div></div>");
-		$("#"+aSourceID).parent().load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " #"+aSourceID,
+		var srcObj = $("#"+aSourceID);
+		if(!srcObj.exists())
+			srcObj = $(aSourceID);
+		srcObj.wrap("<div></div>");
+		srcObj.parent().load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " #"+aSourceID,
 				function(response, status, xhr) {
 					$("#"+aSourceID).unwrap();
 			  		if (status == "error") {
@@ -220,7 +223,7 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 	}).dialog(dlgOpts);
 };
 
-function initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod) {
+jQuery['initModulo'] = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod) {
 	
 	var $filtroFormSubmit = function(){$("input[name='"+nombreCampoFiltro+"']").parent("form").submit();};
 	$fnBindAltaBtn = function(){ 
@@ -233,7 +236,12 @@ function initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,id
 		$("input[name='"+nombreCampoFiltro+"']").keyUpFilter(idLista,aMod,"listar",{success:function(){$.setupButtons();}});
 	};
 	$.setupButtons();
+};
+
+function initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod) {
+	$.initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod);
 }
+
 
 /**
  * Crea una funcion de jQuery que le asigna la funcionalidad de boton de alta al elemento que la llama
