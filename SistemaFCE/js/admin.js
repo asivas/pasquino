@@ -1,3 +1,4 @@
+
 /**
  * Genera una query string para llamar a una accion de un modulo
  * @param modulo nombre del modulo
@@ -39,9 +40,9 @@ function getUrlAlta(mod){
 function setupButtons(selectorBotonera,selectorBotones){
 	
 	if(selectorBotones==null)
-		selectorBotones='.botones';
+		selectorBotones='.acciones';
 	if(selectorBotonera==null)
-		selectorBotonera='td.botones';
+		selectorBotonera='li.acciones';
 	
 	$(selectorBotonera).find('div').addClass('ui-state-default ui-corner-all').css('float','left').css('margin-left','2px');
 	
