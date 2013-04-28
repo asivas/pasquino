@@ -4,6 +4,11 @@
  * @author lucas.vidaguren
  * @since 06/10/2008
  */
+
+/**
+ * El calendario viejo, 
+ * @deprecated
+ */
 require_once('visual/jscalendar/FCEcalendar.class.php');
 require_once('SistemaFCE/util/Session.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
@@ -69,13 +74,14 @@ class BaseMod {
      * @param string $skinDirName nombre de la skin/template utilizada
      * @param boolean $conXajax determina si se utilizar� xajax como motor de ajax
      */
-    function __construct($skinDirName=null,$conXajax=true) {
+    function __construct($skinName=null,$conXajax=true) {
         if(!isset($this->session))
             $this->session = new Session(Configuracion::getAppName());
 
-        $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
+        $this->_skinConfig = Configuracion::getTemplateConfigByDir($skinName);
 
-		$this->_calendar = new FCEcalendar('/js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
+		//@deprecated ya no se usa el calendario js, se prefiere el uso de jQuery
+        $this->_calendar = new FCEcalendar('/js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
 
 		$this->REST = new RESTMod();
 
@@ -86,6 +92,8 @@ class BaseMod {
         $this->_dateTimeFormat = Configuracion::getDateTimeFormat();
         $this->_timeFormat = Configuracion::getTimeFormat();
 
+        $this->pasquinoPath = dirname(dirname(__DIR__));
+        
         $this->initSmarty();
         if($conXajax)
             $this->xajax = new xajax(null,'es');
@@ -93,9 +101,12 @@ class BaseMod {
         $this->_orderListado = $_SESSION[get_class($this)]['sort'];
         $this->_sentidoOrderListado = $_SESSION[get_class($this)]['sortSentido'];
 
-        $this->_tilePath = Configuracion::getDefaultTplPath($skinDirName);//'decorators/default.tpl';
+        if(method_exists($this->smarty,'getTemplateVars'))
+        	$this->_tilePath = $this->smarty->getTemplateVars('pQnDefaultTpl');
+        else
+        	$this->_tilePath = Configuracion::getDefaultTplPath($skinName);//'decorators/default.tpl';
         //seteo el path de donde está pasquino
-        $this->pasquinoPath = dirname(dirname(__DIR__));
+        
 
         if($conXajax)
         {
@@ -138,7 +149,7 @@ class BaseMod {
     	$config = Configuracion::getConfigXML();
         $templates = $config->templates;
         $skinsDirname = (string)$config->templates['path'];
-
+   
         if(empty($skinsDirname))
         	$skinsDirname = "skins";
 
@@ -169,11 +180,50 @@ class BaseMod {
         $this->smarty->assign('dateFormat',$this->_dateFormat);
         $this->smarty->assign('timeFormat',$this->_timeFormat);
         $this->smarty->assign('dateTimeFormat',$this->_dateTimeFormat);
-
+        
+        $this->assignSmartyTplVars();
+        
         $this->smarty->assign('facade',new smartyFacade($this));
 		
         $this->smarty->assign('usuario',$this->_usuario);
         $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
+    }
+    
+    /**
+     * Asigna variables
+     */
+    protected function assignSmartyTplVars() {
+    	//Opciones de layout estandar
+    	$this->smarty->assign("pQnBaseTpl","file:{$this->pasquinoPath}/tpls/base.tpl");
+    	$this->smarty->assign("pQnDefaultTpl","file:{$this->pasquinoPath}/tpls/default.tpl");
+    	$this->smarty->assign("pQnAdminTpl","file:{$this->pasquinoPath}/tpls/admin/default.tpl");
+
+    	//Partes generales de sistema/template
+    	$this->smarty->assign("pQnMenuTpl","file:{$this->pasquinoPath}/tpls/menu.tpl");
+    	$this->smarty->assign("pQnHeaderTpl","file:{$this->pasquinoPath}/tpls/header.tpl");
+    	$this->smarty->assign("pQnFooterTpl","file:{$this->pasquinoPath}/tpls/footer.tpl");
+    	$this->smarty->assign("pQnHeadTpl","file:{$this->pasquinoPath}/tpls/head.tpl");
+    	$this->smarty->assign("pQnHeadAdminTpl","file:{$this->pasquinoPath}/tpls/admin/head.tpl");
+    	 
+    	//Partes estandar de admin
+    	$this->smarty->assign("pQnFormFiltroTpl","file:{$this->pasquinoPath}/tpls/admin/filtro.tpl");
+    	$this->smarty->assign("pQnListaTpl","file:{$this->pasquinoPath}/tpls/admin/lista.tpl");
+    	$this->smarty->assign("pQnInfoTpl","file:{$this->pasquinoPath}/tpls/admin/info.tpl");
+    	$this->smarty->assign("pQnFormTpl","file:{$this->pasquinoPath}/tpls/admin/form.tpl");
+    	
+    	//Pantallas generales 
+    	$this->smarty->assign("pQnFormLoginTpl","file:{$this->pasquinoPath}/tpls/formLogin.tpl");
+    	$this->smarty->assign("pQnSinPermisosTpl","file:{$this->pasquinoPath}/tpls/sinPermisos.tpl");
+    	
+    	// prueba de variables default de las partes estandares (sys-names) de templates las que tiene definido el dtd
+    	//TODO: ver si se peude leer del dtd con algo medio simple y armar el arreglo a recorrer
+    	$sysNames = array('Base','Default','Lista','Formulario','Info','FormFiltro','Menu','Admin','Head');
+    	foreach($sysNames as $sysName)
+    	{
+    		$sysNameTplFile = Configuracion::findTplPath($this->_skinConfig,$sysName);
+    		if(!empty($sysNameTplFile))
+    			$this->smarty->assign("pQn".$sysName,Configuracion::findTplPath($this->_skinConfig,$sysName));
+    	}
     }
 
     /**

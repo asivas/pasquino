@@ -38,6 +38,11 @@ class Configuracion {
     }
     
     public static function getTemplateConfigByDir($dir)
+    {
+    	return Configuracion::getTemplateConfigByNombre($dir);
+    }
+    
+    public static function getTemplateConfigByNombre($dir)
     {   
     	$config = Configuracion::getConfigXML();
         $templates = $config->templates;
