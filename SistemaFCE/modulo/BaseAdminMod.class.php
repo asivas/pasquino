@@ -20,11 +20,11 @@ abstract class BaseAdminMod extends BaseMod {
 	protected $_tplLista;
 	protected $_tplForm;
 
-	function __construct($form, $dao, $skinDirname=null, $listaTplPath=null, $formTplPath=null, $tilePathName = 'Admin', $sessionHandler=null)
+	function __construct($form, $dao, $skinName=null, $listaTplPath=null, $formTplPath=null, $tilePathName = 'Admin', $sessionHandler=null)
 	{
 		if(isset($sessionHandler))	$this->session = $sessionHandler;
 		
-		parent::__construct($skinDirname,false); // como se usa mayormente jquery se pasa por defecto el conXajax en false
+		parent::__construct($skinName,false); // como se usa mayormente jquery se pasa por defecto el conXajax en false
 
 		$this->_form = $form;
 		$this->mainDao = $dao;
@@ -32,7 +32,7 @@ abstract class BaseAdminMod extends BaseMod {
 		$this->_tplLista = $listaTplPath;
 		$this->_tplForm = $formTplPath;
 
-		$tConf = Configuracion::getTemplateConfigByDir($templateDir);
+		$tConf = Configuracion::getTemplateConfigByNombre($skinName);
 		$this->_tilePath = Configuracion::findTplPath($tConf,$tilePathName);
 
 		//busco el dir esperado por defecto de los tpls del modulo

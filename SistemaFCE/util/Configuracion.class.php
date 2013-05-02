@@ -42,20 +42,20 @@ class Configuracion {
     	return Configuracion::getTemplateConfigByNombre($dir);
     }
     
-    public static function getTemplateConfigByNombre($dir)
+    public static function getTemplateConfigByNombre($nombre_o_dir)
     {   
     	$config = Configuracion::getConfigXML();
         $templates = $config->templates;
         
-        if(empty($dir))
-            $dir = $templates['default'];
+        if(empty($nombre_o_dir))
+            $nombre_o_dir = $templates['default'];
         
         foreach($templates->template as $template)
         {
         	$tDir = "{$template['nombre']}";
         	if(empty($tDir)) $tDir = "{$template['dir']}";
         	
-            if($tDir==$dir)
+            if($tDir==$nombre_o_dir)
             {   
                 return $template;
             }
