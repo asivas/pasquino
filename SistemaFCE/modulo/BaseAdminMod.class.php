@@ -130,7 +130,7 @@ abstract class BaseAdminMod extends BaseMod {
 	/* (non-PHPdoc)
 	 * @see BaseMod::alta()
 	 */
-	public function alta($req) {
+	protected function alta($req) {
 
 		if($this->getForm()->validate())
 		{
@@ -145,7 +145,7 @@ abstract class BaseAdminMod extends BaseMod {
 	/* (non-PHPdoc)
 	 * @see BaseMod::modificacion()
 	 */
-	public function modificacion($req) {
+	protected function modificacion($req) {
 		if($this->getForm()->validate())
 		{
 			$aObj = $this->mainDao->crearDesdeArreglo($req);
@@ -162,7 +162,7 @@ abstract class BaseAdminMod extends BaseMod {
 	/* (non-PHPdoc)
 	 * @see BaseMod::baja()
 	 */
-	public function baja($req){
+	protected function baja($req){
 		$id = $this->getItemId($req);
 
 		$aObj = $this->mainDao->findById($id);
@@ -180,7 +180,7 @@ abstract class BaseAdminMod extends BaseMod {
 	/* (non-PHPdoc)
 	 * @see BaseMod::lista()
 	 */
-	public function lista($req){
+	protected function lista($req){
 		$aObjs = $this->mainDao->findBy($this->getFiltro($req),$req['sort']);
 
 		$nombreClase="";
@@ -209,7 +209,7 @@ abstract class BaseAdminMod extends BaseMod {
 	/* (non-PHPdoc)
 	 * @see BaseMod::form()
 	 */
-	public function form($req){
+	protected function form($req){
 		$id = $this->getItemId($req);
 		if($this->validateId($req))
 		{
