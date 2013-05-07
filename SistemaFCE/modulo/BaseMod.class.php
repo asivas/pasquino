@@ -85,7 +85,9 @@ class BaseMod {
 
 		$this->REST = new RESTMod();
 
-        $daoU = new DaoUsuario();
+		$entidadUsuario = Configuracion::getEntidadUsuario();
+        $claseDaoUsuario = 'Dao'.$entidadUsuario();
+		$daoU = new $claseDaoUsuario();
         $this->_usuario = $daoU->findById($this->session->getIdUsuario());
 
         $this->_dateFormat = Configuracion::getDateFormat();
