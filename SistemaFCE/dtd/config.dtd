@@ -15,6 +15,7 @@
 
 <!ATTLIST mappings
 	path CDATA #REQUIRED
+	entidadUsuario CDATA #IMPLIED
 > 
 
 <!ELEMENT mapping EMPTY>

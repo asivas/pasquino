@@ -415,4 +415,15 @@ class Configuracion {
     	return $accion;
     }
     
+    
+    public static function getEntidadUsuarioClass() {
+    	$config = Configuracion::getConfigXML();
+    	$mappings = $config->mappings;
+    	
+    	if(isset($mappings->entidadUsuario))
+    		return (string)$mappings->entidadUsuario;
+    	
+    	return "Usuario";
+    }
+    
 }
