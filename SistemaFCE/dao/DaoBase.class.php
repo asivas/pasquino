@@ -268,7 +268,7 @@ abstract class DaoBase {
         }
 
         //cargo las listas
-        $propiedades = $this->_xmlMapping->uno-a-muchos;
+        $propiedades = $this->_xmlMapping->{"uno-a-muchos"};
         if($propiedades != null)
         foreach($propiedades as $prop)
         {
@@ -322,6 +322,7 @@ abstract class DaoBase {
     	
     	
     	
+    	//FIXME: solo mysql permite nombres locos en el field
     	if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli'))
     	{
     		if(is_array($fields))
@@ -521,8 +522,8 @@ abstract class DaoBase {
             $mode  = 'UPDATE';
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
-
-        $ret = $this->_db->AutoExecute((string)$this->tableName,$buf,$mode,$where);
+        
+        $ret = $this->_db->AutoExecute((string)$this->tableName,$buf,$mode,$where,true,true);
 
 		if(!$ret)
         {
