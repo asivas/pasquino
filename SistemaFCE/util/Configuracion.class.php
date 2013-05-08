@@ -254,6 +254,8 @@ class Configuracion {
                 }
             }
         } 
+        
+        return null;
     }
     
     public static function getDefaultTplPath($templateDir="")

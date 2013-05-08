@@ -35,6 +35,9 @@ abstract class BaseAdminMod extends BaseMod {
 		$tConf = Configuracion::getTemplateConfigByNombre($skinName);
 		$this->_tilePath = Configuracion::findTplPath($tConf,$tilePathName);
 
+		if(!isset($this->_tilePath) && method_exists($this->smarty,'getTemplateVars')) //smarty3 y el tilePath está vacio
+			$this->_tilePath = $this->smarty->getTemplateVars('pQn'.$tilePathName.'Tpl');
+		
 		//busco el dir esperado por defecto de los tpls del modulo
 		$lowerNombreEntidad = strtolower( str_replace("Mod", "", get_class($this)) );
 		//si no está seteado el tpl lista cargo un path por defecto con el dir y lista.tpl
