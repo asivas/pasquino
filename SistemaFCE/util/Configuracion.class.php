@@ -422,8 +422,8 @@ class Configuracion {
     	$config = Configuracion::getConfigXML();
     	$mappings = $config->mappings;
     	
-    	if(isset($mappings->entidadUsuario))
-    		return (string)$mappings->entidadUsuario;
+    	if(isset($mappings['entidadUsuario']))
+    		return (string)$mappings['entidadUsuario'];
     	
     	return "Usuario";
     }

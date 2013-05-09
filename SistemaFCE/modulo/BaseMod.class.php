@@ -85,8 +85,8 @@ class BaseMod {
 
 		$this->REST = new RESTMod();
 
-		$entidadUsuario = Configuracion::getEntidadUsuario();
-        $claseDaoUsuario = 'Dao'.$entidadUsuario();
+		$entidadUsuario = Configuracion::getEntidadUsuarioClass();
+        $claseDaoUsuario = 'Dao'.$entidadUsuario;
 		$daoU = new $claseDaoUsuario();
         $this->_usuario = $daoU->findById($this->session->getIdUsuario());
 
@@ -195,27 +195,30 @@ class BaseMod {
      * Asigna variables
      */
     protected function assignSmartyTplVars() {
+    	
+    	$tplsPath = "file:{$this->pasquinoPath}/SistemaFCE/tpls/";
+    	
     	//Opciones de layout estandar
-    	$this->smarty->assign("pQnBaseTpl","file:{$this->pasquinoPath}/tpls/base.tpl");
-    	$this->smarty->assign("pQnDefaultTpl","file:{$this->pasquinoPath}/tpls/default.tpl");
-    	$this->smarty->assign("pQnAdminTpl","file:{$this->pasquinoPath}/tpls/admin/default.tpl");
+    	$this->smarty->assign("pQnBaseTpl",$tplsPath."base.tpl");
+    	$this->smarty->assign("pQnDefaultTpl",$tplsPath."default.tpl");
+    	$this->smarty->assign("pQnAdminTpl",$tplsPath."admin/default.tpl");
 
     	//Partes generales de sistema/template
-    	$this->smarty->assign("pQnMenuTpl","file:{$this->pasquinoPath}/tpls/menu.tpl");
-    	$this->smarty->assign("pQnHeaderTpl","file:{$this->pasquinoPath}/tpls/header.tpl");
-    	$this->smarty->assign("pQnFooterTpl","file:{$this->pasquinoPath}/tpls/footer.tpl");
-    	$this->smarty->assign("pQnHeadTpl","file:{$this->pasquinoPath}/tpls/head.tpl");
-    	$this->smarty->assign("pQnHeadAdminTpl","file:{$this->pasquinoPath}/tpls/admin/head.tpl");
+    	$this->smarty->assign("pQnMenuTpl",$tplsPath."menu.tpl");
+    	$this->smarty->assign("pQnHeaderTpl",$tplsPath."header.tpl");
+    	$this->smarty->assign("pQnFooterTpl",$tplsPath."footer.tpl");
+    	$this->smarty->assign("pQnHeadTpl",$tplsPath."head.tpl");
+    	$this->smarty->assign("pQnHeadAdminTpl",$tplsPath."admin/head.tpl");
     	 
     	//Partes estandar de admin
-    	$this->smarty->assign("pQnFormFiltroTpl","file:{$this->pasquinoPath}/tpls/admin/filtro.tpl");
-    	$this->smarty->assign("pQnListaTpl","file:{$this->pasquinoPath}/tpls/admin/lista.tpl");
-    	$this->smarty->assign("pQnInfoTpl","file:{$this->pasquinoPath}/tpls/admin/info.tpl");
-    	$this->smarty->assign("pQnFormTpl","file:{$this->pasquinoPath}/tpls/admin/form.tpl");
+    	$this->smarty->assign("pQnFormFiltroTpl",$tplsPath."admin/filtro.tpl");
+    	$this->smarty->assign("pQnListaTpl",$tplsPath."admin/lista.tpl");
+    	$this->smarty->assign("pQnInfoTpl",$tplsPath."admin/info.tpl");
+    	$this->smarty->assign("pQnFormTpl",$tplsPath."admin/form.tpl");
     	
     	//Pantallas generales 
-    	$this->smarty->assign("pQnFormLoginTpl","file:{$this->pasquinoPath}/tpls/formLogin.tpl");
-    	$this->smarty->assign("pQnSinPermisosTpl","file:{$this->pasquinoPath}/tpls/sinPermisos.tpl");
+    	$this->smarty->assign("pQnFormLoginTpl",$tplsPath."formLogin.tpl");
+    	$this->smarty->assign("pQnSinPermisosTpl",$tplsPath."sinPermisos.tpl");
     	
     	// prueba de variables default de las partes estandares (sys-names) de templates las que tiene definido el dtd
     	//TODO: ver si se peude leer del dtd con algo medio simple y armar el arreglo a recorrer
@@ -342,7 +345,7 @@ class BaseMod {
 
     private function _esPublica($accion,$nombreModulo=null)
     {
-        // chequeo a partir de la config del m�dulo
+    	// chequeo a partir de la config del m�dulo
         $conf = $this->getConfigModulo($nombreModulo);
         //   Busco los permisos para la acci�n
         $acciones = $conf->acciones;
@@ -408,7 +411,7 @@ class BaseMod {
     public function formLogin()
     {
     	$this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['nombre']);
-        $this->mostrar('formLogin.tpl');
+        $this->mostrar($this->smarty->getTemplateVars('pQnFormLoginTpl'));
         exit();
     }
 
@@ -535,13 +538,14 @@ class BaseMod {
 			$disp = $this->_tilePath;
 		else
 			$disp = $this->getTilePathForDisplayType($type);
-
+		
 		if (isset($this->jsModulo))
 			$this->smarty->assign("jsModulo",$this->jsModulo);
 
         if(empty($disp))
         	$disp = $tpl;
-        $this->smarty->Display($disp);
+
+        $this->smarty->Display($disp);        
     }
 
     /**
