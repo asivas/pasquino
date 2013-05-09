@@ -216,7 +216,7 @@ class BaseMod {
     	$this->smarty->assign("pQnInfoTpl",$tplsPath."admin/info.tpl");
     	$this->smarty->assign("pQnFormTpl",$tplsPath."admin/form.tpl");
 
-    	$this->smarty->assign("pQnObjGridTpl","{$tplsPath}admin/lista/objGrid.tpl");
+    	$this->smarty->assign("pQnGridTpl","{$tplsPath}admin/lista/objGrid.tpl");
     	$this->smarty->assign("pQnBotonAltaTpl","{$tplsPath}admin/botonAlta.tpl");
 
     	//Pantallas generales
