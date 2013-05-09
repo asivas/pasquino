@@ -6,7 +6,7 @@
  */
 
 /**
- * El calendario viejo, 
+ * El calendario viejo,
  * @deprecated
  */
 require_once('visual/jscalendar/FCEcalendar.class.php');
@@ -53,9 +53,9 @@ class BaseMod {
     var $REST;
 
     protected $jsModulo;
-    
+
     protected $pasquinoPath;
-    
+
     /**
      * Arreglo que tiene la lista de los archivos js a agrregar en el head
      * @var array
@@ -95,7 +95,7 @@ class BaseMod {
         $this->_timeFormat = Configuracion::getTimeFormat();
 
         $this->pasquinoPath = dirname(dirname(__DIR__));
-        
+
         $this->initSmarty();
         if($conXajax)
             $this->xajax = new xajax(null,'es');
@@ -108,7 +108,7 @@ class BaseMod {
         else
         	$this->_tilePath = Configuracion::getDefaultTplPath($skinName);//'decorators/default.tpl';
         //seteo el path de donde está pasquino
-        
+
 
         if($conXajax)
         {
@@ -151,7 +151,7 @@ class BaseMod {
     	$config = Configuracion::getConfigXML();
         $templates = $config->templates;
         $skinsDirname = (string)$config->templates['path'];
-   
+
         if(empty($skinsDirname))
         	$skinsDirname = "skins";
 
@@ -182,22 +182,22 @@ class BaseMod {
         $this->smarty->assign('dateFormat',$this->_dateFormat);
         $this->smarty->assign('timeFormat',$this->_timeFormat);
         $this->smarty->assign('dateTimeFormat',$this->_dateTimeFormat);
-        
+
         $this->assignSmartyTplVars();
-        
+
         $this->smarty->assign('facade',new smartyFacade($this));
-		
+
         $this->smarty->assign('usuario',$this->_usuario);
         $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
     }
-    
+
     /**
      * Asigna variables
      */
     protected function assignSmartyTplVars() {
-    	
+
     	$tplsPath = "file:{$this->pasquinoPath}/SistemaFCE/tpls/";
-    	
+
     	//Opciones de layout estandar
     	$this->smarty->assign("pQnBaseTpl",$tplsPath."base.tpl");
     	$this->smarty->assign("pQnDefaultTpl",$tplsPath."default.tpl");
@@ -208,18 +208,21 @@ class BaseMod {
     	$this->smarty->assign("pQnHeaderTpl",$tplsPath."header.tpl");
     	$this->smarty->assign("pQnFooterTpl",$tplsPath."footer.tpl");
     	$this->smarty->assign("pQnHeadTpl",$tplsPath."head.tpl");
-    	$this->smarty->assign("pQnHeadAdminTpl",$tplsPath."admin/head.tpl");
-    	 
+
     	//Partes estandar de admin
+    	$this->smarty->assign("pQnHeadAdminTpl",$tplsPath."admin/head.tpl");
     	$this->smarty->assign("pQnFormFiltroTpl",$tplsPath."admin/filtro.tpl");
     	$this->smarty->assign("pQnListaTpl",$tplsPath."admin/lista.tpl");
     	$this->smarty->assign("pQnInfoTpl",$tplsPath."admin/info.tpl");
     	$this->smarty->assign("pQnFormTpl",$tplsPath."admin/form.tpl");
-    	
-    	//Pantallas generales 
+
+    	$this->smarty->assign("pQnObjGridTpl","{$tplsPath}admin/lista/objGrid.tpl");
+    	$this->smarty->assign("pQnBotonAltaTpl","{$tplsPath}admin/botonAlta.tpl");
+
+    	//Pantallas generales
     	$this->smarty->assign("pQnFormLoginTpl",$tplsPath."formLogin.tpl");
     	$this->smarty->assign("pQnSinPermisosTpl",$tplsPath."sinPermisos.tpl");
-    	
+
     	// prueba de variables default de las partes estandares (sys-names) de templates las que tiene definido el dtd
     	//TODO: ver si se peude leer del dtd con algo medio simple y armar el arreglo a recorrer
     	$sysNames = array('Base','Default','Lista','Formulario','Info','FormFiltro','Menu','Admin','Head');
@@ -350,7 +353,7 @@ class BaseMod {
         //   Busco los permisos para la acci�n
         $acciones = $conf->acciones;
         if(!isset($acciones->accion)) return false;
-        
+
         foreach($acciones->accion as $acc)
         {
             $nombreAccion = (string)$acc['nombre'];
@@ -453,7 +456,7 @@ class BaseMod {
      * @param string $displayType
      */
     protected function getTilePathForDisplayType($displayType) {return "";}
-    
+
     /**
      * Agrega un archivo (nombre de archivo) js para inluirlos de manera dinamica
      * @param string $jsFile
@@ -462,14 +465,14 @@ class BaseMod {
     protected function addJsFile($jsFile,$sortKey=null) {
     	$this->jsFilesList[$sortKey] = $jsFile;
     }
-    
+
     /**
      * Genera y asigna en smarty una variable a partir del listado de los jsFileList
      */
-    private function assignHeadJs() 
+    private function assignHeadJs()
     {
     	$jsInlcudes = "";
-    	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y 
+    	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y
     	// poniendolos minified
     	if(!empty($this->jsFilesList) && is_array($this->jsFilesList))
     	{
@@ -477,13 +480,13 @@ class BaseMod {
     		{
     			$jsInlcudes .= "\n	<script type=\"text/javascript\" src=\"{$jsFileName}\"></script>";
     		}
-    		
+
     		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
     		// si, no meterle a la fuerza la variable {$jsIncludes}
     	}
     	$this->smarty->assign('jsIncludes',$jsIncludes);
     }
-    
+
     /**
      * Agrega un archivo (nombre de archivo) css para inluirlos de manera dinamica
      * @param string $cssFile
@@ -492,7 +495,7 @@ class BaseMod {
     protected function addCssFile($cssFile,$sortKey=null) {
     	$this->cssFilesList[$sortKey] = $cssFile;
     }
-    
+
     /**
      * Genera y asigna en smarty una variable a partir del listado de los cssFileList
      */
@@ -507,7 +510,7 @@ class BaseMod {
     		{
     			$jsInlcudes .= "\n	<link rel=\"stylesheet\" href=\"{$cssFileName}\" type=\"text/css\" />";
     		}
-    
+
     		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
     		// si, no meterle a la fuerza la variable {$jsIncludes}
     	}
@@ -525,7 +528,7 @@ class BaseMod {
     {
         if(!empty($this->errors))
             $this->smarty->assign('errores',$this->errors);
-        
+
         $this->assignHeadJs();
         $this->assignHeadCss();
 
@@ -538,14 +541,14 @@ class BaseMod {
 			$disp = $this->_tilePath;
 		else
 			$disp = $this->getTilePathForDisplayType($type);
-		
+
 		if (isset($this->jsModulo))
 			$this->smarty->assign("jsModulo",$this->jsModulo);
 
         if(empty($disp))
         	$disp = $tpl;
 
-        $this->smarty->Display($disp);        
+        $this->smarty->Display($disp);
     }
 
     /**
@@ -669,14 +672,14 @@ class BaseMod {
         	$this->smarty->assign('accion',$accion);
 
 	        $metodoAccion = "accion".ucfirst($accion);
-	        
+
 	        if(!method_exists($this,$metodoAccion) && $accion != $this->getAccionPredeterminada())
 	        {
 	        	$req['accion'] = $this->getAccionPredeterminada();
 	            $this->ejecutar($req);
 	            return;
 	        }
-	        
+
 	        $this->$metodoAccion($req);
         }
 
@@ -882,7 +885,7 @@ class BaseMod {
         $this->smarty->assign($nombreVarSmarty,$rf);
         return $rf;
     }
-	
+
     /**
      * Devuelve el usuario actual que usa el sitio
      * @return Ambigous <NULL, Usuario>
@@ -926,7 +929,7 @@ class BaseMod {
 		else
 			print $json;
 	}
-	
+
 	static public function resaltar($str,$filtro,$parameter = array('background-color' => '#FFFFBF'))
 	{
 		$str = htmlentities($str);
@@ -951,7 +954,7 @@ class BaseMod {
 					$offset = $pos + $lengthf + 2 ;
 				}
 			}
-	
+
 			/*
 			 * en el caso que el parametro sea un arreglo de parametros:valor
 			*/
@@ -971,7 +974,7 @@ class BaseMod {
 		}
 		return $res;
 	}
-	
+
 	/**
 	 * Envia (haciendo display) un mensaje de status usando el tpl de msgStatus
 	 * @param string $status
@@ -983,11 +986,11 @@ class BaseMod {
 		$this->smarty->assign("status",$status);
 		$this->smarty->assign("msg",$mensaje);
 		$this->smarty->assign("otros",$otros);
-		
+
 		if(isset($this->smarty->_version))
 			$sv = $this->smarty->_version;
 		else
-		{ 
+		{
 			$tmp = explode(" ",Smarty::SMARTY_VERSION);
 			$sv = $tmp[1];
 		}
@@ -1024,5 +1027,5 @@ class BaseMod {
 	{
 		$this->mensaje("ERR", $mensaje, $otros);
 	}
-	
+
 }

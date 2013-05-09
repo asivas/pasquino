@@ -308,20 +308,20 @@ abstract class DaoBase {
     {
     	return $this->_db;
     }
-    
+
     protected function getSqlFieldsArray() {
-    	
+
     	foreach($this->_xmlMapping->id as $id)
     		$fields[] = $id['columna'];
-    	
+
     	foreach($this->_xmlMapping->propiedad as $prop)
     	{
     		if(!isset($prop->{'data-source'}))
     			$fields[] = $prop['columna'];
     	}
-    	
-    	
-    	
+
+
+
     	//FIXME: solo mysql permite nombres locos en el field
     	if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli'))
     	{
@@ -331,14 +331,14 @@ abstract class DaoBase {
     				$fields[$k] = "`$field`";
     			}
     	}
-    	return $fields; 
+    	return $fields;
     }
 
     protected function getSqlFields() {
     	$strFields = "";
-		
+
 		$fields = $this->getSqlFieldsArray();
-    	
+
 		$glue = ", ";
 		$strFields = implode($glue, $fields);
 
@@ -353,10 +353,10 @@ abstract class DaoBase {
      * Genera el sql utilizado para buscar elementos
      * @param mixed $filtro puede ser string o Criterio
      * @param string $order
-     * @param int $count cantidad de elementos a buscar
-     * @param int $limit limite inicial desde donde buscar (offset)
+     * @param int $limitCount cantidad de elementos a buscar
+     * @param int $limitOffset limite inicial desde donde buscar (offset)
      */
-    function getFindBySql($filtro = null,$order=null,$count=null,$limit=null,$group=null)
+    function getFindBySql($filtro = null,$order=null,$limitCount=null,$limitOffset=null,$group=null)
     {
     	if(!empty($this->baseFindBySQL))
             $sql = $this->baseFindBySQL;
@@ -372,7 +372,7 @@ abstract class DaoBase {
 
             $sql = "SELECT {$fields} FROM {$tabla}";
         }
-        
+
         $strFiltro = ($filtro != null)?$filtro->getCondicion($this->_xmlMapping['nombre']):'';
 
         if($strFiltro!='')
@@ -384,7 +384,7 @@ abstract class DaoBase {
 
             $sql .= $strFiltro;
         }
-        
+
         if(isset($group))
         	$sql .= " GROUP BY {$group}";
 
@@ -394,11 +394,11 @@ abstract class DaoBase {
         if(isset($order))
             $sql .= " ORDER BY {$order}";
 
-         if(isset($count))
+         if(isset($limitCount))
          {
-            $sql .= " LIMIT {$count}";
-            if(isset($limit))
-            	$sql .= " OFFSET {$limit}";
+            $sql .= " LIMIT {$limitCount}";
+            if(isset($limitOffset))
+            	$sql .= " OFFSET {$limitOffset}";
          }
          //print $sql;
 
@@ -451,9 +451,9 @@ abstract class DaoBase {
      * @param object $filtro Objeto de clase Criterio
      * @param string $order Columna o columnas separadas por coma (,) para ordenar la busqueda
      */
-    function findBy($filtro = null,$order=null,$count=null,$limit=null,$group=null){
+    function findBy($filtro = null,$order=null,$limitCount=null,$limitOffset=null,$group=null){
 
-        $sql = $this->getFindBySql($filtro,$order,$count,$limit,$group);
+        $sql = $this->getFindBySql($filtro,$order,$limitCount,$limitOffset,$group);
 
         if(!($rs = $this->_db->Execute($sql)))
             die($this->_db->ErrorMsg()." $sql");
@@ -654,15 +654,15 @@ abstract class DaoBase {
     function getClaseEntidad() {
     	return (string)$this->_xmlMapping['nombre'];
     }
-    
+
     /**
      * Define y devuelve el criterio base del Dao
      */
     public function getCriterioBase() {
     	return new Criterio();
     }
-    
-    
+
+
     protected function buscarNombrePropiedad($nombreColumna)
     {
     	$propiedades = $this->_xmlMapping->propiedad;
