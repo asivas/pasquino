@@ -23,7 +23,7 @@ abstract class BaseAdminMod extends BaseMod {
 	function __construct($form, $dao, $skinName=null, $listaTplPath=null, $formTplPath=null, $tilePathName = 'Admin', $sessionHandler=null)
 	{
 		if(isset($sessionHandler))	$this->session = $sessionHandler;
-		
+
 		parent::__construct($skinName,false); // como se usa mayormente jquery se pasa por defecto el conXajax en false
 
 		$this->_form = $form;
@@ -37,14 +37,14 @@ abstract class BaseAdminMod extends BaseMod {
 
 		if(!isset($this->_tilePath) && method_exists($this->smarty,'getTemplateVars')) //smarty3 y el tilePath está vacio
 			$this->_tilePath = $this->smarty->getTemplateVars('pQn'.$tilePathName.'Tpl');
-		
+
 		//busco el dir esperado por defecto de los tpls del modulo
 		$lowerNombreEntidad = strtolower( str_replace("Mod", "", get_class($this)) );
 		//si no está seteado el tpl lista cargo un path por defecto con el dir y lista.tpl
 		if(!isset($this->_tplLista)) $this->_tplLista = "{$lowerNombreEntidad}/lista.tpl";
 		//si no está seteado el tpl form cargo un path por defecto con el dir y form.tpl
 		if(!isset($this->_tplForm)) $this->_tplForm = "{$lowerNombreEntidad}/form.tpl";
-		
+
 		//TODO: ver de poner el js por defecto del mod
 		if(isset($nada)) //TODO: borrar esta linea y la siguiente, está para que autocomplete
 			$this->mainDao = new DaoBase();
@@ -194,13 +194,15 @@ abstract class BaseAdminMod extends BaseMod {
 		}
 		$this->smarty->assign('lista'.$nombreClase,$aObjs);
 		$this->smarty->assign('listaColumnas',$this->getColumnsList());
+		$this->smarty->assign('claseEntidad',$nombreClase);
+		$this->smarty->assign('modName',strtolower( str_replace("Mod", "", get_class($this)) ));
 		$this->mostrar($this->_tplLista,$req['display']);
 	}
 
 	/**
 	 * Devuelve la lista de todas las propiedades de la Entidad Principal
 	 * en forma de arreglo para mostrar el listado de administracion
-	 * 
+	 *
 	 * @return array 'columnName' => 'nombre_propiedad'
 	 */
 	protected function getColumnsList()
@@ -208,7 +210,7 @@ abstract class BaseAdminMod extends BaseMod {
 		//TODO: generar columnas con toda la lista de propiedades de la entidad
 		return array();
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see BaseMod::form()
 	 */
@@ -223,16 +225,16 @@ abstract class BaseAdminMod extends BaseMod {
 		$this->renderForm();
 		$this->mostrar($this->_tplForm,$req['display']);
 	}
-	
+
 	/**
-	 * Devuelve la ruta del tpl de la lista de acciones para efectuar sobre una entidad 
+	 * Devuelve la ruta del tpl de la lista de acciones para efectuar sobre una entidad
 	 * @return string
 	 */
 	protected function getListaAccionesTpl() {
 		//FIXME: por ahora presupone una estructura estandar
 		return 'common/admin/lista_acciones.tpl';
 	}
-	
+
 	/**
 	 * Carga el pedazo de html de los botones de accion para la administración de una entidad
 	 * @param Entidad $entidad la entidad sobre la cual se harán las posibles acciones
