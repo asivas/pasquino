@@ -31,7 +31,7 @@
 		</ul>
 	</header>
 	{if empty($objectsList) }
-		<article type="{$entidad}" id="$entidad" >
+		<article type="{$entidad}" id="{$entidad}" >
 		<ul>
 			<li>No hay objetos de tipo {$entidad} con el filtro actual</li>
 		</ul>

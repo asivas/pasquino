@@ -18,6 +18,15 @@ abstract class Mdb2IdAuth extends Auth{
             $this->userTable = "usuarios";
         if(empty($this->password_label))
             $this->password_label = "password";
+
+        //TODO: taer las cosas de conexion de configuraciÃ³n
+        /*
+         * 	$this->dbms           = Configuracion::getDBMS();
+        $this->dbHost         = Configuracion::getDbHost();
+        $this->dbName         = Configuracion::getDbName();
+        $this->dbUser         = Configuracion::getDbUser();
+        $this->dbPassword     = Configuracion::getDbPassword();
+        */
         
         $params = array(
             "dsn" => "{$this->dbms}://{$this->dbUser}:{$this->dbPassword}@{$this->dbHost}/{$this->dbName}",
@@ -25,6 +34,7 @@ abstract class Mdb2IdAuth extends Auth{
             "usernamecol" => $this->username_label,
             "passwordcol" => $this->password_label
             );
+        
         if(is_array($options))
         {
         	foreach($options as $clave => $valor)
@@ -39,7 +49,7 @@ abstract class Mdb2IdAuth extends Auth{
     {
         $sql = "SELECT {$this->id_label} FROM {$this->userTable} WHERE {$this->username_label} = '{$this->session['username']}'";
         
-        if(!is_object($this->storage)) // si no se hizo ninguna acción no se efectuó el _loadStorage 
+        if(!is_object($this->storage)) // si no se hizo ninguna acciï¿½n no se efectuï¿½ el _loadStorage 
             $this->listUsers();        // hago el query de usuarios que llama a _loadStorage y no cambia nada 
         
         if(isset($this->storage->db) && !PEAR::isError($this->storage->db))

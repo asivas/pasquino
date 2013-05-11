@@ -38,10 +38,16 @@ abstract class BaseAdminMod extends BaseMod {
 		if(!isset($this->_tilePath) && method_exists($this->smarty,'getTemplateVars')) //smarty3 y el tilePath está vacio
 			$this->_tilePath = $this->smarty->getTemplateVars('pQn'.$tilePathName.'Tpl');
 
-		//busco el dir esperado por defecto de los tpls del modulo
+		//busco el dir esperado por defecto de los tpls del modulo		
 		$lowerNombreEntidad = strtolower( str_replace("Mod", "", get_class($this)) );
+		
+		//si no está seteado el tpl lista cargo el de pasquino
+		if(!isset($this->_tplLista)) $this->_tplLista = $this->smarty->getTemplateVars('pQnListaTpl');
 		//si no está seteado el tpl lista cargo un path por defecto con el dir y lista.tpl
 		if(!isset($this->_tplLista)) $this->_tplLista = "{$lowerNombreEntidad}/lista.tpl";
+		
+		//si no está seteado el tpl form cargo el de pasquino
+		if(!isset($this->_tplForm)) $this->_tplForm = $this->smarty->getTemplateVars('pQnFormTpl');
 		//si no está seteado el tpl form cargo un path por defecto con el dir y form.tpl
 		if(!isset($this->_tplForm)) $this->_tplForm = "{$lowerNombreEntidad}/form.tpl";
 
@@ -194,6 +200,7 @@ abstract class BaseAdminMod extends BaseMod {
 		}
 		$this->smarty->assign('lista'.$nombreClase,$aObjs);
 		$this->smarty->assign('listaColumnas',$this->getColumnsList());
+		$this->smarty->assign('laLista',$aObjs);
 		$this->smarty->assign('claseEntidad',$nombreClase);
 		$this->smarty->assign('modName',strtolower( str_replace("Mod", "", get_class($this)) ));
 		$this->mostrar($this->_tplLista,$req['display']);
