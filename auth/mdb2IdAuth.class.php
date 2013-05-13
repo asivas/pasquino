@@ -21,7 +21,7 @@ abstract class Mdb2IdAuth extends Auth{
 
         //TODO: taer las cosas de conexion de configuración
         /*
-         * 	$this->dbms           = Configuracion::getDBMS();
+		$this->dbms           = Configuracion::getDBMS();
         $this->dbHost         = Configuracion::getDbHost();
         $this->dbName         = Configuracion::getDbName();
         $this->dbUser         = Configuracion::getDbUser();
