@@ -11,14 +11,23 @@
 	{$jsIncludes}
 	
 	<!-- CSS -->
-	<link rel="stylesheet" href="{$defaultCssFile}" type="text/css">	
-	<link rel="stylesheet" href="{$gridCssFile}" type="text/css">	
-	{if isset($jsModulo)}
-	<link rel="stylesheet" href="css/{$cssModulo}.css" type="text/css">
+	
+	{if isset($defaultCssFile)}
+		<link rel="stylesheet" href="{$defaultCssFile}" type="text/css">	
+	{/if}
+	
+	{if isset($gridCssFile)}
+		<link rel="stylesheet" href="{$gridCssFile}" type="text/css">	
+	{/if}
+	
+	{if isset($jQueryCss)}
+		<link rel="stylesheet" href="{$jQueryCss}" type="text/css">
+	{/if}
+
+	{if isset($cssModulo)}
+		<link rel="stylesheet" href="css/{$cssModulo}.css" type="text/css">
 	{/if}	
 	
-	<link rel="stylesheet" href="{$jQueryCss}" type="text/css">
-
+	
 	{$cssIncludes}
-		
 	
