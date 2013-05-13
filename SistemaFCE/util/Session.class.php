@@ -16,4 +16,13 @@ class Session extends ssHandler{
         $this->cookie_min= 0;
                 
     }
+    
+    /**
+     * Devuelve el tiempo restante de sesion en segundos o FALSE si la sesión no expira nunca
+     */
+    function getRemainingTime() {
+    	if($this->auth->expire > 0)
+    		return time() - ($this->auth->session['timestamp'] + $this->auth->expire);
+    	return FALSE;
+    }
 }

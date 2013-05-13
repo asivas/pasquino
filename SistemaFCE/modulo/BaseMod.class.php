@@ -331,6 +331,12 @@ class BaseMod {
             $this->displayError($objResponse,"No tiene permisos suficientes para esa acci�n");
     }
 
+    /**
+     * Chequeo de permisos que de haber vencido la sesión en una llamada por xajax
+     * muestra un error recarga la pantalla en un tiempo
+     * @param $objResponse objeto response de xajax
+     * @deprecated como todas las cosas de xajax están tendiendo a sacarse de pasquino por el uso de jQuery 
+     */
     protected function ajaxCheckPermisos(&$objResponse=null)
     {
         if(!$this->LogIn())
@@ -348,6 +354,10 @@ class BaseMod {
 
     private function _esPublica($accion,$nombreModulo=null)
     {
+    	//si es una de las acciones publicas implementadas en BaseMod ni miro el config
+    	if($this->esAccionPublicaDeBase($accion))
+    		return true;
+    	
     	// chequeo a partir de la config del m�dulo
         $conf = $this->getConfigModulo($nombreModulo);
         //   Busco los permisos para la acci�n
@@ -428,6 +438,21 @@ class BaseMod {
     protected function LogIn()
     {
     	return $this->session->LogIn();
+   	}
+   	
+   	/**
+   	 * Evalua si una accion dada es una accion publica y definida completamente en el baseMod
+   	 * Este tipo de funciones no hace falta que estén en el config 
+   	 * @param string $accion la accion sobre la que se está consultado
+   	 * @return boolean
+   	 */
+   	protected final function esAccionPublicaDeBase($accion) {
+   		
+   		$accionesPublicasDeBaseMod = array(
+   				'checkSessionTimeout'
+   		);
+   		
+   		return array_search($accion, $accionesPublicasDeBaseMod) !== FALSE;
    	}
 
 
@@ -1026,6 +1051,21 @@ class BaseMod {
 	protected function mensajeERR($mensaje,$otros=null)
 	{
 		$this->mensaje("ERR", $mensaje, $otros);
+	}
+	
+	public function accionCheckSessionTimeout() {
+		$remainingSeconds = $this->session->getRemainingTime();
+		
+		if($remainingSeconds!==FALSE)
+		{							
+			$resp = array('remaining'=>$remainingSeconds);
+			if($remainingSeconds<0)
+				$resp['expierd'] =true;
+		}
+		else
+			$resp = array('noExpire'=>true);
+		
+		$this->responseJson($resp);
 	}
 
 }
