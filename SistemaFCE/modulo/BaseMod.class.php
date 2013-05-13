@@ -505,7 +505,6 @@ class BaseMod {
     		{
     			$jsInlcudes .= "\n	<script type=\"text/javascript\" src=\"{$jsFileName}\"></script>";
     		}
-
     		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
     		// si, no meterle a la fuerza la variable {$jsIncludes}
     	}
@@ -530,7 +529,7 @@ class BaseMod {
      */
     private function assignHeadCss()
     {
-    	$cssInlcudes = "";
+    	$cssIncludes = "";
     	
     	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y
     	// poniendolos minified
@@ -538,7 +537,7 @@ class BaseMod {
     	{
     		foreach($this->cssFilesList as $cssFileName)
     		{
-    			$cssInlcudes .= "\n	<link rel=\"stylesheet\" href=\"{$cssFileName}\" type=\"text/css\" />";
+    			$cssIncludes .= "\n	<link rel=\"stylesheet\" href=\"{$cssFileName}\" type=\"text/css\" />";
     		}
 
     		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
