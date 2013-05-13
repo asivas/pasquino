@@ -459,7 +459,7 @@ class BaseMod {
     protected function checkPermisos($req)
     {
     	$isLogedIn = $this->LogIn();
-    	if(!$this->_esPublica($req['accion']))
+     	if(!$this->_esPublica($req['accion']))
     	{
     	 	if(!$isLogedIn)
 	        {
@@ -518,7 +518,11 @@ class BaseMod {
      * @param string $sortKey
      */
     protected function addCssFile($cssFile,$sortKey=null) {
-    	$this->cssFilesList[$sortKey] = $cssFile;
+    	
+    	if(!empty($sortKey)) // FIX: pregunto si no es empty porque sino le pone un index de cadena vacia
+    		$this->cssFilesList[$sortKey] = $cssFile;
+    	else
+    		$this->cssFilesList[] = $cssFile;
     }
 
     /**
@@ -527,13 +531,14 @@ class BaseMod {
     private function assignHeadCss()
     {
     	$cssInlcudes = "";
+    	
     	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y
     	// poniendolos minified
     	if(!empty($this->cssFilesList) && is_array($this->cssFilesList))
     	{
     		foreach($this->cssFilesList as $cssFileName)
     		{
-    			$jsInlcudes .= "\n	<link rel=\"stylesheet\" href=\"{$cssFileName}\" type=\"text/css\" />";
+    			$cssInlcudes .= "\n	<link rel=\"stylesheet\" href=\"{$cssFileName}\" type=\"text/css\" />";
     		}
 
     		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
@@ -683,9 +688,8 @@ class BaseMod {
             $this->session->LogOut();
             $this->redirectHomeSistema();
         }
-
-
-
+		
+        
         if($this->REST->esUriRecurso())
         {
         	$rec = $this->REST->ejecutar($req);
