@@ -26,7 +26,7 @@
 	<header>
 		<ul>
 		{foreach from=$columnsList key=columnName item=property}
-			<li class='{$columnName}'>{$columnName}</li>		
+			<li class='{$property}'>{$columnName}</li>		
 		{/foreach}
 		</ul>
 	</header>
@@ -42,7 +42,7 @@
 	<article type='{get_class($object)}' itemId='{$object->getId()}'>
 		<ul>
 		{foreach from=$columnsList key=columnName item=property}
-			<li class='{$columnName}'>
+			<li class='{$property}'>
 				{assign var=data value=$facade->getPropiedadMod($property,$object)}
 				{if  ! strpos($data,'>') }
 					{$data|resaltar:$filtroNombre}
