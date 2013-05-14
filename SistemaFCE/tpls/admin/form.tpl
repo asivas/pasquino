@@ -2,9 +2,10 @@
 	<form {$formulario.attributes} >
 		{foreach from=$formulario key=nc item=campo}
 		{if $nc != 'frozen' && $nc != 'cancelar' && $nc != 'guardar' && $nc != 'frozen'
-		 && $nc != 'javascript' && $nc != 'attriutes' && $nc != 'requirednote'
+		 && $nc != 'javascript' && $nc != 'attributes' && $nc != 'requirednote'
 		 && $nc != 'errors' && $nc != 'hidden'}
-		<div class='form_element'>
+		
+		<div class='form_element {$nc}'>
 			<label for='{$nc}'>{$campo.label}</label>
 			{$campo.html}
 		</div>
