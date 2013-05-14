@@ -196,33 +196,47 @@ class BaseMod {
      */
     protected function assignSmartyTplVars() {
 
-    	$tplsPath = "file:{$this->pasquinoPath}/SistemaFCE/tpls/";
-
+    	$tplsPath = "file:{$this->pasquinoPath}/SistemaFCE/tpls";
+    	$cssPath = "file:{$this->pasquinoPath}/SistemaFCE/public/css";
+    	$jsPath = "file:{$this->pasquinoPath}/SistemaFCE/js";
+    	
     	//Opciones de layout estandar
-    	$this->smarty->assign("pQnBaseTpl",$tplsPath."base.tpl");
-    	$this->smarty->assign("pQnDefaultTpl",$tplsPath."default.tpl");
-    	$this->smarty->assign("pQnAdminTpl",$tplsPath."admin/default.tpl");
+    	$this->smarty->assign("pQnBaseTpl","{$tplsPath}/base.tpl");
+    	$this->smarty->assign("pQnDefaultTpl","{$tplsPath}/default.tpl");
+    	$this->smarty->assign("pQnAdminTpl","{$tplsPath}/admin/default.tpl");
 
     	//Partes generales de sistema/template
-    	$this->smarty->assign("pQnMenuTpl",$tplsPath."menu.tpl");
-    	$this->smarty->assign("pQnHeaderTpl",$tplsPath."header.tpl");
-    	$this->smarty->assign("pQnFooterTpl",$tplsPath."footer.tpl");
-    	$this->smarty->assign("pQnHeadTpl",$tplsPath."head.tpl");
+    	$this->smarty->assign("pQnMenuTpl","{$tplsPath}/menu.tpl");
+    	$this->smarty->assign("pQnHeaderTpl","{$tplsPath}/header.tpl");
+    	$this->smarty->assign("pQnFooterTpl","{$tplsPath}/footer.tpl");
+    	$this->smarty->assign("pQnHeadTpl","{$tplsPath}/head.tpl");
 
     	//Partes estandar de admin
-    	$this->smarty->assign("pQnHeadAdminTpl",$tplsPath."admin/head.tpl");
-    	$this->smarty->assign("pQnFormFiltroTpl",$tplsPath."admin/filtro.tpl");
-    	$this->smarty->assign("pQnListaTpl",$tplsPath."admin/lista.tpl");
-    	$this->smarty->assign("pQnInfoTpl",$tplsPath."admin/info.tpl");
-    	$this->smarty->assign("pQnFormTpl",$tplsPath."admin/form.tpl");
+    	$this->smarty->assign("pQnHeadAdminTpl","{$tplsPath}/admin/head.tpl");
+    	$this->smarty->assign("pQnFormFiltroTpl","{$tplsPath}/admin/filtro.tpl");
+    	$this->smarty->assign("pQnListaTpl","{$tplsPath}/admin/lista.tpl");
+    	$this->smarty->assign("pQnInfoTpl","{$tplsPath}/admin/info.tpl");
+    	$this->smarty->assign("pQnFormTpl","{$tplsPath}/admin/form.tpl");
+    	$this->smarty->assign("pQnListaAccionesTpl","{$tplsPath}/admin/listaAcciones.tpl");
 
-    	$this->smarty->assign("pQnGridTpl","{$tplsPath}admin/lista/objGrid.tpl");
-    	$this->smarty->assign("pQnBotonAltaTpl","{$tplsPath}admin/botonAlta.tpl");
+    	$this->smarty->assign("pQnGridTpl","{$tplsPath}/admin/lista/objGrid.tpl");
+    	$this->smarty->assign("pQnBotonAltaTpl","{$tplsPath}/admin/botonAlta.tpl");
 
     	//Pantallas generales
-    	$this->smarty->assign("pQnFormLoginTpl",$tplsPath."formLogin.tpl");
-    	$this->smarty->assign("pQnSinPermisosTpl",$tplsPath."sinPermisos.tpl");
-
+    	$this->smarty->assign("pQnFormLoginTpl","{$tplsPath}/formLogin.tpl");
+    	$this->smarty->assign("pQnSinPermisosTpl","{$tplsPath}/sinPermisos.tpl");
+		
+    	//CSS
+    	$this->smarty->assign("pQnDefaultCss","/css/default.css");
+    	$this->smarty->assign("pQnGridCss","/css/grid.css");
+    	$this->smarty->assign("pQnJQueryCss","/css/ui-lightness/jquery-ui-1.10.0.custom.css");
+    	 
+    	//JS
+    	$this->smarty->assign("pQnJQueryJs","/js/jquery/jquery-1.9.1.min.js");
+    	$this->smarty->assign("pQnJQueryUiJs","/js/jquery/jquery-ui-1.10.0.custom.min.js");
+    	 
+    	
+    	
     	// prueba de variables default de las partes estandares (sys-names) de templates las que tiene definido el dtd
     	//TODO: ver si se peude leer del dtd con algo medio simple y armar el arreglo a recorrer
     	$sysNames = array('Base','Default','Lista','Formulario','Info','FormFiltro','Menu','Admin','Head');
@@ -234,6 +248,11 @@ class BaseMod {
     	}
     }
 
+    protected function setTplVar($tplVar,$value)
+    {
+		$this->smarty->assign($tplVar,$value);    	
+    }
+    
     /**
      * Genera un arreglo con [url,tag] si el operador tiene permisos
      */
