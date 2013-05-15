@@ -4,7 +4,7 @@ class EntidadForm extends BaseForm {
 	protected function addElements() {
 		parent::addElements();
 		$this->addElement('submit','guardar','Guardar');
-		$this->addElement('button','cancelar','cancelar');
+		$this->addElement('button','cancelar','Cancelar');
 		$this->addElement('hidden','mod',$_REQUEST['mod']);
 		$this->addElement('hidden','id',null);
 
