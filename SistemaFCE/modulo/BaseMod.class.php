@@ -229,7 +229,7 @@ class BaseMod {
     	//CSS
     	$this->smarty->assign("pQnDefaultCss","/css/default.css");
     	$this->smarty->assign("pQnGridCss","/css/grid.css");
-    	$this->smarty->assign("pQnJQueryCss","/css/Aristo/Aristo.css");
+    	$this->smarty->assign("pQnJQueryCss","/css/jquery/Aristo/Aristo.css");
     	 
     	//JS
     	$this->smarty->assign("pQnJQueryJs","/js/jquery/jquery-1.9.1.min.js");
