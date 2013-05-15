@@ -1,97 +1,51 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: dompdf.php,v $
- * Created on: 2004-06-22
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.digitaljunkies.ca/dompdf
- *
- * dompdf.php is a simple script to drive DOMPDF.  It can be executed from
- * a browser or from the command line.
- *
- * @link http://www.digitaljunkies.ca/dompdf
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
+ * Command line utility to use dompdf.
+ * Can also be used with HTTP GET parameters
+ * 
  * @package dompdf
- * @version 0.5.1
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: dompdf.php,v 1.2 2013-05-15 20:28:52 martinezdiaz Exp $
  */
-
-/* $Id: dompdf.php,v 1.1 2010-06-07 03:58:05 martinezdiaz Exp $ */
 
 /**
- * Display command line usage:
- *
- * Usage: ./dompdf.php [options] html_file
- *
- * html_file can be a filename, a url if fopen_wrappers are enabled, or the '-'
- * character to read from standard input.
- *
- * Options:
- *  -h             Show this message
- *  -l             list available paper sizes
- *  -p size        paper size; something like 'letter', 'A4', 'legal', etc.  The default is
- *                 'letter'
- *  -o orientation either 'portrait' or 'landscape'.  Default is 'portrait'.
- *  -b path        set the 'document root' of the html_file.  Relative urls (for
- *                 stylesheets) are resolved using this directory.  Default is the
- *                 directory of html_file.
- *  -f file        the output filename.  Default is the input [html_file].pdf.
- *  -v             verbose: display html parsing warnings and file not found errors.
- *  -d             very verbose: display oodles of debugging output: every frame in the
- *                 tree is printed to stdout.
- *  -t             comma separated list of debugging types (page-break,reflow,split)
- *  -r             write the render time to the log file
- *
- *
+ * Display command line usage
  */
-
 function dompdf_usage() {
-  echo
-    "\nUsage: {$_SERVER["argv"][0]} [options] html_file\n\n".
-    "html_file can be a filename, a url if fopen_wrappers are enabled, or the '-' \n".
-    "character to read from standard input.\n\n".
-    "Options:\n".
-    " -h\t\tShow this message\n".
-    " -l\t\tlist available paper sizes\n".
-    " -p size\tpaper size; something like 'letter', 'A4', 'legal', etc.  The default is\n".
-    "   \t\t'" . DOMPDF_DEFAULT_PAPER_SIZE . "'\n".
-    " -o orientation\teither 'portrait' or 'landscape'.  Default is 'portrait'.\n".
-    " -b path\tset the 'document root' of the html_file.  Relative urls (for \n".
-    "        \tstylesheets) are resolved using this directory.  Default is the \n".
-    "        \tdirectory of html_file.\n".
-    " -f file\tthe output filename.  Default is the input [html_file].pdf.\n".
-    " -v     \tverbose: display html parsing warnings and file not found errors.\n".
-    " -d     \tvery verbose:  display oodles of debugging output: every frame\n".
-    "        \tin the tree printed to stdout.\n".
-    " -t             comma separated list of debugging types (page-break,reflow,split)\n\n";
-    
+  $default_paper_size = DOMPDF_DEFAULT_PAPER_SIZE;
+  
+  echo <<<EOD
+  
+Usage: {$_SERVER["argv"][0]} [options] html_file
 
+html_file can be a filename, a url if fopen_wrappers are enabled, or the '-' character to read from standard input.
+
+Options:
+ -h             Show this message
+ -l             List available paper sizes
+ -p size        Paper size; something like 'letter', 'A4', 'legal', etc.  
+                  The default is '$default_paper_size'
+ -o orientation Either 'portrait' or 'landscape'.  Default is 'portrait'
+ -b path        Set the 'document root' of the html_file.  
+                  Relative urls (for stylesheets) are resolved using this directory.  
+                  Default is the directory of html_file.
+ -f file        The output filename.  Default is the input [html_file].pdf
+ -v             Verbose: display html parsing warnings and file not found errors.
+ -d             Very verbose: display oodles of debugging output: every frame 
+                  in the tree printed to stdout.
+ -t             Comma separated list of debugging types (page-break,reflow,split)
+ 
+EOD;
+exit;
 }
 
+/**
+ * Parses command line options
+ * 
+ * @return array The command line options
+ */
 function getoptions() {
 
   $opts = array();
@@ -171,11 +125,10 @@ function getoptions() {
 }
 
 require_once("dompdf_config.inc.php");
-global $_dompdf_show_warnings;
-global $_dompdf_debug;
-global $_DOMPDF_DEBUG_TYPES;
+global $_dompdf_show_warnings, $_dompdf_debug, $_DOMPDF_DEBUG_TYPES;
 
 $sapi = php_sapi_name();
+$options = array();
 
 switch ( $sapi ) {
 
@@ -213,7 +166,7 @@ switch ( $sapi ) {
   if ( isset($opts["f"]) )
     $outfile = $opts["f"];
   else {
-    if ( $file == "-" )
+    if ( $file === "-" )
       $outfile = "dompdf_out.pdf";
     else
       $outfile = str_ireplace(array(".html", ".htm", ".php"), "", $file) . ".pdf";
@@ -241,39 +194,49 @@ switch ( $sapi ) {
 
  default:
 
- 	if ( isset($_GET["input_file"]) )
- 		$file = basename(rawurldecode($_GET["input_file"]));
- 	else
- 		throw new DOMPDF_Exception("An input file is required (i.e. input_file _GET variable).");
- 		
- 	if ( isset($_GET["paper"]) )
- 		$paper = rawurldecode($_GET["paper"]);
- 	else
- 		$paper = DOMPDF_DEFAULT_PAPER_SIZE;
- 		
- 	if ( isset($_GET["orientation"]) )
- 		$orientation = rawurldecode($_GET["orientation"]);
- 	else
- 		$orientation = "portrait";
- 		
- 	if ( isset($_GET["base_path"]) )
- 		$base_path = rawurldecode($_GET["base_path"]);
- 		
- 		
- 		$outfile = "dompdf_out.pdf"; # Don't allow them to set the output file
- 		$save_file = false; # Don't save the file
- 		$file = $base_path . $file; # Set the input file
-
- 		/* Check to see if the input file and base path = www/test */
- 		if(!$base_path=="www/test/") 		
- 			throw new DOMPDF_Exception("Access to dompdf.php via non-cli SAPI has been deprecated due to security concerns.  Please use the dompdf class directly.");
-
-   break;
+  if ( isset($_GET["input_file"]) )
+    $file = rawurldecode($_GET["input_file"]);
+  else
+    throw new DOMPDF_Exception("An input file is required (i.e. input_file _GET variable).");
+  
+  if ( isset($_GET["paper"]) )
+    $paper = rawurldecode($_GET["paper"]);
+  else
+    $paper = DOMPDF_DEFAULT_PAPER_SIZE;
+  
+  if ( isset($_GET["orientation"]) )
+    $orientation = rawurldecode($_GET["orientation"]);
+  else
+    $orientation = "portrait";
+  
+  if ( isset($_GET["base_path"]) ) {
+    $base_path = rawurldecode($_GET["base_path"]);
+    $file = $base_path . $file; # Set the input file
+  }  
+  
+  if ( isset($_GET["options"]) ) {
+    $options = $_GET["options"];
+  }
+  
+  $file_parts = explode_url($file);
+  
+  /* Check to see if the input file is local and, if so, that the base path falls within that specified by DOMDPF_CHROOT */
+  if(($file_parts['protocol'] == '' || $file_parts['protocol'] === 'file://')) {
+    $file = realpath($file);
+    if ( strpos($file, DOMPDF_CHROOT) !== 0 ) {
+      throw new DOMPDF_Exception("Permission denied on $file.");
+    }
+  }
+  
+  $outfile = "dompdf_out.pdf"; # Don't allow them to set the output file
+  $save_file = false; # Don't save the file
+  
+  break;
 }
 
 $dompdf = new DOMPDF();
 
-if ( $file == "-" ) {
+if ( $file === "-" ) {
   $str = "";
   while ( !feof(STDIN) )
     $str .= fread(STDIN, 4096);
@@ -302,14 +265,14 @@ if ( $_dompdf_show_warnings ) {
 if ( $save_file ) {
 //   if ( !is_writable($outfile) )
 //     throw new DOMPDF_Exception("'$outfile' is not writable.");
-  if ( strtolower(DOMPDF_PDF_BACKEND) == "gd" )
+  if ( strtolower(DOMPDF_PDF_BACKEND) === "gd" )
     $outfile = str_replace(".pdf", ".png", $outfile);
 
   list($proto, $host, $path, $file) = explode_url($outfile);
   if ( $proto != "" ) // i.e. not file://
     $outfile = $file; // just save it locally, FIXME? could save it like wget: ./host/basepath/file
 
-  $outfile = dompdf_realpath($outfile);
+  $outfile = realpath(dirname($outfile)) . DIRECTORY_SEPARATOR . basename($outfile);
 
   if ( strpos($outfile, DOMPDF_CHROOT) !== 0 )
     throw new DOMPDF_Exception("Permission denied.");
@@ -319,6 +282,5 @@ if ( $save_file ) {
 }
 
 if ( !headers_sent() ) {
-  $dompdf->stream($outfile);
+  $dompdf->stream($outfile, $options);
 }
-?>
