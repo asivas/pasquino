@@ -12,7 +12,7 @@
 		<nav>
 			{include file="$pQnMenuTpl"}
 		</nav>
-		<section>
+		<section class="container_12">
 			{include file=$pantalla}
 		</section>
 		<footer>

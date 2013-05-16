@@ -227,8 +227,8 @@ class BaseMod {
     	$this->smarty->assign("pQnSinPermisosTpl","{$tplsPath}/sinPermisos.tpl");
 		
     	//CSS
-    	$this->smarty->assign("pQnDefaultCss","/css/default.css");
-    	$this->smarty->assign("pQnGridCss","/css/grid.css");
+    	$this->smarty->assign("pQnDefaultCss","/sistemafce/css/default.css");
+    	$this->smarty->assign("pQnGridCss","/sistemafce/css/grid.css");
     	$this->smarty->assign("pQnJQueryCss","/css/jquery/Aristo/Aristo.css");
     	 
     	//JS
