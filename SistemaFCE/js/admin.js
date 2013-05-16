@@ -234,6 +234,16 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 					}
 					else if(status=='ERR')
 						alert($("#tmp status").attr('msg'));
+					else if(status=='CONF')
+					{
+						if(confirm($("#tmp status").attr('msg')))
+						{
+							if( opciones.success )
+								opciones.success();
+							dlg.dialog('close').remove();
+						}
+						return false;
+					}	
 				}
 			);
 			e.preventDefault();
