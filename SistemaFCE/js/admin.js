@@ -242,7 +242,6 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 								opciones.success();
 							dlg.dialog('close').remove();
 						}
-						return false;
 					}	
 				}
 			);
