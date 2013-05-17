@@ -218,7 +218,10 @@ class BaseMod {
     	$this->smarty->assign("pQnInfoTpl","{$tplsPath}/admin/info.tpl");
     	$this->smarty->assign("pQnFormTpl","{$tplsPath}/admin/form.tpl");
     	$this->smarty->assign("pQnListaAccionesTpl","{$tplsPath}/admin/listaAcciones.tpl");
-
+    	$this->smarty->assign("pQnPageHeader","{$tplsPath}/admin/pageHeader.tpl");
+    	 
+    	
+    	
     	$this->smarty->assign("pQnGridTpl","{$tplsPath}/admin/lista/objGrid.tpl");
     	$this->smarty->assign("pQnBotonAltaTpl","{$tplsPath}/admin/botonAlta.tpl");
 
@@ -228,7 +231,7 @@ class BaseMod {
 		
     	//CSS
     	$this->smarty->assign("pQnDefaultCss","/sistemafce/css/default.css");
-    	$this->smarty->assign("pQnGridCss","/sistemafce/css/grid.css");
+    	$this->smarty->assign("pQnGridCss","/bootstrap/css/bootstrap-responsive.min.css");
     	$this->smarty->assign("pQnJQueryCss","/css/jquery/Aristo/Aristo.css");
     	 
     	//JS

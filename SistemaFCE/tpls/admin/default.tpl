@@ -6,17 +6,33 @@
 		{include file="$pQnHeadAdminTpl"}
 	</head>
 	<body>
+	
 		<header>
 			{include file="$pQnHeaderTpl"}
 		</header>
-		<nav>
-			{include file="$pQnMenuTpl"}
-		</nav>
-		<section class="container_12">
-			{include file=$pantalla}
-		</section>
+		
+		<div id="container" class="row-fluid">
+			
+			<nav>
+				{include file="$pQnMenuTpl"}
+			</nav>
+			
+			<section>
+					
+					<div class="page-header">
+						{include file=$pQnPageHeader}
+					</div>
+					
+					<div class="page">
+						{include file=$pantalla}
+					</div>
+				
+			</section>
+
+		</div>
 		<footer>
 			{include file="$pQnFooterTpl"} 
 		</footer>
+		
 	</body>	
 </html>

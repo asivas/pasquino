@@ -19,6 +19,9 @@
 	
 	<!-- CSS -->
 	
+	<!-- FIXME -->	
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" type="text/css">
+	
 	{if isset($pQnDefaultCss)}
 		<link rel="stylesheet" href="{$pQnDefaultCss}" type="text/css">	
 	{/if}
@@ -33,7 +36,9 @@
 
 	{if isset($cssModulo)}
 		<link rel="stylesheet" href="css/{$cssModulo}.css" type="text/css">
-	{/if}	
+	{/if}
 	
+	
+
 	{$cssIncludes}
 	
