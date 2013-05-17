@@ -45,8 +45,81 @@
 					aInput.parent("form").submit();
 				}
 			}
-		}
-	
+		},
+		getStatusResponse: function(data){
+			$("body").crearDiv("tmp");
+			
+			$("#tmp").hide().html("").html(data);
+			var status = $("#tmp status").attr('status');
+			return status;
+		},
+		alertError: function(errorMsg){
+			alert(errorMsg);
+		},
+		dialogoGuardar: function(idDialogo,url,titulo,idForm,opciones){
+			var nombreBotonGuardar,valueBotonGuardar,anchoDialogo,callback,nombreBotonCancelar;
+			if(opciones!=null) {
+				nombreBotonGuardar = opciones.nombreBotonGuardar;
+				valueBotonGuardar = opciones.valueBotonGuardar;
+				anchoDialogo = opciones.anchoDialogo;
+				nombreBotonCancelar = opciones.nombreBotonCancelar;
+			}
+			else
+				opciones={};
+
+			if(nombreBotonGuardar==null)	nombreBotonGuardar = 'guardar';
+			if(valueBotonGuardar==null)		valueBotonGuardar = 'Guardar';
+			if(anchoDialogo==null)			anchoDialogo = 'auto';
+			if(nombreBotonCancelar==null)	nombreBotonCancelar = 'cancelar';
+				
+			if(opciones.modal==null) opciones.modal=true;
+			if(opciones.top==null) opciones.top=69;
+			if(opciones.width==null) opciones.width=anchoDialogo;
+			if(opciones.autoOpen==null) opciones.autoOpen=false;
+			
+			var dlgOpts = opciones;
+			dlgOpts.title = titulo;
+			
+			$("body").crearDiv(idDialogo);
+			var dlg = $("#"+idDialogo);
+			dlg.html(htmlCargando).load(url,function(){
+				if( opciones.onLoad )
+					opciones.onLoad();
+				var btn = $("form#"+idForm+" input[name='"+nombreBotonGuardar+"']");
+				var $procesarForm = function(e){
+					$.post('./',$("form#"+idForm).serialize(),
+							function(data) {
+							var status = pQn.fn.getStatusResponse(data);
+							dlg.attr('status',status);
+							if(status=='OK')
+							{	
+								if( opciones.success )
+									opciones.success();
+								dlg.dialog('close').remove();
+							}
+							else if(status=='ERR')
+								pQn.fn.alertError($("#tmp status").attr('msg'));
+						}
+					);
+					e.preventDefault();
+				};
+				
+				//si en las opciones se define guardarCallback se reemplaza la función de guardar
+				if(opciones.guardarCallback)
+					$procesarForm = opciones.guardarCallback;					
+
+				if(btn.exists())
+					btn.button($procesarForm).click($procesarForm).attr('value',valueBotonGuardar);
+				else
+					$("form#"+idForm).submit($procesarForm);
+				
+				var btnCancelar = $("form#"+idForm+" input[name='"+nombreBotonCancelar+"']");
+				if(btnCancelar.exists())
+					btnCancelar.button().click(function(e){dlg.html("").dialog('close');});
+			dlg.dialog('open');	
+				
+			}).dialog(dlgOpts);
+		}	
 	},
 	window.pQn = pQn;
 })(window);
@@ -161,95 +234,43 @@ jQuery.fn.keyUpFilter = pQn.fn.keyUpFilter  = function(aSourceID,aMod,aAction,aO
 
 /**
  * Metodo para eliminar una entidad usando ajax procesando la respuesta <status>
- * @param idMetodoPago
- * @returns {Boolean}
+ * @param id el id del elemento a eliminar
+ * @param mod el id del elemento a eliminar
+ * @returns {Boolean} 
  */
-function eliminar(id,mod){
+function eliminar(id,mod,nombreEntidad){
 	var ret=false;
-	$.ajax({
-		url: getAccionUrl(mod,'baja','plain')+"&id="+id,
-		type: 'POST',
-		data: '' , 
-		async:false,
-		success: function(data,  textStatus, jqXHR) {
-			$("body").crearDiv('tmp');
-			$("#tmp").hide().html(data);
-			if($("#tmp status").attr('status')!='OK'){
-				alert($("#tmp status").attr('msg'));
-				ret=false;
-			}else{
-				alert($("#tmp status").attr('msg'));
-				if($('#idFiltro').exists())
-					$('#idFiltro').submit();
-				ret=true;
+	var strConfirmQ = "¿Está seguro de eliminar el elemento seleccionado?"; 
+	if(nombreEntidad!=null && nombreEntidad!='')
+		strConfirmQ = "¿Está seguro de eliminar "+nombreEntidad+"?";
+		
+	if(confirm(strConfirmQ))
+	{
+		$.ajax({
+			url: getAccionUrl(mod,'baja','plain')+"&id="+id,
+			type: 'POST',
+			data: '' , 
+			async:false,
+			success: function(data,  textStatus, jqXHR) {
+				$("body").crearDiv('tmp');
+				$("#tmp").hide().html(data);
+				if($("#tmp status").attr('status')!='OK'){
+					alert($("#tmp status").attr('msg'));
+					ret=false;
+				}else{
+					alert($("#tmp status").attr('msg'));
+					if($('#idFiltro').exists())
+						$('#idFiltro').submit();
+					ret=true;
+				}
 			}
-		}
-	});
+		});
+	}
 	return ret;
 }
 
 jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
-	var nombreBotonGuardar,valueBotonGuardar,anchoDialogo,callback,nombreBotonCancelar;
-	if(opciones!=null) {
-		nombreBotonGuardar = opciones.nombreBotonGuardar;
-		valueBotonGuardar = opciones.valueBotonGuardar;
-		anchoDialogo = opciones.anchoDialogo;
-		nombreBotonCancelar = opciones.nombreBotonCancelar;
-	}
-	else
-		opciones={};
-
-	if(nombreBotonGuardar==null)	nombreBotonGuardar = 'guardar';
-	if(valueBotonGuardar==null)		valueBotonGuardar = 'Guardar';
-	if(anchoDialogo==null)			anchoDialogo = 'auto';
-	if(nombreBotonCancelar==null)	nombreBotonCancelar = 'cancelar';
-		
-	if(opciones.modal==null) opciones.modal=true;
-	if(opciones.top==null) opciones.top=69;
-	if(opciones.width==null) opciones.width=anchoDialogo;
-	if(opciones.autoOpen==null) opciones.autoOpen=false;
-	
-	var dlgOpts = opciones;
-	dlgOpts.title = titulo;
-	
-	$("body").crearDiv(idDialogo);
-	var dlg = $("#"+idDialogo);
-	dlg.html(htmlCargando).load(url,function(){
-		if( opciones.onLoad )
-			opciones.onLoad();
-		var btn = $("form#"+idForm+" input[name='"+nombreBotonGuardar+"']");
-		var $procesarForm = function(e){
-			$.post('./',$("form#"+idForm).serialize(),
-					function(data) {
-					$("body").crearDiv("tmp");
-					
-					$("#tmp").hide().html("").html(data);
-					var status = $("#tmp status").attr('status'); 
-					dlg.attr('status',status);
-					if(status=='OK')
-					{	
-						if( opciones.success )
-							opciones.success();
-						dlg.dialog('close').remove();
-					}
-					else if(status=='ERR')
-						alert($("#tmp status").attr('msg'));
-				}
-			);
-			e.preventDefault();
-		};
-		
-		if(btn.exists())
-			btn.button($procesarForm).click($procesarForm).attr('value',valueBotonGuardar);
-		else
-			$("form#"+idForm).submit($procesarForm);
-		
-		var btnCancelar = $("form#"+idForm+" input[name='"+nombreBotonCancelar+"']");
-		if(btnCancelar.exists())
-			btnCancelar.button().click(function(e){dlg.html("").dialog('close');});
-	dlg.dialog('open');	
-		
-	}).dialog(dlgOpts);
+	pQn.fn.dialogoGuardar(idDialogo,url,titulo,idForm,opciones);
 };
 
 /**

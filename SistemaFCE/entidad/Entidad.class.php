@@ -130,5 +130,5 @@ class Entidad implements Serializable{
      * 
      * Muestra un string que identifica al elemento a nivel humano
      */
-    function toString() { return ""; }
+    function toString() { return get_class($this) . " #". $this->getId(); }
 }
