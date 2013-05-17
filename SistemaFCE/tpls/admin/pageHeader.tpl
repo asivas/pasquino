@@ -1,4 +1,4 @@
 <h4 class="page-title">
-	Título <small>alguna descripción</small>
+	TÃ­tulo <small>alguna descripciÃ³n</small>
 </h4>
 
