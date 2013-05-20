@@ -34,8 +34,8 @@
 		var $sessionName;
 		
 		/**
-		* @var integer la cantidad de minutos que dura la sesion
-		*/
+		 * @var integer la cantidad de minutos que dura la sesion
+		 */
 		var $cookie_min;
 		
 		/**
@@ -78,8 +78,9 @@
         function initMembers()
         {
         	$this->logobj = null;
-            $this->cookie_min= 15;
-            $this->refreshAfterLogin = true;
+        	$this->cookie_min= 15;
+        	$this->setIdle(0);
+        	$this->refreshAfterLogin = true;
             $this->passCaseSensitive = true;
         }
 		
@@ -193,6 +194,14 @@
     			next($key);
     		}
     		return $strKey;
+        }
+        
+        /**
+         * setea la cantidad de minutos de tolerancia de inactividad
+         */
+        function setIdle($minutes,$add = false)
+        {
+        	$this->auth->setIdle($minutes*60,$add);	
         }
         
 		/**
