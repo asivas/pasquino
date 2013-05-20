@@ -1103,12 +1103,11 @@ class BaseMod {
 		{							
 			$resp = array('remaining'=>$remainingSeconds);
 			if($remainingSeconds<0)
-				$resp['expierd'] =true;
+				$resp['expired'] =true;
 		}
 		else
 			$resp = array('noExpire'=>true);
 		
 		$this->responseJson($resp);
 	}
-
 }
