@@ -1,38 +1,57 @@
 {*smarty*}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
+
 <html>
+	
 	<head>
 		{include file="$pQnHeadTpl"}
 		{include file="$pQnHeadAdminTpl"}
 	</head>
+	
 	<body>
 	
 		<header>
 			{include file="$pQnHeaderTpl"}
 		</header>
+	
+		<div id="container" class="container-fluid">
+	
+			<div class="row-fluid">
+	
+				<div class="span3">
+					<nav id="sidebar">
+						{include file="$pQnMenuTpl"}
+					</nav>
+				</div>			
+	
+				<section id="main-section" class="span9" >
+					
+					
+						<div class="page-header">
+							{include file=$pQnPageHeader}
+						</div>
+						
+						<div class="page">
+							<div class="row-fluid">
+								{include file=$pantalla}
+							</div>
+						</div>
+					
+				</section>
 		
-		<div id="container" class="row-fluid">
-			
-			<nav>
-				{include file="$pQnMenuTpl"}
-			</nav>
-			
-			<section>
-					
-					<div class="page-header">
-						{include file=$pQnPageHeader}
-					</div>
-					
-					<div class="page">
-						{include file=$pantalla}
-					</div>
-				
-			</section>
-
+	
+			</div>
+	
+			<footer>
+				{include file="$pQnFooterTpl"}
+			</footer>
+	
 		</div>
-		<footer>
-			{include file="$pQnFooterTpl"} 
-		</footer>
-		
-	</body>	
+		<!--/.fluid-container-->
+
+	</body>
+	
 </html>
+
+
+		

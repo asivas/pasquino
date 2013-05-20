@@ -26,15 +26,18 @@
 	<header>
 		<ul>
 		{foreach from=$columnsList key=columnName item=property}
-			<li class='{$property}'>{$columnName}</li>		
+		<div class="data">
+			<li class='{$property}'>
+				<div class="data">
+					{$columnName}
+				</div>
+			</li>		
 		{/foreach}
 		</ul>
 	</header>
 	{if empty($objectsList) }
 		<article type="{$entidad}" id="{$entidad}" >
-		<ul>
-			<li>No hay objetos de tipo {$entidad} con el filtro actual</li>
-		</ul>
+			<div class="info text-warning">No hay objetos de tipo {$entidad} con el filtro actual</div>
 		</article>
 	{/if}
 	<div>
@@ -43,12 +46,14 @@
 		<ul>
 		{foreach from=$columnsList key=columnName item=property}
 			<li class='{$property}'>
-				{assign var=data value=$facade->getPropiedadMod($property,$object)}
-				{if  ! strpos($data,'>') }
-					{$data|resaltar:$filtroNombre}
-				{else}
-					{$data}
-				{/if}
+				<div class="data"> 
+					{assign var=data value=$facade->getPropiedadMod($property,$object)}
+					{if  ! strpos($data,'>') }
+						{$data|resaltar:$filtroNombre}
+					{else}
+						{$data}
+					{/if}
+				</div>
 			</li>
 		{/foreach}
 		</ul>
@@ -56,3 +61,11 @@
 	{/foreach}
 	</div>
 </div>
+
+{* ANCHO COLUMNAS *}
+<style>
+section .grid ul li {
+	width: {100 / $columnsList|count}% ;
+}
+	
+</style>

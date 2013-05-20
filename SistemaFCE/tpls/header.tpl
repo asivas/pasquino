@@ -1,2 +1,8 @@
 {*smarty*}
-<div class="tituloApp"><h4>{$appName}</h4></div>
+<!-- BEGIN LOGO -->
+<a id="logo" href="./">
+	<img src="sistemafce/img/logo.png" alt="{$appName}">
+</a>
+<!-- END LOGO -->
+							
+

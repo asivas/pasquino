@@ -12,7 +12,7 @@
 	
 *}
 
-<div class="lista">
+<div class="lista span12">
 	<header>
 		<h6>Titulo</h6>
 		<ul class="tools">

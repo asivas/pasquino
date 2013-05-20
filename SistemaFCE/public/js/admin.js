@@ -16,7 +16,7 @@
 			if(selectorBotonera==null)
 				selectorBotonera='li.gridAccionesItem';
 			
-			$(selectorBotonera).find('div').addClass('ui-state-default ui-corner-all').css('float','left').css('margin-left','2px');
+			$(selectorBotonera).find('div .button').addClass('ui-state-default ui-corner-all').css('float','left').css('margin-left','2px');
 			
 			$(selectorBotones).delegate('a>.ui-icon-pencil','click',function(e){
 				e.preventDefault();
