@@ -238,7 +238,6 @@ abstract class BaseAdminMod extends BaseMod {
 	 * @return string
 	 */
 	protected function getListaAccionesTpl() {
-		//FIXME: por ahora presupone una estructura estandar
 		return $this->smarty->getTemplateVars('pQnListaAccionesTpl');
 	}
 

@@ -85,10 +85,8 @@ class BaseMod {
 
 		$this->REST = new RESTMod();
 
-		$entidadUsuario = Configuracion::getEntidadUsuarioClass();
-        $claseDaoUsuario = 'Dao'.$entidadUsuario;
-		$daoU = new $claseDaoUsuario();
-        $this->_usuario = $daoU->findById($this->session->getIdUsuario());
+		//si se puede cargo el usuario
+		$this->getUsuario();
 
         $this->_dateFormat = Configuracion::getDateFormat();
         $this->_dateTimeFormat = Configuracion::getDateTimeFormat();
@@ -174,10 +172,7 @@ class BaseMod {
         $this->smarty->assign('dir_images',"{$skinsDirname}/{$publicSkinDir}/images");
         $this->smarty->assign('dir_js',"{$skinsDirname}/{$publicSkinDir}/js");
 
-        $mp = $this->getMenuPrincipal();
-        //menu
-        $this->smarty->assign('menuItems',$mp);
-        $this->smarty->assign('menu',$mp);
+        $this->assingSmartyMenu();
 
         $this->smarty->assign('dateFormat',$this->_dateFormat);
         $this->smarty->assign('timeFormat',$this->_timeFormat);
@@ -189,6 +184,13 @@ class BaseMod {
 
         $this->smarty->assign('usuario',$this->_usuario);
         $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
+    }
+    
+    protected function assingSmartyMenu() {
+    	$mp = $this->getMenuPrincipal();
+    	//menu
+    	$this->smarty->assign('menuItems',$mp);
+    	$this->smarty->assign('menu',$mp);
     }
 
     /**
@@ -453,13 +455,21 @@ class BaseMod {
     public function sinPermisos()
     {
         $this->_menuModTplPath = '';
-        $this->mostrar('sinPermisos.tpl');
+        $this->mostrar($this->smarty->getTemplateVars('pQnSinPermisosTpl'));
         die();
     }
 
     protected function LogIn()
     {
-    	return $this->session->LogIn();
+    	$bLoged = $this->session->LogIn();
+    	$usr = $this->_usuario;
+    	
+    	$this->smarty->assign('usuario',$this->getUsuario());
+    	
+    	if($usr!=$this->getUsuario())
+    		$this->assingSmartyMenu();
+    	
+    	return $bLoged;
    	}
    	
    	/**
@@ -942,6 +952,14 @@ class BaseMod {
      */
     protected function getUsuario()
     {
+    	if(!isset($this->_usuario))
+    	{
+    		$entidadUsuario = Configuracion::getEntidadUsuarioClass();
+	    	$claseDaoUsuario = 'Dao'.$entidadUsuario;
+	    	$daoU = new $claseDaoUsuario();
+	    	$this->_usuario = $daoU->findById($this->session->getIdUsuario());
+    	}
+    	
     	return $this->_usuario;
     }
 
