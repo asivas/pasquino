@@ -1,4 +1,8 @@
 (function(window,undefined) {
+	
+	//Bootstrap no conflicts
+	$.fn.button.noConflict();
+	
 	var
 	// Define a local copy of jQuery
 	pQn = function() {
@@ -26,8 +30,7 @@
 			});
 			if(typeof $fnBindAltaBtn == 'function')	$fnBindAltaBtn();
 			if(typeof $fnBindFiltro == 'function')	$fnBindFiltro();
-			
-			$.fn.button.noConflict();
+
 			$(selectorBotones+' a').tooltip();
 			
 		},
