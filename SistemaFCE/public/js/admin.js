@@ -27,6 +27,9 @@
 			if(typeof $fnBindAltaBtn == 'function')	$fnBindAltaBtn();
 			if(typeof $fnBindFiltro == 'function')	$fnBindFiltro();
 			
+			$.fn.button.noConflict();
+			$(selectorBotones+' a').tooltip();
+			
 		},
 		ultimoKeyup: null,
 		filtroAnterior: '',

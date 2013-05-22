@@ -3,9 +3,15 @@
 	
 	<!-- JS -->
 	
+
 	{if isset($pQnJQueryJs)}
 		<script type="text/javascript" src="{$pQnJQueryJs}"></script>
 	{/if}
+	
+	
+	<!-- FIXME -->	
+	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+	
 	
 	{if isset($pQnJQueryUiJs)}
 		<script type="text/javascript" src="{$pQnJQueryUiJs}"></script>
@@ -16,6 +22,11 @@
 	{/if}
 	
 	{$jsIncludes}
+	
+		
+	<!-- FIXME -->	
+	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+	
 	
 	<!-- CSS -->
 	
@@ -41,4 +52,5 @@
 	
 
 	{$cssIncludes}
+
 	

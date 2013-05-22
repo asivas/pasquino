@@ -5,9 +5,9 @@
 *}
 <div class="lista-acciones">
 	<div class="button">
-		<a href="?mod={$modName}&accion=modif&id={$entidad->getId()}"><span class="ui-icon ui-icon-pencil"></span></a>
+		<a href="?mod={$modName}&accion=modif&id={$entidad->getId()}"  title="Modificar"><span class="ui-icon ui-icon-pencil"></span></a>
 	</div> 				
 	<div class="button">
-		<span class="ui-icon ui-icon-trash" onclick="eliminar({$entidad->getId()},'{$modName}','{$entidad->toString()}');"></span>
+		<a href="#" title="Eliminar"><span class="ui-icon ui-icon-trash" onclick="eliminar({$entidad->getId()},'{$modName}','{$entidad->toString()}');"></span></a>
 	</div>
 </div>
