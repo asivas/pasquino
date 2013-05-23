@@ -61,10 +61,10 @@
 				if(!srcObj.exists())
 				{
 					selectorSource = aSourceID;
-					srcObj = $(aSourceID);
+					srcObj = $(aSourceID).parent();
 				}
 				
-				srcObj.parent().load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
+				srcObj.load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
 						function(response, status, xhr) {					
 					  		if (status == "error") {
 					  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
