@@ -52,6 +52,38 @@
 				}
 			}
 		},
+		keyUpFilter : function(elCampo,aSourceID,aMod,aAction,aOptions){
+			var form = elCampo.parent("form");
+			form.unbind('submit');
+			form.submit(function(e) {
+				var selectorSource = " #"+aSourceID;
+				var srcObj = $(selectorSource);
+				if(!srcObj.exists())
+				{
+					selectorSource = aSourceID;
+					srcObj = $(aSourceID);
+				}
+				
+				srcObj.parent().load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
+						function(response, status, xhr) {					
+					  		if (status == "error") {
+					  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
+					  		}else{
+					  			
+					  			if(aOptions!=null &&
+					  			   aOptions.success!=null && 
+					  			   (typeof aOptions.success == 'function')) 
+					  				aOptions.success();
+					  		}
+				});
+				e.preventDefault();
+			});
+			elCampo.unbind('keyup');
+			elCampo.keyup(function(event){
+				setTimeout("pQn.fn.doFilter("+event.timeStamp+",'"+ elCampo.attr('name') +"')",800);
+				pQn.ultimoKeyup = event.timeStamp;
+			});
+		},
 		getStatusResponse: function(data){
 			$("body").crearDiv("tmp");
 			
@@ -204,37 +236,8 @@ jQuery['doFilter']=function(tiempo,aInputName){
  * @param aAction Metodo a Ejecutar
  * @param aOptions objeto con opciones (success).
  */
-jQuery.fn.keyUpFilter = pQn.fn.keyUpFilter  = function(aSourceID,aMod,aAction,aOptions){
-	var form = $(this).parent("form");
-	form.unbind('submit');
-	form.submit(function(e) {
-		var selectorSource = " #"+aSourceID;
-		var srcObj = $(selectorSource);
-		if(!srcObj.exists())
-		{
-			selectorSource = aSourceID;
-			srcObj = $(aSourceID);
-		}
-		
-		srcObj.parent().load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
-				function(response, status, xhr) {					
-			  		if (status == "error") {
-			  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
-			  		}else{
-			  			
-			  			if(aOptions!=null &&
-			  			   aOptions.success!=null && 
-			  			   (typeof aOptions.success == 'function')) 
-			  				aOptions.success();
-			  		}
-		});
-		e.preventDefault();
-	});
-	$(this).unbind('keyup');
-	$(this).keyup(function(event){
-		setTimeout("pQn.fn.doFilter("+event.timeStamp+",'"+ $(this).attr('name') +"')",800);
-		pQn.ultimoKeyup = event.timeStamp;
-	});
+jQuery.fn.keyUpFilter = function(aSourceID,aMod,aAction,aOptions){
+	pQn.fn.keyUpFilter($(this),aSourceID,aMod,aAction,aOptions);
 };
 
 

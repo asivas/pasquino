@@ -34,13 +34,13 @@
 			</li>		
 		{/foreach}
 		</ul>
-	</header>
+	</header>	
+	<div id="articles">
 	{if empty($objectsList) }
 		<article type="{$entidad}" id="{$entidad}" >
 			<div class="info text-warning">No hay objetos de tipo {$entidad} con el filtro actual</div>
 		</article>
 	{/if}
-	<div>
 	{foreach from=$objectsList item=object}
 	<article type='{get_class($object)}' itemId='{$object->getId()}'>
 		<ul>
