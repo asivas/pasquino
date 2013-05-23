@@ -107,6 +107,43 @@ body > header {
 /**************************************************************************************/
 
 
+
+/*
+ * LOGIN
+ *
+ * Estilos para el formulario de login
+ *
+ */
+
+body#body-login {
+	background: #EFEEEF;
+}
+
+	body#body-login > #container > #form-login {
+		width: 380px;
+		margin: 150px auto 0;
+	}
+	
+	body#body-login > #container > #form-login .form_element {
+		width: 84%;
+		padding: 15px 8%;
+		margin: 0 !important;
+	}
+	
+		body#body-login > #container > #form-login .form_element input {
+			float: none;
+			height: 30px;
+			line-height: 18	px;
+			font-size: 16px !important;
+			font-weight: bold;
+			padding: 4px 0 2px 8px;
+			margin: 0 !important; /*FIXME: no se puede centrar con margin: 0 auto */
+			width: 292px;
+		}
+		body#body-login > #container > #form-login .form_element .add-on {
+			padding: 6px 5px 2px;
+		}
+
 /*
  * NAVEGACION
  *
