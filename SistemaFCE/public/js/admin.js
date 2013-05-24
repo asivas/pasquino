@@ -264,12 +264,13 @@ function eliminar(id,mod,nombreEntidad){
 				$("body").crearDiv('tmp');
 				$("#tmp").hide().html(data);
 				if($("#tmp status").attr('status')!='OK'){
-					alert($("#tmp status").attr('msg'));
+					pQn.fn.alertError($("#tmp status").attr('msg'));
 					ret=false;
 				}else{
-					alert($("#tmp status").attr('msg'));
-					if($('#idFiltro').exists())
-						$('#idFiltro').submit();
+					if($('#formFiltro').exists())
+						$('#formFiltro').submit();
+					else
+						alert($("#tmp status").attr('msg'));
 					ret=true;
 				}
 			}

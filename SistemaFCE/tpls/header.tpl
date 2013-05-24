@@ -1,7 +1,7 @@
 {*smarty*}
 <!-- BEGIN LOGO -->
 <a id="logo" href="./">
-	<img src="sistemafce/img/logo.png" alt="{$appName}">
+	<img src="{$logoSrc}" alt="{$appName}">
 </a>
 <!-- END LOGO -->
 							

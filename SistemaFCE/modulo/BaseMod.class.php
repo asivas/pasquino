@@ -202,6 +202,8 @@ class BaseMod {
     	$cssPath = "file:{$this->pasquinoPath}/SistemaFCE/public/css";
     	$jsPath = "file:{$this->pasquinoPath}/SistemaFCE/js";
     	
+    	$this->smarty->assign("pQnTplsPath","{$tplsPath}");
+    	
     	//Opciones de layout estandar
     	$this->smarty->assign("pQnBaseTpl","{$tplsPath}/base.tpl");
     	$this->smarty->assign("pQnDefaultTpl","{$tplsPath}/default.tpl");
@@ -249,7 +251,7 @@ class BaseMod {
     	{
     		$sysNameTplFile = Configuracion::findTplPath($this->_skinConfig,$sysName);
     		if(!empty($sysNameTplFile))
-    			$this->smarty->assign("pQn".$sysName,Configuracion::findTplPath($this->_skinConfig,$sysName));
+    			$this->smarty->assign("pQn".$sysName."Tpl",Configuracion::findTplPath($this->_skinConfig,$sysName));
     	}
     }
 
@@ -599,7 +601,9 @@ class BaseMod {
         	$this->smarty->assign('ajax',$this->xajax->getJavascript('js/'));
 
         if(!isset($type) || $type=='full')
-			$disp = $this->_tilePath;
+        {
+        	$disp = $this->_tilePath;
+        }
 		else
 			$disp = $this->getTilePathForDisplayType($type);
 
