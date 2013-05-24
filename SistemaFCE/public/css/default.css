@@ -41,7 +41,7 @@ a:hover {text-decoration:underline;}
 body {
 	font-family: Verdana, sans-serif;
 	font-size: 13px;
-	background: #3c3c3c;
+	background: url(../img/bg-default.png)  #3c3c3c;
 }
 
 .clr {clear: both}
@@ -53,15 +53,15 @@ body > header {
 
 	margin: 0;
 	height: 60px;
-	background: url(../img/grad-overlay.png) #292929 0 -1px repeat-x;
+	background: url(../img/grad-overlay.png) #0e0e0f 0 -1px repeat-x;
 	border-top: 1px solid #515151;
 	border-bottom: 1px solid #222;
 }
 
 	body > header #logo {
-		height: 64px;
-		width: 456px;
-		margin:auto;
+		display: block;
+		float: left;
+		margin-top: 1px;
 	}
 
 

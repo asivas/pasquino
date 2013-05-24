@@ -14,6 +14,8 @@
 			{include file="$pQnHeaderTpl"}
 		</header>
 	
+		<div class="clr"></div>
+	
 		<div id="container" class="container-fluid">
 	
 			<div class="row-fluid">

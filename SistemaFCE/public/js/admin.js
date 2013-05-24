@@ -3,6 +3,8 @@
 	//Bootstrap no conflicts
 	$.fn.button.noConflict();
 	
+	$("#sidebar ul").accordion();
+	
 	var
 	// Define a local copy of jQuery
 	pQn = function() {
