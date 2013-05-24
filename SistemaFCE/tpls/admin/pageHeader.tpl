@@ -1,4 +1,4 @@
 <h4 class="page-title">
-	Título <small>alguna descripción</small>
+	{$tituloModulo} <small>{$descripcionModulo}</small>
 </h4>
 
