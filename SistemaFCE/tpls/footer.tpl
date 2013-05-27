@@ -1,1 +1,1 @@
-Footer
+<p>Footer - Copyright</p>

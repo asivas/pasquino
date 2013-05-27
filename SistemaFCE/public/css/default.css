@@ -9,6 +9,8 @@
 
 
 
+
+
 /*
  * RESET
  *
@@ -33,10 +35,17 @@ input,textarea {border: 1px solid #999999;}
 a {text-decoration: none; color: #F6B002;}
 a:hover {text-decoration:underline;}
 
+/*********************************** FIN RESET **************************************/
 
 
 
-/* DEFAULT DECORATORS */
+
+/*
+ * GENERAL
+ *
+ * Estilos generales del sistema
+ *
+ */
 
 body {
 	font-family: Verdana, sans-serif;
@@ -46,11 +55,36 @@ body {
 
 .clr {clear: both}
 
+#container {
+	padding: 0;
+	border-top: 1px solid #555;
+}
+	
+	#container section#main-section {
+		background: #EFEEEF;
+	}
+	
+/* Trampa a Boostrap, revisar si se cambia la proporcion */
+@media (min-width: 1200px) {
+	#container section#main-section {
+		width: 76.92307692% !important;
+		margin: 0 !important;
+	}
+}
 
-/* DEFAULT STYLES */
+/*********************************** FIN GENERAL **************************************/
 
+
+
+
+/*
+ * HEADER & FOOTER
+ *
+ * Estilos para header y footer
+ *
+ */
+ 
 body > header {
-
 	margin: 0;
 	height: 60px;
 	background: url(../img/grad-overlay.png) #0e0e0f 0 -1px repeat-x;
@@ -63,31 +97,31 @@ body > header {
 		float: left;
 		margin-top: 1px;
 	}
-
-
-#container {
-	padding: 0;
-	border-top: 1px solid #555;
-}
-
-/* Trampa a Boostrap, revisar si se cambia la proporcion */
-@media (min-width: 1200px) {
-	#container section#main-section {
-		width: 76.92307692% !important;
-		margin: 0 !important;
-	}
-}
 	
-	#container section#main-section {
-		background: #EFEEEF;
+
+body > footer {
+	height: 35px;
+	border-top: 1px solid #444444;
+	background: url(../img/grad-overlay.png) #0e0e0f 0 -40px repeat-x;
+}
+
+	body > footer p {
+		padding: 8px 0 0 5px;
+		color: #aaaaa;
 	}
 
-	#container > footer
-	{
-		height: 40px;
-		padding-top: 20px;
-	}
+/*********************************** FIN HEADER & FOOTER **************************************/
 
+
+
+
+/*
+ * MAIN SECTION
+ *
+ * Estilos para el contenido principal del sistema
+ *
+ */
+ 
 .page-header {
 	padding-left:15px;
 	padding-bottom: 15px;
@@ -103,8 +137,8 @@ body > header {
 	padding: 15px;
 }
 
+/*********************************** FIN MAIN SECTION **************************************/
 
-/**************************************************************************************/
 
 
 
@@ -143,6 +177,11 @@ body#body-login {
 		body#body-login > #container > #form-login .form_element .add-on {
 			padding: 6px 5px 2px;
 		}
+
+/*********************************** FIN LOGIN **************************************/
+
+
+
 
 /*
  * NAVEGACION
@@ -191,12 +230,43 @@ nav#sidebar {
 			border-bottom: 1px solid #161718;
 		}
 		
+			nav#sidebar > ul > li > a > span.arrow {
+				float: right;
+				margin-top: 6px;
+				margin-right: 5px;
+				width: 0;
+				height: 0;
+				border-right: 5px solid #f3f3f3;
+				border-top: 4px solid transparent;
+				border-bottom: 4px solid transparent;
+			}
+			
+			#sidebar > ul > li.open > a > span.arrow {
+				margin-top: 10px;
+				margin-right: 3px;
+				border-top: 5px solid #f3f3f3;
+				border-left: 4px solid transparent;
+				border-right: 4px solid transparent;
+			}
+			
+			#sidebar > ul > li > a > i {
+				opacity: 0.7;
+				margin-right: 3px;
+			}
+			
+			nav#sidebar > ul > li > a:HOVER > i {
+				opacity: 1;
+			}
+	
+				
 		nav#sidebar > ul > li:FIRST-CHILD a {
 			border-top: none;
 		}
+		
 		nav#sidebar > ul > li > ul {
 			padding: 8px 20px;			
 		}
+		
 		nav#sidebar > ul > li > ul > li > a {
 			color: #ccc;
 			text-shadow: 0 1px 1px #000;
@@ -210,9 +280,10 @@ nav#sidebar {
 		 	background: #534f4e !important;  
 			border: none;
 		}
-	
 
-/**************************************************************************************/
+/*********************************** FIN NAVEGACION **************************************/
+
+
 
 
 /*
@@ -247,6 +318,7 @@ form.base-form .form_element {
 	float: left;
 	width: 600px;
 }
+
 form.base-form .form_element:last-child {
 	border-bottom: 0;
 }
@@ -288,7 +360,6 @@ form.base-form .form_element:last-child {
 		}
 		
 
-
 /* elementos genericos */
 input[type="text"], 
 input[type="file"], 
@@ -306,7 +377,9 @@ textarea {
 	font-size: 12px !important;
 }
 
-/**************************************************************************************/
+/*********************************** FIN FORMULARIOS **************************************/
+
+
 
 
 /*
@@ -326,7 +399,6 @@ section .lista {
 	-moz-border-radius: 3px;
 	
 	box-shadow: 0 2px 2px -2px #ccc;
-	
 	display: table;
 }
 
@@ -364,19 +436,21 @@ section .lista > header h6 {
 section .lista > header .tools {
 	float: right;
 }
-section .lista > header .tools li {
-	float: left;
-	padding: 0 15px;
-	border-left: 1px solid #bcbcbc;
-	height: 40px;
-}
 
-section .lista > header .tools .filtro  {
-	margin-top: 8px;
-}
-section .lista > header .tools #botonAlta{
-	margin-top: 10px;
-}
+	section .lista > header .tools li {
+		float: left;
+		padding: 0 15px;
+		border-left: 1px solid #bcbcbc;
+		height: 40px;
+	}
+
+	section .lista > header .tools .filtro  {
+		margin-top: 8px;
+	}
+	
+	section .lista > header .tools #botonAlta{
+		margin-top: 10px;
+	}
 
 /* GRID */
 section .grid {
@@ -445,12 +519,11 @@ section .grid {
 				border: none;
 			}
 
-
-
 	section .grid article li.gridAccionesItem .button {
 		float:right;
 		margin-left: 5px !important;
 	}
+	
 	section .grid article li .lista-acciones {
 		margin: 0 auto;
 		display: table;
@@ -461,12 +534,4 @@ section .grid {
 		text-align: center;
 	}
 
-/**************************************************************************************/
-
-
-
-
-
-
- 
-
+/*********************************** FIN LISTAS **************************************/

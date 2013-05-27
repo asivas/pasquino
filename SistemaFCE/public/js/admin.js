@@ -3,7 +3,7 @@
 	//Bootstrap no conflicts
 	$.fn.button.noConflict();
 	
-	$("#sidebar ul").accordion();
+	
 	
 	var
 	// Define a local copy of jQuery
@@ -323,3 +323,37 @@ jQuery.fn.botonAlta = function(idDialogo,tituloDialogo,idFormAlta,opciones) {
 		$.dialogoGuardar(idDialogo,$(this).attr('href')+"&display=plain",tituloDialogo,idFormAlta,opciones);
 	});
 };
+
+
+/**
+ * Redimensiona verticalmente la pantalla
+ */
+function resize() {
+	var newHeight = $(window).height()-$("body > header").outerHeight(true)-$("footer").outerHeight(true)-1;
+
+	if($("#main-section").outerHeight()<=newHeight)
+		$("#main-section").css('min-height',newHeight+'px');
+	else
+		$("#main-section").css('min-height','auto');
+}
+window.onresize = resize;
+//window.onscroll = resize;
+
+$(document).ready(function(){
+	resize();
+	
+	
+	/**
+	 * Sidebar accordion
+	 */
+	$('#sidebar ul li.has-sub ul').hide();
+	//On click any <a> within the container
+	$('#sidebar ul li.has-sub > a').click(function(e) {
+		e.preventDefault();
+
+	    //Close all <ul> but the <ul> right after the clicked <li>
+	    $(e.target).next('ul').siblings('ul').slideUp();
+	    //Toggle open/close on the <ul> after the <li>, opening it if not open.
+	    $(e.target).next('ul').slideToggle().parent().toggleClass('open');;
+	});
+})
