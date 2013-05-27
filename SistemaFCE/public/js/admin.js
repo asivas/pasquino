@@ -352,7 +352,7 @@ $(document).ready(function(){
 		e.preventDefault();
 
 	    //Close all <ul> but the <ul> right after the clicked <li>
-	    $(e.target).next('ul').siblings('ul').slideUp();
+	   // $(e.target).parent().next('li').siblings('ul').slideUp();
 	    //Toggle open/close on the <ul> after the <li>, opening it if not open.
 	    $(e.target).next('ul').slideToggle().parent().toggleClass('open');;
 	});
