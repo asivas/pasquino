@@ -26,12 +26,11 @@
 	<header>
 		<ul>
 		{foreach from=$columnsList key=columnName item=property}
-		<div class="data">
-			<li class='{$property}'>
-				<div class="data">
-					{$columnName}
-				</div>
-			</li>		
+		<li class='{$property}'>
+			<div class="data">
+				{$columnName}
+			</div>
+		</li>		
 		{/foreach}
 		</ul>
 	</header>	

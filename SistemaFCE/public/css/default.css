@@ -398,7 +398,6 @@ section .lista {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	
-	box-shadow: 0 2px 2px -2px #ccc;
 	display: table;
 }
 
@@ -407,7 +406,6 @@ section .lista {
 section .lista > header {
 	border-bottom: 1px solid rgb(168, 168, 168);
 	box-shadow: 0 1px 0 #fff;
-	display: table;
 	width: 100%;
 	height: 40px;
 	
@@ -424,8 +422,6 @@ section .lista > header h6 {
 	float: left;
 	text-shadow: 0 1px #fff;
 	color: #636363;
-	float: left;
-	display: block;
 	padding: 0 14px;
 	line-height: 40px;
 	font-size: 14px;
@@ -453,7 +449,6 @@ section .lista > header .tools {
 
 /* GRID */
 section .grid {
-	display: table;
 	width: 100%;
 }
 
