@@ -214,6 +214,7 @@ nav#sidebar {
 			text-shadow: 0 1px 1px #333 !important;
 			padding: 13px 15px;
 			font-size: 14px;
+			text-decoration: none;
 		}
 		
 		nav#sidebar > ul > li a:HOVER {
@@ -307,7 +308,6 @@ form.base-form .botonera {
 	border-top: 1px solid #ccc;
 	background: #eeeeee;
 	text-align: right;
-	
 }
 
 form.base-form .form_element {
@@ -407,18 +407,17 @@ section .lista {
 section .lista > header {
 	border-bottom: 1px solid rgb(168, 168, 168);
 	box-shadow: 0 1px 0 #fff;
-	
 	display: table;
 	width: 100%;
 	height: 40px;
-
+	
+	background: url(../img/grad-overlay.png) #ddd 0 -1px repeat-x;
+	background: linear-gradient(top, #ededed 0%,#c4c4c4 100%);
 	background: -moz-linear-gradient(top, #ededed 0%, #c4c4c4 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ededed), color-stop(100%,#c4c4c4));
 	background: -webkit-linear-gradient(top, #ededed 0%,#c4c4c4 100%);
 	background: -o-linear-gradient(top, #ededed 0%,#c4c4c4 100%);
 	background: -ms-linear-gradient(top, #ededed 0%,#c4c4c4 100%);
-	background: linear-gradient(top, #ededed 0%,#c4c4c4 100%);
-
 }
 
 section .lista > header h6 {
