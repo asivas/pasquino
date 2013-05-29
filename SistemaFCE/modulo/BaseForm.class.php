@@ -149,7 +149,11 @@ class BaseForm extends HTML_QuickForm {
         $arregloOpciones = array();
         
         if($vacio)
-            $arregloOpciones[0] = '';
+        {
+            if($vacio===true)
+            	$vacio = '';
+        	$arregloOpciones[0] = $vacio;
+        }
         
         
         if(is_array($listaElementos))     
