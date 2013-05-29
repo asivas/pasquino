@@ -450,14 +450,25 @@ class BaseMod {
     public function formLogin()
     {
     	$this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['nombre']);
-        $this->mostrar($this->smarty->getTemplateVars('pQnFormLoginTpl'));
+    	if(method_exists($this->smarty,'getTemplateVars'))
+    		$tpl = $this->smarty->getTemplateVars('pQnFormLoginTpl');
+    	else
+    		$tpl = $this->smarty->get_template_vars('pQnFormLoginTpl');
+    	 
+    	$this->mostrar($tpl);
+        
         exit();
     }
 
     public function sinPermisos()
     {
         $this->_menuModTplPath = '';
-        $this->mostrar($this->smarty->getTemplateVars('pQnSinPermisosTpl'));
+        if(method_exists($this->smarty,'getTemplateVars'))
+        	$tpl = $this->smarty->getTemplateVars('pQnSinPermisosTpl');
+        else
+        	$tpl = $this->smarty->get_template_vars('pQnSinPermisosTpl');
+         
+        $this->mostrar($tpl);
         die();
     }
 
@@ -492,10 +503,11 @@ class BaseMod {
 
     protected function checkPermisos($req)
     {
-    	$isLogedIn = $this->LogIn();
      	if(!$this->_esPublica($req['accion']))
     	{
-    	 	if(!$isLogedIn)
+    		$isLogedIn = $this->LogIn();
+    		
+    		if(!$isLogedIn)
 	        {
 	            $this->formLogin();
 	        }
