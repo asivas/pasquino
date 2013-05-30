@@ -342,6 +342,8 @@ window.onresize = resize;
 $(document).ready(function(){
 	resize();
 	
+	//Menú de usuario
+	$('.dropdown-toggle').dropdown();
 	
 	/**
 	 * Sidebar accordion

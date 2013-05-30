@@ -98,6 +98,23 @@ body > header {
 		margin-top: 1px;
 	}
 	
+#user-tools {
+	margin-top: 21px;
+}
+
+#user-tools a.dropdown-toggle  {
+	color: #d1d0d0;
+}
+
+#user-tools a.dropdown-menu  {
+	display: block;
+	padding: 3px 20px;
+	clear: both;
+	font-weight: normal;
+	line-height: 20px;
+	color: #333;
+	white-space: nowrap;
+}
 
 body > footer {
 	height: 35px;
