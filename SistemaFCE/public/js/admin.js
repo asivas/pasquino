@@ -285,16 +285,16 @@ jQuery['dialogoGuardar'] = function(idDialogo,url,titulo,idForm,opciones){
 	pQn.fn.dialogoGuardar(idDialogo,url,titulo,idForm,opciones);
 };
 
-pQn.fn.bindAltaBtn = function(idBotonAlta,idDialogo,nombeEntidadPrincipal,idForm,options) {
+pQn.fn.bindAltaBtn = function(idBotonAlta,idDialogo,nombreEntidadPrincipal,idForm,options) {
 	$("#"+idBotonAlta).botonAlta(idDialogo,"Nuevo "+nombreEntidadPrincipal ,idForm,options);
 };
 
-pQn.fn.bindModifBtn = function(href,idDialogo,nombeEntidadPrincipal,idForm,options) {
+pQn.fn.bindModifBtn = function(href,idDialogo,nombreEntidadPrincipal,idForm,options) {
 	$.dialogoGuardar(idDialogo,href+"&display=plain","Modificar "+nombreEntidadPrincipal,idForm,options);
 };
 
 pQn.fn.bindFiltro =  function(nombreCampoFiltro,idLista,nombreModulo,options) {
-	$("input[name='"+nombreCampoFiltro+"']").keyUpFilter(idLista,aMod,"listar",options);
+	$("input[name='"+nombreCampoFiltro+"']").keyUpFilter(idLista,nombreModulo,"listar",options);
 };
 	
 
@@ -307,13 +307,13 @@ jQuery['initModulo'] = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCa
 pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod) {
 	var $filtroFormSubmit = function(){$("input[name='"+nombreCampoFiltro+"']").parent("form").submit();};
 	$fnBindAltaBtn = function(){ 
-		pQn.fn.bindAltaBtn(idBotonAlta,idDialogo, nombeEntidadPrincipal, idForm, {success:$filtroFormSubmit});		
+		pQn.fn.bindAltaBtn(idBotonAlta,idDialogo, nombreEntidadPrincipal, idForm, {success:$filtroFormSubmit});		
 	};
 	$fnBindModifBtn = function(href){ 
-		pQn.fn.bindModifBtn(href, idDialogo, nombeEntidadPrincipal, idForm, {success:$filtroFormSubmit});
+		pQn.fn.bindModifBtn(href, idDialogo, nombreEntidadPrincipal, idForm, {success:$filtroFormSubmit});
 	};
 	$fnBindFiltro = function() {
-		pQn.fn.bindFiltro(nombreCampoFiltro, idLista, nombreModulo, {success:function(){$.setupButtons();}});
+		pQn.fn.bindFiltro(nombreCampoFiltro, idLista, aMod, {success:function(){$.setupButtons();}});
 	};
 	$.setupButtons();
 };
