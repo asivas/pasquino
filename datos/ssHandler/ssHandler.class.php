@@ -204,6 +204,12 @@
         	$this->auth->setIdle($minutes*60,$add);	
         }
         
+        function getIdle()
+        {
+        	return $this->auth->idle;
+        }
+        
+        
 		/**
 	 	 * 
 	 	 * Limpia la variable definida por key

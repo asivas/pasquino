@@ -246,7 +246,7 @@ class BaseMod {
     	
     	// prueba de variables default de las partes estandares (sys-names) de templates las que tiene definido el dtd
     	//TODO: ver si se peude leer del dtd con algo medio simple y armar el arreglo a recorrer
-    	$sysNames = array('Base','Default','Lista','Formulario','Info','FormFiltro','Menu','Admin','Head');
+    	$sysNames = array('Base','Default','Lista','Formulario','Info','FormFiltro','Menu','Admin','Head','FormLogin');
     	foreach($sysNames as $sysName)
     	{
     		$sysNameTplFile = Configuracion::findTplPath($this->_skinConfig,$sysName);

@@ -12,9 +12,7 @@ class Session extends ssHandler{
     function initMembers()
     {
         parent::initMembers();
-
         $this->cookie_min= 0;
-                
     }
     
     /**
@@ -23,6 +21,10 @@ class Session extends ssHandler{
     function getRemainingTime() {
     	if($this->auth->expire > 0)
     		return time() - ($this->auth->session['timestamp'] + $this->auth->expire);
+    	 
+    	if($this->auth->idle > 0)
+    		return ($this->auth->session['idle'] + $this->auth->idle) - time();
+    	
     	return FALSE;
     }
 }

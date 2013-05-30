@@ -99,7 +99,7 @@
 <!ELEMENT archivo EMPTY>
 <!ATTLIST archivo
 	nombre CDATA #REQUIRED
-	sys-name (Base|Default|Lista|Formulario|Info|FormFiltro|Menu|Admin|Head|Header|Footer) #IMPLIED
+	sys-name (Base|Default|Lista|Formulario|Info|FormFiltro|Menu|Admin|Head|Header|Footer|FormLogin) #IMPLIED
 	type (javascript|css) #IMPLIED
 >
 
