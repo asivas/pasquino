@@ -106,6 +106,10 @@ body > header {
 	color: #d1d0d0;
 }
 
+#user-tools a.dropdown-toggle i {
+	margin-left: 5px;
+}
+
 #user-tools a.dropdown-menu  {
 	display: block;
 	padding: 3px 20px;
