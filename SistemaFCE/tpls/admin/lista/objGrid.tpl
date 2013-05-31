@@ -41,22 +41,27 @@
 		</article>
 	{/if}
 	{foreach from=$objectsList item=object}
-	<article type='{get_class($object)}' itemId='{$object->getId()}'>
-		<ul>
-		{foreach from=$columnsList key=columnName item=property}
-			<li class='{$property}'>
-				<div class="data"> 
-					{assign var=data value=$facade->getPropiedadMod($property,$object)}
-					{if  ! strpos($data,'>') }
-						{$data|resaltar:$filtroNombre}
-					{else}
-						{$data}
-					{/if}
-				</div>
-			</li>
-		{/foreach}
-		</ul>
-	</article>
+		{$id = $object->getId()}
+		{if is_array($id)}
+			{$id = implode('-',$id)}
+		{/if}
+		
+		<article type='{get_class($object)}' itemId='{$id}'>
+			<ul>
+			{foreach from=$columnsList key=columnName item=property}
+				<li class='{$property}'>
+					<div class="data"> 
+						{assign var=data value=$facade->getPropiedadMod($property,$object)}
+						{if  ! strpos($data,'>') }
+							{$data|resaltar:$filtroNombre}
+						{else}
+							{$data}
+						{/if}
+					</div>
+				</li>
+			{/foreach}
+			</ul>
+		</article>
 	{/foreach}
 	</div>
 </div>
