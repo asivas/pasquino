@@ -451,12 +451,17 @@ class BaseMod {
     {
     	$this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['nombre']);
     	if(method_exists($this->smarty,'getTemplateVars'))
+    	{
     		$tpl = $this->smarty->getTemplateVars('pQnFormLoginTpl');
+    		$this->_tilePath = $this->smarty->getTemplateVars('pQnBaseTpl');
+    	}
     	else
+    	{
     		$tpl = $this->smarty->get_template_vars('pQnFormLoginTpl');
+    		$this->_tilePath = $this->smarty->get_template_vars('pQnBaseTpl');
+    	}
     	 
     	$this->mostrar($tpl);
-        
         exit();
     }
 
