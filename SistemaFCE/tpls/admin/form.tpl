@@ -6,10 +6,14 @@
 			 && $nc != 'javascript' && $nc != 'attributes' && $nc != 'requirednote'
 			 && $nc != 'errors' && $nc != 'hidden'}
 			
-			<div class='form_element {$nc}'>
-				<label for='{$nc}'>{$campo.label}</label>
-				{$campo.html}
-			</div>
+				<div class='form_element {$nc}'>
+					<label for='{$nc}'>{$campo.label}</label>
+					{if $campo.frozen == true}
+						<span class="frozen">{$campo.html}</span>
+					{else}
+						{$campo.html}
+					{/if}
+				</div>
 			{/if}
 			{/foreach}
 		</div>

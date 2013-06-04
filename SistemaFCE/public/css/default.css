@@ -380,6 +380,14 @@ form.base-form .form_element:last-child {
 		  	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
 		}
 		
+		form.base-form .form_element span.frozen {
+			float: left;;
+			width: 350px;
+			margin-right: 15px;
+			margin-top: 2px;
+			padding-right: 3px;
+			font-weight: bold;
+		}
 
 /* elementos genericos */
 input[type="text"], 
