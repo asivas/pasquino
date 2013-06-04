@@ -11,7 +11,7 @@
 			{$usuario->getNombre()} {$usuario->getApellido()}<i class="icon-chevron-down icon-white"></i>
 		</a>
 	  	<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-	    	<li><a href="#"><i class="icon-lock"></i> Cambiar Contraseña</a></li>
+	    	<li><a class="changePassword" href="#"><i class="icon-lock"></i> Cambiar Contraseña</a></li>
 	    	<li><a class="preferencias" href="#"><i class=" icon-edit"></i> Preferencias</a></li>
 	    	<li  class="divider"></li>
 	    	<li><a href="?logout"><i class="icon-off"></i> Cerrar Sesion</a></li>
