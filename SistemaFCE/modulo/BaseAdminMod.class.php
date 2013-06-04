@@ -117,11 +117,12 @@ abstract class BaseAdminMod extends BaseMod {
 	}
 
 	/**
-	 * Envía un mensaje de errror ante fallo de validaci�n del formulario
+	 * Envía un mensaje de errror ante fallo de validación del formulario
+	 * @param BaseForm $form Opcional el formulario al que fallá la validación, si no se pasa se usa el del modulo
 	 */
-	protected function sendValidateErrorMsg() {
+	protected function sendValidateErrorMsg($form=null) {
 		$strErr = "No se cumplen las reglas de validación:";
-		$f = $this->renderForm();
+		$f = $this->renderForm('formulario',$form);
 		foreach($f['errors'] as $nombreRegla=>$err)
 			$strErr .= "\n".$err;
 		$this->mensajeERR($strErr);
