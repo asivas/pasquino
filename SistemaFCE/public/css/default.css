@@ -277,7 +277,8 @@ nav#sidebar {
 				margin-right: 3px;
 			}
 			
-			nav#sidebar > ul > li > a:HOVER > i {
+			nav#sidebar > ul > li > a:HOVER > i,
+			nav#sidebar > ul > li.active > a > i {
 				opacity: 1;
 			}
 	

@@ -307,7 +307,8 @@ class BaseMod {
             {
                 if(($mItem = $this->_getMenuItemArray($nombreModulo,$item))==null)
                     continue;
-
+                $mItem['id'] = ++$c;
+                
                 $name = (string) $item['name'];
                 if(isset($item->menuItem))
                     $menuItems[$name] = $this->_getMenuModuloArray($nombreModulo,$item);
@@ -329,8 +330,10 @@ class BaseMod {
         {
             $n = (string)$mod['nombre'];
             $m = $this->_getMenuModuloArray($n,$mod->menuPrincipal);
-            if(!empty($m))
-              $menuPpal[$n] = $m;
+            if(!empty($m)) {
+            	$m['_']['id'] = ++$c;
+              	$menuPpal[$n] = $m;          
+            }
         }
         return $menuPpal;
     }
