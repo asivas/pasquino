@@ -238,7 +238,8 @@ nav#sidebar {
 			text-decoration: none;
 		}
 		
-		nav#sidebar > ul > li a:HOVER {
+		nav#sidebar > ul > li > a:HOVER,
+		nav#sidebar > ul > li.active > a {
 			text-decoration: none;
 			color: #fff !important;
 			text-shadow: 0 1px 0 rgba(0, 0, 0, .25);
@@ -286,7 +287,12 @@ nav#sidebar {
 		}
 		
 		nav#sidebar > ul > li > ul {
-			padding: 8px 20px;			
+			padding: 8px 20px;
+			display: none;	
+		}
+		
+		nav#sidebar > ul > li.active > ul {
+			display: block;	
 		}
 		
 		nav#sidebar > ul > li > ul > li > a {

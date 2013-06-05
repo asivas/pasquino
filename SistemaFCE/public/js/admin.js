@@ -361,7 +361,7 @@ $(document).ready(function(){
 	/**
 	 * Sidebar accordion
 	 */
-	$('#sidebar ul li.has-sub ul').hide();
+	
 	//On click any <a> within the container
 	$('#sidebar ul li.has-sub > a').click(function(e) {
 		e.preventDefault();
@@ -371,4 +371,33 @@ $(document).ready(function(){
 	    //Toggle open/close on the <ul> after the <li>, opening it if not open.
 	    $(e.target).next('ul').slideToggle().parent().toggleClass('open');;
 	});
-})
+});
+
+/*
+function confirm(msg,title) {
+	
+	//Variables default
+	if(msg == null) title = "¿Está seguro que desea continuar?";
+	if(title == null) title = "Confirmación";
+	
+	$("body").crearDiv("tmp-conf");
+	var $dlg = $( "#tmp-conf" );
+	$dlg.html(msg);
+	$dlg.dialog({
+	      resizable: false,
+	      height:140,
+	      title: title,
+	      modal: true,
+	      buttons: {
+	        "Aceptar": function() {
+	          $( this ).dialog( "close" );
+	          return true;
+	        },
+	        "Cancelar": function() {
+	          $( this ).dialog( "close" );
+	          return false;
+	        }
+	      }
+	    });
+}
+*/
