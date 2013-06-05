@@ -12,6 +12,7 @@
 <ul>
 {foreach from=$menuItems item=mItem key=nomMenu}
 
+	
 
 	{if !is_array($mItem._) }
 		{if  $nomMenu!='_'} {* evito este xq ya se hizo en la llamada anterior*}
@@ -20,7 +21,13 @@
 			{$active = ''}
 			{if "$prefixItem$itemId" == $cItemId} {$active = 'active'} {/if}
 			<li class="{$active}">
-				<a href="{$mItem.url}&itemId={$prefixItem}{$mItem.id}">{$mItem.tag}</a>
+				<a href="{$mItem.url}&itemId={$prefixItem}{$mItem.id}">
+					{* Icono de menu *}
+					{if $mItem.icon != null}
+						<i class="{$mItem.icon} icon-white"></i>
+					{/if}
+					{$mItem.tag}
+				</a>
 			</li>
 		{/if}
 	{else}
@@ -36,12 +43,16 @@
 			{$aCItemId = explode('-',$cItemId)}
 			{$ini = $aCItemId[0]}
 			{if "$prefixItem$itemId" ==  $ini } 
-				{$active = 'active'} 
+				{$active = 'active open'} 
 			{/if}
 			
 			<li class="has-sub {$active}">
 				<a href="{$mItem._.url}&itemId={$prefixItem}{$itemId}">
-					<i class="icon-th-list icon-white"></i>
+					
+					{* Icono de menu *}
+					{if $mItem._.icon != null}
+						<i class="{$mItem._.icon} icon-white"></i>
+					{/if}
 					{$mItem._.tag}
 					<span class="arrow"></span>
 				</a>
@@ -51,7 +62,10 @@
 		{else}
 			<li class="{$active}">
 				<a href="{$mItem._.url}&itemId={$prefixItem}{$itemId}">
-					<i class="icon-th-list icon-white"></i>
+					{* Icono de menu *}
+					{if $mItem._.icon != null}
+						<i class="{$mItem._.icon} icon-white"></i>
+					{/if}
 					{$mItem._.tag}
 				</a>
 			</li>

@@ -261,7 +261,7 @@ class BaseMod {
     }
     
     /**
-     * Genera un arreglo con [url,tag] si el operador tiene permisos
+     * Genera un arreglo con [url,tag,icon] si el operador tiene permisos
      */
     private function _getMenuItemArray($nombreModulo,$item)
     {
@@ -283,8 +283,11 @@ class BaseMod {
         $murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}&accion={$item['accion']}";
         if(!empty($item['url']))
             $murl = (string)$item['url'];
+        
+        if(!empty($item['icon']))
+        	$micon = (string)$item['icon'];
 
-        return array('url'=>$murl,'tag'=>$mtag);
+        return array('url'=>$murl,'tag'=>$mtag,'icon'=>$micon);
     }
 
     /**
