@@ -1,4 +1,4 @@
-<!ELEMENT sistema (date-formats?,mappings,data-sources?,modulos?,templates?)>
+<!ELEMENT sistema (date-formats?,loggers?,mappings,data-sources?,modulos?,templates?)>
 <!ATTLIST sistema 
 	nombre CDATA #REQUIRED
 	version CDATA #IMPLIED
@@ -10,6 +10,14 @@
 <!ELEMENT date-format (#PCDATA)>
 <!ELEMENT datetime-format (#PCDATA)>
 <!ELEMENT time-format (#PCDATA)>
+
+<!ELEMENT loggers (logger*)>
+
+<!ELEMENT logger EMPTY>
+<!ATTLIST logger
+	class CDATA #REQUIRED
+	target CDATA #IMPLIED
+>
 
 <!ELEMENT mappings (mapping*)>
 
@@ -109,6 +117,7 @@
 	accion CDATA #REQUIRED
 	tag CDATA #REQUIRED
 	url CDATA #IMPLIED
+	icon CDATA #IMPLIED
 >
 
 <!ELEMENT menuItem (permisos?,menuItem*)>
@@ -117,6 +126,7 @@
 	accion CDATA #REQUIRED	
 	tag CDATA #REQUIRED
 	url CDATA #IMPLIED
+	icon CDATA #IMPLIED
 >
 
 <!ELEMENT permisos (permiso*)>
