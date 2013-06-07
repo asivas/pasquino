@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.4 2011-02-01 13:56:37 martinezdiaz Exp $
+ * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.5 2013-06-07 03:00:21 trotti Exp $
  *
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * @package Log
  */
 require_once("datos/adodb/adodb.inc.php");
@@ -206,15 +206,15 @@ class Log_adodb extends Log
 
         /* Execute the SQL query for this log entry insertion. */
         
-        if(!$resultado = $this->_db->AutoExecute($this->_tabla,$values,'INSERT'))
-		{
+        $resultado = $this->_db->AutoExecute($this->_tabla,$values,'INSERT');
+		/*{
 			print $this->_db->ErrorMsg();
-			die;
+			
 		}	
  
         $this->_announce(array('priority' => $priority, 'message' => $message));
-
-        return true;
+*/
+        return $resultado;
     }
 
     /**

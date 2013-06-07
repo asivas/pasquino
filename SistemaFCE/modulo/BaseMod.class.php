@@ -24,6 +24,10 @@ if(!class_exists('DaoUsuario')) //Si el sistema implementa otro DaoUsuario no lo
 require_once 'SistemaFCE/modulo/BaseForm.class.php';
 require_once 'SistemaFCE/modulo/RESTMod.class.php';
 
+// Pear Log
+require_once 'Log.php';
+
+
 class BaseMod {
 
     var $smarty;
@@ -67,6 +71,11 @@ class BaseMod {
      */
     protected $cssFilesList;
 
+    /**
+     * Log de acciones de sistema.
+     * @var PEAR::Log
+     */
+    protected $logger=null;
 
     /**
      *
@@ -116,6 +125,8 @@ class BaseMod {
 
             $this->smarty->assign('xajax',$this->xajax->getJavascript('/js'));
         }
+        if (Configuracion::getLoggerClass()!= null)
+        	$this->logger= Log::factory(Configuracion::getLoggerClass());
 	}
     /**
      * Provee una referencia al formulario del modulo
@@ -1137,4 +1148,6 @@ class BaseMod {
 		
 		$this->responseJson($resp);
 	}
+	
+	protected function log(Entidad &$aEntity,$aAction = null){}
 }

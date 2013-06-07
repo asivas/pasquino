@@ -428,4 +428,19 @@ class Configuracion {
     	return "Usuario";
     }
     
+    /**
+     * 
+     * Obtiene desde XML de configuración el nombre de clase del objeto log
+     */
+    //FIXME: this method should return array of loggers configurations
+    public static function getLoggerClass(){
+    	//TODO: contemplar N loggers
+    	$config = Configuracion::getConfigXML();
+    	if (isset($config->loggers))
+    		foreach ($config->loggers as $logger) {
+    			return (String)$logger->logger['class'];
+    		}    		
+    	return null;
+    }
+    
 }

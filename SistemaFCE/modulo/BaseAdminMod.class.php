@@ -110,6 +110,7 @@ abstract class BaseAdminMod extends BaseMod {
 		if($this->mainDao->save($aObj))
 		{
 			$this->guardarExtraProps($aObj);
+			$this->log($aObj);
 			$this->mensajeOK("{$strInfo} fue guardado con exito",array('id'=>$aObj->getId()));
 		}
 		else
@@ -181,9 +182,10 @@ abstract class BaseAdminMod extends BaseMod {
 		else
 			$strInfo = "el elemento de tipo ".get_class($aObj);
 
-		if ($this->mainDao->deletePorId($id))
+		if ($this->mainDao->deletePorId($id)){
+			$this->log($aObj,'ELIMINO');
 			$this->mensajeOK("Se pudo eliminar {$strInfo} #{$id} ");
-		else
+		}else
 			$this->mensajeERR("No se puede eliminar {$strInfo} [Error {$this->mainDao->getLastError()}]");
 	}
 
@@ -258,4 +260,24 @@ abstract class BaseAdminMod extends BaseMod {
 		return $this->smarty->fetch($listaAccionesTpl);
 	}
 
+	/**
+	 * Edicion y Baja se loguean como warning
+	 * Altas como notice
+	 * @see BaseMod::log()
+	 */
+	protected function log(Entidad &$aEntity,$aAction = null){
+		if ($this->logger != null){
+			if ($aAction==null){
+				if ($aEntity->getEdicion()){
+					$aAction="MODIFICO";
+				}else{
+					$aAction="AGREGO";
+					$this->logger->notice('El usuario # '.$this->session->getIdUsuario() .' '.$aAction.' '. $aEntity->toString());
+					return ; 				
+				}
+			}
+			$this->logger->warning('El usuario # '.$this->session->getIdUsuario() .' '.$aAction.' '. $aEntity->toString());
+			return ;
+		}
+	}
 }
