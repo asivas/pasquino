@@ -272,11 +272,11 @@ abstract class BaseAdminMod extends BaseMod {
 					$aAction="MODIFICO";
 				}else{
 					$aAction="AGREGO";
-					$this->logger->notice('El usuario # '.$this->session->getIdUsuario() .' '.$aAction.' '. $aEntity->toString());
+					$this->logger->notice('El usuario '.$this->getUsuario()->toString().' '.$aAction.' '. $aEntity->toString());
 					return ; 				
 				}
 			}
-			$this->logger->warning('El usuario # '.$this->session->getIdUsuario() .' '.$aAction.' '. $aEntity->toString());
+			$this->logger->warning('El usuario '.$this->getUsuario()->toString().' '.$aAction.' '. $aEntity->toString());
 			return ;
 		}
 	}
