@@ -302,7 +302,7 @@ pQn.fn.bindFiltro =  function(nombreCampoFiltro,idLista,nombreModulo,options) {
  * 
  */
 jQuery['initModulo'] = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod,options) {
-	pQn.fn.initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod);
+	pQn.fn.initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod,options);
 };
 pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod,options) {
 	var $filtroFormSubmit = function(){$("input[name='"+nombreCampoFiltro+"']").parent("form").submit();};
@@ -317,13 +317,13 @@ pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampo
 	};
 	$.setupButtons();
 	
-	if(options.onInit && typeof options.onInit == 'function')
+	if((options) && ('onInit' in options) && (typeof options.onInit == 'function'))
 		options.onInit();
 	
 };
 
 function initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod,options) {
-	$.initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod);
+	$.initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod,options);
 }
 
 

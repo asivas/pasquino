@@ -565,3 +565,32 @@ section .grid {
 	}
 
 /*********************************** FIN LISTAS **************************************/
+
+
+
+/*
+ * ICONOS
+ *
+ * Estilos para iconografia del sistema
+ *
+ */
+ 
+ *[class^="icon-toolbar"] {
+		background-image: url("../img/icons_toolbar.png");
+		background-repeat: no-repeat;
+		height: 24px; 
+		width: 24px;
+		display: inline-block;
+}
+.icon-toolbar-add {background-position: 0px 0px;}
+.icon-toolbar-add:HOVER {background-position: 0px -24px;}
+.icon-toolbar-cancel {background-position: -24px 0px}
+.icon-toolbar-cancel:HOVER {background-position: -24px -24px}
+.icon-toolbar-edit {background-position: -48px 0px}
+.icon-toolbar-edit:HOVER {background-position: -48px -24px}
+.icon-toolbar-save {background-position: -72px 0px}
+.icon-toolbar-save:HOVER {background-position: -72px -24px}
+.icon-toolbar-print {background-position: -96px 0px}
+.icon-toolbar-print:HOVER {background-position: -96px -24px}
+
+ 
