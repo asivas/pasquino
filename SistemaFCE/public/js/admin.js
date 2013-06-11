@@ -47,6 +47,7 @@
 		doFilter: function(tiempo,aInputName){	
 			if(tiempo==pQn.ultimoKeyup){
 				var aInput=$("input[name="+aInputName+"]");
+				aInput.addClass("loading");
 				var aInputVal=aInput.val();
 				if(this.filtroAnterior!=aInputVal){	
 					this.filtroAnterior=aInputVal;
@@ -67,7 +68,8 @@
 				}
 				
 				srcObj.load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
-						function(response, status, xhr) {					
+						function(response, status, xhr) {	
+							elCampo.removeClass("loading");
 					  		if (status == "error") {
 					  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
 					  		}else{
@@ -76,7 +78,9 @@
 					  			   aOptions.success!=null && 
 					  			   (typeof aOptions.success == 'function')) 
 					  				aOptions.success();
+					  		
 					  		}
+					  		
 				});
 				e.preventDefault();
 			});

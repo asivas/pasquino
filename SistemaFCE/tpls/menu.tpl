@@ -6,9 +6,10 @@
 	{$cItemId = $smarty.get.itemId}
 {else}
 	{$cItemId = 1}
+	
 {/if}
 
-
+{$modulo}
 <ul>
 {foreach from=$menuItems item=mItem key=nomMenu}
 

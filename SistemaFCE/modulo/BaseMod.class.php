@@ -491,7 +491,7 @@ class BaseMod {
         else
         	$tpl = $this->smarty->get_template_vars('pQnSinPermisosTpl');
          
-        $this->mostrar($tpl);
+        $this->mostrar($tpl,$_REQUEST['display']);
         die();
     }
 

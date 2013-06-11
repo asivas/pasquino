@@ -412,6 +412,9 @@ textarea {
 	color: #666666;
 	font-size: 12px !important;
 }
+input.loading {
+    background: white url('../img/ajax-loader.gif') right 5px center no-repeat;
+}
 
 /*********************************** FIN FORMULARIOS **************************************/
 
@@ -470,18 +473,57 @@ section .lista > header .tools {
 
 	section .lista > header .tools li {
 		float: left;
-		padding: 0 15px;
+		
 		border-left: 1px solid #bcbcbc;
 		height: 40px;
 	}
 
 	section .lista > header .tools .filtro  {
 		margin-top: 8px;
+		padding: 0 15px;
+	}
+
+
+/* 	BOTON ALTA */
+/* TODO: Mejorar esta parte para permitir multiples botones en el toolbar */
+
+#botonAlta {
+	border: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	margin: 0 !important;
+	width: 40px;
+	height: 40px;
+}
+
+	#botonAlta > a {
+		height: 40px;
+		width: 40px;
+		float: left;
 	}
 	
-	section .lista > header .tools #botonAlta{
-		margin-top: 10px;
+		#botonAlta > a > span {
+			width: 24px !important;
+			height: 24px !important;
+			background-image: url("/sistemafce/img/icons_toolbar.png");
+			background-position: 0px 0px;
+			background-repeat: no-repeat;
+			margin: 9px 0 0 9px !important;
+		}
+	
+	#botonAlta > a:HOVER {
+		background: url(../img/grad-overlay.png) #ddd 0 -1px repeat-x;
+		background: linear-gradient(top, #ececec 0%,#aaaaaa 100%);
+		background: -moz-linear-gradient(top, #ececec 0%, #aaaaaa 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ececec), color-stop(100%,#aaaaaa));
+		background: -webkit-linear-gradient(top, #ececec 0%,#aaaaaa 100%);
+		background: -o-linear-gradient(top, #ececec 0%,#aaaaaa 100%);
+		background: -ms-linear-gradient(top, #ececec 0%,#aaaaaa 100%);
 	}
+		
+		#botonAlta > a:HOVER > span {
+			background-position: 0px -24px;
+		}
 
 /* GRID */
 section .grid {
