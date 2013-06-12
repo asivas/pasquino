@@ -9,7 +9,6 @@
 	
 {/if}
 
-{$modulo}
 <ul>
 {foreach from=$menuItems item=mItem key=nomMenu}
 
