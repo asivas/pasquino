@@ -1,27 +1,44 @@
 {*smarty*}
-
-{assign var=prefixItem value=$prefixItem}
-
 {if isset($smarty.get.itemId)}
 	{$cItemId = $smarty.get.itemId}
 {else}
-	{$cItemId = 1}
-	
+	{$nMod = $smarty.get.mod|lower}
+	{$nAccion = $smarty.get.accion|lower}
+	{if empty($nMod) || empty($nAccion)}
+		{$cItemId = 1}
+	{/if}
 {/if}
 
 <ul>
 {foreach from=$menuItems item=mItem key=nomMenu}
 
 	
+	{if !is_array($mItem._)}
+		{$cItem = $mItem}
+	{else}
+		{$cItem = $mItem._}
+	{/if}
+
+	{$active = ''}
+	{*if !$markActive*}
+		{$id = $cItem.id}
+		{if isset($cItemId)}
+			{if "$prefixItem$id" == $cItemId}{$active = 'active'}{$markActive = true}{/if}
+		{else}
+			{if !empty($nMod) && !empty($nAccion)}
+				{if stripos($cItem.url,"mod=$nMod") !== false && stripos($cItem.url,"accion=$nAccion") !== false}
+					{$active = 'active'} 
+					{$markActive = true}
+				{/if}
+			{/if}
+		{/if}
+	{*/if*}
 
 	{if !is_array($mItem._) }
 		{if  $nomMenu!='_'} {* evito este xq ya se hizo en la llamada anterior*}
-			{$itemId = $mItem.id}
-			
-			{$active = ''}
-			{if "$prefixItem$itemId" == $cItemId} {$active = 'active'} {/if}
+
 			<li class="{$active}">
-				<a href="{$mItem.url}&itemId={$prefixItem}{$mItem.id}">
+				<a href="{$mItem.url}&itemId={$prefixItem}{$cItem.id}">
 					{* Icono de menu *}
 					{if $mItem.icon != null}
 						<i class="{$mItem.icon} icon-white"></i>
@@ -32,22 +49,10 @@
 		{/if}
 	{else}
 	
-		{$itemId = $mItem._.id}
-		
-		{$active = ''}
-		{if "$prefixItem$itemId" == $cItemId} {$active = 'active'} {/if}
-		
+
 		{if count($mItem) > 1}
-		
-			{* Marca padre (revisar tercer nivel)*}
-			{$aCItemId = explode('-',$cItemId)}
-			{$ini = $aCItemId[0]}
-			{if "$prefixItem$itemId" ==  $ini } 
-				{$active = 'active open'} 
-			{/if}
-			
 			<li class="has-sub {$active}">
-				<a href="{$mItem._.url}&itemId={$prefixItem}{$itemId}">
+				<a href="{$mItem._.url}&itemId={$prefixItem}{$cItem.id}">
 					
 					{* Icono de menu *}
 					{if $mItem._.icon != null}
@@ -56,12 +61,13 @@
 					{$mItem._.tag}
 					<span class="arrow"></span>
 				</a>
-				{include file="$pQnMenuTpl" menuItems=$mItem nomPMenu=$sNomMenu prefixItem="$itemId-"}
+				{include file="$pQnMenuTpl" menuItems=$mItem nomPMenu=$sNomMenu prefixItem="$id-" markActive=$markActive}
 
 			</li>
+			
 		{else}
 			<li class="{$active}">
-				<a href="{$mItem._.url}&itemId={$prefixItem}{$itemId}">
+				<a href="{$mItem._.url}&itemId={$prefixItem}{$cItem.id}">
 					{* Icono de menu *}
 					{if $mItem._.icon != null}
 						<i class="{$mItem._.icon} icon-white"></i>

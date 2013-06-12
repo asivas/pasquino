@@ -47,9 +47,9 @@
 		doFilter: function(tiempo,aInputName){	
 			if(tiempo==pQn.ultimoKeyup){
 				var aInput=$("input[name="+aInputName+"]");
-				aInput.addClass("loading");
 				var aInputVal=aInput.val();
 				if(this.filtroAnterior!=aInputVal){	
+
 					this.filtroAnterior=aInputVal;
 					aInput.parent("form").submit();
 				}
@@ -66,7 +66,7 @@
 					selectorSource = aSourceID;
 					srcObj = $(aSourceID).parent();
 				}
-				
+				elCampo.addClass("loading");
 				srcObj.load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
 						function(response, status, xhr) {	
 							elCampo.removeClass("loading");
@@ -369,16 +369,12 @@ $(document).ready(function(){
 	/**
 	 * Sidebar accordion
 	 */
-	
-	//On click any <a> within the container
 	$('#sidebar ul li.has-sub > a').click(function(e) {
 		e.preventDefault();
-
-	    //Close all <ul> but the <ul> right after the clicked <li>
-	   // $(e.target).parent().next('li').siblings('ul').slideUp();
-	    //Toggle open/close on the <ul> after the <li>, opening it if not open.
 	    $(e.target).next('ul').slideToggle().parent().toggleClass('open');;
 	});
+	
+	$("#sidebar ul li.active").parents("li").addClass("active open");
 });
 
 /*

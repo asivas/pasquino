@@ -188,12 +188,33 @@ abstract class BaseAdminMod extends BaseMod {
 		}else
 			$this->mensajeERR("No se puede eliminar {$strInfo} [Error {$this->mainDao->getLastError()}]");
 	}
+	
+	protected function getDefaultPaginationLimitCount() {
+		return 30;
+	}
+	
+	protected function getPaginationLimitCount($req) {
+		if(isset($req['count'])) return $req['count'];
+		return $this->getDefaultPaginationLimitCount();
+	}
+	
+	protected function getPageOffset($req) {
+		if(isset($req['pag'])) {
+			$limit = $this->getPaginationLimitCount($req);
+			return $limit * ($req['pag']-1);
+		}
+		return null;
+	}
 
 	/* (non-PHPdoc)
 	 * @see BaseMod::lista()
 	 */
 	protected function lista($req){
-		$aObjs = $this->mainDao->findBy($this->getFiltro($req),$req['sort']);
+		$filtro = $this->getFiltro($req);
+		$limitCount = $this->getPaginationLimitCount($req);
+		$aObjs = $this->mainDao->findBy($filtro,$req['sort'],$limitCount,$this->getPageOffset($req));
+		
+		//$aObjs = $this->mainDao->findBy($this->getFiltro($req),$req['sort']);
 
 		$nombreClase="";
 		if(count($aObjs)>0)
@@ -206,6 +227,11 @@ abstract class BaseAdminMod extends BaseMod {
 		$this->smarty->assign('laLista',$aObjs);
 		$this->smarty->assign('claseEntidad',$nombreClase);
 		$this->smarty->assign('modName',strtolower( str_replace("Mod", "", get_class($this)) ));
+		
+		$this->smarty->assign('paginationCurrentPage',$req['pag']);
+		$this->smarty->assign('paginationLimitCount',$limitCount);
+		$this->smarty->assign('paginationCantEntidades',$this->mainDao->count($filtro));
+		
 		$this->mostrar($this->_tplLista,$req['display']);
 	}
 

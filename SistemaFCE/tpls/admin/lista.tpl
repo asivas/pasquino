@@ -20,4 +20,8 @@
 	
 	{include file="$pQnGridTpl" columnsList=$listaColumnas objectsList=$laLista}
 	
+	
+	{include file="$pQnFooterListaTpl"}
+	
+	
 </div>

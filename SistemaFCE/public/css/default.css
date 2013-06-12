@@ -484,6 +484,27 @@ section .lista > header .tools {
 	}
 
 
+section .lista > footer {
+	float: left;
+	width: 100%;
+	border-top: 1px solid #ddd;
+	-webkit-border-bottom-right-radius: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	-moz-border-radius-bottomright: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	background: #F8F8F8;
+	background: -moz-linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #F8F8F8), color-stop(100%, #EFEFEF));
+	background: -webkit-linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+	background: -o-linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+	background: -ms-linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+	background: linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+}
+
+	section .lista > footer .pagination {
+		margin: 7px 10px 3px !important;	
+	}
+
 /* 	BOTON ALTA */
 /* TODO: Mejorar esta parte para permitir multiples botones en el toolbar */
 
