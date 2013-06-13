@@ -228,7 +228,7 @@ abstract class BaseAdminMod extends BaseMod {
 		$this->smarty->assign('claseEntidad',$nombreClase);
 		$this->smarty->assign('modName',strtolower( str_replace("Mod", "", get_class($this)) ));
 		
-		$this->smarty->assign('paginationCurrentPage',$req['pag']);
+		$this->smarty->assign('paginationCurrentPage',isset($req['pag'])?$req['pag']:1);
 		$this->smarty->assign('paginationLimitCount',$limitCount);
 		$this->smarty->assign('paginationCantEntidades',$this->mainDao->count($filtro));
 		

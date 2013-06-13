@@ -334,7 +334,7 @@ form.base-form .elementos {
 form.base-form .botonera {
 	padding: 15px;
 	border-top: 1px solid #ccc;
-	background: #eeeeee;
+	background: #E9E9E9;
 	text-align: right;
 }
 
@@ -485,8 +485,7 @@ section .lista > header .tools {
 
 
 section .lista > footer {
-	float: left;
-	width: 100%;
+	height: 38px;
 	border-top: 1px solid #ddd;
 	-webkit-border-bottom-right-radius: 3px;
 	-webkit-border-bottom-left-radius: 3px;
@@ -501,8 +500,16 @@ section .lista > footer {
 	background: linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
 }
 
+	section .lista > footer .pagination-info {
+		margin: 12px 10px 0;
+		color: #666666;
+		text-shadow: 0 1px 0 #fff;
+		font-size: 10px;
+		font-weight: 400;
+	}
+
 	section .lista > footer .pagination {
-		margin: 7px 10px 3px !important;	
+		margin: 7px 7px 3px !important;	
 	}
 
 /* 	BOTON ALTA */
@@ -628,6 +635,47 @@ section .grid {
 	}
 
 /*********************************** FIN LISTAS **************************************/
+
+
+
+/*
+ * PAGINACION
+ *
+ * Estilos para reemplazar la paginacion de Bootstrap
+ *
+ */
+
+.pagination ul>li>a,
+.pagination ul>li>span {
+	border: 1px solid #dadada;
+	color: #999999;
+	background: #f9f9f9;
+	background: -moz-linear-gradient(top, #f9f9f9 0%, #E9E9E9 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9f9f9), color-stop(100%,#E9E9E9));
+	background: -webkit-linear-gradient(top, #f9f9f9 0%,#E9E9E9 100%);
+	background: -o-linear-gradient(top, #f9f9f9 0%,#E9E9E9 100%);
+	background: -ms-linear-gradient(top, #f9f9f9 0%,#E9E9E9 100%);
+	background: linear-gradient(top, #f9f9f9 0%,#E9E9E9 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#E9E9E9',GradientType=0 );
+}
+
+.pagination ul>li>a:HOVER,
+.pagination ul>li>span:HOVER,
+.pagination ul>li.active>a,
+.pagination ul>li.active>span {
+	background: #dadada;
+	color: #666666;
+}
+
+.pagination ul>li.disabled>a,
+.pagination ul>li.disabled>span,
+.pagination ul>li.disabled>a:HOVER,
+.pagination ul>li.disabled>span:HOVER {
+	opacity: 0.5;
+	color: #999999;
+	background: inherit !important;
+}
+/*********************************** FIN PAGINACION **************************************/
 
 
 

@@ -67,21 +67,47 @@
 					srcObj = $(aSourceID).parent();
 				}
 				elCampo.addClass("loading");
-				srcObj.load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
-						function(response, status, xhr) {	
-							elCampo.removeClass("loading");
-					  		if (status == "error") {
-					  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
-					  		}else{
-					  			
-					  			if(aOptions!=null &&
-					  			   aOptions.success!=null && 
-					  			   (typeof aOptions.success == 'function')) 
-					  				aOptions.success();
-					  		
-					  		}
-					  		
+				
+				$.ajax({
+					url: getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize(),
+					success: function(response, status, xhr) {	
+						
+						elCampo.removeClass("loading");
+				  		if (status == "error") {
+				  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
+				  		}else{
+				  			
+				  			$("body").crearDiv("tmp");
+							$("#tmp").hide().html("").html(response);
+							var grid = $("#tmp").find(selectorSource);
+							var footer = $("#tmp").find("footer");
+							srcObj.html(grid.html());
+							srcObj.parents(".lista").find("footer").html(footer.html());
+							
+				  			if(aOptions!=null &&
+				  			   aOptions.success!=null && 
+				  			   (typeof aOptions.success == 'function')) 
+				  				aOptions.success();
+				  		
+				  		}
+					}
+						
 				});
+//				srcObj.load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
+//						function(response, status, xhr) {	
+//							elCampo.removeClass("loading");
+//					  		if (status == "error") {
+//					  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
+//					  		}else{
+//					  			
+//					  			if(aOptions!=null &&
+//					  			   aOptions.success!=null && 
+//					  			   (typeof aOptions.success == 'function')) 
+//					  				aOptions.success();
+//					  		
+//					  		}
+
+//				});
 				e.preventDefault();
 			});
 			elCampo.unbind('keyup');
