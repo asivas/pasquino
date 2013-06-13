@@ -3,6 +3,6 @@
 {if !isset($idFormFiltro) } {$idFormFiltro="formFiltro"} {/if}
 <div class='filtro'>
 	<form id="{$idFormFiltro}" method="POST">
-		<input type="text" id="{$nombreCampoFiltro}" name="{$nombreCampoFiltro}" value="{$filtroNombre}"/>
+		<input type="text" id="{$nombreCampoFiltro}" name="{$nombreCampoFiltro}" placeholder="Buscar..." value="{$filtroNombre}"/>
 	</form>
 </div>
