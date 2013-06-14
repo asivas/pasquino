@@ -36,6 +36,32 @@
 			$(selectorBotones+' a').tooltip();
 			
 		},
+		setupPaginacion : function(idLista, $formFiltro) {
+			
+			var selectorSource = " #"+idLista;
+			var srcObj = $(selectorSource);
+			if(!srcObj.exists()) {
+				srcObj = $(idLista).parent();
+			}
+			laLista = srcObj.parents('.lista');
+			
+			laLista.on('click','footer > .pagination > ul > li > a',function(e){
+				e.preventDefault();
+				if($(this).parent().hasClass('disabled') || $(this).parent().hasClass('active')) 
+					return;
+				
+				var page = $(this).attr('pag');
+				var count = $(this).attr('count');
+				
+				var $hiddenPag = $('<input type="hidden" name="pag" value="'+page+'"/>');
+				var $hiddenCount = $('<input type="hidden" name="count" value="'+count+'"/>');
+				$hiddenPag.appendTo($formFiltro);
+				$hiddenCount.appendTo($formFiltro);
+				$formFiltro.submit();
+				$hiddenCount.remove();
+				$hiddenPag.remove();
+			});
+		},
 		ultimoKeyup: null,
 		filtroAnterior: '',
 		/**
@@ -46,10 +72,11 @@
 		 */
 		doFilter: function(tiempo,aInputName){	
 			if(tiempo==pQn.ultimoKeyup){
+				console.log("entro");
 				var aInput=$("input[name="+aInputName+"]");
 				var aInputVal=aInput.val();
-				if(this.filtroAnterior!=aInputVal){	
-
+				console.log(this.filtroAnterior," - ",aInputVal);
+				if(this.filtroAnterior!=aInputVal){				
 					this.filtroAnterior=aInputVal;
 					aInput.parent("form").submit();
 				}
@@ -75,39 +102,25 @@
 						elCampo.removeClass("loading");
 				  		if (status == "error") {
 				  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
-				  		}else{
-				  			
+				  		}else{				  			
 				  			$("body").crearDiv("tmp");
 							$("#tmp").hide().html("").html(response);
 							var grid = $("#tmp").find(selectorSource);
 							var footer = $("#tmp").find("footer");
-							srcObj.html(grid.html());
+							$("#tmp").html("");
+							srcObj.html(grid.html())
 							srcObj.parents(".lista").find("footer").html(footer.html());
 							
 				  			if(aOptions!=null &&
 				  			   aOptions.success!=null && 
 				  			   (typeof aOptions.success == 'function')) 
 				  				aOptions.success();
-				  		
+			
 				  		}
 					}
 						
 				});
-//				srcObj.load(getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize() + " " + selectorSource,
-//						function(response, status, xhr) {	
-//							elCampo.removeClass("loading");
-//					  		if (status == "error") {
-//					  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
-//					  		}else{
-//					  			
-//					  			if(aOptions!=null &&
-//					  			   aOptions.success!=null && 
-//					  			   (typeof aOptions.success == 'function')) 
-//					  				aOptions.success();
-//					  		
-//					  		}
 
-//				});
 				e.preventDefault();
 			});
 			elCampo.unbind('keyup');
@@ -335,7 +348,8 @@ jQuery['initModulo'] = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCa
 	pQn.fn.initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod,options);
 };
 pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod,options) {
-	var $filtroFormSubmit = function(){$("input[name='"+nombreCampoFiltro+"']").parent("form").submit();};
+	var $formFiltro = $("input[name='"+nombreCampoFiltro+"']").parent("form"); 
+	var $filtroFormSubmit = function(){$formFiltro.submit();};
 	$fnBindAltaBtn = function(){ 
 		pQn.fn.bindAltaBtn(idBotonAlta,idDialogo, nombreEntidadPrincipal, idForm, {success:$filtroFormSubmit});		
 	};
@@ -346,6 +360,7 @@ pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampo
 		pQn.fn.bindFiltro(nombreCampoFiltro, idLista, aMod, {success:function(){$.setupButtons();}});
 	};
 	$.setupButtons();
+	pQn.fn.setupPaginacion(idLista,$formFiltro);
 	
 	if((options) && ('onInit' in options) && (typeof options.onInit == 'function'))
 		options.onInit();

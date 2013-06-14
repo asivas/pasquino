@@ -27,7 +27,7 @@
 	 				
 					{* Anterior *}
 	 				{if $paginationCurrentPage > 1}
-	 					<li><a href="?mod={$modName}&accion={$accion}&pag={$paginationCurrentPage-1}{$paramCount}{$paramFiltroNombre}">&laquo;</a></li>
+	 					<li><a pag="{$paginationCurrentPage-1}" count="{$paginationLimitCount}" href="?mod={$modName}&accion={$accion}&pag={$paginationCurrentPage-1}&count={$paginationLimitCount}{$paramFiltroNombre}">&laquo;</a></li>
 	 				{else}
 						<li class="disabled"><a href="#" >&laquo;</a></li>
 					{/if}
@@ -35,7 +35,7 @@
 					{* Primero *}
 					{if $from != 1}
 						<li>
-							<a href="?mod={$modName}&accion={$accion}&pag=1&count={$paginationLimitCount}{$paramFiltroNombre}">1</a>
+							<a pag="1" count="{$paginationLimitCount}" href="?mod={$modName}&accion={$accion}&pag=1&count={$paginationLimitCount}{$paramFiltroNombre}">1</a>
 						</li>
 						<li class="disabled">
 							<a href="#">...</a>
@@ -45,7 +45,7 @@
 					{* Paginacion *}
 					{for $p = $from to $to}
 						<li class="{if $p==$paginationCurrentPage || empty($paginationCurrentPage) && $p == 1} active{/if}">
-							<a href="?mod={$modName}&accion={$accion}&pag={$p}&count={$paginationLimitCount}{$paramFiltroNombre}">{$p}</a>
+							<a pag="{$p}" count="{$paginationLimitCount}" href="?mod={$modName}&accion={$accion}&pag={$p}&count={$paginationLimitCount}{$paramFiltroNombre}">{$p}</a>
 						</li>
 					{/for}
 					
@@ -55,13 +55,13 @@
 							<a href="#">...</a>
 						</li>
 						<li>
-							<a href="?mod={$modName}&accion={$accion}&pag={$pages}&count={$paginationLimitCount}{$paramFiltroNombre}">{$pages}</a>
+							<a pag="{$pages}" count="{$paginationLimitCount}" href="?mod={$modName}&accion={$accion}&pag={$pages}&count={$paginationLimitCount}{$paramFiltroNombre}">{$pages}</a>
 						</li>
 					{/if}
 					
 					{* Siguiente *}
 	 				{if $paginationCurrentPage < $pages}
-	 					<li><a href="?mod={$modName}&accion={$accion}&pag={$paginationCurrentPage+1}&count={$paginationLimitCount}{$paramFiltroNombre}">&raquo;</a></li>
+	 					<li><a pag="{$paginationCurrentPage+1}" count="{$paginationLimitCount}" href="?mod={$modName}&accion={$accion}&pag={$paginationCurrentPage+1}&count={$paginationLimitCount}{$paramFiltroNombre}">&raquo;</a></li>
 	 				{else}
 						<li class="disabled"><a href="#" >&raquo;</a></li>
 					{/if}
