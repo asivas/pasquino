@@ -278,6 +278,22 @@ class BaseMod {
      */
     private function _getMenuItemArray($nombreModulo,$item)
     {
+    	if(isset($item['mod']))
+    		$nombreModulo = (string)$item['mod'];
+    	
+    	$accion = (string)$item['accion'];
+    	
+    	$murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}&accion={$accion}";
+    	
+    	if(!empty($item['alias']))
+    	{
+    		$aliasedItemConf = Configuracion::getMenuItemConfByName($item['alias']);
+    		$accion = (string)$aliasedItemConf['accion'];
+    		$nombreModulo = (string)$aliasedItemConf['mod'];
+    		
+    		$murl = "{$_SERVER['PHP_SELF']}?alias={$item['alias']}";
+    	}
+    	
     	$tienePermiso = false;
         if(!empty($item->permisos))
         {
@@ -286,21 +302,23 @@ class BaseMod {
                 $tienePermiso |= $this->_usuario->tienePermiso((string)$perm);
             }
         }
-        $permAccion = $this->_checkPermisoAccion((string)$item['accion'],$nombreModulo);
+        $permAccion = $this->_checkPermisoAccion($accion,$nombreModulo);
         $tienePermiso |= $permAccion;
 
         if(!$tienePermiso)
             return null;
 
-        $mtag = (string)$item['tag'];
-        $murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}&accion={$item['accion']}";
+        $mtag = (string)$item['tag'];        	
+        
+        $murl = "?mIt={$item['name']}";
+        
         if(!empty($item['url']))
-            $murl = (string)$item['url'];
+        	$murl = (string)$item['url'];
         
         if(!empty($item['icon']))
         	$micon = (string)$item['icon'];
 
-        return array('url'=>$murl,'tag'=>$mtag,'icon'=>$micon);
+        return array('url'=>$murl,'tag'=>$mtag,'icon'=>$micon,'name'=>"{$item['name']}");
     }
 
     /**
@@ -315,23 +333,23 @@ class BaseMod {
         $menu = $menuConf;
         if(!empty($menu))
         {
-            if(($mItem = $this->_getMenuItemArray($nombreModulo,$menu))==null)
-                return $menuItems;
-
-            $menuItems['_'] = $mItem;
-            foreach($menu->menuItem as $item)
+            if(($mItem = $this->_getMenuItemArray($nombreModulo,$menu))!=null)
             {
-                if(($mItem = $this->_getMenuItemArray($nombreModulo,$item))==null)
-                    continue;
-                $mItem['id'] = ++$c;
-                
-                $name = (string) $item['name'];
-                if(isset($item->menuItem))
-                    $menuItems[$name] = $this->_getMenuModuloArray($nombreModulo,$item);
-                else
-                    $menuItems[$name] = $mItem;
-
-           }
+            	$menuItems['_'] = $mItem;            
+	            foreach($menu->menuItem as $item)
+	            {
+	                if(($mItem = $this->_getMenuItemArray($nombreModulo,$item))==null)
+	                    continue;
+	                $mItem['id'] = ++$c;
+	                
+	                $name = (string) $item['name'];
+	                if(isset($item->menuItem))
+	                    $menuItems[$name] = $this->_getMenuModuloArray($nombreModulo,$item);
+	                else
+	                    $menuItems[$name] = $mItem;
+	
+	           }
+            }
         }
         return $menuItems;
     }

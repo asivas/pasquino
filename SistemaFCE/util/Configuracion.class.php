@@ -365,6 +365,20 @@ class Configuracion {
         }
         
         */
+        if(isset($req['mIt']))
+        {
+        	if( ($menuItemConf = Configuracion::getMenuItemConfByName($req['mIt'])) != null)
+        	{
+        		if(isset($menuItemConf['alias']))
+        			if( ($aliasItemConf = Configuracion::getMenuItemConfByName($menuItemConf['alias']))!=null)
+        				$menuItemConf = $aliasItemConf;
+        		
+       			$m = (string)$menuItemConf['mod'];
+       			$req['accion'] = (string)$menuItemConf['accion'];
+        	}
+        }
+        
+        
         if(!isset($m))
         {
             $m = $req['mod'];
@@ -443,4 +457,50 @@ class Configuracion {
     	return null;
     }
     
+    /**
+     * Obtiene la configuración de un item submenú de menu de la configuración a partir del nombre
+     * o null si no la encuentra
+     * @param $name nombre del menuItem del que se quiere obtener la config
+     */
+    private static function getSubMenuItemConfByName($name,$menuItemConf)
+    {
+    	if(!empty($menuItemConf))
+    	{
+	    	foreach($menuItemConf->menuItem as $subItemConf)
+	    	{
+	    		$nam = (string)$subItemConf['name'];
+	    		if($nam == $name)
+	    			return $subItemConf;
+	    	}
+    	}
+    	return null;
+    }
+    
+    /**
+     * Obtiene la configuración de un item del menú a partir del nombre
+     * o null si no la encuentra
+     * @param $name nombre del menuItem del que se quiere obtener la config
+     */
+    public static function getMenuItemConfByName($name) 
+    {
+	    $modulosConfig = Configuracion::getModulosConfig();
+	    foreach($modulosConfig->modulo as $modConf)
+	    {
+	    	$nam = (string)$modConf->menuPrincipal['name'];
+	    	
+	    	if($nam == $name)
+	    		$menuItemConf = $modConf->menuPrincipal;
+	    	else
+		    	$menuItemConf = Configuracion::getSubMenuItemConfByName($name, $modConf->menuPrincipal);
+
+	    	if($menuItemConf!=null)
+	    	{
+		    	if(empty($menuItemConf['mod']))
+		    		$menuItemConf['mod'] = (string)$modConf['nombre'];
+		    	
+		    	return $menuItemConf;
+	    	}
+	    }
+	    return null;
+    }
 }

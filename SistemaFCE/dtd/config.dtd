@@ -126,7 +126,9 @@
 	accion CDATA #REQUIRED	
 	tag CDATA #REQUIRED
 	url CDATA #IMPLIED
-	icon CDATA #IMPLIED
+	icon CDATA #IMPLIED	
+	mod CDATA #IMPLIED
+	alias CDATA #IMPLIED
 >
 
 <!ELEMENT permisos (permiso*)>

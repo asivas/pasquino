@@ -110,6 +110,7 @@ abstract class BaseAdminMod extends BaseMod {
 		if($this->mainDao->save($aObj))
 		{
 			$this->guardarExtraProps($aObj);
+			$aObj->setEdicion(false);
 			$this->log($aObj);
 			$this->mensajeOK("{$strInfo} fue guardado con exito",array('id'=>$aObj->getId()));
 		}
