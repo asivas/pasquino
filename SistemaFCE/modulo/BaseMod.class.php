@@ -584,14 +584,14 @@ class BaseMod {
      */
     private function assignHeadJs()
     {
-    	$jsInlcudes = "";
+    	$jsIncludes = "";
     	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y
     	// poniendolos minified
     	if(!empty($this->jsFilesList) && is_array($this->jsFilesList))
     	{
     		foreach($this->jsFilesList as $jsFileName)
     		{
-    			$jsInlcudes .= "\n	<script type=\"text/javascript\" src=\"{$jsFileName}\"></script>";
+    			$jsIncludes .= "\n	<script type=\"text/javascript\" src=\"{$jsFileName}\"></script>";
     		}
     		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
     		// si, no meterle a la fuerza la variable {$jsIncludes}
