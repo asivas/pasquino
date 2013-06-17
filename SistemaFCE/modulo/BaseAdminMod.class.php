@@ -224,7 +224,7 @@ abstract class BaseAdminMod extends BaseMod {
 			$nombreClase = get_class($aObj);
 		}
 		$this->smarty->assign('lista'.$nombreClase,$aObjs);
-		$this->smarty->assign('listaColumnas',$this->getColumnsList());
+		$this->smarty->assign('listaColumnas',$this->getColumnsList($req));
 		$this->smarty->assign('laLista',$aObjs);
 		$this->smarty->assign('claseEntidad',$nombreClase);
 		$this->smarty->assign('modName',strtolower( str_replace("Mod", "", get_class($this)) ));
@@ -242,7 +242,7 @@ abstract class BaseAdminMod extends BaseMod {
 	 *
 	 * @return array 'columnName' => 'nombre_propiedad'
 	 */
-	protected function getColumnsList()
+	protected function getColumnsList($req = null)
 	{
 		//TODO: generar columnas con toda la lista de propiedades de la entidad
 		return array();
