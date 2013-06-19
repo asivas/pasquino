@@ -1,6 +1,6 @@
 <footer>
 	{if ($paginationLimitCount != 0)}
-		{$pages = round($paginationCantEntidades/$paginationLimitCount)}
+		{$pages = ceil($paginationCantEntidades/$paginationLimitCount)}
 		{$adyacentes = 4}
 		{$from = max(1,$paginationCurrentPage-$adyacentes)}
 		{$to = min($pages,$paginationCurrentPage+$adyacentes)}
