@@ -15,6 +15,10 @@ class Session extends ssHandler{
         $this->cookie_min= 0;
     }
     
+    public function loggingIn() {
+    	return parent::loggingIn();
+    }
+    
     /**
      * Devuelve el tiempo restante de sesion en segundos o FALSE si la sesión no expira nunca
      */
