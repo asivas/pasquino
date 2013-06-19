@@ -557,43 +557,50 @@ section .lista > footer {
 section .grid {
 	width: 100%;
 }
-
+	
 	section .grid ul {
-		clear:both;
-		display: table;
+		clear: both;
+		display: table-row;
 		width: 100%;
 	}
 
 		section .grid ul li {
-			float:left;
+			display: table-cell;
+			border-left: 1px solid #DFDFDF;
+			vertical-align: top;
+		}
+		
+		section .grid header ul li:FIRST-CHILD {
+			border: none;
 		}
 		
 			section .grid ul li .data {
 				padding: 6px 15px 5px;
 			}
 
+
 	section .grid header {
-		
+		display: table;
+		width: 100%;
+		border-bottom: 1px solid #DFDFDF;
+		background: #eee;
+		box-shadow: 0 1px 0 #fafafa inset;
 	}
 	
 		section .grid header ul {
-			border-bottom: 1px solid #DFDFDF;
+			
 		}
 			section .grid header ul li .data {
 				text-align: center;
 				font-size: 11px;
 				color: #909090;
-				background: #eee;
-				border-left: 1px solid #DFDFDF;
-				box-shadow: 0 1px 0 #fafafa inset;
 			}
+		
 			
-			section .grid header ul li:FIRST-CHILD .data {
-				border: none;
-			}
-		
 	section .grid article {
-		
+		display: table;
+		width: 100%;
+		border-bottom: 1px solid #DFDFDF;
 	}
 	
 	section .grid article:NTH-CHILD(even) {
@@ -604,24 +611,22 @@ section .grid {
 		background: #E9E9E9;
 	}
 		section .grid article ul {
-			border-bottom: 1px solid #DFDFDF;
+			
 		}
-		section .grid article:LAST-CHILD ul {
+		section .grid article:LAST-CHILD {
 			border: 0;
 		}
 			section .grid article ul li .data {
-				border-left: 1px solid #DFDFDF;
 				padding-top: 10px;
 				padding-bottom: 10px;
 			}
 			
-			section .grid article ul li:FIRST-CHILD .data {
+			section .grid article ul li:FIRST-CHILD {
 				border: none;
 			}
-
-	section .grid article li.gridAccionesItem .button {
-		float:right;
-		margin-left: 5px !important;
+			
+	section .grid article li.gridAccionesItem {
+		vertical-align: middle;
 	}
 	
 	section .grid article li .lista-acciones {
@@ -629,6 +634,16 @@ section .grid {
 		display: table;
 	}
 	
+	section .grid article li .lista-acciones .button {
+		float: right;
+		margin-left: 5px !important;
+		display: inline-block;
+		
+	}
+	
+	section .grid article li .lista-acciones .button a {float: left;}
+	
+
 	section .grid article .info {
 		padding: 15px 0;
 		text-align: center;
