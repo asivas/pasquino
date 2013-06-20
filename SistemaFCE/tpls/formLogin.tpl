@@ -9,6 +9,11 @@
 		<!-- END LOGO -->
 	</header>
 	<section id="container">
+		{if isset($errorLogin)}
+			<div id="error-login" class="alert">
+			  <strong>Error!</strong> Su usuario o su clave de acceso son incorrectos.
+			</div>
+		{/if}
 		<div id="form-login" class="lista">
 			<header><h6>Acceso</h6></header>
 			<div style="clear:both"></div>
@@ -17,7 +22,7 @@
 			<div>
 				<div class="form_element input-prepend">
 					<span class="add-on"><i class="icon-user"></i></span>
-					<input type="text" name="username" />
+					<input type="text" name="username" value="{$smarty.post.username}" />
 				</div>
 				<div class="form_element input-prepend">
 					<span class="add-on"><i class="icon-lock"></i></span>

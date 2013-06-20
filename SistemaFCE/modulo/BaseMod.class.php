@@ -485,7 +485,10 @@ class BaseMod {
     }
 
     public function formLogin()
-    {
+    {	if (is_callable(array($this->session, 'loggingIn')) && ($this->session->loggingIn())) {
+    		$this->smarty->assign("errorLogin",true);
+    	}
+    	
     	$this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['nombre']);
     	if(method_exists($this->smarty,'getTemplateVars'))
     	{

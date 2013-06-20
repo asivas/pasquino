@@ -174,9 +174,24 @@ body#body-login {
 	background: #EFEEEF;
 }
 
+
+	body#body-login > #container > #error-login {
+		width: 400px;
+		position:absolute;
+        left:0;
+        right:0;
+		top: 170px;
+		margin: 0 auto;
+		text-align: center;
+	}
+	
 	body#body-login > #container > #form-login {
 		width: 380px;
-		margin: 150px auto 0;
+		position:absolute;
+        left:0;
+        right:0;
+		top: 230px;
+		margin: 0 auto;
 	}
 	
 	body#body-login > #container > #form-login .form_element {
