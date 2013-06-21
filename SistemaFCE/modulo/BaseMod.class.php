@@ -500,6 +500,7 @@ class BaseMod {
     		$tpl = $this->smarty->get_template_vars('pQnFormLoginTpl');
     		$this->_tilePath = $this->smarty->get_template_vars('pQnBaseTpl');
     	}
+    	$this->addJsFile("/sistemafce/js/login.js");
     	 
     	$this->mostrar($tpl);
         exit();
