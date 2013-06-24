@@ -156,8 +156,10 @@
 			if(nombreBotonCancelar==null)	nombreBotonCancelar = 'cancelar';
 				
 			if(opciones.modal==null) opciones.modal=true;
+			if(opciones.resizable==null) opciones.resizable=false;
 			if(opciones.top==null) opciones.top=69;
 			if(opciones.width==null) opciones.width=anchoDialogo;
+			if(opciones.minHeight==null) opciones.minHeight=100;
 			if(opciones.autoOpen==null) opciones.autoOpen=false;
 			
 			var dlgOpts = opciones;
