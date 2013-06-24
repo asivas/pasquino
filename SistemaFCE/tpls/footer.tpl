@@ -1,1 +1,1 @@
-<p>Footer - Copyright</p>
+<div id="copyright">{$appName} {$version}</div>

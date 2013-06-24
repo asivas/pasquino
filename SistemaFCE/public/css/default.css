@@ -126,9 +126,11 @@ body > footer {
 	background: url(../img/grad-overlay.png) #0e0e0f 0 -40px repeat-x;
 }
 
-	body > footer p {
-		padding: 8px 0 0 5px;
-		color: #aaaaa;
+	body > footer > #copyright {
+		padding: 10px 0 0 5px;
+		color: #000;
+		font-weight: bold;
+		text-shadow: 0 1px 0px rgb(109, 96, 96);
 	}
 
 /*********************************** FIN HEADER & FOOTER **************************************/
