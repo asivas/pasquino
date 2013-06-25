@@ -10,7 +10,7 @@
 	{/if}
 {/if}
 
-<menu>
+<ul>
 {foreach from=$menuItems item=mItem key=nomMenu}
 
 
@@ -67,4 +67,4 @@
 	{$active = ''}
 
 {/foreach}
-</menu>
+</ul>

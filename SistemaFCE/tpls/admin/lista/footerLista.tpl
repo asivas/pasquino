@@ -23,7 +23,7 @@
 
 		{if $pages > 1}
 			<div class="pagination pagination-mini pull-right">
-	 			<menu>
+	 			<ul>
 
 					{* Anterior *}
 	 				{if $paginationCurrentPage > 1}
@@ -66,7 +66,7 @@
 						<li class="disabled"><a href="#" >&raquo;</a></li>
 					{/if}
 
-				</menu>
+				</ul>
 			</div>
 		{/if}
 	{/if}
