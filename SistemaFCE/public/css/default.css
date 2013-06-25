@@ -30,7 +30,7 @@ blockquote, q {quotes:"" "";}
 a img {border:none;}
 :focus {outline:0;}
 input, select, textarea {box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;}
-ul,li {list-style: none;}
+menu,ul,li {list-style: none;}
 input,textarea {border: 1px solid #999999;}
 a {text-decoration: none; color: #F6B002;}
 a:hover {text-decoration:underline;}
@@ -232,19 +232,23 @@ nav#sidebar {
 	
 }
 
-	nav#sidebar > ul {
+	nav#sidebar > ul,
+	nav#sidebar > menu {
 	}
 		
-		nav#sidebar > ul > li {
+		nav#sidebar > ul > li,
+		nav#sidebar > menu > li {
 			line-height: 20px;
 		
 		}
 		
-		nav#sidebar > ul > li.active {
+		nav#sidebar > ul > li.active,
+		nav#sidebar > menu > li.active {
 			border-right: 4px solid #d12610;
 		}
 		
-		nav#sidebar > ul > li a {
+		nav#sidebar > ul > li a,
+		nav#sidebar > menu > li a {
 			border-top: 1px solid #424242;
 			border-bottom: 1px solid #282828;
 			display: block;
@@ -256,7 +260,9 @@ nav#sidebar {
 		}
 		
 		nav#sidebar > ul > li > a:HOVER,
-		nav#sidebar > ul > li.active > a {
+		nav#sidebar > ul > li.active > a,
+		nav#sidebar > menu > li > a:HOVER,
+		nav#sidebar > menu > li.active > a {
 			text-decoration: none;
 			color: #fff !important;
 			text-shadow: 0 1px 0 rgba(0, 0, 0, .25);
@@ -270,7 +276,8 @@ nav#sidebar {
 			border-bottom: 1px solid #161718;
 		}
 		
-			nav#sidebar > ul > li > a > span.arrow {
+			nav#sidebar > ul > li > a > span.arrow,
+			nav#sidebar > menu > li > a > span.arrow {
 				float: right;
 				margin-top: 6px;
 				margin-right: 5px;
@@ -281,6 +288,7 @@ nav#sidebar {
 				border-bottom: 4px solid transparent;
 			}
 			
+			#sidebar > menu > li.open > a > span.arrow,
 			#sidebar > ul > li.open > a > span.arrow {
 				margin-top: 10px;
 				margin-right: 3px;
@@ -289,31 +297,38 @@ nav#sidebar {
 				border-right: 4px solid transparent;
 			}
 			
+			#sidebar > menu > li a i,
 			#sidebar > ul > li a i {
 				opacity: 0.7;
 				margin-right: 3px;
 			}
 			
 			nav#sidebar ul > li > a:HOVER > i,
-			nav#sidebar ul > li.active > a > i {
+			nav#sidebar ul > li.active > a > i,
+			nav#sidebar menu > li > a:HOVER > i,
+			nav#sidebar menu > li.active > a > i {
 				opacity: 1;
 			}
 	
 				
-		nav#sidebar > ul > li:FIRST-CHILD a {
+		nav#sidebar > ul > li:FIRST-CHILD a,
+		nav#sidebar > menu > li:FIRST-CHILD a {
 			border-top: none;
 		}
 		
-		nav#sidebar > ul > li > ul {
+		nav#sidebar > ul > li > ul,
+		nav#sidebar > menu > li > menu {
 			padding: 8px 20px;
 			display: none;	
 		}
 		
-		nav#sidebar > ul > li.active > ul {
+		nav#sidebar > ul > li.active > ul,
+		nav#sidebar > menu > li.active > menu {
 			display: block;	
 		}
 		
-		nav#sidebar > ul > li > ul > li > a {
+		nav#sidebar > ul > li > ul > li > a,
+		nav#sidebar > menu > li > menu > li > a {
 			color: #ccc;
 			text-shadow: 0 1px 1px #000;
 			padding: 8px 15px;
@@ -321,7 +336,10 @@ nav#sidebar {
 			border: none;
 		}
 		
-		nav#sidebar > ul > li > ul > li.active > a, nav#sidebar > ul > li > ul > li > a:hover {
+		nav#sidebar > ul > li > ul > li.active > a,
+		nav#sidebar > ul > li > ul > li > a:hover,
+		nav#sidebar > menu > li > menu > li.active > a,
+		nav#sidebar > menu > li > menu > li > a:hover {
 		  	color: #fff !important;
 		 	background: #534f4e !important;  
 			border: none;
@@ -678,7 +696,9 @@ section .grid {
  */
 
 .pagination ul>li>a,
-.pagination ul>li>span {
+.pagination ul>li>span,
+.pagination menu>li>a,
+.pagination menu>li>span {
 	border: 1px solid #dadada;
 	color: #999999;
 	background: #f9f9f9;
@@ -694,7 +714,11 @@ section .grid {
 .pagination ul>li>a:HOVER,
 .pagination ul>li>span:HOVER,
 .pagination ul>li.active>a,
-.pagination ul>li.active>span {
+.pagination ul>li.active>span,
+.pagination menu>li>a:HOVER,
+.pagination menu>li>span:HOVER,
+.pagination menu>li.active>a,
+.pagination menu>li.active>span {
 	background: #dadada;
 	color: #666666;
 }
@@ -702,7 +726,11 @@ section .grid {
 .pagination ul>li.disabled>a,
 .pagination ul>li.disabled>span,
 .pagination ul>li.disabled>a:HOVER,
-.pagination ul>li.disabled>span:HOVER {
+.pagination ul>li.disabled>span:HOVER,
+.pagination menu>li.disabled>a,
+.pagination menu>li.disabled>span,
+.pagination menu>li.disabled>a:HOVER,
+.pagination menu>li.disabled>span:HOVER {
 	opacity: 0.5;
 	color: #999999;
 	background: inherit !important;

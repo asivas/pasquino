@@ -10,19 +10,19 @@
 	{/if}
 {/if}
 
-<ul>
+<menu>
 {foreach from=$menuItems item=mItem key=nomMenu}
 
-	
+
 	{if is_array($mItem._)}
 		{$cItem = $mItem._}
 	{else}
 		{$cItem = $mItem}
 		{if  $nomMenu=='_'} {* evito este xq ya se hizo en la llamada anterior*}
 			{continue}
-		{/if}		
+		{/if}
 	{/if}
-	
+
 	{*if !$markActive*}
 		{$id = $cItem.id}
 		{if isset($mItemName)}
@@ -30,7 +30,7 @@
 		{else}
 			{if !empty($nMod) && !empty($nAccion)}
 				{if stripos($cItem.url,"mod=$nMod") !== false && stripos($cItem.url,"accion=$nAccion") !== false}
-					{$active = 'active'} 
+					{$active = 'active'}
 					{$markActive = true}
 				{/if}
 			{/if}
@@ -51,14 +51,14 @@
 		{* if count($mItem) > 1 *}
 			<li class="has-sub {$active}">
 				<a href="{$cItem.url}">
-					
+
 					{* Icono de menu *}
 					{if $mItem._.icon != null}
 						<i class="{$cItem.icon} icon-white"></i>
 					{/if}
 					{$mItem._.tag}
 					<span class="arrow"></span>
-				</a>				
+				</a>
 				{include file="$pQnMenuTpl" menuItems=$mItem nomPMenu=$sNomMenu active=''}
 
 			</li>
@@ -67,4 +67,4 @@
 	{$active = ''}
 
 {/foreach}
-</ul>
+</menu>
