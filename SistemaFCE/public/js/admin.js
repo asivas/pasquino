@@ -159,7 +159,7 @@
 			if(opciones.resizable==null) opciones.resizable=false;
 			if(opciones.top==null) opciones.top=69;
 			if(opciones.width==null) opciones.width=anchoDialogo;
-			if(opciones.minHeight==null) opciones.minHeight=100;
+			if(opciones.minHeight==null) opciones.minHeight=30;
 			if(opciones.autoOpen==null) opciones.autoOpen=false;
 			
 			var dlgOpts = opciones;
@@ -256,7 +256,7 @@ function setupButtons(selectorBotonera,selectorBotones){
 }
 
 
-var htmlCargando = "cargando...";
+var htmlCargando = "<div class='dialog-load'>cargando...</div>";
 jQuery.fn.exists = function(){return this.length>0;};
 jQuery.fn.crearDiv = function(idDiv){
 	if(!$("#"+idDiv).exists())
