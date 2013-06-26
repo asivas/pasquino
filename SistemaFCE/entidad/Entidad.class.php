@@ -3,6 +3,13 @@ require_once 'SistemaFCE/util/Configuracion.class.php';
 
 class Entidad implements Serializable{
 	protected $_id;
+	/**
+	 * Arreglo buffer de entidades relacionadas,
+	 * 
+	 * para evitar la busqueda repetida de entidades relacionadas
+	 * @var array 
+	 */
+	private $relacCache;
 	
 	/**
 	 * Valor que representa si el objeto esta en proceso de edicion
@@ -11,8 +18,6 @@ class Entidad implements Serializable{
 	 * null/false:la entidad no esta siendo modificada 
 	 */
 	protected $_edicion;
-	
-		
 	
 	function setEdicion($valor)
 	{
@@ -88,7 +93,7 @@ class Entidad implements Serializable{
     
     /**
      * 
-     * Asignaci�n de la id
+     * Asignación de la id
      * @param unknown_type $newId
      */
     function setId($newId)
@@ -131,4 +136,48 @@ class Entidad implements Serializable{
      * Muestra un string que identifica al elemento a nivel humano
      */
     function toString() { return get_class($this) . " #". $this->getId(); }
+    
+    /**
+     * Agrega una variable de entidad relacionada al cache
+     * @param string $key
+     * @param object $value
+     */
+    protected function setCacheRelacionado($key,$value) {
+    	$this->relacCache[$key] = $value;
+    }
+    
+    /**
+     * Obtiene el elemento cacheado con la clave dada
+     * @param string $key
+     * @return multitype:
+     */
+    protected function getCacheRelacionado($key) {
+    	return $this->relacCache[$key];
+    }
+    
+    /**
+     * Limpia el cache de la clave dada
+     * @param string $key
+     */
+    protected function clearCacheRelacionado($key) {
+    	unset($this->relacCache[$key]);
+    }
+    
+    /**
+     * Obtiene una entidad relacionada dado su id y la clase que se espera que sea
+     * @param int|array $relFk id de la entidad relacionada
+     * @param string $relClass nombre de la clase del objeto que se quiere obtenr
+     * @return Entidad
+     */
+    protected function getEntidadRelacionada($relFk,$relClass) {
+    	
+    	if(($rel = $this->getCacheRelacionado($relClass))==null)
+    	{
+    		$daoClass = 'Dao'.$relClass;
+    		$dao = new $daoClass();
+    		$rel = $dao->findById($relFk);
+    		$this->setCacheRelacionado($relClass,$rel);
+    	}
+    	return $rel;
+    }
 }

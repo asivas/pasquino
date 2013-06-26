@@ -294,16 +294,20 @@ class BaseMod {
     		$murl = "{$_SERVER['PHP_SELF']}?alias={$item['alias']}";
     	}
     	
-    	$tienePermiso = false;
+    	$tienePermiso = true;
         if(!empty($item->permisos))
         {
-            foreach($item->permisos->permiso as $perm)
-            {
-                $tienePermiso |= $this->_usuario->tienePermiso((string)$perm);
+            if(!isset($this->_usuario))
+            	$tienePermiso = false;
+            else 
+            {	
+	        	foreach($item->permisos->permiso as $perm)
+	                $tienePermiso &= $this->_usuario->tienePermiso((string)$perm);
             }
         }
+        
         $permAccion = $this->_checkPermisoAccion($accion,$nombreModulo);
-        $tienePermiso |= $permAccion;
+        $tienePermiso &= $permAccion;
 
         if(!$tienePermiso)
             return null;
