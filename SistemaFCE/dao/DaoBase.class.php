@@ -38,7 +38,7 @@ abstract class DaoBase {
      * @var string Ultimo mensaje de error que sucedi� en un save
      */
     private $_lastError;
-
+   
     /**
      * Constructor de DaoBase
      */
@@ -676,4 +676,5 @@ abstract class DaoBase {
     		}
     	return $nombreColumna;
     }
+
 }

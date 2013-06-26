@@ -14,6 +14,7 @@ require_once('SistemaFCE/util/Session.class.php');
 require_once('visual/xajax/xajax_core/xajax.inc.php');
 require_once('datos/debug/DebugFacade.class.php');
 require_once('SistemaFCE/modulo/smartyFacade.class.php');
+require_once('SistemaFCE/util/properties/PropertiesManager.interface.php');
 
 if(!class_exists('Smarty'))
 	require_once('visual/smarty/libs/Smarty.class.php');
@@ -28,7 +29,7 @@ require_once 'SistemaFCE/modulo/RESTMod.class.php';
 require_once 'Log.php';
 
 
-class BaseMod {
+class BaseMod implements PropertiesManager {
 
     var $smarty;
     var $_skinConfig;
@@ -76,6 +77,12 @@ class BaseMod {
      * @var PEAR::Log
      */
     protected $logger=null;
+    
+    /**
+     * @var PropertiesManagaer Manager para manejar propiedades del sistema
+     */
+    protected $propertiesManager;
+    
 
     /**
      *
@@ -1178,4 +1185,36 @@ class BaseMod {
 	}
 	
 	protected function log(Entidad &$aEntity,$aAction = null){}
+	
+	/**
+	 * Setea el PropertiesManager del modulo.
+	 * @param PropertiesManager $propertiesManager
+	 */
+	public function setPropertiesManager(PropertiesManager $propertiesManager) {
+		$this->propertiesManager = $propertiesManager;
+	}
+	
+	/* INTERFACE PropertiesManager */
+	
+	public function getPropertyValue($propertyKey, $dafaultValue = null) {
+		if (isset($this->propertiesManager))
+			return $this->propertiesManager->getPropertyValue($propertyKey, $dafaultValue);
+		return $dafaultValue;
+	}
+	
+	public function setPropertyValue($propertyKey, $value) {
+		if (isset($this->propertiesManager))
+			 $this->propertiesManager->setPropertyValue($propertyKey, $value);
+	}
+	
+	public function deleteProperty($propertyKey) {
+		if (isset($this->propertiesManager))
+			$this->propertiesManager->deleteProperty($propertyKey);
+	}
+	
+	public function existsProperty($propertyKey) {
+		if (isset($this->propertiesManager))
+			return $this->propertiesManager->existsProperty($propertyKey);
+		return false;
+	}
 }

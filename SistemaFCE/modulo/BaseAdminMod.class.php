@@ -19,6 +19,7 @@ abstract class BaseAdminMod extends BaseMod {
 	protected $mainDao;
 	protected $_tplLista;
 	protected $_tplForm;
+	protected $defaultPaginationLimitCount;
 
 	function __construct($form, $dao, $skinName=null, $listaTplPath=null, $formTplPath=null, $tilePathName = 'Admin', $sessionHandler=null)
 	{
@@ -31,6 +32,8 @@ abstract class BaseAdminMod extends BaseMod {
 
 		$this->_tplLista = $listaTplPath;
 		$this->_tplForm = $formTplPath;
+		
+		$this->defaultPaginationLimitCount = 30;
 
 		$tConf = Configuracion::getTemplateConfigByNombre($skinName);
 		$this->_tilePath = Configuracion::findTplPath($tConf,$tilePathName);
@@ -191,7 +194,7 @@ abstract class BaseAdminMod extends BaseMod {
 	}
 	
 	protected function getDefaultPaginationLimitCount() {
-		return 30;
+		return $this->defaultPaginationLimitCount;
 	}
 	
 	protected function getPaginationLimitCount($req) {
@@ -232,6 +235,7 @@ abstract class BaseAdminMod extends BaseMod {
 		$this->smarty->assign('paginationCurrentPage',isset($req['pag'])?$req['pag']:1);
 		$this->smarty->assign('paginationLimitCount',$limitCount);
 		$this->smarty->assign('paginationCantEntidades',$this->mainDao->count($filtro));
+		$this->smarty->assign('paginationFiltro',$filtro);
 		
 		$this->mostrar($this->_tplLista,$req['display']);
 	}
