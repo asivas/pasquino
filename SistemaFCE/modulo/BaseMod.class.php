@@ -1073,7 +1073,7 @@ class BaseMod implements PropertiesManager {
 
 	static public function resaltar($str,$filtro,$parameter = array('background-color' => '#FFFFBF'))
 	{
-		$str = htmlentities($str);
+		$str = htmlentities($str,ENT_COMPAT | ENT_HTML5,  'UTF-8');
 		$filtro = htmlentities($filtro);
 		$res = $str;
 		//var_dump($filtro);
