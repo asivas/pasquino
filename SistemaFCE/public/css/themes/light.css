@@ -1,0 +1,429 @@
+/********************************************************
+ * 		Pasquino Framework - LIGHT Theme				*
+ *														*
+ * 		Esquema de colores del framework 				*
+ *														*
+ * 		AUTHOR: AsiVas (http://www.asivas.com.ar)		*
+ *														*
+ ********************************************************/
+
+
+
+
+/*
+ * GENERAL
+ *
+ * Estilos generales del sistema
+ *
+ */
+
+body {
+	background: url(../img/bg-default.png)  #EAEEF1;
+}
+
+#container {
+	border-top: 0;
+}
+	
+	#container section#main-section {
+		background: #f5f5f5;
+		border-left: 1px solid #ffffff;
+	}
+
+/*********************************** FIN GENERAL **************************************/
+
+
+
+/*
+ * HEADER & FOOTER
+ *
+ * Estilos para header y footer
+ *
+ */
+ 
+body > header {
+	background-color: #387393;
+	border-top: 1px solid #4892ba;
+	border-bottom: 1px solid #296280;
+}
+
+#user-tools a.dropdown-toggle  {
+	color: #ffffff;
+}
+
+#user-tools a.dropdown-menu  {
+	color: #333333;
+}
+
+body > footer {
+	border-top: 1px solid #dae3ea;
+	background-color: #EFEFFF;
+	background-image: none;
+}
+
+	body > footer > #copyright {
+		color: #000;
+		text-shadow: 0 1px 1px #ffffff;
+	}
+
+/*********************************** FIN HEADER & FOOTER **************************************/
+
+
+
+
+/*
+ * MAIN SECTION
+ *
+ * Estilos para el contenido principal del sistema
+ *
+ */
+ 
+.page-header {
+	background-image: none;
+	background-color: transparent;
+	border-bottom: 1px solid #ddd;
+	margin: 8px 10px 10px;
+}
+
+/*********************************** FIN MAIN SECTION **************************************/
+
+
+
+
+/*
+ * LOGIN
+ *
+ * Estilos para el formulario de login
+ *
+ */
+
+body#body-login {
+	background: #EFEEEF;
+}
+
+/*********************************** FIN LOGIN **************************************/
+
+
+
+
+/*
+ * NAVEGACION
+ *
+ * Estilos para elementos del menu de navegación (sidebar)
+ *
+ */
+nav#sidebar > ul {
+	border-right: 1px solid #dae3ea;
+	border-bottom: 1px solid #dae3ea;
+}
+
+		nav#sidebar > ul > li.active,
+		nav#sidebar > menu > li.active {
+			border-right: 0;
+		}
+		nav#sidebar > ul > li a,
+		nav#sidebar > menu > li a {
+			font-weight: bold;
+			border-top-color: #dae3ea;
+			border-bottom-color: #edf0f2;
+			color: #444 !important;
+			text-shadow: 0 1px 1px #fff !important;
+		}
+		
+		nav#sidebar > ul > li > a:HOVER,
+		nav#sidebar > ul > li.active > a,
+		nav#sidebar > menu > li > a:HOVER,
+		nav#sidebar > menu > li.active > a {
+			color: #fff !important;
+			text-shadow: 0 1px 1px #333 !important;
+			background: #387393;
+			background: -webkit-linear-gradient(bottom, #4184a8, #387393);
+			background: -ms-linear-gradient(bottom, #1e1f21, #232527); 
+			background: -moz-linear-gradient(bottom, #1e1f21, #232527);
+			background: -o-linear-gradient(bottom, #1e1f21, #232527);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1e1f21', endColorstr='#ff232527', GradientType=0);
+			border-top-color: #dae3ea;
+			border-bottom-color: transparent;
+		}
+		
+			nav#sidebar > ul > li > a > span.arrow,
+			nav#sidebar > menu > li > a > span.arrow {
+				border-right: 5px solid #444444;
+				border-top: 4px solid transparent;
+				border-bottom: 4px solid transparent;
+			}
+			
+			nav#sidebar > ul > li > ul, 
+			nav#sidebar > menu > li > menu {
+				background: #efefff;
+				border-top: 1px solid #dae3ea;
+			}
+			
+			#sidebar > menu > li.open > a > span.arrow,
+			#sidebar > ul > li.open > a > span.arrow {
+				border-top: 5px solid #f3f3f3;
+				border-left: 4px solid transparent;
+				border-right: 4px solid transparent;
+			}
+			
+			#sidebar > menu > li a i,
+			#sidebar > ul > li a i {
+				opacity: 0.9;
+				background-image: url("/bootstrap/img/glyphicons-halflings.png");
+			}
+			
+			nav#sidebar ul > li > a:HOVER > i,
+			nav#sidebar ul > li.active > a > i,
+			nav#sidebar menu > li > a:HOVER > i,
+			nav#sidebar menu > li.active > a > i {
+				opacity: 1;
+				background-image: url("/bootstrap/img/glyphicons-halflings-white.png");
+			}
+	
+		nav#sidebar > ul > li > ul > li > a,
+		nav#sidebar > menu > li > menu > li > a {
+			color: #ccc;
+			text-shadow: 0 1px 1px #000;
+		}
+		
+		nav#sidebar > ul > li > ul > li.active > a,
+		nav#sidebar > ul > li > ul > li > a:hover,
+		nav#sidebar > menu > li > menu > li.active > a,
+		nav#sidebar > menu > li > menu > li > a:hover {
+		  	color: #fff !important;
+		  	text-shadow: 0 1px 1px #555 !important;
+		 	background-color: #6897b0 !important;
+		}
+		
+/*********************************** FIN NAVEGACION **************************************/
+
+
+
+
+/*
+ * FORMULARIOS
+ *
+ * Estilos para elementos de formulario
+ *
+ */
+ 
+ 
+.base-form {
+	background: #f7f7f7;
+}
+
+.base-form .botonera {
+	border-top: 1px solid #ccc;
+	background: #E9E9E9;
+}
+
+.base-form .form_element {
+	border-bottom: 1px solid #ddd;
+	border-top: 1px solid #fff;
+}
+
+		.base-form .form_element input:focus,
+		.base-form .form_element select:focus, 
+		.base-form .form_element textarea:focus { 
+			border-color: rgba(82, 168, 236, 0.8);
+		  	outline: 0;
+		  	outline: thin dotted \9;
+		  	/* IE6-9 */
+		  	
+		  	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+		 	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+		  	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+		}
+		
+
+/* elementos genericos */
+input[type="text"], 
+input[type="file"], 
+input[type="password"],
+select, 
+textarea {
+	border: 1px solid #d3d3d3;
+	color: #666666;
+}
+input.loading {
+    background: white url('../img/ajax-loader.gif') right 5px center no-repeat;
+}
+
+/*********************************** FIN FORMULARIOS **************************************/
+
+
+
+
+/*
+ * LISTAS
+ *
+ * Estilos para listas de los modulos
+ *
+ */
+
+section .lista {
+	background: #f7f7f7;
+	border: 1px solid #cdcdcd;
+}
+
+
+/* HEADER */
+section .lista > header {
+	border-bottom: 1px solid rgb(168, 168, 168);
+	box-shadow: 0 1px 0 #fff;
+	
+	background: url(../img/grad-overlay.png) #ddd 0 -1px repeat-x;
+	background: linear-gradient(top, #ededed 0%,#c4c4c4 100%);
+	background: -moz-linear-gradient(top, #ededed 0%, #c4c4c4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ededed), color-stop(100%,#c4c4c4));
+	background: -webkit-linear-gradient(top, #ededed 0%,#c4c4c4 100%);
+	background: -o-linear-gradient(top, #ededed 0%,#c4c4c4 100%);
+	background: -ms-linear-gradient(top, #ededed 0%,#c4c4c4 100%);
+}
+
+section .lista > header h6 {
+	text-shadow: 0 1px #fff;
+	color: #636363;
+}
+
+	section .lista > header .tools li {
+		border-left: 1px solid #bcbcbc;
+	}
+
+
+section .lista > footer {
+	border-top: 1px solid #ddd;
+	
+	background: #F8F8F8;
+	background: -moz-linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #F8F8F8), color-stop(100%, #EFEFEF));
+	background: -webkit-linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+	background: -o-linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+	background: -ms-linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+	background: linear-gradient(top, #F8F8F8 0%, #EFEFEF 100%);
+}
+
+	section .lista > footer .pagination-info {
+		color: #666666;
+		text-shadow: 0 1px 0 #fff;
+	}
+
+
+/* 	BOTON ALTA */
+/* TODO: Mejorar esta parte para permitir multiples botones en el toolbar */
+	
+		#botonAlta > a > span {
+			background-image: url("/sistemafce/img/icons_toolbar.png");
+			background-position: 0px 0px;
+			background-repeat: no-repeat;
+		}
+	
+	#botonAlta > a:HOVER {
+		background: url(../img/grad-overlay.png) #ddd 0 -1px repeat-x;
+		background: linear-gradient(top, #ececec 0%,#aaaaaa 100%);
+		background: -moz-linear-gradient(top, #ececec 0%, #aaaaaa 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ececec), color-stop(100%,#aaaaaa));
+		background: -webkit-linear-gradient(top, #ececec 0%,#aaaaaa 100%);
+		background: -o-linear-gradient(top, #ececec 0%,#aaaaaa 100%);
+		background: -ms-linear-gradient(top, #ececec 0%,#aaaaaa 100%);
+	}
+		
+
+/* GRID */
+section .grid ul li {
+			border-left: 1px solid #DFDFDF;
+		}
+		
+
+	section .grid header {
+		border-bottom: 1px solid #DFDFDF;
+		background: #eee;
+		box-shadow: 0 1px 0 #fafafa inset;
+	}
+	
+			section .grid header ul li .data {
+				color: #909090;
+			}
+		
+			
+	section .grid article {
+		border-bottom: 1px solid #DFDFDF;
+	}
+	
+	section .grid article:NTH-CHILD(even) {
+		background: #F2F2F2;
+	}
+	
+	section .grid article:HOVER {
+		background: #E9E9E9;
+	}
+		
+
+/*********************************** FIN LISTAS **************************************/
+
+
+
+/*
+ * PAGINACION
+ *
+ * Estilos para reemplazar la paginacion de Bootstrap
+ *
+ */
+
+.pagination ul>li>a,
+.pagination ul>li>span,
+.pagination menu>li>a,
+.pagination menu>li>span {
+	border: 1px solid #dadada;
+	color: #999999;
+	background: #f9f9f9;
+	background: -moz-linear-gradient(top, #f9f9f9 0%, #E9E9E9 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9f9f9), color-stop(100%,#E9E9E9));
+	background: -webkit-linear-gradient(top, #f9f9f9 0%,#E9E9E9 100%);
+	background: -o-linear-gradient(top, #f9f9f9 0%,#E9E9E9 100%);
+	background: -ms-linear-gradient(top, #f9f9f9 0%,#E9E9E9 100%);
+	background: linear-gradient(top, #f9f9f9 0%,#E9E9E9 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#E9E9E9',GradientType=0 );
+}
+
+.pagination ul>li>a:HOVER,
+.pagination ul>li>span:HOVER,
+.pagination ul>li.active>a,
+.pagination ul>li.active>span,
+.pagination menu>li>a:HOVER,
+.pagination menu>li>span:HOVER,
+.pagination menu>li.active>a,
+.pagination menu>li.active>span {
+	background: #dadada;
+	color: #666666;
+}
+
+.pagination ul>li.disabled>a,
+.pagination ul>li.disabled>span,
+.pagination ul>li.disabled>a:HOVER,
+.pagination ul>li.disabled>span:HOVER,
+.pagination menu>li.disabled>a,
+.pagination menu>li.disabled>span,
+.pagination menu>li.disabled>a:HOVER,
+.pagination menu>li.disabled>span:HOVER {
+	opacity: 0.5;
+	color: #999999;
+	background: inherit !important;
+}
+/*********************************** FIN PAGINACION **************************************/
+
+
+
+/*
+ * ICONOS
+ *
+ * Estilos para iconografia del sistema
+ *
+ */
+ 
+ *[class^="icon-toolbar"] {
+		background-image: url("../img/icons_toolbar.png");
+		background-repeat: no-repeat;
+}
+
+ 

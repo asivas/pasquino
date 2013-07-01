@@ -42,7 +42,7 @@
 				<a href="{$cItem.url}">
 					{* Icono de menu *}
 					{if $cItem.icon != null}
-						<i class="{$cItem.icon} icon-white"></i>
+						<i class="{$cItem.icon}"></i>
 					{/if}
 					{$cItem.tag}
 				</a>
@@ -54,7 +54,7 @@
 
 					{* Icono de menu *}
 					{if $mItem._.icon != null}
-						<i class="{$cItem.icon} icon-white"></i>
+						<i class="{$cItem.icon}"></i>
 					{/if}
 					{$mItem._.tag}
 					<span class="arrow"></span>

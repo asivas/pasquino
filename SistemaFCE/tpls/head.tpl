@@ -37,7 +37,9 @@
 	{if isset($pQnDefaultCss)}
 		<link rel="stylesheet" href="{$pQnDefaultCss}" type="text/css">	
 	{/if}
-	
+	<!--
+		 <link rel="stylesheet" href="/sistemafce/css/themes/light.css" type="text/css">	
+	 -->
 	{if isset($pQnGridCss)}
 		<link rel="stylesheet" href="{$pQnGridCss}" type="text/css">	
 	{/if}
