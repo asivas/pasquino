@@ -18,7 +18,7 @@
  */
 
 body {
-	background: url(../img/bg-default.png)  #EAEEF1;
+	background: url(../img/bg-default.png)  #EEEEEE;
 }
 
 #container {
@@ -56,8 +56,8 @@ body > header {
 }
 
 body > footer {
-	border-top: 1px solid #dae3ea;
-	background-color: #EFEFFF;
+	border-top: 1px solid #dddddd;
+	background: url(../img/grad-overlay.png) #EEEEEE 0 1px repeat-x;
 	background-image: none;
 }
 
@@ -124,10 +124,16 @@ nav#sidebar > ul {
 		nav#sidebar > ul > li a,
 		nav#sidebar > menu > li a {
 			font-weight: bold;
-			border-top-color: #dae3ea;
-			border-bottom-color: #edf0f2;
+			border-top-color: #DDDDDD;
+			border-bottom-color: #AEAEAE;
 			color: #444 !important;
 			text-shadow: 0 1px 1px #fff !important;
+			background: linear-gradient(top, #ededed 0%,#c4c4c4 100%);
+			background: -moz-linear-gradient(top, #ededed 0%, #c4c4c4 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ededed), color-stop(100%,#c4c4c4));
+			background: -webkit-linear-gradient(top, #ededed 0%,#c4c4c4 100%);
+			background: -o-linear-gradient(top, #ededed 0%,#c4c4c4 100%);
+			background: -ms-linear-gradient(top, #ededed 0%,#c4c4c4 100%);
 		}
 		
 		nav#sidebar > ul > li > a:HOVER,
@@ -142,7 +148,7 @@ nav#sidebar > ul {
 			background: -moz-linear-gradient(bottom, #1e1f21, #232527);
 			background: -o-linear-gradient(bottom, #1e1f21, #232527);
 			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1e1f21', endColorstr='#ff232527', GradientType=0);
-			border-top-color: #dae3ea;
+			border-top-color: #cccccc;
 			border-bottom-color: transparent;
 		}
 		
@@ -155,13 +161,13 @@ nav#sidebar > ul {
 			
 			nav#sidebar > ul > li > ul, 
 			nav#sidebar > menu > li > menu {
-				background: #efefff;
+				background: #f1f1f1;
 				border-top: 1px solid #dae3ea;
 			}
 			
 			#sidebar > menu > li.open > a > span.arrow,
 			#sidebar > ul > li.open > a > span.arrow {
-				border-top: 5px solid #f3f3f3;
+				border-top: 5px solid #FFFFFF;
 				border-left: 4px solid transparent;
 				border-right: 4px solid transparent;
 			}
@@ -184,6 +190,7 @@ nav#sidebar > ul {
 		nav#sidebar > menu > li > menu > li > a {
 			color: #ccc;
 			text-shadow: 0 1px 1px #000;
+			background: transparent;
 		}
 		
 		nav#sidebar > ul > li > ul > li.active > a,
