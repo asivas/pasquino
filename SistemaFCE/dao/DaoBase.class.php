@@ -640,7 +640,7 @@ abstract class DaoBase {
     function findFirst($filtro = null,$order=null) {
     	$l = $this->findBy($filtro,$order);
     	if(is_array($l) && !empty($l))
-    		return $l[0];
+    		return current($l);
 
     	return null;
     }
