@@ -168,8 +168,10 @@
 			$("body").crearDiv(idDialogo);
 			var dlg = $("#"+idDialogo);
 			dlg.html(htmlCargando).load(url,function(){
+				dlg.dialog('option','position','center');
 				if( opciones.onLoad )
 					opciones.onLoad();
+				
 				var btn = $("form#"+idForm+" input[name='"+nombreBotonGuardar+"']");
 				var $procesarForm = function(e){
 					$.post('./',$("form#"+idForm).serialize(),
@@ -201,9 +203,10 @@
 				var btnCancelar = $("form#"+idForm+" input[name='"+nombreBotonCancelar+"']");
 				if(btnCancelar.exists())
 					btnCancelar.button().click(function(e){dlg.html("").dialog('close');});
-			dlg.dialog('open');	
+				
 				
 			}).dialog(dlgOpts);
+			dlg.dialog('open');
 		}	
 	},
 	window.pQn = pQn;
