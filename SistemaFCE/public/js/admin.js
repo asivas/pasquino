@@ -24,7 +24,7 @@
 			
 			$(selectorBotonera).find('div .button').addClass('ui-state-default ui-corner-all').css('float','left').css('margin-left','2px');
 			
-			$(selectorBotones).delegate('a>.ui-icon-pencil','click',function(e){
+			$(selectorBotones).delegate('a>.ui-icon-pencil:not(.ui-state-disabled)','click',function(e){
 				e.preventDefault();
 				if(typeof $fnBindModifBtn == 'function') {
 					$fnBindModifBtn($(this).parent("a").attr("href"));			
