@@ -445,6 +445,23 @@ abstract class DaoBase {
             die($this->_db->ErrorMsg()." $sql");
         return $rs->fields['cant'];
     }
+    
+    /**
+     * Agrega la entidad dada a la lista (Array) dada con el criterio que se arma la lista
+     * @param Entidad $entidad
+     * @param array $listaFindBy
+     */
+    protected function addEntidadAListaFindBy($entidad,&$listaFindBy) {
+    	$listaFindBy[] = $entidad;
+    }
+    
+    /**
+     * Crea y devuelvo el objeto/arrglo que se va a usar en la lista 
+     * @return multitype:
+     */
+    protected function createListaFindBy() {
+    	return array();
+    }
 
     /**
      * Obtiene una lista de objetos de la entidad
@@ -457,10 +474,10 @@ abstract class DaoBase {
 
         if(!($rs = $this->_db->Execute($sql)))
             die($this->_db->ErrorMsg()." $sql");
-        $lista = array();
+        $lista = $this->createListaFindBy();
         while($row = $rs->FetchRow())
         {
-        	$lista[] = $this->crearObjetoEntidad($row);
+        	$this->addEntidadAListaFindBy($this->crearObjetoEntidad($row), $lista);
         }
         return $lista;
     }
