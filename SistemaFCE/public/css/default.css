@@ -360,8 +360,9 @@ nav#sidebar {
  
  .dialog-load{
  	text-align: center;
- 	padding: 20px;
+ 	padding: 20px 0;
  	font-weight: bold;
+ 	min-width: 600px;
  }
  
 .base-form {

@@ -205,8 +205,8 @@
 					btnCancelar.button().click(function(e){dlg.html("").dialog('close');});
 				
 				
-			}).dialog(dlgOpts);
-			dlg.dialog('open');
+			});
+			dlg.dialog(dlgOpts).dialog('open');
 		}	
 	},
 	window.pQn = pQn;
