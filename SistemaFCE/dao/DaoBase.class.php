@@ -467,6 +467,7 @@ abstract class DaoBase {
      * Obtiene una lista de objetos de la entidad
      * @param object $filtro Objeto de clase Criterio
      * @param string $order Columna o columnas separadas por coma (,) para ordenar la busqueda
+     * @return array
      */
     function findBy($filtro = null,$order=null,$limitCount=null,$limitOffset=null,$group=null){
 

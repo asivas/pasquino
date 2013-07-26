@@ -3,12 +3,10 @@
 	//Bootstrap no conflicts
 	$.fn.button.noConflict();
 	
-	
-	
 	var
-	// Define a local copy of jQuery
+	// Define a local copy of pQn
 	pQn = function() {
-		// The jQuery object is actually just the init constructor 'enhanced'
+		// The pQn object is actually just the init constructor 'enhanced'
 		return new pQn.fn.init(  );
 	};
 	
@@ -108,7 +106,7 @@
 							var grid = $("#tmp").find(selectorSource);
 							var footer = $("#tmp").find("footer");
 							$("#tmp").html("");
-							srcObj.html(grid.html())
+							srcObj.html(grid.html());
 							srcObj.parents(".lista").find("footer").html(footer.html());
 							
 				  			if(aOptions!=null &&
@@ -150,20 +148,22 @@
 			alert(errorMsg);
 		},
 		dialogoGuardar: function(idDialogo,url,titulo,idForm,opciones){
-			var nombreBotonGuardar,valueBotonGuardar,anchoDialogo,callback,nombreBotonCancelar;
+			var nombreBotonGuardar = 'guardar',
+				valueBotonGuardar = 'Guardar',
+				anchoDialogo = 'auto',
+				nombreBotonCancelar  = 'cancelar';
 			if(opciones!=null) {
-				nombreBotonGuardar = opciones.nombreBotonGuardar;
-				valueBotonGuardar = opciones.valueBotonGuardar;
-				anchoDialogo = opciones.anchoDialogo;
-				nombreBotonCancelar = opciones.nombreBotonCancelar;
+				if(opciones.nombreBotonGuardar)
+					nombreBotonGuardar = opciones.nombreBotonGuardar;
+				if(opciones.valueBotonGuardar)
+					valueBotonGuardar = opciones.valueBotonGuardar;
+				if(opciones.anchoDialogo)
+					anchoDialogo = opciones.anchoDialogo;
+				if(opciones.nombreBotonCancelar)
+					nombreBotonCancelar = opciones.nombreBotonCancelar;
 			}
 			else
 				opciones={};
-
-			if(nombreBotonGuardar==null)	nombreBotonGuardar = 'guardar';
-			if(valueBotonGuardar==null)		valueBotonGuardar = 'Guardar';
-			if(anchoDialogo==null)			anchoDialogo = 'auto';
-			if(nombreBotonCancelar==null)	nombreBotonCancelar = 'cancelar';
 				
 			if(opciones.modal==null) opciones.modal=true;
 			if(opciones.resizable==null) opciones.resizable=false;
