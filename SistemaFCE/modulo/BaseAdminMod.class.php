@@ -20,6 +20,7 @@ abstract class BaseAdminMod extends BaseMod {
 	protected $_tplLista;
 	protected $_tplForm;
 	protected $defaultPaginationLimitCount;
+	protected $columnsList;
 
 	function __construct($form, $dao, $skinName=null, $listaTplPath=null, $formTplPath=null, $tilePathName = 'Admin', $sessionHandler=null)
 	{
@@ -53,7 +54,9 @@ abstract class BaseAdminMod extends BaseMod {
 		if(!isset($this->_tplForm)) $this->_tplForm = $this->smarty->getTemplateVars('pQnFormTpl');
 		//si no está seteado el tpl form cargo un path por defecto con el dir y form.tpl
 		if(!isset($this->_tplForm)) $this->_tplForm = "{$lowerNombreEntidad}/form.tpl";
-
+		
+		$this->columnsList = array();
+		
 		//TODO: ver de poner el js por defecto del mod
 		if(isset($nada)) //TODO: borrar esta linea y la siguiente, está para que autocomplete
 			$this->mainDao = new DaoBase();
@@ -248,8 +251,7 @@ abstract class BaseAdminMod extends BaseMod {
 	 */
 	protected function getColumnsList($req = null)
 	{
-		//TODO: generar columnas con toda la lista de propiedades de la entidad
-		return array();
+		return $this->columnsList;
 	}
 
 	/* (non-PHPdoc)
@@ -310,5 +312,10 @@ abstract class BaseAdminMod extends BaseMod {
 			$this->logger->warning('El usuario '.$this->getUsuario()->toString().' '.$aAction.' '. $aEntity->toString());
 			return ;
 		}
+	}
+	
+	public function addPropertyColumnToList($propertyName,$propertyLabel) {
+		$this->columnsList[$propertyLabel] = $propertyName;
+	
 	}
 }

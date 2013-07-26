@@ -313,7 +313,7 @@ class BaseMod implements PropertiesManager {
             }
         }
         
-        $permAccion = $this->_checkPermisoAccion($accion,$nombreModulo);
+        $permAccion = $this->checkPermisoAccion($accion,$nombreModulo);
         $tienePermiso &= $permAccion;
 
         if(!$tienePermiso)
@@ -460,11 +460,14 @@ class BaseMod implements PropertiesManager {
         return false;
     }
 
-    private function _checkPermisoAccion($accion,$nombreModulo=null)
+    protected function checkPermisoAccion($accion,$nombreModulo=null,$usuario=null)
     {
-        if($this->_esPublica($accion,$nombreModulo))
+        if(!isset($usuario))
+        	$usuario = $this->getUsuario();
+        
+    	if($this->_esPublica($accion,$nombreModulo))
         	return true;
-    	if(!isset($this->_usuario))
+    	if(!isset($usuario))
             return false;
         // chequeo a partir de la config del m�dulo
         $conf = $this->getConfigModulo($nombreModulo);
@@ -487,7 +490,7 @@ class BaseMod implements PropertiesManager {
                     foreach($perms->permiso as  $p)
                     {
                         $perm = (string)$p;
-                        $tienePermiso &= $this->_usuario->tienePermiso($perm);
+                        $tienePermiso &= $usuario->tienePermiso($perm);
                     }
                 return $tienePermiso;
             }
@@ -569,7 +572,7 @@ class BaseMod implements PropertiesManager {
 	            $this->formLogin();
 	        }
 
-	        if( !$this->ajaxCheckPermisos() || !$this->_checkPermisoAccion($req['accion']) )
+	        if( !$this->ajaxCheckPermisos() || !$this->checkPermisoAccion($req['accion']) )
 	        {
 	        	$this->sinPermisos();
 	        }
