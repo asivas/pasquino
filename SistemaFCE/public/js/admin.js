@@ -136,6 +136,16 @@
 			var status = $("#tmp status").attr('status');
 			return status;
 		},
+		processGuardarResponse: function(status,dlg,options) {
+			if(status=='OK')
+			{	
+				if( options.success )
+					options.success();
+				dlg.dialog('close').remove();
+			}
+			else if(status=='ERR')
+				pQn.fn.alertError($("#tmp status").attr('msg'));
+		},
 		alertError: function(errorMsg){
 			alert(errorMsg);
 		},
@@ -178,14 +188,7 @@
 							function(data) {
 							var status = pQn.fn.getStatusResponse(data);
 							dlg.attr('status',status);
-							if(status=='OK')
-							{	
-								if( opciones.success )
-									opciones.success();
-								dlg.dialog('close').remove();
-							}
-							else if(status=='ERR')
-								pQn.fn.alertError($("#tmp status").attr('msg'));
+							pQn.fn.processGuardarResponse(status,dlg,opciones);
 						}
 					);
 					e.preventDefault();
@@ -362,13 +365,13 @@ pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampo
 	{
 		if(options==null)
 			options = {};
-		options = $.extend(options,opcionesInit);
+		options = $.extend({},options,opcionesInit);
 	}
 	
 	if(options)
 	{
-		optionsAltaModif = $.extend(optionsAltaModif,options);
-		optionsFiltro = $.extend(optionsFiltro,options);
+		optionsAltaModif = $.extend({},options,optionsAltaModif);
+		optionsFiltro = $.extend({},options,optionsFiltro);
 	}
 	
 
