@@ -221,7 +221,7 @@ abstract class BaseAdminMod extends BaseMod {
 		$limitCount = $this->getPaginationLimitCount($req);
 		$aObjs = $this->mainDao->findBy($filtro,$req['sort'],$limitCount,$this->getPageOffset($req));
 		
-		//$aObjs = $this->mainDao->findBy($this->getFiltro($req),$req['sort']);
+		$aObjs = $this->mainDao->findBy($this->getFiltro($req),$req['sort']);
 
 		$nombreClase="";
 		if(count($aObjs)>0)
