@@ -361,7 +361,7 @@ pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampo
 	var optionsAltaModif= { success:function(){$formFiltro.submit();} };
 	var optionsFiltro= { success:function(){$.setupButtons();} };
 	
-	if(opcionesInit) //si hay una objeto global opcionesInit mergeo a las options lo que está definido en ella
+	 if(typeof opcionesInit != 'undefined') //si hay una objeto global opcionesInit mergeo a las options lo que está definido en ella
 	{
 		if(options==null)
 			options = {};

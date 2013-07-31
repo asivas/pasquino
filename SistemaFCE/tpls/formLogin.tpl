@@ -29,6 +29,7 @@
 					<input name="password" type="password"/>
 				</div>
 			</div>
+			<input name="mod" type="hidden" value="{$smarty.request.mod}"/>
 			<div style="clear:both"></div>
 			<div class="botonera">
 				<input name="submit" value="Login" type="submit" />
