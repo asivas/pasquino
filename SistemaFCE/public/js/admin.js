@@ -109,6 +109,8 @@
 							srcObj.html(grid.html());
 							srcObj.parents(".lista").find("footer").html(footer.html());
 							
+							resize();
+							
 				  			if(aOptions!=null &&
 				  			   aOptions.success!=null && 
 				  			   (typeof aOptions.success == 'function')) 
@@ -425,7 +427,6 @@ function resize() {
 		$("#main-section").css('min-height','auto');
 }
 window.onresize = resize;
-//window.onscroll = resize;
 
 $(document).ready(function(){
 	resize();
@@ -444,31 +445,3 @@ $(document).ready(function(){
 	$("#sidebar ul li.active").parents("li").addClass("active open");
 });
 
-/*
-function confirm(msg,title) {
-	
-	//Variables default
-	if(msg == null) title = "¿Está seguro que desea continuar?";
-	if(title == null) title = "Confirmación";
-	
-	$("body").crearDiv("tmp-conf");
-	var $dlg = $( "#tmp-conf" );
-	$dlg.html(msg);
-	$dlg.dialog({
-	      resizable: false,
-	      height:140,
-	      title: title,
-	      modal: true,
-	      buttons: {
-	        "Aceptar": function() {
-	          $( this ).dialog( "close" );
-	          return true;
-	        },
-	        "Cancelar": function() {
-	          $( this ).dialog( "close" );
-	          return false;
-	        }
-	      }
-	    });
-}
-*/
