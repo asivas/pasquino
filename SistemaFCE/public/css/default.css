@@ -633,11 +633,16 @@ section .grid {
 		section .grid header ul {
 			
 		}
-			section .grid header ul li .data {
-				text-align: center;
-				font-size: 11px;
-				color: #909090;
+			section .grid header ul li {
+				vertical-align: middle;
 			}
+		
+			
+				section .grid header ul li .data {
+					text-align: center;
+					font-size: 11px;
+					color: #909090;
+				}
 		
 			
 	section .grid article {
@@ -691,6 +696,16 @@ section .grid {
 		padding: 15px 0;
 		text-align: center;
 	}
+
+
+/* LISTA SMALL */
+
+section .lista.small-lista .grid ul li .data {
+	padding: 3px 5px;
+	line-height: 16px;
+	font-size: 11px;
+}
+
 
 /*********************************** FIN LISTAS **************************************/
 
