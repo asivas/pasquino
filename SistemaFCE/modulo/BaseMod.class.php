@@ -594,7 +594,10 @@ class BaseMod implements PropertiesManager {
      * @param string $sortKey
      */
     protected function addJsFile($jsFile,$sortKey=null) {
-    	$this->jsFilesList[$sortKey] = $jsFile;
+    	if($sortKey == null)
+    		$this->jsFilesList[$sortKey] = $jsFile;
+    	else
+    		$this->jsFilesList[] = $jsFile;
     }
 
     /**
