@@ -694,5 +694,36 @@ abstract class DaoBase {
     		}
     	return $nombreColumna;
     }
+    
+    /**
+     * Determina si existe una entidad dado un criterio
+     * @param Criterio $c
+     * @return boolean
+     */
+    public function checkIfExistsBy(Criterio $c)
+    {
+    	$sql = $this->getFindBySql($c);
+    	
+    	if($rs = $this->_db->Execute($sql) && $rs->RowCount()>0)
+    		return true;
+    	
+    	$this->_lastError = $this->_db->ErrorMsg()." $sql";
+    	
+    	return false;
+    }
+    
+    /**
+     * Determina si existe una entidad identifica por $id
+     * @param mixed $id identificador de la entidad
+     * @return boolean
+     */
+    public function checkIfExistsById($id) {
+    	if(isset($id))
+    	{
+    		$c = $this->getCriterioId($id);
+    		return $this->checkIfExistsBy($c);
+    	}
+    	return false;    	
+    }
 
 }

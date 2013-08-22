@@ -99,7 +99,8 @@ class BaseMod implements PropertiesManager {
 		//@deprecated ya no se usa el calendario js, se prefiere el uso de jQuery
         $this->_calendar = new FCEcalendar('/js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
 
-		$this->REST = new RESTMod();
+		if(function_exists('apache_request_headers'))
+        	$this->REST = new RESTMod();
 
 		//si se puede cargo el usuario
 		$this->getUsuario();
@@ -800,7 +801,7 @@ class BaseMod implements PropertiesManager {
         }
 		
         
-        if($this->REST->esUriRecurso())
+        if(!is_null($this->REST) && $this->REST->esUriRecurso())
         {
         	$rec = $this->REST->ejecutar($req);
         }
