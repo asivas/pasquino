@@ -83,6 +83,8 @@ class BaseMod implements PropertiesManager {
      */
     protected $propertiesManager;
     
+    private  $exitOnMensaje = true;
+    
 
     /**
      *
@@ -1152,7 +1154,8 @@ class BaseMod implements PropertiesManager {
 			$out .= "></status>";
 			print $out;
 		}
-		die();
+		if($this->exitOnMensaje)
+			die();
 	}
 
 	/**
@@ -1223,5 +1226,9 @@ class BaseMod implements PropertiesManager {
 		if (isset($this->propertiesManager))
 			return $this->propertiesManager->existsProperty($propertyKey);
 		return false;
+	}
+	
+	public function setExitOnMensaje($bExit) {
+		$this->exitOnMensaje = $bExit;
 	}
 }

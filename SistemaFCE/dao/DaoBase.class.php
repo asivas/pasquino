@@ -704,10 +704,13 @@ abstract class DaoBase {
     {
     	$sql = $this->getFindBySql($c);
     	
-    	if($rs = $this->_db->Execute($sql) && $rs->RowCount()>0)
-    		return true;
-    	
-    	$this->_lastError = $this->_db->ErrorMsg()." $sql";
+    	if($rs = $this->_db->Execute($sql))
+    	{
+    		if($rs->RowCount()>0)
+    			return true;
+    	}
+    	else
+    		$this->_lastError = $this->_db->ErrorMsg()." $sql";
     	
     	return false;
     }
