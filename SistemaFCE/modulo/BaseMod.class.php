@@ -1072,9 +1072,10 @@ class BaseMod implements PropertiesManager {
 	 * @param mixed $jsonable objeto o array para enviarlo como json
 	 */
 	protected function responseJson($jsonable,$finishExecution=true) {
-		header('Content-type: application/json');
+		if (!headers_sent())
+			header('Content-type: application/json');
 		$json = json_encode($jsonable);
-		if($finishExecution)
+		if($finishExecution && $this->exitOnMensaje)
 			die($json);
 		else
 			print $json;
