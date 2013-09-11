@@ -56,6 +56,10 @@ abstract class DaoBase {
 
         require_once($this->_pathEntidad);
     }
+    
+    function __destruct() {
+    	$this->_db->close();
+    }
 
     function getConexion($dataSource=null)
     {

@@ -167,7 +167,7 @@ abstract class BaseAdminMod extends BaseMod {
 		if($this->getForm()->validate())
 		{
 			$aObj = $this->mainDao->crearDesdeArreglo($req);
-			// en caso de que el id no sea simple o no est�
+			// en caso de que el id no sea simple o no esté
 			// pasado con el mismo nombre de la propiedad
 			$aObj->setId($this->getItemId($req));
 			$this->addExtraProps($req, $aObj);
