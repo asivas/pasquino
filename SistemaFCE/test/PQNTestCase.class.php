@@ -7,6 +7,7 @@ abstract class PQNTestCase extends PHPUnit_Extensions_Database_TestCase
 {
 	// only instantiate pdo once for test clean-up/fixture load
 	static private $pdo = null;
+	static private $conn = null;
 	
 	protected $mod;
 	protected $dao;
@@ -14,13 +15,18 @@ abstract class PQNTestCase extends PHPUnit_Extensions_Database_TestCase
 	protected $backupGlobalsBlacklist = array('ADODB_INCLUDED_LIB');
 	
 	// only instantiate PHPUnit_Extensions_Database_DB_IDatabaseConnection once per test
-	private $conn = null;
+	//private $conn = null;
 	
 	public function __construct($name = NULL, array $data = array(), $dataName = '') {
 		$this->configurarSistema();
 		$this->initDao();
 		$this->initMod();
 		parent::__construct($name, $data, $dataName);
+	}
+	
+	public function __destruct() {
+		unset($this->dao);
+		unset($this->mod);
 	}
 	
 	abstract protected function initMod();
@@ -30,7 +36,7 @@ abstract class PQNTestCase extends PHPUnit_Extensions_Database_TestCase
 	
 	final public function getConnection()
 	{
-		if ($this->conn === null) {
+		if (self::$conn === null) {
 			if (self::$pdo == null) {
 				$dsn = Configuracion::getDbDSN();
 				if($dsn=="")
@@ -49,9 +55,9 @@ abstract class PQNTestCase extends PHPUnit_Extensions_Database_TestCase
 					echo 'Connection failed: ' . $e->getMessage();
 				}				
             }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo, (string)Configuracion::getDbName());
+            self::$conn = $this->createDefaultDBConnection(self::$pdo, (string)Configuracion::getDbName());
 		}
-		return $this->conn;
+		return self::$conn;
 	}
 	
 	public function getSetUpOperation()

@@ -174,7 +174,7 @@ class Entidad implements Serializable{
     	if(($rel = $this->getCacheRelacionado($relClass))==null)
     	{
     		$daoClass = 'Dao'.$relClass;
-    		$dao = new $daoClass();
+    		$dao = $daoClass::getInstance();
     		$rel = $dao->findById($relFk);
     		$this->setCacheRelacionado($relClass,$rel);
     	}

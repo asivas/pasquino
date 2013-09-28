@@ -7,7 +7,8 @@ abstract class DaoBase {
     /**
      * var object $_db
      */
-    protected $_db;
+    protected $_db;   
+    
     /**
      * var string $defaultOrder columna de orden por defecto en el find
      */
@@ -38,6 +39,11 @@ abstract class DaoBase {
      * @var string Ultimo mensaje de error que sucedi� en un save
      */
     private $_lastError;
+    
+    /** 
+     * @var array Instancia singleton del dao 
+     */
+    private static $instances = array();
    
     /**
      * Constructor de DaoBase
@@ -55,6 +61,18 @@ abstract class DaoBase {
         $this->defaultOrder = $this->_xmlMapping['orden'];
 
         require_once($this->_pathEntidad);
+    }
+    
+	final public static function getInstance()
+    {
+        $calledClass = get_called_class();
+
+        if (!isset($instances[$calledClass]))
+        {
+            $instances[$calledClass] = new $calledClass();
+        }
+
+        return $instances[$calledClass];
     }
     
     function __destruct() {

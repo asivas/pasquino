@@ -8,7 +8,7 @@ class BaseUsuarioMod extends BaseMod{
     
     function __construct($skinDirName=null)
     {
-    	$this->_daoU =  new DaoUsuario();
+    	$this->_daoU = DaoUsuario::getInstance();
         parent::__construct($skinDirName);
         $tConf = Configuracion::getTemplateConfigByDir($templateDir);
     	$this->_tilePath = Configuracion::findTplPath($tConf,'Admin');

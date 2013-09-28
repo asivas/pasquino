@@ -1038,7 +1038,7 @@ class BaseMod implements PropertiesManager {
     	{
     		$entidadUsuario = Configuracion::getEntidadUsuarioClass();
 	    	$claseDaoUsuario = 'Dao'.$entidadUsuario;
-	    	$daoU = new $claseDaoUsuario();
+	    	$daoU = $claseDaoUsuario::getInstance();
 	    	$this->_usuario = $daoU->findById($this->session->getIdUsuario());
     	}
     	
