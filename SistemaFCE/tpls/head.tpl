@@ -10,7 +10,6 @@
 	
 	
 	<!-- FIXME -->	
-	<script type="text/javascript" src="/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript" src="/sistemafce/js/browser-update.js"></script>
 	
 	

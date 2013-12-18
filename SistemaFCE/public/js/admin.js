@@ -136,7 +136,9 @@
 			var status = $("#tmp status").attr('status');
 			return status;
 		},
-		processGuardarResponse: function(status,dlg,options) {
+		processGuardarResponse: function(data,dlg,options) {
+			
+			var status = pQn.fn.getStatusResponse(data);
 			if(status=='OK')
 			{	
 				if( options.success )
@@ -190,7 +192,7 @@
 							function(data) {
 							var status = pQn.fn.getStatusResponse(data);
 							dlg.attr('status',status);
-							pQn.fn.processGuardarResponse(status,dlg,opciones);
+							pQn.fn.processGuardarResponse(data,dlg,opciones);
 						}
 					);
 					e.preventDefault();
