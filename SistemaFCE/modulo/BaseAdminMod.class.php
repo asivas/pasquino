@@ -260,8 +260,13 @@ abstract class BaseAdminMod extends BaseMod {
 		if($this->validateId($req))
 		{
 			$a = $this->mainDao->findById($id);
-			$this->smarty->assign(get_class($a),$a);
-			$this->getForm()->setDefaults($a);
+			if($a != null)
+			{
+				$this->smarty->assign(get_class($a),$a);
+				$this->getForm()->setDefaults($a);
+			}
+			else
+				die;
 		}
 		$this->renderForm();
 		$this->mostrar($this->_tplForm,$req['display']);
