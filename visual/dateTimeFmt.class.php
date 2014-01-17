@@ -66,9 +66,8 @@ class dateTimeFmt {
     /**
      * Devuelve edad a hoy dado un timestamp
      */
-    
     static function edad($timestamp) {
-   		$fecha = strtotime(date("Y-m-d",$timestamp));
+   		$fecha = date("Y-m-d",$timestamp);
     	list($Y,$m,$d) = explode("-",$fecha);
     	return( date("md") < $m.$d ? date("Y")-$Y-1 : date("Y")-$Y );
 	}
