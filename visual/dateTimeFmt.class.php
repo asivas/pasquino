@@ -10,7 +10,7 @@
 */
 
 /**
-* Tiene funciones de traducción entre formato e internación de fechas y tiemo
+* Tiene funciones de traducciï¿½n entre formato e internaciï¿½n de fechas y tiemo
 *
 * @author       Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
 * @copyright    Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
@@ -63,4 +63,13 @@ class dateTimeFmt {
 		else return 0;
     }
     
+    /**
+     * Devuelve edad a hoy dado un timestamp
+     */
+    
+    static function edad($timestamp) {
+   		$fecha = strtotime(date("Y-m-d",$timestamp));
+    	list($Y,$m,$d) = explode("-",$fecha);
+    	return( date("md") < $m.$d ? date("Y")-$Y-1 : date("Y")-$Y );
+	}
 }
