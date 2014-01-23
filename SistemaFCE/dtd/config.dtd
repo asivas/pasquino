@@ -4,6 +4,8 @@
 	version CDATA #IMPLIED
 	version-pasquino CDATA #REQUIRED
 	nombre-session CDATA #IMPLIED
+	properties-manager-class CDATA #IMPLIED
+	dbUpdater-class CDATA #IMPLIED
 >
 
 <!ELEMENT date-formats (date-format,datetime-format?,time-format?)>

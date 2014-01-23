@@ -40,6 +40,8 @@ abstract class DaoBase {
      */
     private $_lastError;
     
+    protected $_dieOnFindByError=true;
+    
     /** 
      * @var array Instancia singleton del dao 
      */
@@ -496,11 +498,17 @@ abstract class DaoBase {
         $sql = $this->getFindBySql($filtro,$order,$limitCount,$limitOffset,$group);
 
         if(!($rs = $this->_db->Execute($sql)))
-            die($this->_db->ErrorMsg()." $sql");
-        $lista = $this->createListaFindBy();
-        while($row = $rs->FetchRow())
         {
-        	$this->addEntidadAListaFindBy($this->crearObjetoEntidad($row), $lista);
+            if($this->_dieOnFindByError) 
+            	die( $this->_db->ErrorMsg()." $sql");            
+        }
+        $lista = $this->createListaFindBy();
+        if($rs)
+        {
+	        while($row = $rs->FetchRow())
+	        {
+	        	$this->addEntidadAListaFindBy($this->crearObjetoEntidad($row), $lista);
+	        }
         }
         return $lista;
     }

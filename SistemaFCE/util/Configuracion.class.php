@@ -1,6 +1,9 @@
 <?php
 
 class Configuracion {
+    static private $rootDir;
+    static private $confDir='conf';
+    static private $confFilename='config.xml';
     
     function Configuracion() {
         
@@ -12,11 +15,18 @@ class Configuracion {
         @include_once("{$nombre}.class.php");
     }
     
-    public static function initSistema($rutaSysRoot,$pathsIncludePath=null)
+    public static function initSistema($rutaSysRoot=null,$pathsIncludePath=null)
     {
         
         if(Configuracion::getSystemRootDir()==null)
-            Configuracion::setSystemRootDir($rutaSysRoot);
+        {
+            if(!isset($rutaSysRoot))
+            {
+            	$dbt = debug_backtrace();            	
+            	$rutaSysRoot = dirname(dirname($dbt[0]['file']));
+            } 
+        	Configuracion::setSystemRootDir($rutaSysRoot);
+        }
         
         Configuracion::setIncludePath($pathsIncludePath);
 		
@@ -97,7 +107,7 @@ class Configuracion {
         $config = Configuracion::getConfigXML();
 
         //busco si exite un archivo exclusivo para datasources
-        $dataSources = @simplexml_load_file(Configuracion::getSystemRootDir().'/conf/data-sources.xml');
+        $dataSources = @simplexml_load_file(Configuracion::getSystemRootDir().DIRECTORY_SEPARATOR.self::$confDir.DIRECTORY_SEPARATOR.'data-sources.xml');
 
         if(!$dataSources)
             $dataSources = $config->{"data-sources"};
@@ -110,7 +120,7 @@ class Configuracion {
         $config = Configuracion::getConfigXML();
 
         //busco si exite un archivo exclusivo para datasources
-        $dataSources = @simplexml_load_file(Configuracion::getSystemRootDir().'/conf/data-sources.xml');
+        $dataSources = @simplexml_load_file(Configuracion::getSystemRootDir().DIRECTORY_SEPARATOR.self::$confDir.DIRECTORY_SEPARATOR.'data-sources.xml');
 
         if(!$dataSources)
             $dataSources = $config->{"data-sources"};
@@ -169,41 +179,70 @@ class Configuracion {
     
     public static function setSystemRootDir($rootDir)
     {
-    	$GLOBALS['ROOT_DIR'] = $rootDir;
+    	//$GLOBALS['ROOT_DIR'] = $rootDir;
+    	self::$rootDir = $rootDir;
     }
     
     public static function getSystemRootDir()
     {   
-        if(isset($GLOBALS['ROOT_DIR']))
-    		return $GLOBALS['ROOT_DIR'];
+        /*if(isset($GLOBALS['ROOT_DIR'])) return $GLOBALS['ROOT_DIR']; */
+    	if(isset(self::$rootDir))
+    		return self::$rootDir;
+    }
+    
+    private static function getStandardSubdirs($dir) {
+    	return array($dir.DIRECTORY_SEPARATOR.'entidades'.DIRECTORY_SEPARATOR.'daos',
+        		$dir.DIRECTORY_SEPARATOR.'utils',
+    			$dir.DIRECTORY_SEPARATOR.'util',
+        		$dir.DIRECTORY_SEPARATOR.'auth',
+        		$dir.DIRECTORY_SEPARATOR.'rules');
     }
     
     public static function setIncludePath($otrosPaths=null)
     {
-        if(strpos(strtoupper(PHP_OS),'WIN')!==FALSE)
-            $pathSep = ';';
-        else
-            $pathSep = ':';
+    	$pathSep = PATH_SEPARATOR;
         
         $sysRoot = Configuracion::getSystemRootDir();
         
         $inc_path = ini_get("include_path");
         
-        //siempre agrego para todos los sistemas la carpeta de clases 
-        $inc_path .= $pathSep.$sysRoot.'/clases';
+        if(!isset($otrosPaths) )
+        	$otrosPaths= array();
+        	
+       	//si es string lo hago array
+       	if(is_string($otrosPaths))
+       		$otrosPaths[] = $otrosPaths;
         
-        if(isset($otrosPaths) && is_array($otrosPaths))
+        $standardDirs = array('clases', 'application');
+        
+        foreach ($standardDirs as $dirname)
+        	if(file_exists($sysRoot.DIRECTORY_SEPARATOR.$dirname) && array_search($dirname, $otrosPaths)===FALSE)
+        		$otrosPaths[] = $dirname;
+        
+        if(is_array($otrosPaths))
         {
-        	foreach($otrosPaths as $path)
-                $inc_path .= $pathSep.$sysRoot."/".$path;
-        }//TODO: permitir que sea string
+        	foreach($otrosPaths as $dir)
+        	{
+        		if(file_exists($sysRoot.DIRECTORY_SEPARATOR.$dir))
+        		{
+        			$inc_path .= $pathSep.$sysRoot.DIRECTORY_SEPARATOR.$dir;
+        			$stdSubDirs = Configuracion::getStandardSubdirs($dir);
+        			if(is_array($stdSubDirs))
+        			{
+        				foreach ($stdSubDirs as $sdir)
+        					$inc_path .= $pathSep.$sysRoot.DIRECTORY_SEPARATOR.$sdir;
+        			}
+        		}
+        		else if(file_exists($dir))
+        			$inc_path .= $pathSep.$dir;
+        	}
+        }
 
         $inc_path = ini_set("include_path",$inc_path);
     }
     
     public static function incluirModulos()
     {
-        //require_once('modulos/CurriculumMod.class.php');
         $config = Configuracion::getConfigXML();
         $modulos = $config->modulos;
         $pathModulos = $modulos['path'];
@@ -222,7 +261,7 @@ class Configuracion {
     
     public static function getConfigXML()
     {
-    	$config = simplexml_load_file(Configuracion::getSystemRootDir().'/conf/config.xml');
+    	$config = simplexml_load_file(Configuracion::getSystemRootDir().DIRECTORY_SEPARATOR.self::$confDir.DIRECTORY_SEPARATOR.self::$confFilename);
         return $config;
     }
     
@@ -294,8 +333,6 @@ class Configuracion {
         //TODO: que a partir del $nombreDir borre la template del XML de sistema
         // tambien deber�a borrarl los archivos 
     }
-    
-    //TODO: discutir si habr�a que hacer las funciones de ABM de data-sources
     
     public static function getModulosConfig()
     {
@@ -378,7 +415,6 @@ class Configuracion {
         	}
         }
         
-        
         if(!isset($m))
         {
             $m = $req['mod'];
@@ -389,8 +425,12 @@ class Configuracion {
         $modName = ucfirst($m)."Mod";
        
         if(!class_exists($modName))
+        {
             $modName = Configuracion::getDefaultMod().'Mod';
-       
+            if(!isset($req['accion'])) //solo actualizo si se llama sin mod y sin acción
+            	Configuracion::installOrUpdateDatabase();
+        } 
+        
         $mod = new $modName();
 	        
 	    $mod->ejecutar($req);	
@@ -503,4 +543,42 @@ class Configuracion {
 	    }
 	    return null;
     }
+    
+    public static function getDBUpdaterClass() {
+    	$config = Configuracion::getConfigXML();
+    	$className = (string)$config['dbUpdater-class'];  
+   		return $className;
+    }
+    
+    public static function getPropertiesManagerClass(){
+    	$config = Configuracion::getConfigXML();
+    	return (string)$config['properties-manager-class'];    		
+    }
+    
+    public static function getVersionDB() {
+    	$propsMgrClass = Configuracion::getPropertiesManagerClass();
+    	if(!empty($propsMgrClass))
+    	{
+    		require_once "$propsMgrClass.class.php";
+    		//$propsMgr = new $propsMgrClass();
+    		return $propsMgrClass::getPropertyValue('versionDB','0');
+    	}
+    	return "0";
+    }
+    
+    static private function installOrUpdateDatabase() {
+    	$dbUpdClass = Configuracion::getDBUpdaterClass();
+    	if(empty($dbUpdClass)) return;
+    	$versionActual = Configuracion::getVersionDB();
+    	$versionEsperada = $dbUpdClass::$expectedDBVersion;
+    	if($versionEsperada<=$versionActual)
+    		return;
+    	
+    	$dbUpd = new DbUpdaterBase();//TODO: borrar esta linea
+    	$dbUpd = new $dbUpdClass();
+    	$dbUpd->updateDb($versionActual);
+    }
+    
 }
+
+class_alias('Configuracion','SistemaFCE');

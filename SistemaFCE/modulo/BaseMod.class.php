@@ -81,7 +81,7 @@ class BaseMod implements PropertiesManager {
     /**
      * @var PropertiesManagaer Manager para manejar propiedades del sistema
      */
-    protected $propertiesManager;
+    static protected $propertiesManager;
     
     private  $exitOnMensaje = true;
     
@@ -104,6 +104,8 @@ class BaseMod implements PropertiesManager {
 		if(function_exists('apache_request_headers'))
         	$this->REST = new RESTMod();
 
+		
+		
 		//si se puede cargo el usuario
 		$this->getUsuario();
 
@@ -1203,30 +1205,30 @@ class BaseMod implements PropertiesManager {
 	 * @param PropertiesManager $propertiesManager
 	 */
 	public function setPropertiesManager(PropertiesManager $propertiesManager) {
-		$this->propertiesManager = $propertiesManager;
+		self::$propertiesManager = $propertiesManager;
 	}
 	
 	/* INTERFACE PropertiesManager */
 	
-	public function getPropertyValue($propertyKey, $dafaultValue = null) {
-		if (isset($this->propertiesManager))
-			return $this->propertiesManager->getPropertyValue($propertyKey, $dafaultValue);
+	static public function getPropertyValue($propertyKey, $dafaultValue = null) {
+		if (isset(self::$propertiesManager))
+			return self::$propertiesManager->getPropertyValue($propertyKey, $dafaultValue);
 		return $dafaultValue;
 	}
 	
-	public function setPropertyValue($propertyKey, $value) {
-		if (isset($this->propertiesManager))
-			 $this->propertiesManager->setPropertyValue($propertyKey, $value);
+	static public function setPropertyValue($propertyKey, $value) {
+		if (isset(self::$propertiesManager))
+			 self::$propertiesManager->setPropertyValue($propertyKey, $value);
 	}
 	
-	public function deleteProperty($propertyKey) {
-		if (isset($this->propertiesManager))
-			$this->propertiesManager->deleteProperty($propertyKey);
+	static public function deleteProperty($propertyKey) {
+		if (isset(self::$propertiesManager))
+			self::$propertiesManager->deleteProperty($propertyKey);
 	}
 	
-	public function existsProperty($propertyKey) {
-		if (isset($this->propertiesManager))
-			return $this->propertiesManager->existsProperty($propertyKey);
+	static public function existsProperty($propertyKey) {
+		if (isset(self::$propertiesManager))
+			return self::$propertiesManager->existsProperty($propertyKey);
 		return false;
 	}
 	
