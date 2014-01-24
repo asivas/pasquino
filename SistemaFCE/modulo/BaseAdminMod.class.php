@@ -103,6 +103,15 @@ abstract class BaseAdminMod extends BaseMod {
 	 */
 	function guardarExtraProps($aObj){
 	}
+	
+	/**
+	 * Agrega los atributos necesarios para eniar el mensaje de guardar
+	 * @param objet $aObj objeto que se estaría guardando
+	 */
+	protected function addAtribsMensajeOkGuardar($aObj) {
+		$this->addAtribMensajeOk('id', $aObj->getId());
+		$this->addAtribMensajeOk('entidad', get_class($aObj));
+	}
 
 	/**
 	 * Guarda un objeto usando su dao (el $this->mainDao)
@@ -118,7 +127,8 @@ abstract class BaseAdminMod extends BaseMod {
 			$this->guardarExtraProps($aObj);
 			$aObj->setEdicion(false);
 			$this->log($aObj);
-			$this->mensajeOK("{$strInfo} fue guardado con exito",array('id'=>$aObj->getId()));
+			$this->addAtribsMensajeOkGuardar($aObj);
+			$this->mensajeOK("{$strInfo} fue guardado con exito");
 		}
 		else
 			$this->mensajeERR("{$strInfo} no se pudo guardar ". $this->mainDao->getLastError());

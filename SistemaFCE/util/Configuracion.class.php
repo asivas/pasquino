@@ -230,7 +230,10 @@ class Configuracion {
         			if(is_array($stdSubDirs))
         			{
         				foreach ($stdSubDirs as $sdir)
-        					$inc_path .= $pathSep.$sysRoot.DIRECTORY_SEPARATOR.$sdir;
+        				{
+        					if(file_exists($sysRoot.DIRECTORY_SEPARATOR.$sdir))
+        						$inc_path .= $pathSep.$sysRoot.DIRECTORY_SEPARATOR.$sdir;
+        				}
         			}
         		}
         		else if(file_exists($dir))

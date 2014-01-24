@@ -85,6 +85,8 @@ class BaseMod implements PropertiesManager {
     
     private  $exitOnMensaje = true;
     
+    protected $atribsMsgOk = array();
+    
 
     /**
      *
@@ -1149,7 +1151,7 @@ class BaseMod implements PropertiesManager {
 			$sv = $tmp[1];
 		}
 		if($sv[0]>2)
-			$this->smarty->display('string:<status msg="{$msg}" status="{$status}" {foreach from=$otros key=k item=valor} {$k}={$valor} {/foreach}></status>');
+			$this->smarty->display('string:<status msg="{$msg}" status="{$status}" {foreach from=$otros key=k item=valor} {$k}="{$valor}" {/foreach}></status>');
 		else
 		{
 			$out = "<status msg=\"{$mensaje}\" status=\"{$status}\"";
@@ -1161,6 +1163,30 @@ class BaseMod implements PropertiesManager {
 		if($this->exitOnMensaje)
 			die();
 	}
+	
+	/**
+	 * Agrega un atributo para el proximo mensaje OK que se enviará
+	 */
+	protected function addAtribMensajeOk($key,$value) {
+		$this->atribsMsgOk[$key] = $value;
+	}
+	
+	/**
+	 * Elimina un atributo dada su clave, para el próximo mensaje OK que se enviará
+	 * @param string|int $key
+	 */
+	protected function removeAtribMensajeOk($key) {
+		unset($this->atribsMsgOk[$key]);
+	}
+	
+	/**
+	 * Obtiene o genera los atributos del mensajeOK del guardar
+	 * @param unknown $aObj
+	 * @return multitype:NULL
+	 */
+	protected function getAtribsMensajeOK() {
+		return $this->atribsMsgOk;
+	}
 
 	/**
 	 * Envia un mensaje de OK en xml usando mensaje
@@ -1169,7 +1195,13 @@ class BaseMod implements PropertiesManager {
 	 */
 	protected function mensajeOK($mensaje,$otros=null)
 	{
-		$this->mensaje("OK", $mensaje, $otros);
+		if(!isset($otros))
+			$otros =  $this->getAtribsMensajeOK();
+		else
+			$otros = array_merge($otros,$this->getAtribsMensajeOK());
+		
+		$this->mensaje("OK", $mensaje,$otros);
+		$this->atribsMsgOk=array();
 	}
 
 	/**
