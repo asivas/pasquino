@@ -577,7 +577,6 @@ class Configuracion {
     	if($versionEsperada<=$versionActual)
     		return;
     	
-    	$dbUpd = new DbUpdaterBase();//TODO: borrar esta linea
     	$dbUpd = new $dbUpdClass();
     	$dbUpd->updateDb($versionActual);
     }

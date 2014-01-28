@@ -126,7 +126,6 @@ class DbUpdaterBase {
 		if($toVersion == $fromVersion)	return; //no hace falta actualizar 
 		
 		$this->report("Se detectó que hay una actualización disponible. Al finalizar la actualización podrá usar el sistema nuevamente. Por favor espere un momento");
-		ob_flush();
 		
 		$ver = $fromVersion+1;
 		$updateMethod = "changesVersion{$ver}";
@@ -158,8 +157,10 @@ class DbUpdaterBase {
 		if($updatedTo==$toVersion)
 		{
 			$this->report("Gracias! <a href='./'>Volviendo a cargar el sistema</a> podrá usar la nueva versión");
-			die;
 		}
+		else
+			$this->report("Hubo errores, intentelo de nuevo <a href='./'>Volviendo a cargar el sistema</a>",self::R_ERROR);
+		die;
 	}
 	
 	private function updateVersionProperty($version) {
