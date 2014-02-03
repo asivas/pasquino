@@ -5,30 +5,30 @@ class Entidad implements Serializable{
 	protected $_id;
 	/**
 	 * Arreglo buffer de entidades relacionadas,
-	 * 
+	 *
 	 * para evitar la busqueda repetida de entidades relacionadas
-	 * @var array 
+	 * @var array
 	 */
 	private $relacCache;
-	
+
 	/**
 	 * Valor que representa si el objeto esta en proceso de edicion
 	 * @var boolean
 	 * true:la entidad esta siendo modificada
-	 * null/false:la entidad no esta siendo modificada 
+	 * null/false:la entidad no esta siendo modificada
 	 */
 	protected $_edicion;
-	
+
 	function setEdicion($valor)
 	{
 		$this->_edicion = $valor;
 	}
-	
+
 	function getEdicion()
 	{
 		return $this->_edicion;
 	}
-	
+
 	function serialize()
 	{
 		//print get_class($this);
@@ -47,7 +47,7 @@ class Entidad implements Serializable{
 	    }
 		return serialize($result);
 	}
-	
+
 	public function unserialize($data) {
         $props = unserialize($data);
 		foreach($props as $k => $v)
@@ -56,16 +56,16 @@ class Entidad implements Serializable{
         	$this->$setFn($v);
         }
     }
-    
+
     function getId() {
     	if(!isset($this->_id))
     	{
 	    	$mapping = Configuracion::getMappingClase(get_class($this));
-	    	$cantIds= count($mapping->clase->id);		
+	    	$cantIds= count($mapping->clase->id);
 	    	if($cantIds == 1)
 	    	{
 	    		$nombreProp = (string)$mapping->clase->id['nombre'];
-	    		 					
+
 				$getFn = "get".ucfirst($nombreProp);
 				if(method_exists($this, $getFn))
 					$this->_id = $this->$getFn();
@@ -79,9 +79,9 @@ class Entidad implements Serializable{
 					$col = (string)$prop['columna'];
 					$nombreProp = (string)$prop['nombre'];
 					$getFn = "get".ucfirst($nombreProp);
-					
+
 					if(method_exists($this, $getFn))
-						$arrId[$col] = $this->$getFn();			
+						$arrId[$col] = $this->$getFn();
 					elseif(isset($this->$nombreProp))
 						$arrId[$col] = $this->$nombreProp;
 				}
@@ -90,9 +90,9 @@ class Entidad implements Serializable{
     	}
     	return $this->_id;
     }
-    
+
     /**
-     * 
+     *
      * Asignación de la id
      * @param unknown_type $newId
      */
@@ -101,16 +101,18 @@ class Entidad implements Serializable{
     	if($newId!=$this->_id)
     	{
 	    	$mapping = Configuracion::getMappingClase(get_class($this));
-	    	$cantIds= count($mapping->clase->id);		
+	    	$cantIds= count($mapping->clase->id);
+	    	$this->_id = $newId;
+
 	    	if($cantIds == 1)
 	    	{
-	    		$nombreProp = (string)$mapping->clase->id['nombre'];    					
+	    		$nombreProp = (string)$mapping->clase->id['nombre'];
 				$setFn = "set".ucfirst($nombreProp);
 				if(method_exists($this, $setFn))
 					 $this->$setFn($newId);
 				elseif(isset($this->$nombreProp))
 					 $this->$nombreProp = $newId;
-	    	
+
 	    	}
 	    	elseif($cantIds>1)
 	    	{
@@ -119,24 +121,24 @@ class Entidad implements Serializable{
 					$col = (string)$prop['columna'];
 					$nombre = (string)$prop['nombre'];
 					$setFn = "set".ucfirst($nombreProp);
-					
+
 					if(method_exists($this, $setFn))
-						$this->$setFn($newId[$col]);			
+						$this->$setFn($newId[$col]);
 					elseif(isset($this->$nombreProp))
 						$this->$nombreProp = $newId[$col];
 				}
 	    	}
-	    	
-	    	$this->_id = $newId;
+
+
     	}
     }
-    
+
     /**
-     * 
+     *
      * Muestra un string que identifica al elemento a nivel humano
      */
     function toString() { return get_class($this) . " #". $this->getId(); }
-    
+
     /**
      * Agrega una variable de entidad relacionada al cache
      * @param string $key
@@ -145,7 +147,7 @@ class Entidad implements Serializable{
     protected function setCacheRelacionado($key,$value) {
     	$this->relacCache[$key] = $value;
     }
-    
+
     /**
      * Obtiene el elemento cacheado con la clave dada
      * @param string $key
@@ -154,7 +156,7 @@ class Entidad implements Serializable{
     protected function getCacheRelacionado($key) {
     	return $this->relacCache[$key];
     }
-    
+
     /**
      * Limpia el cache de la clave dada
      * @param string $key
@@ -162,7 +164,7 @@ class Entidad implements Serializable{
     protected function clearCacheRelacionado($key) {
     	unset($this->relacCache[$key]);
     }
-    
+
     /**
      * Obtiene una entidad relacionada dado su id y la clase que se espera que sea
      * @param int|array $relFk id de la entidad relacionada
@@ -170,7 +172,7 @@ class Entidad implements Serializable{
      * @return Entidad
      */
     protected function getEntidadRelacionada($relFk,$relClass) {
-    	
+
     	if(($rel = $this->getCacheRelacionado($relClass))==null)
     	{
     		$daoClass = 'Dao'.$relClass;
