@@ -7,8 +7,8 @@ abstract class DaoBase {
     /**
      * var object $_db
      */
-    protected $_db;   
-    
+    protected $_db;
+
     /**
      * var string $defaultOrder columna de orden por defecto en el find
      */
@@ -39,14 +39,14 @@ abstract class DaoBase {
      * @var string Ultimo mensaje de error que sucedi� en un save
      */
     private $_lastError;
-    
+
     protected $_dieOnFindByError=true;
-    
-    /** 
-     * @var array Instancia singleton del dao 
+
+    /**
+     * @var array Instancia singleton del dao
      */
     private static $instances = array();
-   
+
     /**
      * Constructor de DaoBase
      */
@@ -64,7 +64,7 @@ abstract class DaoBase {
 
         require_once($this->_pathEntidad);
     }
-    
+
 	final public static function getInstance()
     {
         $calledClass = get_called_class();
@@ -76,7 +76,7 @@ abstract class DaoBase {
 
         return $instances[$calledClass];
     }
-    
+
     function __destruct() {
     	$this->_db->close();
     }
@@ -469,7 +469,7 @@ abstract class DaoBase {
             die($this->_db->ErrorMsg()." $sql");
         return $rs->fields['cant'];
     }
-    
+
     /**
      * Agrega la entidad dada a la lista (Array) dada con el criterio que se arma la lista
      * @param Entidad $entidad
@@ -478,9 +478,9 @@ abstract class DaoBase {
     protected function addEntidadAListaFindBy($entidad,&$listaFindBy) {
     	$listaFindBy[] = $entidad;
     }
-    
+
     /**
-     * Crea y devuelvo el objeto/arrglo que se va a usar en la lista 
+     * Crea y devuelvo el objeto/arrglo que se va a usar en la lista
      * @return multitype:
      */
     protected function createListaFindBy() {
@@ -499,8 +499,8 @@ abstract class DaoBase {
 
         if(!($rs = $this->_db->Execute($sql)))
         {
-            if($this->_dieOnFindByError) 
-            	die( $this->_db->ErrorMsg()." $sql");            
+            if($this->_dieOnFindByError)
+            	die( $this->_db->ErrorMsg()." $sql");
         }
         $lista = $this->createListaFindBy();
         if($rs)
@@ -570,7 +570,7 @@ abstract class DaoBase {
             $mode  = 'UPDATE';
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
-        
+
         $ret = $this->_db->AutoExecute((string)$this->tableName,$buf,$mode,$where,true,true);
 
 		if(!$ret)
@@ -678,11 +678,11 @@ abstract class DaoBase {
         	$this->_lastError = $this->_db->ErrorMsg() . " {$sql}";
         return $ret;
     }
-	
+
     /**
      * Devuelve la primera entiadad encontrada dados un criterio de filtro y un orden
      * @param Criterio $filtro Criterio de filtro
-     * @param string $order Comlumna(s) de orden separadas por comas 
+     * @param string $order Comlumna(s) de orden separadas por comas
      * @return Ambigous Entidad|NULL si no encuentra entidad devuelve null
      */
     function findFirst($filtro = null,$order=null) {
@@ -724,7 +724,7 @@ abstract class DaoBase {
     		}
     	return $nombreColumna;
     }
-    
+
     /**
      * Determina si existe una entidad dado un criterio
      * @param Criterio $c
@@ -733,7 +733,7 @@ abstract class DaoBase {
     public function checkIfExistsBy(Criterio $c)
     {
     	$sql = $this->getFindBySql($c);
-    	
+
     	if($rs = $this->_db->Execute($sql))
     	{
     		if($rs->RowCount()>0)
@@ -741,10 +741,10 @@ abstract class DaoBase {
     	}
     	else
     		$this->_lastError = $this->_db->ErrorMsg()." $sql";
-    	
+
     	return false;
     }
-    
+
     /**
      * Determina si existe una entidad identifica por $id
      * @param mixed $id identificador de la entidad
@@ -756,7 +756,27 @@ abstract class DaoBase {
     		$c = $this->getCriterioId($id);
     		return $this->checkIfExistsBy($c);
     	}
-    	return false;    	
+    	return false;
+    }
+
+    /**
+     * Obtiene un arreglo con los valores de un enum dado el campo
+     * @param unknown $strField
+     * @return multitype:
+     */
+    protected function getEnumArray($strField)
+    {
+    	if($rs = $this->getDb()->Execute("SHOW COLUMNS FROM `$this->tableName` LIKE '$strField'"))
+    	{
+    		$row = $rs->FetchRow();
+    		$valuestring = $row['Type'];
+    		$valuestring = str_replace("enum", "", $valuestring);
+    		$valuestring = str_replace("(", "", $valuestring);
+    		$valuestring = str_replace(")", "", $valuestring);
+    		$valuestring = str_replace("'", "", $valuestring);
+    		$values = split(",", $valuestring);
+    	}
+    	return $values;
     }
 
 }
