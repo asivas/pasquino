@@ -55,11 +55,11 @@ abstract class BaseAdminMod extends BaseMod {
 		//si no está seteado el tpl form cargo un path por defecto con el dir y form.tpl
 		if(!isset($this->_tplForm)) $this->_tplForm = "{$lowerNombreEntidad}/form.tpl";
 		
-		$this->columnsList = array();
-		
 		//TODO: ver de poner el js por defecto del mod
 		if(isset($nada)) //TODO: borrar esta linea y la siguiente, está para que autocomplete
 			$this->mainDao = new DaoBase();
+		
+		$this->initListColumns();
 	}
 
 	/**
@@ -330,5 +330,26 @@ abstract class BaseAdminMod extends BaseMod {
 	public function addPropertyColumnToList($propertyName,$propertyLabel) {
 		$this->columnsList[$propertyLabel] = $propertyName;
 	
+	}
+	
+	protected function addColumnAcciones() {
+		$this->addPropertyColumnToList('gridAccionesItem', 'Acciones');
+	}
+	
+	/**
+	 * Inicializa la lista de columnas del listado estandar (agregando la columna de acciones)
+	 */
+	protected function initListColumns() {
+		if(!isset($this->columnsList))
+			$this->resetListColumns();
+		
+		$this->addColumnAcciones();
+	}
+	
+	/**
+	 * Reinicializa dejando vacía la lista de columnas para el listado estandar 
+	 */
+	protected function resetListColumns() {
+		$this->columnsList = array();
 	}
 }
