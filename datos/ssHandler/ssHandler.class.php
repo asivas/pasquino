@@ -68,6 +68,7 @@
 		function ssHandler($auth) 
 		{
             $this->auth = $auth;
+            session_register_shutdown();
             $this->initMembers();
             $this->initSessionData();
 		}
@@ -83,13 +84,20 @@
         	$this->refreshAfterLogin = true;
             $this->passCaseSensitive = true;
         }
+        
+        protected function isStarted () {
+        	return !function_exists('session_status') && !session_id() || session_status() == PHP_SESSION_ACTIVE;
+        } 
 		
 		/**
 		* Setea el tiempo de la coockie e inicia la sesion
 		*/
 		function initSessionData()
 		{   
-            $this->auth->setSessionName($this->sessionName);
+            if(!$this->isStarted())
+           		@session_start();
+            
+			$this->auth->setSessionName($this->sessionName);
             $this->auth->setExpire($this->cookie_min*60);
             
 			// Fecha en el pasado
@@ -119,7 +127,10 @@
 		*/
 		function LogIn($username = "",$password = "")
 		{   
-            $this->auth->start();
+			if(!$this->isStarted())
+				$this->initSessionData();
+			
+			$this->auth->start();
             if($this->IsLoged())
             {   
                 if($this->loggingIn() && $this->refreshAfterLogin)
@@ -147,7 +158,12 @@
 		*/
 		function IsLoged()
 		{
-            if($this->auth->getAuth())
+			//me aseguro que si la session fue cerrada por alguna causa
+			//volver a abrirla para
+			if(!$this->isStarted())
+				$this->initSessionData();
+				
+			if($this->auth->getAuth())
             {
                 return true;
             }
@@ -217,6 +233,9 @@
 	 	 */
 	    function clear($key)
 	    {
+	    	if(!$this->isStarted())
+	    		@session_start();
+	    	
 	    	if(is_array($key))
 	    	{
 	    		$strKey = $this->getStrKey($key);
@@ -234,6 +253,9 @@
 	     */
 	    function set($key,$val)
 	    {
+	    	if(!$this->isStarted())
+	    		@session_start();
+	    	
 	    	if(is_array($key))
 	    	{
 	    		$strKey = $this->getStrKey($key);
@@ -251,6 +273,9 @@
 	     */
 	    function get($key)
 	    {
+	    	if(!$this->isStarted())
+	    		@session_start();
+	    	
 	    	if(is_array($key))
 	    	{
 	    		$strKey = $this->getStrKey($key);
@@ -261,5 +286,14 @@
 	    		$sessVar = $_SESSION[$key];
 	    		
 	    	return $sessVar;
+	    }
+	    
+	    /**
+	     * Cierra la sessión
+	     */
+	    function close() {
+	    	//TODO: Revisar de hacer un cleanup de las variables miembro de esta clase que se
+	    	// conlleven con las de $_SESSION
+	    	session_write_close();
 	    }
 	}
