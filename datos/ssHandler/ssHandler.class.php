@@ -68,7 +68,8 @@
 		function ssHandler($auth) 
 		{
             $this->auth = $auth;
-            session_register_shutdown();
+            if (function_exists("session_register_shutdown"))
+            	session_register_shutdown();
             $this->initMembers();
             $this->initSessionData();
 		}
@@ -86,7 +87,7 @@
         }
         
         protected function isStarted () {
-        	return !function_exists('session_status') && !session_id() || session_status() == PHP_SESSION_ACTIVE;
+        	return !function_exists('session_status') && !session_id() || function_exists('session_status') && session_status() == PHP_SESSION_ACTIVE;
         } 
 		
 		/**
