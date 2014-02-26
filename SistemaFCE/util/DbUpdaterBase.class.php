@@ -213,6 +213,17 @@ class DbUpdaterBase {
 
 		return false;
 	}
+
+	public function foreignKeyExists($tableName,$foreignKeyName) {
+		if($this->tableExists($tableName))
+			if($rs = $this->excecuteQuery("SHOW CREATE TABLE {$tableName}"))
+			{
+				$create =$rs->fields['Create Table'];
+				return stripos($create, "CONSTRAINT `$foreignKeyName`")!==FALSE;
+			}
+
+		return false;
+	}
 	/**
 	 * Crea una tabla con un nombre, columnas, indices y foreign keys dadas
 	 * @param unknown $tableName
