@@ -65,10 +65,13 @@ class dateTimeFmt {
     
     /**
      * Devuelve edad a hoy dado un timestamp
+     * EDIT: se puede pasar en que fecha tenia esa edad con un segundo timestamp
      */
-    static function edad($timestamp) {
-   		$fecha = date("Y-m-d",$timestamp);
+    static function edad($personTS,$whenTS = null) {
+    	$fecha = date("Y-m-d",$personTS);
+    	if($whenTS == null)
+    		$whenTS = strtotime('now');
     	list($Y,$m,$d) = explode("-",$fecha);
-    	return( date("md") < $m.$d ? date("Y")-$Y-1 : date("Y")-$Y );
-	}
+    	return( date("md",$whenTS) < $m.$d ? date("Y",$whenTS)-$Y-1 : date("Y",$whenTS)-$Y );
+    }
 }
