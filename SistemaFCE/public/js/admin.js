@@ -214,7 +214,20 @@
 				
 			});
 			dlg.dialog(dlgOpts).dialog('open');
-		}	
+		},
+		/**
+		 * Ejecuta una acción en el modulo dado, recibe el resultado y lo procesa con un callback dado
+		 * @param modName nombre del modulo al que la acción pertenece
+		 * @param accion accion que se ejecutará
+		 * @param inData objeto js con los parametros a enviar para la acción 
+		 * @param success función callback que procesará el success success(data, textStatus, jqXHR)
+		 */
+		doAccion: function(modName,accion,inData,success) {
+			$.post(getAccionUrl(modName,accion,"plain"),inData,function(data, textStatus, jqXHR){
+				//TODO: procesar si el data viene con información de sin permisos o de error propio de pQn
+				success(data, textStatus, jqXHR);
+			});	
+		}		
 	},
 	window.pQn = pQn;
 })(window);
@@ -397,6 +410,18 @@ pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampo
 	
 };
 
+/**
+ * Inicializa el modulo (ABML+omnifilter) en el cliente para tener las funcionalidades del modulo pQn.
+ * 
+ * @param idDialogo atributo ID del dialogo que se creará
+ * @param nombreEntidadPrincipal nombre de la entidad principal del modulo
+ * @param idForm id del formulario de la entidad principal
+ * @param nombreCampoFiltro nombre del campo de filtro para filtro multibúsqueda (omnifilter)
+ * @param idBotonAlta atributo id del botón estandar de alta de entidad
+ * @param idLista atributo id de la lista de elementos de la entidad principal
+ * @param aMod nombre del módulo a inicializar
+ * @param options opciones mixtas que se usan como opción para alta modificación y filtro (se mergean y pasan a bindAltaBtn, bindBodifBtn y bindFiltro . La unica que es propia de init es onInit que se ejecuta cuando termina de iniciar. 
+ */
 function initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod,options) {
 	$.initModulo(idDialogo,nombreEntidadPrincipal,idForm,nombreCampoFiltro,idBotonAlta,idLista,aMod,options);
 }
