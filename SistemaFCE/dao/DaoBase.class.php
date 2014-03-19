@@ -46,17 +46,21 @@ abstract class DaoBase {
      * @var array Instancia singleton del dao
      */
     private static $instances = array();
+    
+    /**
+     * @var array Instancia singleton de conexiones db
+     */
+    private static $dbConections = array();
 
     /**
      * Constructor de DaoBase
      */
     function DaoBase() {
         $this->loadMapping();
-
+        
         $dataSource = null;
         if(isset($this->_xmlMapping['data-source']))
             $dataSource = (string)$this->_xmlMapping['data-source'];
-
         $this->_db = $this->getConexion($dataSource);
 
         $this->tableName = $this->_xmlMapping['tabla'];
@@ -68,13 +72,13 @@ abstract class DaoBase {
 	final public static function getInstance()
     {
         $calledClass = get_called_class();
-
-        if (!isset($instances[$calledClass]))
+        
+        if (!isset(self::$instances[$calledClass]))
         {
-            $instances[$calledClass] = new $calledClass();
+            self::$instances[$calledClass] = new $calledClass();
         }
 
-        return $instances[$calledClass];
+        return self::$instances[$calledClass];
     }
 
     function __destruct() {
@@ -85,14 +89,16 @@ abstract class DaoBase {
     {
         if(!isset($dataSource))
             $dataSource = Configuracion::getDefaultDataSource();
-
-        $db = &ADONewConnection(Configuracion::getDBMS($dataSource)); # eg 'mysql' or 'postgres'
-        $db->SetFetchMode(ADODB_FETCH_ASSOC);
-        if(Configuracion::getDbDSN($dataSource)!='')
-        	$db->NConnect(Configuracion::getDbDSN($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource));
-        else
-        	$db->NConnect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
-        return $db;
+		if(!isset(self::$dbConections[$dataSource]))
+		{
+	        self::$dbConections[$dataSource] = &ADONewConnection(Configuracion::getDBMS($dataSource)); # eg 'mysql' or 'postgres'
+	        self::$dbConections[$dataSource]->SetFetchMode(ADODB_FETCH_ASSOC);
+	        if(Configuracion::getDbDSN($dataSource)!='')
+	        	self::$dbConections[$dataSource]->NConnect(Configuracion::getDbDSN($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource));
+	        else
+	        	self::$dbConections[$dataSource]->NConnect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
+		}
+        return self::$dbConections[$dataSource];
     }
 
     private function _getMapperConfig()
@@ -185,7 +191,7 @@ abstract class DaoBase {
         if(!@include_once("{$nombreDaoFile}.class.php"))
         	require_once("daos/{$nombreDaoFile}.class.php");
 
-        return new $nombreDao();
+        return $nombreDao::getInstance();
     }
 
     /**
