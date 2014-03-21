@@ -57,13 +57,12 @@ body > header {
 
 body > footer {
 	border-top: 1px solid #dddddd;
-	background: url(../img/grad-overlay.png) #EEEEEE 0 1px repeat-x;
-	background-image: none;
+	background: url(../../img/grad-overlay.png) #EEEEEE 0 1px repeat-x;
 }
 
 	body > footer > #copyright {
 		color: #000;
-		text-shadow: 0 1px 1px #ffffff;
+		text-shadow: 0 1px 1px #FFFFFF;
 	}
 
 /*********************************** FIN HEADER & FOOTER **************************************/

@@ -266,11 +266,12 @@ class BaseMod implements PropertiesManager {
     	$this->smarty->assign("pQnDefaultCss","/sistemafce/css/default.css");
     	$this->smarty->assign("pQnGridCss","/bootstrap/css/bootstrap-responsive.min.css");
     	$this->smarty->assign("pQnJQueryCss","/css/jquery/Aristo/Aristo.css");
+    	$this->setTplVar("pQnBootstrapCss", "/bootstrap/css/bootstrap.min.css");
     	 
     	//JS
     	$this->smarty->assign("pQnJQueryJs","/js/jquery/jquery-1.9.1.min.js");
     	$this->smarty->assign("pQnJQueryUiJs","/js/jquery/jquery-ui-1.10.0.custom.min.js");
-    	 
+    	
     	
     	
     	// prueba de variables default de las partes estandares (sys-names) de templates las que tiene definido el dtd
@@ -653,6 +654,14 @@ class BaseMod implements PropertiesManager {
     private function assignHeadCss()
     {
     	$cssIncludes = "";
+    	
+    	$defaultCssTemplateVars = array("pQnBootstrapCss","pQnDefaultCss","pQnThemeCss","pQnGridCss","pQnJQueryCss","cssModulo");
+    	
+    	foreach($defaultCssTemplateVars as $cssFileNameVar)
+    	{
+    		if(($cssFileName = $this->getTemplateVar($cssFileNameVar))!='')
+    			$cssIncludes .= "\n	<link rel=\"stylesheet\" href=\"{$cssFileName}\" type=\"text/css\" />";
+    	}
     	
     	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y
     	// poniendolos minified
@@ -1268,5 +1277,25 @@ class BaseMod implements PropertiesManager {
 	
 	public function setExitOnMensaje($bExit) {
 		$this->exitOnMensaje = $bExit;
+	}
+	
+	/**
+	 * Asigna la variable de theme para incluir el archivo css inmediatamente despues de defaultCss
+	 * @param string $themeCssFilePath la ruta (client side) del archivo css 
+	 */
+	public function setThemeCss($themeCssFilePath) {
+		$this->setTplVar("pQnThemeCss", $themeCssFilePath);
+	}
+	
+	/**
+	 * Obtiene el valor asignado en la template (smarty) a la variable dada
+	 * @param string $varname
+	 * @return Ambigous <multitype:, NULL>
+	 */
+	public function getTemplateVar($varname) {
+		if(method_exists($this->smarty,'getTemplateVars'))
+			return $this->smarty->getTemplateVars($varname);
+
+		return $this->smarty->get_template_vars($varname);
 	}
 }
