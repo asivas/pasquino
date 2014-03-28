@@ -223,7 +223,7 @@
 		 * @param success función callback que procesará el success success(data, textStatus, jqXHR)
 		 */
 		doAccion: function(modName,accion,inData,success) {
-			$.post(getAccionUrl(modName,accion,"plain"),inData,function(data, textStatus, jqXHR){
+			return $.post(getAccionUrl(modName,accion,"plain"),inData,function(data, textStatus, jqXHR){
 				//TODO: procesar si el data viene con información de sin permisos o de error propio de pQn
 				success(data, textStatus, jqXHR);
 			});	
