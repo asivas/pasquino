@@ -251,9 +251,7 @@ textarea {
 	border: 1px solid #d3d3d3;
 	color: #666666;
 }
-input.loading {
-    background: white url('../img/ajax-loader.gif') right 5px center no-repeat;
-}
+
 
 /*********************************** FIN FORMULARIOS **************************************/
 
