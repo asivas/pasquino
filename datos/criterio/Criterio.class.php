@@ -10,6 +10,8 @@ class Criterio{
     protected $_operador = "AND";
     protected $_operadorH = "Y";
     
+    protected $bindParameters = array();
+    
     static function getAND($expresion1,$expresion2){ return new Conjuncion($expresion1,$expresion2); }
     static function getOR($expresion1,$expresion2){ return new Disjuncion($expresion1,$expresion2); }
     
@@ -56,7 +58,7 @@ class Criterio{
      * Genera la condici�n de SQL a partir de los datos que existen en $this->_expresiones
      * @return string la condici�n generada
      */
-    function getCondicion($clase=null)
+    function getCondicion($clase=null,&$parametized=false)
     {
     	$cond = "";
         foreach($this->_expresiones as $exp)
@@ -67,11 +69,17 @@ class Criterio{
             {   
                 $cond .= $exp;
             }
-            elseif(is_a($exp,"Restriccion"))
-                $cond .= $exp->toSqlString($clase);
+            elseif(is_a($exp,"Restriccion")) {
+                $cond .= $exp->toSqlString($clase,$parametized!==false?$parametized:null);
+                if($parametized!==false && $exp->getValor()!==null)
+                	$this->bindParameters[$parametized++] = $exp->getValor();                
+            }
             elseif(is_a($exp,"Criterio")) //si no es string si o si debe ser alguna clase de Criterio
-            //TODO: parece que sería saludable corroborar que  $exp != $this
-            	$cond .= "(". $exp->getCondicion() .")";
+            {
+            	//TODO: parece que sería saludable corroborar que  $exp != $this
+            	$cond .= "(". $exp->getCondicion($clase,$parametized) .")";
+            	$this->bindParameters = array_merge($this->bindParameters,$exp->getBindValues());
+            }
         }
         return $cond;
     }
@@ -154,5 +162,9 @@ class Criterio{
 			$c->add(Criterio::unserialize(serialize($exp)));				
 		
 		return $c;
+	}
+	
+	function getBindValues() {
+		return $this->bindParameters;
 	}
 }

@@ -4,7 +4,7 @@ require_once('datos/criterio/Restriccion.class.php');
 class IsNotNull extends Restriccion {
 
     function IsNotNull($nombrePropiedad) {
-        parent::__construct($nombrePropiedad,"");
+        parent::__construct($nombrePropiedad,null);
         $this->operador = "IS NOT NULL";
     }
     

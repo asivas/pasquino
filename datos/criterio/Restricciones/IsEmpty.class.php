@@ -4,7 +4,7 @@ require_once('Eq.class.php');
 class IsEmpty extends Eq {
 
     function IsEmpty($nombrePropiedad) {
-        parent::__construct($nombrePropiedad,"");
+        parent::__construct($nombrePropiedad,null);
     }
     
     function toString()

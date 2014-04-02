@@ -51,6 +51,11 @@ abstract class DaoBase {
      * @var array Instancia singleton de conexiones db
      */
     private static $dbConections = array();
+    
+    /**
+     * @var boolean true si las condiciones del findBy son parametrizadas en la db
+     */
+    protected $parametrizedFindBy = false; //está por defecto en false por compatibilidad historica TODO: hacer una revisión general de pasquino y definir fecha de cambio a true
 
     /**
      * Constructor de DaoBase
@@ -389,7 +394,7 @@ abstract class DaoBase {
     /**
      *
      * Genera el sql utilizado para buscar elementos
-     * @param mixed $filtro puede ser string o Criterio
+     * @param Criterio $filtro puede ser string o Criterio
      * @param string $order
      * @param int $limitCount cantidad de elementos a buscar
      * @param int $limitOffset limite inicial desde donde buscar (offset)
@@ -410,8 +415,10 @@ abstract class DaoBase {
 
             $sql = "SELECT {$fields} FROM {$tabla}";
         }
-
-        $strFiltro = ($filtro != null)?$filtro->getCondicion($this->_xmlMapping['nombre']):'';
+        $paramIndex = false;
+		if($this->parametrizedFindBy)
+        	$paramIndex = 'a';
+        $strFiltro = ($filtro != null)?$filtro->getCondicion($this->_xmlMapping['nombre'],$paramIndex):'';
 
         if($strFiltro!='')
         {
@@ -439,6 +446,13 @@ abstract class DaoBase {
             	$sql .= " OFFSET {$limitOffset}";
          }
          //print $sql;
+         
+         if(is_a($filtro, 'Criterio') && $this->parametrizedFindBy)
+         {
+         	foreach ($filtro->getBindValues() as $k => $v) {
+         		$sql = str_replace(":{$k}", $this->getDb()->param($k), $sql);
+         	}
+         }
 
          return $sql;
 
@@ -464,7 +478,14 @@ abstract class DaoBase {
          return $sql;
     }
 
-
+	private function executeFindByQuery($sql,$filtro=null) {
+		
+		if(isset($filtro) && is_a($filtro, 'Criterio') && $this->parametrizedFindBy!==false)
+			$rs = $this->_db->Execute($sql,$filtro->getBindValues());
+		else
+			$rs = $this->_db->Execute($sql);
+		return $rs;
+	}
 
     /**
      *
@@ -478,8 +499,10 @@ abstract class DaoBase {
     	$sql = $this->getFindBySql($filtro,$order);
 
     	$sql = substr($sql, stripos($sql,"select "),7). " COUNT(*) as cant " . substr($sql, stripos($sql, "from"));
-
-    	if(!($rs = $this->_db->Execute($sql)))
+		
+    	$rs = $this->executeFindByQuery($sql,$filtro);
+    	
+    	if(!$rs)
             die($this->_db->ErrorMsg()." $sql");
         return $rs->fields['cant'];
     }
@@ -503,15 +526,17 @@ abstract class DaoBase {
 
     /**
      * Obtiene una lista de objetos de la entidad
-     * @param object $filtro Objeto de clase Criterio
+     * @param Criterio $filtro Objeto de clase Criterio
      * @param string $order Columna o columnas separadas por coma (,) para ordenar la busqueda
      * @return array
      */
     function findBy($filtro = null,$order=null,$limitCount=null,$limitOffset=null,$group=null){
-
-        $sql = $this->getFindBySql($filtro,$order,$limitCount,$limitOffset,$group);
-
-        if(!($rs = $this->_db->Execute($sql)))
+    	$this->parametrizedFindBy=true;
+        $sql = $this->getFindBySql($filtro,$order,$limitCount,$limitOffset,$group);        	
+		
+        $rs = $this->executeFindByQuery($sql,$filtro);
+        
+        if(!($rs))
         {
             if($this->_dieOnFindByError)
             	die( $this->_db->ErrorMsg()." $sql");
@@ -747,8 +772,10 @@ abstract class DaoBase {
     public function checkIfExistsBy(Criterio $c)
     {
     	$sql = $this->getFindBySql($c);
+    	
+    	$rs = $this->executeFindByQuery($sql,$c);
 
-    	if($rs = $this->_db->Execute($sql))
+    	if($rs)
     	{
     		if($rs->RowCount()>0)
     			return true;
@@ -791,6 +818,14 @@ abstract class DaoBase {
     		$values = split(",", $valuestring);
     	}
     	return $values;
+    }
+    
+    public function setParametizedFindBy($doParametrized) {
+    	$this->parametrizedFindBy = $doParametrized;
+    }
+    
+    public function getParametizedFindBy() {
+    	return $this->parametrizedFindBy;
     }
 
 }

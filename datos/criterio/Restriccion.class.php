@@ -46,7 +46,7 @@ class Restriccion{
         return $nombrePropiedad;
     }  
     
-    function toSqlString($clase=null)
+    function toSqlString($clase=null,$paramName=null)
     {
         $val = $this->valor;
         if(is_string($this->valor))
@@ -55,7 +55,12 @@ class Restriccion{
         $columna = $this->buscarNombreColumna($clase,$this->propiedad); 
     	if(strpos($columna,' ')!==false && $columna!=$this->propiedad)
     		$columna = "`{$columna}`";
-        return "{$columna} {$this->operador} {$val}";	
+    	
+    	$sqlString = "{$columna} {$this->operador} {$val}";
+    	if(isset($paramName))
+    		$sqlString = "{$columna} {$this->operador} :{$paramName}";
+        
+    	return $sqlString;	
     }
     
     function toString()

@@ -129,12 +129,17 @@
 				pQn.ultimoKeyup = event.timeStamp;
 			});
 		},
-		getStatusResponse: function(data){
-			$("body").crearDiv("tmp");
-			
+		/**
+		 * Obtiene el objeto (DOM jQuery) de status <status status="..." msg="..."/> de la data recibida
+		 * @param data
+		 */
+		getStatusObject: function(data) {
+			$("body").crearDiv("tmp");			
 			$("#tmp").hide().html("").html(data);
-			var status = $("#tmp status").attr('status');
-			return status;
+			return $("#tmp status");
+		},
+		getStatusResponse: function(data){
+			return pQn.fn.getStatusObject(data).attr('status');
 		},
 		processGuardarResponse: function(data,dlg,options) {
 			

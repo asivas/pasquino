@@ -4,7 +4,7 @@ require_once('Ne.class.php');
 class IsNotEmpty extends Ne {
 
     function IsNotEmpty($nombrePropiedad) {
-        parent::__construct($nombrePropiedad,"");
+        parent::__construct($nombrePropiedad,null);
     }
     
     function toString()
