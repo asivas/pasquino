@@ -531,6 +531,7 @@ abstract class DaoBase {
      * @return array
      */
     function findBy($filtro = null,$order=null,$limitCount=null,$limitOffset=null,$group=null){
+    	$parametrizedFindBy = $this->parametrizedFindBy; 
     	$this->parametrizedFindBy=true;
         $sql = $this->getFindBySql($filtro,$order,$limitCount,$limitOffset,$group);        	
 		
@@ -549,6 +550,7 @@ abstract class DaoBase {
 	        	$this->addEntidadAListaFindBy($this->crearObjetoEntidad($row), $lista);
 	        }
         }
+        $this->parametrizedFindBy = $parametrizedFindBy;
         return $lista;
     }
 
