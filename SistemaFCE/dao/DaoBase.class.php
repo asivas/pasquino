@@ -478,7 +478,7 @@ abstract class DaoBase {
          return $sql;
     }
 
-	private function executeFindByQuery($sql,$filtro=null) {
+	protected function executeFindByQuery($sql,$filtro=null) {
 		
 		if(isset($filtro) && is_a($filtro, 'Criterio') && $this->parametrizedFindBy!==false)
 			$rs = $this->_db->Execute($sql,$filtro->getBindValues());

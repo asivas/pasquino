@@ -1,6 +1,9 @@
 {*smarty*}
-		<title>{$appName} - {$titulo}</title>
+		<title>{$appName}{if isset($titulo)} - {$titulo}{/if}</title>
 	
+	{if isset($pQnFavicon)}
+	<link rel="shortcut icon" href="{$pQnFavicon}"/>
+	{/if}
 	<!-- JS -->
 	
 	{if isset($pQnJQueryJs)}
