@@ -481,7 +481,10 @@ abstract class DaoBase {
 	protected function executeFindByQuery($sql,$filtro=null) {
 		
 		if(isset($filtro) && is_a($filtro, 'Criterio') && $this->parametrizedFindBy!==false)
-			$rs = $this->_db->Execute($sql,$filtro->getBindValues());
+		{
+			$stmt = $this->_db->Prepare($sql);
+			$rs = $this->_db->Execute($stmt,$filtro->getBindValues());
+		}
 		else
 			$rs = $this->_db->Execute($sql);
 		return $rs;
@@ -612,7 +615,7 @@ abstract class DaoBase {
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
 
-        $ret = $this->_db->AutoExecute((string)$this->tableName,$buf,$mode,$where,true,true);
+        $ret = $this->_db->AutoExecute((string)$this->tableName,$buf,$mode,$where);
 
 		if(!$ret)
         {
