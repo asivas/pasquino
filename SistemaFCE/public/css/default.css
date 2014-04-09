@@ -65,6 +65,12 @@ body {
 	}
 	
 /* Trampa a Boostrap, revisar si se cambia la proporcion */
+@media (max-width: 1200px) and (min-width: 768px) {
+	#container section#main-section {
+		width: 76.59574468085107% !important;
+		margin: 0 !important;
+	}
+}
 @media (min-width: 1200px) {
 	#container section#main-section {
 		width: 76.92307692% !important;
@@ -97,7 +103,7 @@ body > header {
 		float: left;
 		margin-top: 1px;
 	}
-	
+		
 #user-tools {
 	margin-top: 21px;
 }
@@ -611,6 +617,7 @@ section .grid {
 			display: table-cell;
 			border-left: 1px solid #DFDFDF;
 			vertical-align: top;
+			word-break: break-word;
 		}
 		
 		section .grid header ul li:FIRST-CHILD {
