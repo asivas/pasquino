@@ -1,25 +1,31 @@
 <footer>
+	
+	{* conteo *}
+	{$showFrom = min((($paginationCurrentPage-1)*$paginationLimitCount)+1,$paginationCantEntidades)}
+	{$showTo = min($showFrom+$paginationLimitCount-1,$paginationCantEntidades)}
+	{if $paginationLimitCount == 0 }
+		{$showTo = $paginationCantEntidades}
+	{/if}
+
+	<div class="pagination-info pull-left">
+		Mostrando {$showFrom} al {$showTo} de {$paginationCantEntidades} {if $paginationCantEntidades==1}entrada{else}entradas{/if}
+		{if !empty($filtroNombre)}
+			(filtro: {$filtroNombre|resaltar:$filtroNombre})
+			{$paramFiltroNombre = "&filtroNombre=$filtroNombre"}
+		{/if}
+	</div>
+		
+	{* paginación *}
 	{if ($paginationLimitCount != 0)}
 		{$pages = ceil($paginationCantEntidades/$paginationLimitCount)}
 		{$adyacentes = 4}
 		{$from = max(1,$paginationCurrentPage-$adyacentes)}
 		{$to = min($pages,$paginationCurrentPage+$adyacentes)}
 
-		{$showFrom = min((($paginationCurrentPage-1)*$paginationLimitCount)+1,$paginationCantEntidades)}
-		{$showTo = min($showFrom+$paginationLimitCount-1,$paginationCantEntidades)}
-
-
 		{if isset($smarty.get.count)}
 			{$paramCount = "&count=$paginationLimitCount"}
 		{/if}
 
-		<div class="pagination-info pull-left">
-			Mostrando {$showFrom} al {$showTo} de {$paginationCantEntidades} {if $paginationCantEntidades==1}entrada{else}entradas{/if}
-			{if !empty($filtroNombre)}
-				(filtro: {$filtroNombre|resaltar:$filtroNombre})
-				{$paramFiltroNombre = "&filtroNombre=$filtroNombre"}
-			{/if}
-		</div>
 
 		{if $pages > 1}
 			<div class="pagination pagination-mini pull-right">
