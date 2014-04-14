@@ -423,6 +423,21 @@ nav#sidebar {
 			transition: border linear .2s, box-shadow linear .2s;
 		}
 		
+		.base-form .form_element input[type="radio"] {
+			width: auto;
+			float: left;
+			margin-right: 3px;
+			margin-top: 6px;
+			
+		}
+		.base-form .form_element input[type="radio"] + label {
+			width: auto;
+			float: left;
+			margin-left: 0;
+			margin-right: 10px;
+			margin-bottom: 1px;
+		} 
+		
 		.base-form .form_element input:focus,
 		.base-form .form_element select:focus, 
 		.base-form .form_element textarea:focus { 
