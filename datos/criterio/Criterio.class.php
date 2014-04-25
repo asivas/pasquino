@@ -69,7 +69,9 @@ class Criterio{
             {   
                 $cond .= $exp;
             }
-            elseif(is_a($exp,"Restriccion")) {
+            elseif(is_a($exp,"In")) {
+				$cond .= $exp->toSqlString($clase);
+			}elseif(is_a($exp,"Restriccion")) {
                 $cond .= $exp->toSqlString($clase,$parametized!==false?$parametized:null);
                 if($parametized!==false && $exp->getValor()!==null)
                 	$this->bindParameters[$parametized++] = $exp->getValor();                
@@ -84,6 +86,7 @@ class Criterio{
         return $cond;
     }
     
+
     function disjuncion()
     {
     	$this->_operador = "OR";
