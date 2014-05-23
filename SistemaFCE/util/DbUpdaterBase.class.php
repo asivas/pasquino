@@ -56,12 +56,22 @@ class DbUpdaterBase {
 
 		return $this->db;
 	}
-
+	
 	/**
 	 * Ejecuta una consulta SQL en la base del sistema (se conexta mediante createConection)
-	 * @param unknown $query
+	 * queda creado porque inicalmente se creó con error de ortografía
+	 * @deprecated usar executeQuery
+	 * @param string $query
 	 */
 	protected function excecuteQuery($query) {
+		return $this->executeQuery($query);
+	}
+	
+	/**
+	 * Ejecuta una consulta SQL en la base del sistema (se conexta mediante createConection)
+	 * @param string $query
+	 */
+	protected function executeQuery($query) {
 		$db = $this->getDb();
 		$rs = $db->execute($query);
 			if(!$rs) $this->report($db->ErrorMsg() . " Ejecutando: $query",self::R_ERROR);
