@@ -207,7 +207,7 @@ class BaseMod implements PropertiesManager {
 
         $this->smarty->assign('facade',new smartyFacade($this));
         
-        $this->setTplVar("ckeditorVersion", '4.3.2');
+        $this->setTplVar("ckeditorVersion", '4.4.1');
 
         $this->smarty->assign('usuario',$this->getUsuario());
         $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
