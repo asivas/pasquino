@@ -480,6 +480,8 @@ input.loading {
     background: white url('../img/ajax-loader.gif') right 5px center no-repeat;
 }
 
+input[type="file"] {height: 29px;}
+
 /*********************************** FIN FORMULARIOS **************************************/
 
 

@@ -193,14 +193,24 @@
 				
 				var btn = $("form#"+idForm+" input[name='"+nombreBotonGuardar+"']");
 				var $procesarForm = function(e){
-					$.post('./',$("form#"+idForm).serialize(),
-							function(data) {
-							var status = pQn.fn.getStatusResponse(data);
+					e.preventDefault();
+					var formData = new FormData($("form#"+idForm)[0]);
+					
+					$.ajax({
+				        url: './',
+				        type: 'POST',
+				        data: formData,
+				        success: function (data) {
+				        	var status = pQn.fn.getStatusResponse(data);
 							dlg.attr('status',status);
 							pQn.fn.processGuardarResponse(data,dlg,opciones);
-						}
-					);
-					e.preventDefault();
+				        },
+				        cache: false,
+				        contentType: false,
+				        processData: false
+				    });
+
+					
 				};
 				
 				//si en las opciones se define guardarCallback se reemplaza la función de guardar
