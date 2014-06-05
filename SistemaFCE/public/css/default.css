@@ -423,6 +423,7 @@ nav#sidebar {
 			transition: border linear .2s, box-shadow linear .2s;
 		}
 		
+		.base-form .form_element input[type="checkbox"],
 		.base-form .form_element input[type="radio"] {
 			width: auto;
 			float: left;
@@ -430,6 +431,8 @@ nav#sidebar {
 			margin-top: 6px;
 			
 		}
+		
+		.base-form .form_element input[type="checkbox"] + label,
 		.base-form .form_element input[type="radio"] + label {
 			width: auto;
 			float: left;
