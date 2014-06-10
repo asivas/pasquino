@@ -156,6 +156,9 @@
 		alertError: function(errorMsg){
 			alert(errorMsg);
 		},
+		getFormData: function(idForm) {
+			return new FormData($("form#"+idForm)[0]);
+		},
 		dialogoGuardar: function(idDialogo,url,titulo,idForm,opciones){
 			var nombreBotonGuardar = 'guardar',
 				valueBotonGuardar = 'Guardar',
@@ -194,7 +197,10 @@
 				var btn = $("form#"+idForm+" input[name='"+nombreBotonGuardar+"']");
 				var $procesarForm = function(e){
 					e.preventDefault();
-					var formData = new FormData($("form#"+idForm)[0]);
+					
+					var formData = pQn.fn.getFormData(idForm);
+					if(typeof opciones.getFormData == 'function') 
+						formData = opciones.getFormData(idForm);
 					
 					$.ajax({
 				        url: './',
