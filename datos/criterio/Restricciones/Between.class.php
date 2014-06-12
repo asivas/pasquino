@@ -13,10 +13,15 @@ class Between extends Restriccion {
         $this->operadorH = " entre ";
     }
     
-    function toSqlString($clase=null)
+    function toSqlString($clase=null,$paramNameMin=null,$paramNameMax= null)
     {
     	$columna = $this->buscarNombreColumna($clase,$this->propiedad);
-        return "{$columna} {$this->operador} '{$this->valor}' AND '{$this->valor2}'"; 
+    	
+    	$sqlString = "{$columna} {$this->operador} '{$this->valor}' AND '{$this->valor2}'";    	
+    	if(isset($paramNameMin,$paramNameMax))
+    		$sqlString = "{$columna} {$this->operador} :{$paramNameMin} AND :{$paramNameMax}";
+        
+    	return $sqlString; 
     }
     
     function toString()
@@ -27,5 +32,13 @@ class Between extends Restriccion {
     function toArray(){
         
         return array($this->operador=>array($this->propiedad,array($this->valor,$this->valor2)));
+    }
+    
+    function getValorMin() {
+    	return $this->valor;
+    }
+    
+    function getValorMax() {
+    	return $this->valor2;
     }
 }

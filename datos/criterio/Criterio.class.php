@@ -71,6 +71,15 @@ class Criterio{
             }
             elseif(is_a($exp,"In")) {
 				$cond .= $exp->toSqlString($clase);
+            }
+            elseif(is_a($exp,"Between")) {
+            	$paramMin = $parametized;
+            	$cond .= $exp->toSqlString($clase,$parametized!==false?$parametized:null,$parametized!==false?++$parametized:null);
+            	if($parametized!==false && $exp->getValorMin()!==null && $exp->getValorMax()!==null)
+            	{
+            		$this->bindParameters[$paramMin] = $exp->getValorMin();
+            		$this->bindParameters[$parametized++] = $exp->getValorMax();
+            	}
 			}elseif(is_a($exp,"Restriccion")) {
                 $cond .= $exp->toSqlString($clase,$parametized!==false?$parametized:null);
                 if($parametized!==false && $exp->getValor()!==null)
