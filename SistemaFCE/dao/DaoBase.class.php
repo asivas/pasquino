@@ -622,6 +622,9 @@ abstract class DaoBase {
             		unset($buf[$key]);
             }
 			unset($bufExistente);
+			
+			if(empty($buf)) return true; //nada que actualizar
+				
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
 
