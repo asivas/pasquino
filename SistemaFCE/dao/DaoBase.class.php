@@ -46,12 +46,12 @@ abstract class DaoBase {
      * @var array Instancia singleton del dao
      */
     private static $instances = array();
-    
+
     /**
      * @var array Instancia singleton de conexiones db
      */
     private static $dbConections = array();
-    
+
     /**
      * @var boolean true si las condiciones del findBy son parametrizadas en la db
      */
@@ -62,7 +62,7 @@ abstract class DaoBase {
      */
     function DaoBase() {
         $this->loadMapping();
-        
+
         $dataSource = null;
         if(isset($this->_xmlMapping['data-source']))
             $dataSource = (string)$this->_xmlMapping['data-source'];
@@ -81,7 +81,7 @@ abstract class DaoBase {
 	final public static function getInstance()
     {
         $calledClass = get_called_class();
-        
+
         if (!isset(self::$instances[$calledClass]))
         {
             self::$instances[$calledClass] = new $calledClass();
@@ -446,7 +446,7 @@ abstract class DaoBase {
             	$sql .= " OFFSET {$limitOffset}";
          }
          //print $sql;
-         
+
          if(is_a($filtro, 'Criterio') && $this->parametrizedFindBy)
          {
          	foreach ($filtro->getBindValues() as $k => $v) {
@@ -479,7 +479,7 @@ abstract class DaoBase {
     }
 
 	protected function executeFindByQuery($sql,$filtro=null) {
-		
+
 		if(isset($filtro) && is_a($filtro, 'Criterio') && $this->parametrizedFindBy!==false)
 		{
 			$stmt = $this->_db->Prepare($sql);
@@ -502,9 +502,9 @@ abstract class DaoBase {
     	$sql = $this->getFindBySql($filtro,$order);
 
     	$sql = substr($sql, stripos($sql,"select "),7). " COUNT(*) as cant " . substr($sql, stripos($sql, "from"));
-		
+
     	$rs = $this->executeFindByQuery($sql,$filtro);
-    	
+
     	if(!$rs)
             die($this->_db->ErrorMsg()." $sql");
         return $rs->fields['cant'];
@@ -534,12 +534,12 @@ abstract class DaoBase {
      * @return array
      */
     function findBy($filtro = null,$order=null,$limitCount=null,$limitOffset=null,$group=null){
-    	$parametrizedFindBy = $this->parametrizedFindBy; 
+    	$parametrizedFindBy = $this->parametrizedFindBy;
     	$this->parametrizedFindBy=true;
-        $sql = $this->getFindBySql($filtro,$order,$limitCount,$limitOffset,$group);        	
-		
+        $sql = $this->getFindBySql($filtro,$order,$limitCount,$limitOffset,$group);
+
         $rs = $this->executeFindByQuery($sql,$filtro);
-        
+
         if(!($rs))
         {
             if($this->_dieOnFindByError)
@@ -609,9 +609,19 @@ abstract class DaoBase {
         /*
          * Busco el elemento por id, si existe debo actualizarlo
          */
-        if($this->findById($elem->getId()))
+        if(($existente = $this->findById($elem->getId()))!=null)
         {
             $mode  = 'UPDATE';
+
+            // quito del buffer de guardado los datos que tiene la
+            // entidad que no se modifican de lo que hay en la base
+            $bufExistente = $this->getBuffer($existente);
+            foreach ($buf as $key => $val)
+            {
+            	if($bufExistente[$key] == $val )
+            		unset($buf[$key]);
+            }
+			unset($bufExistente);
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
 
@@ -777,7 +787,7 @@ abstract class DaoBase {
     public function checkIfExistsBy(Criterio $c)
     {
     	$sql = $this->getFindBySql($c);
-    	
+
     	$rs = $this->executeFindByQuery($sql,$c);
 
     	if($rs)
@@ -824,11 +834,11 @@ abstract class DaoBase {
     	}
     	return $values;
     }
-    
+
     public function setParametizedFindBy($doParametrized) {
     	$this->parametrizedFindBy = $doParametrized;
     }
-    
+
     public function getParametizedFindBy() {
     	return $this->parametrizedFindBy;
     }
