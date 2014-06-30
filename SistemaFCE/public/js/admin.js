@@ -187,9 +187,12 @@
 			var dlgOpts = opciones;
 			dlgOpts.title = titulo;
 			
+			if(opciones.data == null)
+				opciones.data = {};
+			
 			$("body").crearDiv(idDialogo);
 			var dlg = $("#"+idDialogo);
-			dlg.html(htmlCargando).load(url,function(){
+			dlg.html(htmlCargando).load(url,opciones.data,function(){
 				dlg.dialog('option','position','center');
 				if( opciones.onLoad )
 					opciones.onLoad();
