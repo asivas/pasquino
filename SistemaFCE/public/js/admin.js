@@ -202,13 +202,14 @@
 				var processXHR = null;
 				var $procesarForm = function(e){
 					e.preventDefault();
-					if(processXHR!=null)return;
+					if(processXHR)return;
+					processXHR = true;
 					
 					var formData = pQn.fn.getFormData(idForm);
 					if(typeof opciones.getFormData == 'function') 
 						formData = opciones.getFormData(idForm);
 
-			    	processXHR = $.ajax({
+			    	$.ajax({
 				        url: './',
 				        type: 'POST',
 				        data: formData,
@@ -216,7 +217,7 @@
 				        	var status = pQn.fn.getStatusResponse(data);
 							dlg.attr('status',status);
 							pQn.fn.processGuardarResponse(data,dlg,opciones);
-							processXHR = null;
+							processXHR = false;
 				        },
 				        cache: false,
 				        contentType: false,
