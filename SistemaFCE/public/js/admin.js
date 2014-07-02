@@ -198,14 +198,17 @@
 					opciones.onLoad();
 				
 				var btn = $("form#"+idForm+" input[name='"+nombreBotonGuardar+"']");
+				
+				var processXHR = null;
 				var $procesarForm = function(e){
 					e.preventDefault();
+					if(processXHR!=null)return;
 					
 					var formData = pQn.fn.getFormData(idForm);
 					if(typeof opciones.getFormData == 'function') 
 						formData = opciones.getFormData(idForm);
-					
-					$.ajax({
+
+			    	processXHR = $.ajax({
 				        url: './',
 				        type: 'POST',
 				        data: formData,
@@ -213,6 +216,7 @@
 				        	var status = pQn.fn.getStatusResponse(data);
 							dlg.attr('status',status);
 							pQn.fn.processGuardarResponse(data,dlg,opciones);
+							processXHR = null;
 				        },
 				        cache: false,
 				        contentType: false,
