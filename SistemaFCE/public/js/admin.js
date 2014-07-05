@@ -70,10 +70,8 @@
 		 */
 		doFilter: function(tiempo,aInputName){	
 			if(tiempo==pQn.ultimoKeyup){
-				console.log("entro");
 				var aInput=$("input[name="+aInputName+"]");
 				var aInputVal=aInput.val();
-				console.log(this.filtroAnterior," - ",aInputVal);
 				if(this.filtroAnterior!=aInputVal){				
 					this.filtroAnterior=aInputVal;
 					aInput.parent("form").submit();

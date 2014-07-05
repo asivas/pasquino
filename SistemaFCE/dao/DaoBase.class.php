@@ -743,7 +743,7 @@ abstract class DaoBase {
      * @return Ambigous Entidad|NULL si no encuentra entidad devuelve null
      */
     function findFirst($filtro = null,$order=null) {
-    	$l = $this->findBy($filtro,$order);
+    	$l = $this->findBy($filtro,$order,1);
     	if(is_array($l) && !empty($l))
     		return current($l);
 
