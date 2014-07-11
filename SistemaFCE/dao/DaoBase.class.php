@@ -560,8 +560,10 @@ abstract class DaoBase {
     function deleteBy($filtro = null){
     	$sql = $this->getDeleteBySql($filtro);
 
-        if(!($rs = $this->_db->Execute($sql)))
-            die($this->_db->ErrorMsg()." $sql");
+        $ret = $this->_db->Execute($sql);
+        if(!$ret)
+        	$this->_lastError = $this->_db->ErrorMsg() . " {$sql}";
+        return $ret;
     }
 
     /**
