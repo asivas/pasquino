@@ -418,8 +418,6 @@ pQn.fn.initModulo = function(idDialogo,nombreEntidadPrincipal,idForm,nombreCampo
 		optionsFiltro = $.extend({},options,optionsFiltro);
 	}
 	
-
-	
 	$fnBindAltaBtn = function(){ 
 		pQn.fn.bindAltaBtn(idBotonAlta,idDialogo, nombreEntidadPrincipal, idForm, optionsAltaModif);		
 	};

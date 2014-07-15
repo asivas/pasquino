@@ -4,7 +4,7 @@ if(!class_exists('Smarty'))
 	require_once('visual/smarty3/libs/Smarty.class.php');
 
 require_once 'SistemaFCE/modulo/BaseMod.class.php';
-
+require_once 'formato/xls/PHPExcel.php';
 
 /**
  * Modulo Esqueleto de administración
@@ -33,7 +33,7 @@ abstract class BaseAdminMod extends BaseMod {
 
 		$this->_tplLista = $listaTplPath;
 		$this->_tplForm = $formTplPath;
-		
+
 		$this->defaultPaginationLimitCount = 30;
 
 		$tConf = Configuracion::getTemplateConfigByNombre($skinName);
@@ -42,23 +42,23 @@ abstract class BaseAdminMod extends BaseMod {
 		if(!isset($this->_tilePath) && method_exists($this->smarty,'getTemplateVars')) //smarty3 y el tilePath está vacio
 			$this->_tilePath = $this->smarty->getTemplateVars('pQn'.$tilePathName.'Tpl');
 
-		//busco el dir esperado por defecto de los tpls del modulo		
+		//busco el dir esperado por defecto de los tpls del modulo
 		$lowerNombreEntidad = strtolower( str_replace("Mod", "", get_class($this)) );
-		
+
 		//si no está seteado el tpl lista cargo el de pasquino
 		if(!isset($this->_tplLista)) $this->_tplLista = $this->smarty->getTemplateVars('pQnListaTpl');
 		//si no está seteado el tpl lista cargo un path por defecto con el dir y lista.tpl
 		if(!isset($this->_tplLista)) $this->_tplLista = "{$lowerNombreEntidad}/lista.tpl";
-		
+
 		//si no está seteado el tpl form cargo el de pasquino
 		if(!isset($this->_tplForm)) $this->_tplForm = $this->smarty->getTemplateVars('pQnFormTpl');
 		//si no está seteado el tpl form cargo un path por defecto con el dir y form.tpl
 		if(!isset($this->_tplForm)) $this->_tplForm = "{$lowerNombreEntidad}/form.tpl";
-		
+
 		//TODO: ver de poner el js por defecto del mod
 		if(isset($nada)) //TODO: borrar esta linea y la siguiente, está para que autocomplete
 			$this->mainDao = new DaoBase();
-		
+
 		$this->initListColumns();
 	}
 
@@ -103,7 +103,7 @@ abstract class BaseAdminMod extends BaseMod {
 	 */
 	function guardarExtraProps($aObj){
 	}
-	
+
 	/**
 	 * Agrega los atributos necesarios para eniar el mensaje de guardar
 	 * @param objet $aObj objeto que se estaría guardando
@@ -205,16 +205,16 @@ abstract class BaseAdminMod extends BaseMod {
 		}else
 			$this->mensajeERR("No se puede eliminar {$strInfo} [Error {$this->mainDao->getLastError()}]");
 	}
-	
+
 	protected function getDefaultPaginationLimitCount() {
 		return $this->defaultPaginationLimitCount;
 	}
-	
+
 	protected function getPaginationLimitCount($req) {
 		if(isset($req['count'])) return $req['count'];
 		return $this->getDefaultPaginationLimitCount();
 	}
-	
+
 	protected function getPageOffset($req) {
 		if(isset($req['pag'])) {
 			$limit = $this->getPaginationLimitCount($req);
@@ -230,7 +230,10 @@ abstract class BaseAdminMod extends BaseMod {
 		$filtro = $this->getFiltro($req);
 		$limitCount = $this->getPaginationLimitCount($req);
 		$aObjs = $this->mainDao->findBy($filtro,$req['sort'],$limitCount,$this->getPageOffset($req));
-		
+
+		if($req['display']=='xls')
+			$this->descargarListaExcel($aObjs, $req);
+
 		$nombreClase="";
 		if(count($aObjs)>0)
 		{
@@ -242,12 +245,12 @@ abstract class BaseAdminMod extends BaseMod {
 		$this->smarty->assign('laLista',$aObjs);
 		$this->smarty->assign('claseEntidad',$nombreClase);
 		$this->smarty->assign('modName',strtolower( str_replace("Mod", "", get_class($this)) ));
-		
+
 		$this->smarty->assign('paginationCurrentPage',isset($req['pag'])?$req['pag']:1);
 		$this->smarty->assign('paginationLimitCount',$limitCount);
 		$this->smarty->assign('paginationCantEntidades',$this->mainDao->count($filtro));
 		$this->smarty->assign('paginationFiltro',$filtro);
-		
+
 		$this->mostrar($this->_tplLista,$req['display']);
 	}
 
@@ -319,37 +322,124 @@ abstract class BaseAdminMod extends BaseMod {
 				}else{
 					$aAction="AGREGO";
 					$this->logger->notice('El usuario '.$this->getUsuario()->toString().' '.$aAction.' '. $aEntity->toString());
-					return ; 				
+					return ;
 				}
 			}
 			$this->logger->warning('El usuario '.$this->getUsuario()->toString().' '.$aAction.' '. $aEntity->toString());
 			return ;
 		}
 	}
-	
+
 	public function addPropertyColumnToList($propertyName,$propertyLabel) {
 		$this->columnsList[$propertyLabel] = $propertyName;
-	
+
 	}
-	
+
 	protected function addColumnAcciones() {
 		$this->addPropertyColumnToList('gridAccionesItem', 'Acciones');
 	}
-	
+
 	/**
 	 * Inicializa la lista de columnas del listado estandar (agregando la columna de acciones)
 	 */
 	protected function initListColumns() {
 		if(!isset($this->columnsList))
 			$this->resetListColumns();
-		
+
 		$this->addColumnAcciones();
 	}
-	
+
 	/**
-	 * Reinicializa dejando vacía la lista de columnas para el listado estandar 
+	 * Reinicializa dejando vacía la lista de columnas para el listado estandar
 	 */
 	protected function resetListColumns() {
 		$this->columnsList = array();
+	}
+
+	/**
+	 * Genera el listado en fomrmato de excel y devuelve el objeto PHPExcel que lo representa
+	 * @param array $aObjs listado de entidades
+	 * @param array $req
+	 */
+	protected function getListaExcel($aObjs,$req) {
+		$objPHPExcel = new PHPExcel();
+
+		$objPHPExcel->setActiveSheetIndex(0);
+
+
+		$objHeaderStyle = new PHPExcel_Style();
+		$objHeaderStyle->getFont()->setBold(true);
+
+		$xlscol = 0;
+		$xlscolName = "A";
+		//escribo los encabezados
+		foreach($this->columnsList as $label => $prop)
+		{
+			if(strtolower($prop)!='gridaccionesitem')
+			{
+				$objPHPExcel->getActiveSheet()
+				->getColumnDimensionByColumn($xlscol)
+				->setAutoSize(true);
+
+
+				$objPHPExcel->getActiveSheet()
+				->setCellValueByColumnAndRow($xlscol++,1,$label);
+				$xlscolName++;
+			}
+		}
+
+		$objPHPExcel->getActiveSheet()->setSharedStyle($objHeaderStyle,"A1:{$xlscolName}1");
+
+		$xlsrow = 2;
+		foreach ($aObjs as $ent) {
+			$xlscol = 0;
+			foreach($this->columnsList as $label => $prop)
+			{
+				$getFn = 'get'.ucfirst($prop);
+				if($getFn != 'getGridAccionesItem')
+				{
+					if(method_exists($this, $getFn))
+						$val = $this->$getFn($ent);
+					else if(method_exists($ent, $getFn))
+						$val = $ent->$getFn();
+
+					$objPHPExcel->getActiveSheet()
+						->setCellValueByColumnAndRow($xlscol++,$xlsrow,$val);
+				}
+
+			}
+			$xlsrow++;
+		}
+
+		$objPHPExcel->getProperties()->setTitle("Lista ".get_class($ent));
+
+		$objPHPExcel->getActiveSheet()->setTitle("Lista ".get_class($ent));
+
+		return $objPHPExcel;
+	}
+	/**
+	 * Descarga la lista en formato excel
+	 */
+	protected function descargarListaExcel($aObjs,$req) {
+		$objPHPExcel = $this->getListaExcel($aObjs,$req);
+
+		$title = $objPHPExcel->getProperties()->getTitle();
+
+		// Redirect output to a client’s web browser (Excel2007)
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="'.$title.'.xlsx"');
+		header('Cache-Control: max-age=0');
+		// If you're serving to IE 9, then the following may be needed
+		header('Cache-Control: max-age=1');
+
+		// If you're serving to IE over SSL, then the following may be needed
+		header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+		header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+		header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+		header ('Pragma: public'); // HTTP/1.0
+
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter->save('php://output');
+		exit;
 	}
 }

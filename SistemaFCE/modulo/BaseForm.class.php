@@ -72,7 +72,7 @@ class BaseForm extends HTML_QuickForm {
      *
      * A este metodo debe hacersele override para poder usar correctamente el setDefaults implementado en BaseForm
      *
-     * @param objet $elem el objeto de la entidad principal del form
+     * @param object $elem el objeto de la entidad principal del form
      *
      */
     protected  function getDefaultsArray($elem) {   return array(); }
