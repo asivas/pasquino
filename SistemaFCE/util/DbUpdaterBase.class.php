@@ -234,6 +234,15 @@ class DbUpdaterBase {
 
 		return false;
 	}
+	
+	public function columnExists($tableName,$columnName) {
+		if($this->tableExists($tableName))
+			if($rs = $this->excecuteQuery("SHOW COLUMNS FROM `{$tableName}` WHERE Field = '$columnName'"))			
+				return $rs->RowCount()>0;
+
+			return false;
+	}
+	
 	/**
 	 * Crea una tabla con un nombre, columnas, indices y foreign keys dadas
 	 * @param unknown $tableName
