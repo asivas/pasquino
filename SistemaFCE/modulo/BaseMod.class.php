@@ -251,12 +251,12 @@ class BaseMod implements PropertiesManager {
     	$this->smarty->assign("pQnListaAccionesTpl","{$tplsPath}/admin/listaAcciones.tpl");
     	$this->smarty->assign("pQnPageHeader","{$tplsPath}/admin/pageHeader.tpl");
     	 
-    	
-    	
+    	//Lista
     	$this->smarty->assign("pQnGridTpl","{$tplsPath}/admin/lista/objGrid.tpl");
     	$this->smarty->assign("pQnBotonAltaTpl","{$tplsPath}/admin/botonAlta.tpl");
     	$this->smarty->assign("pQnHeaderListaTpl","{$tplsPath}/admin/lista/headerLista.tpl");
     	$this->smarty->assign("pQnFooterListaTpl","{$tplsPath}/admin/lista/footerLista.tpl");
+    	$this->smarty->assign("pQnItemGridTpl","{$tplsPath}/admin/lista/itemGrid.tpl");
     	 
     	//Pantallas generales
     	$this->smarty->assign("pQnFormLoginTpl","{$tplsPath}/formLogin.tpl");
