@@ -66,16 +66,20 @@ body {
 	
 /* Trampa a Boostrap, revisar si se cambia la proporcion */
 @media (max-width: 1200px) and (min-width: 768px) {
-	#container section#main-section {
+	#container section#main-section.span9 {
 		width: 76.59574468085107% !important;
 		margin: 0 !important;
 	}
 }
 @media (min-width: 1200px) {
-	#container section#main-section {
+	#container section#main-section.span9 {
 		width: 76.92307692% !important;
 		margin: 0 !important;
 	}
+}
+
+#container section#main-section.span12 {
+	margin-left: 0;
 }
 
 /*********************************** FIN GENERAL **************************************/
