@@ -73,8 +73,24 @@ class DbUpdaterBase {
 	 */
 	protected function executeQuery($query) {
 		$db = $this->getDb();
+		if(stripos($query, ";")!==false)
+		{
+			$queriesOK = true;
+			$queries = explode(";", $query);
+			foreach($queries as $q) {
+				if(!empty($q))
+				{
+					$rs = $db->execute($q);
+					if(!$rs){ 
+						$queriesOK =false;
+						$this->report($db->ErrorMsg() . " Ejecutando: $q",self::R_ERROR);
+					}
+				}
+			}
+			return $queriesOK;
+		}
 		$rs = $db->execute($query);
-			if(!$rs) $this->report($db->ErrorMsg() . " Ejecutando: $query",self::R_ERROR);
+		if(!$rs) $this->report($db->ErrorMsg() . " Ejecutando: $query",self::R_ERROR);
 		return $rs;
 	}
 
