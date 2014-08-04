@@ -229,7 +229,7 @@ abstract class BaseAdminMod extends BaseMod {
 	protected function lista($req){
 		$filtro = $this->getFiltro($req);
 		$limitCount = $this->getPaginationLimitCount($req);
-		$aObjs = $this->mainDao->findBy($filtro,$req['sort'],$limitCount,$this->getPageOffset($req));
+		$aObjs = $this->getListElements($filtro, $req, $limitCount);
 
 		if($req['display']=='xls')
 			$this->descargarListaExcel($aObjs, $req);
@@ -252,6 +252,16 @@ abstract class BaseAdminMod extends BaseMod {
 		$this->smarty->assign('paginationFiltro',$filtro);
 
 		$this->mostrar($this->_tplLista,$req['display']);
+	}
+	
+	/**
+	 * Obtiene la lista de elementos para mostrar en el listado, dados un filtro y las variables de request
+	 * @param Criterio $filtro el criterio de filtro del listado
+	 * @param array $req variables de request preprocesadas
+	 * @param integer $limitCount limite de elementos que se mostrarán por página
+	 */
+	protected function getListElements($filtro,$req,$limitCount=null) {
+		return $this->mainDao->findBy($filtro,$req['sort'],$limitCount,$this->getPageOffset($req));
 	}
 
 	/**
