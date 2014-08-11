@@ -244,6 +244,7 @@ nav#sidebar {
 
 	nav#sidebar > ul,
 	nav#sidebar > menu {
+		margin-left: 0;
 	}
 		
 		nav#sidebar > ul > li,
@@ -330,7 +331,8 @@ nav#sidebar {
 		nav#sidebar > ul > li > ul,
 		nav#sidebar > menu > li > menu {
 			padding: 8px 20px;
-			display: none;	
+			display: none;
+			margin-left: 0;
 		}
 		
 		nav#sidebar > ul > li.active > ul,
@@ -542,6 +544,7 @@ section .lista > header h6 {
 
 section .lista > header .tools {
 	float: right;
+	margin: 0;
 }
 
 	section .lista > header .tools li {
