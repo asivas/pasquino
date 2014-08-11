@@ -56,7 +56,7 @@ class DbUpdaterBase {
 
 		return $this->db;
 	}
-	
+
 	/**
 	 * Ejecuta una consulta SQL en la base del sistema (se conexta mediante createConection)
 	 * queda creado porque inicalmente se creó con error de ortografía
@@ -66,7 +66,7 @@ class DbUpdaterBase {
 	protected function excecuteQuery($query) {
 		return $this->executeQuery($query);
 	}
-	
+
 	/**
 	 * Ejecuta una consulta SQL en la base del sistema (se conexta mediante createConection)
 	 * @param string $query
@@ -78,10 +78,11 @@ class DbUpdaterBase {
 			$queriesOK = true;
 			$queries = explode(";", $query);
 			foreach($queries as $q) {
+				$q=trim($q);
 				if(!empty($q))
 				{
 					$rs = $db->execute($q);
-					if(!$rs){ 
+					if(!$rs){
 						$queriesOK =false;
 						$this->report($db->ErrorMsg() . " Ejecutando: $q",self::R_ERROR);
 					}
@@ -250,15 +251,15 @@ class DbUpdaterBase {
 
 		return false;
 	}
-	
+
 	public function columnExists($tableName,$columnName) {
 		if($this->tableExists($tableName))
-			if($rs = $this->excecuteQuery("SHOW COLUMNS FROM `{$tableName}` WHERE Field = '$columnName'"))			
+			if($rs = $this->excecuteQuery("SHOW COLUMNS FROM `{$tableName}` WHERE Field = '$columnName'"))
 				return $rs->RowCount()>0;
 
 			return false;
 	}
-	
+
 	/**
 	 * Crea una tabla con un nombre, columnas, indices y foreign keys dadas
 	 * @param unknown $tableName
