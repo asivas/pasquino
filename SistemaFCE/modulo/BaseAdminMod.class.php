@@ -212,6 +212,10 @@ abstract class BaseAdminMod extends BaseMod {
 
 	protected function getPaginationLimitCount($req) {
 		if(isset($req['count'])) return $req['count'];
+
+		if($req['display']=='xls')
+			return null;
+
 		return $this->getDefaultPaginationLimitCount();
 	}
 
@@ -253,7 +257,7 @@ abstract class BaseAdminMod extends BaseMod {
 
 		$this->mostrar($this->_tplLista,$req['display']);
 	}
-	
+
 	/**
 	 * Obtiene la lista de elementos para mostrar en el listado, dados un filtro y las variables de request
 	 * @param Criterio $filtro el criterio de filtro del listado
