@@ -122,6 +122,7 @@ class DbUpdaterBase {
 			$type = "";
 
 		print "<span style='color:{$color}; font-weight:bold;'>{$type}</span> {$message} </br>";
+		ob_flush();
 	}
 
 	protected function runChangesForVersion($version) {
@@ -177,7 +178,7 @@ class DbUpdaterBase {
 				$this->report("Actualizado a $ver",self::R_OK);
 			else if($this->getErrorMsg()!='')
 				$this->reportLastError();
-
+			
 			$noErrors &= $bVerUpdated;
 			$updatedTo = $ver++;
 		}

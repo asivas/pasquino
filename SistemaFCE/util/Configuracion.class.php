@@ -580,6 +580,11 @@ class Configuracion {
     	$dbUpd = new $dbUpdClass();
     	$dbUpd->updateDb($versionActual);
     }
+    
+    static public function getPasquinoPath() 
+    {
+    	return dirname(dirname(dirname(__FILE__)));
+    } 
 
 }
 
