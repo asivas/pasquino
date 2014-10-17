@@ -341,7 +341,7 @@ jQuery.fn.keyUpFilter = function(aSourceID,aMod,aAction,aOptions){
 /**
  * Metodo para eliminar una entidad usando ajax procesando la respuesta <status>
  * @param id el id del elemento a eliminar
- * @param mod el id del elemento a eliminar
+ * @param mod el modulo utilizado para eliminar
  * @returns {Boolean} 
  */
 function eliminar(id,mod,nombreEntidad){
