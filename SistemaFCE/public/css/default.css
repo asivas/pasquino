@@ -645,7 +645,7 @@ section .grid {
 		section .grid ul li {
 			display: table-cell;
 			border-left: 1px solid #DFDFDF;
-			vertical-align: top;
+			vertical-align: middle;
 			word-break: break-word;
 		}
 		
