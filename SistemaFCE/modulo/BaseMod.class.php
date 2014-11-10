@@ -166,23 +166,32 @@ class BaseMod implements PropertiesManager {
         //metodos de xajax (se debe llamar a processRequest para que esto funcione)
         $this->xajax->register(XAJAX_FUNCTION,array('hideMensaje',&$this,'hideMensaje'));
     }
+    
+    static public function getSmartyObject() {
+    	$smarty = new Smarty(); // Handler de smarty
+    	
+    	$systemRoot = Configuracion::getSystemRootDir();
+    	$config = Configuracion::getConfigXML();
+    	$templates = $config->templates;
+    	$skinsDirname = (string)$config->templates['path'];
+    	
+    	if(empty($skinsDirname))
+    		$skinsDirname = "skins";
+    	
+    	$skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
+    	$smarty->template_dir = "{$systemRoot}/{$skinsDirname}/{$skinConfig['dir']}"; // configuro directorio de templates
+    	$smarty->compile_dir = "{$systemRoot}/tmp/{$skinsDirname}/templates_c"; // configuro directorio de compilacion
+    	$smarty->cache_dir = "{$systemRoot}/tmp/{$skinsDirname}/cache"; // configuro directorio de cache
+    	$smarty->config_dir = "{$systemRoot}/{$skinsDirname}/configs"; // configuro directorio de configuraciones
+    	
+    	$smarty->assign("skinsDirname",$skinsDirname);
+    	return $smarty;
+    }
 
     protected function initSmarty()
-    {
-    	$systemRoot = Configuracion::getSystemRootDir();
-
-    	$config = Configuracion::getConfigXML();
-        $templates = $config->templates;
-        $skinsDirname = (string)$config->templates['path'];
-
-        if(empty($skinsDirname))
-        	$skinsDirname = "skins";
-
-        $this->smarty = new Smarty(); // Handler de smarty
-        $this->smarty->template_dir = "{$systemRoot}/{$skinsDirname}/{$this->_skinConfig['dir']}"; // configuro directorio de templates
-        $this->smarty->compile_dir = "{$systemRoot}/tmp/{$skinsDirname}/templates_c"; // configuro directorio de compilacion
-        $this->smarty->cache_dir = "{$systemRoot}/tmp/{$skinsDirname}/cache"; // configuro directorio de cache
-        $this->smarty->config_dir = "{$systemRoot}/{$skinsDirname}/configs"; // configuro directorio de configuraciones
+    {	        
+        $this->smarty = $this->getSmartyObject();
+        $skinsDirname = $this->getTemplateVar('skinsDirname');
 
         $publicSkinDir = $this->_skinConfig['wwwdir'];
         if(empty($publicSkinDir))
@@ -193,7 +202,7 @@ class BaseMod implements PropertiesManager {
         $this->smarty->assign('skinPath',$systemRoot."/{$skinsDirname}/".$this->_skinConfig['dir']);
         $this->smarty->assign('appName',Configuracion::getAppName());
 		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
-
+	
         $this->smarty->assign('dir_images',"{$skinsDirname}/{$publicSkinDir}/images");
         $this->smarty->assign('dir_js',"{$skinsDirname}/{$publicSkinDir}/js");
 
