@@ -60,7 +60,7 @@ class Entidad implements Serializable{
     function getId() {
     	if(!isset($this->_id))
     	{
-	    	$mapping = Configuracion::getMappingClase(get_class($this));
+	    	$mapping = $this->getMapping();
 	    	$cantIds= count($mapping->clase->id);
 	    	if($cantIds == 1)
 	    	{
@@ -100,7 +100,7 @@ class Entidad implements Serializable{
     {
     	if($newId!=$this->_id)
     	{
-	    	$mapping = Configuracion::getMappingClase(get_class($this));
+	    	$mapping = $this->getMapping();
 	    	$cantIds= count($mapping->clase->id);
 	    	$this->_id = $newId;
 
@@ -182,4 +182,12 @@ class Entidad implements Serializable{
     	}
     	return $rel;
     }
+    
+    /**
+     * Obtiene el mapping (simple_xml_object) asociado al objeto para ORM
+     */
+    protected function getMapping() {
+    	return Configuracion::getMappingClase(get_class($this));
+    }
+    
 }
