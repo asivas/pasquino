@@ -23,7 +23,7 @@ class DaoConfigurationProperty extends DaoBase{
 	}
 	
 	protected function loadMapping() {
-		$mapping = parent::loadMapping();
+		$mapping = @parent::loadMapping();
 		if($this->_pathEntidad != '.class.php' && isset($this->_pathEntidad))
 			return $mapping;
 		else{
