@@ -34,7 +34,7 @@ abstract class DaoBase {
     /**
      * @var string ruta donde se encuentra el archivo que define la clase de entidad
      */
-    private $_pathEntidad;
+    protected $_pathEntidad;
     /**
      * @var string Ultimo mensaje de error que sucedi� en un save
      */

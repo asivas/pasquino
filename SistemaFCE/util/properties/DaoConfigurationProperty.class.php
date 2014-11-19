@@ -24,20 +24,18 @@ class DaoConfigurationProperty extends DaoBase{
 	
 	protected function loadMapping() {
 		$mapping = parent::loadMapping();
-		if($this->_pathEntidad != '.class.php')
+		if($this->_pathEntidad != '.class.php' && isset($this->_pathEntidad))
 			return $mapping;
 		else{
 			$this->_pathEntidad = 'SistemaFCE/entidad/ConfigurationProperty.class.php';
-			$xmlstr = <<<XML
-    	<?xml version="1.0" encoding="UTF-8"?>
+			$xmlstr = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapping PUBLIC "-//FCEunicen//DTD Mapping//ES" "http://apps.econ.unicen.edu.ar/public/dtd/mapping.dtd" >
 <mapping path="SistemaFCE/entidades">
 	<clase nombre="ConfigurationProperty" tabla="configurationproperty">
     			<id columna="key" nombre="key" />
 				<propiedad columna="value" nombre="value" />
 	</clase>
-</mapping>
-XML;
+</mapping>';
 			return new SimpleXMLElement($xmlstr);
 		}
 	} 
