@@ -1,6 +1,6 @@
 <?php
 require_once 'SistemaFCE/util/Configuracion.class.php';
-require_once 'SistemaFCE/etidad/Entidad.class.php';
+require_once 'SistemaFCE/entidad/Entidad.class.php';
 
 class ConfigurationProperty extends Entidad {
 
