@@ -4,6 +4,24 @@ require_once 'SistemaFCE/entidad/Entidad.class.php';
 
 class ConfigurationProperty extends Entidad {
 
+	private $key;
+	private $value;
+	
+	public function getKey() {
+		return $this->key;
+	}
+	
+	public function setKey($newKey) {
+		$this->key = $newKey;
+	}
+
+	public function getValue() {
+		return $this->value;
+	}
+	
+	public function setValue($newValue) {
+		$this->value = $newValue;
+	}
     
     /**
      * Obtiene el mapping (simple_xml_object) asociado al objeto para ORM
