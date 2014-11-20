@@ -172,7 +172,7 @@ class DbUpdaterBase {
 			$bVerUpdated |= $db->completeTrans();
 
 			if($bVerUpdated)
-				$bVerUpdated = $this->updateVersionProperty($ver);
+				$bVerUpdated = $this->updateVersionProperty($ver) or var_dump($db->ErrorMsg());
 
 			if($bVerUpdated)
 				$this->report("Actualizado a $ver",self::R_OK);
@@ -199,7 +199,6 @@ class DbUpdaterBase {
 		if(!empty($propsMgrClass))
 		{
 			require_once "$propsMgrClass.class.php";
-			//$propsMgr = new $propsMgrClass();
 			return $propsMgrClass::setPropertyValue('versionDB',$version);
 		}
 		return false;

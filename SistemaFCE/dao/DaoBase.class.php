@@ -70,7 +70,6 @@ abstract class DaoBase {
 
         $this->tableName = $this->_xmlMapping['tabla'];
         $this->defaultOrder = $this->_xmlMapping['orden'];
-
         require_once($this->_pathEntidad);
     }
 
@@ -180,6 +179,7 @@ abstract class DaoBase {
                 {
                 	$p = $elem->$get();
                 	$col = (string)$prop['columna'];
+
                 	if(isset($prop['tipo']) && $p != null) //si es con tipo actualizo el id
                    		$buf[$col] = $p->getId();
                 	else
@@ -353,7 +353,6 @@ abstract class DaoBase {
     }
 
     protected function getSqlFieldsArray() {
-
     	foreach($this->_xmlMapping->id as $id)
     		$fields[] = $id['columna'];
 
@@ -374,6 +373,7 @@ abstract class DaoBase {
     				$fields[$k] = "`$field`";
     			}
     	}
+    	
     	return $fields;
     }
 
@@ -406,13 +406,11 @@ abstract class DaoBase {
         else
         {
             $tabla = $this->tableName;
-
+           
             if($tabla == $this->_xmlMapping['tabla'] && (is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli') ))
             	//ac� me aseguro por tablas con espacios en mysql
                 $tabla = "`{$tabla}`";
-
             $fields = $this->getSqlFields();
-
             $sql = "SELECT {$fields} FROM {$tabla}";
         }
         $paramIndex = false;
@@ -539,7 +537,6 @@ abstract class DaoBase {
         $sql = $this->getFindBySql($filtro,$order,$limitCount,$limitOffset,$group);
 
         $rs = $this->executeFindByQuery($sql,$filtro);
-
         if(!($rs))
         {
             if($this->_dieOnFindByError)

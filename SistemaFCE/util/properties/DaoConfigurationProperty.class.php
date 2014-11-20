@@ -10,7 +10,7 @@ class DaoConfigurationProperty extends DaoBase{
 	}
 
 	protected function getKeyColumn(){
-		return "propiedad";
+		return "property";
 	}
 	
 	function findByKey($propiedad)
@@ -32,11 +32,13 @@ class DaoConfigurationProperty extends DaoBase{
 <!DOCTYPE mapping PUBLIC "-//FCEunicen//DTD Mapping//ES" "http://apps.econ.unicen.edu.ar/public/dtd/mapping.dtd" >
 <mapping path="SistemaFCE/entidades">
 	<clase nombre="ConfigurationProperty" tabla="configurationproperty">
-    			<id columna="key" nombre="key" />
+    			<id columna="property" nombre="property" />
 				<propiedad columna="value" nombre="value" />
 	</clase>
 </mapping>';
-			return new SimpleXMLElement($xmlstr);
+			$map=new SimpleXMLElement($xmlstr);
+			$this->_xmlMapping=$map->clase;
+			return $this->_xmlMapping; 
 		}
 	} 
 }

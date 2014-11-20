@@ -4,15 +4,15 @@ require_once 'SistemaFCE/entidad/Entidad.class.php';
 
 class ConfigurationProperty extends Entidad {
 
-	private $key;
+	private $property;
 	private $value;
 	
-	public function getKey() {
-		return $this->key;
+	public function getProperty() {
+		return $this->property;
 	}
 	
-	public function setKey($newKey) {
-		$this->key = $newKey;
+	public function setProperty($newKey) {
+		$this->property = $newKey;
 	}
 
 	public function getValue() {
@@ -27,14 +27,14 @@ class ConfigurationProperty extends Entidad {
      * Obtiene el mapping (simple_xml_object) asociado al objeto para ORM
      */
     protected function getMapping() {
-    	$configurationFound=Configuracion::getMappingClase(get_class($this));
+    	$configurationFound=@Configuracion::getMappingClase(get_class($this));
     	if ($configurationFound)
-    		return Configuracion::getMappingClase(get_class($this));
+    		return $configurationFound;
     	$xmlstr = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapping PUBLIC "-//FCEunicen//DTD Mapping//ES" "http://apps.econ.unicen.edu.ar/public/dtd/mapping.dtd" >
 <mapping path="SistemaFCE/entidades">
 	<clase nombre="ConfigurationProperty" tabla="configurationproperty">		
-    			<id columna="key" nombre="key" />
+    			<id columna="property" nombre="property" />
 				<propiedad columna="value" nombre="value" />
 	</clase>
 </mapping>';
