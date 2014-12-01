@@ -159,7 +159,6 @@ class DbUpdaterBase {
 		$this->report("Se detectó que hay una actualización disponible. Al finalizar la actualización podrá usar el sistema nuevamente. Por favor espere un momento");
 
 		$ver = $fromVersion+1;
-		$updateMethod = "changesVersion{$ver}";
 		$noErrors = true;
 		$db = $this->getDb();
 		while($ver<=$toVersion && $noErrors)
@@ -178,7 +177,7 @@ class DbUpdaterBase {
 				$this->report("Actualizado a $ver",self::R_OK);
 			else if($this->getErrorMsg()!='')
 				$this->reportLastError();
-			
+
 			$noErrors &= $bVerUpdated;
 			$updatedTo = $ver++;
 		}

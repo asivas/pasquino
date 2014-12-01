@@ -3,7 +3,7 @@ require_once "SistemaFCE/dao/DaoBase.class.php";
 
 class DaoConfigurationProperty extends DaoBase{
 
-	
+
 	function __construct() {
 		$this->_dieOnFindByError=false;
 		parent::DaoBase();
@@ -12,7 +12,7 @@ class DaoConfigurationProperty extends DaoBase{
 	protected function getKeyColumn(){
 		return "property";
 	}
-	
+
 	function findByKey($propiedad)
 	{
 		$c = new Criterio();
@@ -21,14 +21,9 @@ class DaoConfigurationProperty extends DaoBase{
 
 		return $this->findFirst($c);
 	}
-	
-	protected function loadMapping() {
-		$mapping = @parent::loadMapping();
-		if($this->_pathEntidad != '.class.php' && isset($this->_pathEntidad))
-			return $mapping;
-		else{
-			$this->_pathEntidad = 'SistemaFCE/entidad/ConfigurationProperty.class.php';
-			$xmlstr = '<?xml version="1.0" encoding="UTF-8"?>
+
+	public static function getDefaultMapping() {
+		$xmlstr = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapping PUBLIC "-//FCEunicen//DTD Mapping//ES" "http://apps.econ.unicen.edu.ar/public/dtd/mapping.dtd" >
 <mapping path="SistemaFCE/entidades">
 	<clase nombre="ConfigurationProperty" tabla="configurationproperty">
@@ -36,9 +31,18 @@ class DaoConfigurationProperty extends DaoBase{
 				<propiedad columna="value" nombre="value" />
 	</clase>
 </mapping>';
-			$map=new SimpleXMLElement($xmlstr);
-			$this->_xmlMapping=$map->clase;
-			return $this->_xmlMapping; 
+		$map=new SimpleXMLElement($xmlstr);
+		return $map->clase;
+	}
+
+	protected function loadMapping() {
+		$mapping = parent::loadMapping();
+		if($this->_pathEntidad != '.class.php' && isset($this->_pathEntidad))
+			return $mapping;
+		else{
+			$this->_pathEntidad = 'SistemaFCE/entidad/ConfigurationProperty.class.php';
+			$this->_xmlMapping=$this->getDefaultMapping();
+			return ;
 		}
-	} 
+	}
 }

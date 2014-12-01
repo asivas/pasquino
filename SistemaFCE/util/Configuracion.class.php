@@ -10,9 +10,16 @@ class Configuracion {
     }
 
 	static public function autoload_entidad($nombre) {
-        @include_once("entidades/{$nombre}.class.php");
-		@include_once("SistemaFCE/entidad/{$nombre}.class.php");
-        @include_once("{$nombre}.class.php");
+		$entPath = "{$nombre}.class.php";
+		$systemEntPath = "entidades/{$entPath}";
+		$pasquinoEntPath = "SistemaFCE/entidad/{$entPath}";
+
+		if(stream_resolve_include_path($systemEntPath))
+			include_once($systemEntPath);
+		if(stream_resolve_include_path($pasquinoEntPath))
+			include_once($pasquinoEntPath);
+		if(stream_resolve_include_path($entPath))
+			include_once($entPath);
     }
 
     public static function initSistema($rutaSysRoot=null,$pathsIncludePath=null)
@@ -130,7 +137,7 @@ class Configuracion {
         foreach($dataSources->{"data-source"} as $ds)
         {
             if($ds['name'] == $nombreDataSource)
-                return $ds[$attribName];
+                return (string)$ds[$attribName];
         }
 
         return "";
@@ -381,7 +388,20 @@ class Configuracion {
             $xmlMappingFile = Configuracion::getSystemRootDir()."/{$archivoMappings}";
         }
 
-        $map = simplexml_load_file($xmlMappingFile);
+		if(file_exists($xmlMappingFile) && $archivoMappings!='')
+			$map = simplexml_load_file($xmlMappingFile);
+		else {
+			$daoClass = "Dao{$nombreClase}";
+
+			if(class_exists($daoClass) && method_exists($daoClass, 'getDefaultMapping'))
+			{
+				$map = $daoClass::getDefaultMapping();
+			}
+			else{
+				throw new Exception("No se ecuentra el mapping de la clase {$nombreClase}");
+			}
+		}
+
         return $map;
     }
 
@@ -580,11 +600,11 @@ class Configuracion {
     	$dbUpd = new $dbUpdClass();
     	$dbUpd->updateDb($versionActual);
     }
-    
-    static public function getPasquinoPath() 
+
+    static public function getPasquinoPath()
     {
     	return dirname(dirname(dirname(__FILE__)));
-    } 
+    }
 
 }
 
