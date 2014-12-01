@@ -435,6 +435,7 @@ abstract class BaseAdminMod extends BaseMod {
 	 * Descarga la lista en formato excel
 	 */
 	protected function descargarListaExcel($aObjs,$req) {
+		
 		$objPHPExcel = $this->getListaExcel($aObjs,$req);
 
 		$title = $objPHPExcel->getProperties()->getTitle();
@@ -455,5 +456,19 @@ abstract class BaseAdminMod extends BaseMod {
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->save('php://output');
 		exit;
+	}
+	
+	/**
+	 * Asigna un titulo al modulo (se le asigna en el template como tituloModulo)
+	 */
+	protected function setTitulo($titulo) {
+		$this->setTplVar('tituloModulo', $titulo);
+	}
+	
+	/**
+	 * Asigna una descripción al modulo (se le asigna en el template como descripcionModulo)
+	 */
+	protected function setDescripcion($descripcion) {
+		$this->setTplVar('descripcionModulo', $descripcion);
 	}
 }
