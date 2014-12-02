@@ -1,4 +1,4 @@
-<!ELEMENT sistema (date-formats?,loggers?,mappings,data-sources?,modulos?,templates?)>
+<!ELEMENT sistema (date-formats?,loggers?,mappings,data-sources?,auths?,modulos?,templates?)>
 <!ATTLIST sistema 
 	nombre CDATA #REQUIRED
 	version CDATA #IMPLIED
@@ -52,6 +52,15 @@
 	DSN CDATA #IMPLIED
 >
 
+<!ELEMENT auths (auth*)>
+<!ATTLIST auths
+	default CDATA #IMPLIED
+>
+<!ELEMENT auth EMPTY>
+<!ATTLIST auth 
+	name CDATA #REQUIRED
+	class CDATA #IMPLIED
+>
 <!ELEMENT modulos (modulo*)>
 
 <!ATTLIST modulos

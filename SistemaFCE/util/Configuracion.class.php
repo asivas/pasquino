@@ -606,6 +606,11 @@ class Configuracion {
     	return dirname(dirname(dirname(__FILE__)));
     }
 
+    static public function getAuths() {
+    	$config = Configuracion::getConfigXML();
+    	return $config->auths;
+    }
+
 }
 
 class_alias('Configuracion','SistemaFCE');
