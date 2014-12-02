@@ -6,7 +6,7 @@ class DaoConfigurationProperty extends DaoBase{
 
 	function __construct() {
 		$this->_dieOnFindByError=false;
-		parent::DaoBase();
+		parent::__construct();
 	}
 
 	protected function getKeyColumn(){
@@ -32,17 +32,18 @@ class DaoConfigurationProperty extends DaoBase{
 	</clase>
 </mapping>';
 		$map=new SimpleXMLElement($xmlstr);
-		return $map->clase;
+		return $map;
 	}
 
 	protected function loadMapping() {
 		$mapping = parent::loadMapping();
-		if($this->_pathEntidad != '.class.php' && isset($this->_pathEntidad))
+		if(stream_resolve_include_path($this->_pathEntidad))
 			return $mapping;
 		else{
 			$this->_pathEntidad = 'SistemaFCE/entidad/ConfigurationProperty.class.php';
-			$this->_xmlMapping=$this->getDefaultMapping();
-			return ;
+			$map = $this->getDefaultMapping();
+			$this->_xmlMapping=$map->clase;
+			return $map;
 		}
 	}
 }
