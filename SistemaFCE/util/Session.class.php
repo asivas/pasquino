@@ -7,6 +7,12 @@ class Session extends ssHandler{
 
 	protected $auths=array();
 
+	/**
+	 * PHP Session attribute with Last Valid Auth identifier
+	 * @var String
+	 */
+	protected $sessionAuthClassName='pQn_AUTH_NAME';
+
     function Session($sessName = null) {
         if(!isset($sessName)) $sessName =Configuracion::getAppName();
     	$this->sessionName =  $sessName;
