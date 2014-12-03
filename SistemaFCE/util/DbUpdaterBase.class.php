@@ -171,7 +171,7 @@ class DbUpdaterBase {
 			$bVerUpdated |= $db->completeTrans();
 
 			if($bVerUpdated)
-				$bVerUpdated = $this->updateVersionProperty($ver) or var_dump($db->ErrorMsg());
+				$bVerUpdated = $this->updateVersionProperty($ver);
 
 			if($bVerUpdated)
 				$this->report("Actualizado a $ver",self::R_OK);
@@ -198,8 +198,13 @@ class DbUpdaterBase {
 		if(!empty($propsMgrClass))
 		{
 			require_once "$propsMgrClass.class.php";
-			return $propsMgrClass::setPropertyValue('versionDB',$version);
+			$bVerUpdated = $propsMgrClass::setPropertyValue('versionDB',$version);
+			if(!$bVerUpdated)
+				throw new Exception("No se pudo actualizar el nro de versión ". $this->getDb()->ErrorMsg());
+			return $bVerUpdated;
 		}
+		
+		throw new Exception("No se pudo actualizar el nro de versión. No hay administrador de propiedades");
 		return false;
 	}
 
