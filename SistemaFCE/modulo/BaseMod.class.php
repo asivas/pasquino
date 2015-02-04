@@ -77,16 +77,16 @@ class BaseMod implements PropertiesManager {
      * @var PEAR::Log
      */
     protected $logger=null;
-    
+
     /**
      * @var PropertiesManagaer Manager para manejar propiedades del sistema
      */
     static protected $propertiesManager;
-    
+
     private  $exitOnMensaje = true;
-    
+
     protected $atribsMsgOk = array();
-    
+
 
     /**
      *
@@ -106,8 +106,8 @@ class BaseMod implements PropertiesManager {
 		if(function_exists('apache_request_headers'))
         	$this->REST = new RESTMod();
 
-		
-		
+
+
 		//si se puede cargo el usuario
 		$this->getUsuario();
 
@@ -166,30 +166,30 @@ class BaseMod implements PropertiesManager {
         //metodos de xajax (se debe llamar a processRequest para que esto funcione)
         $this->xajax->register(XAJAX_FUNCTION,array('hideMensaje',&$this,'hideMensaje'));
     }
-    
+
     static public function getSmartyObject() {
     	$smarty = new Smarty(); // Handler de smarty
-    	
+
     	$systemRoot = Configuracion::getSystemRootDir();
     	$config = Configuracion::getConfigXML();
     	$templates = $config->templates;
     	$skinsDirname = (string)$config->templates['path'];
-    	
+
     	if(empty($skinsDirname))
     		$skinsDirname = "skins";
-    	
+
     	$skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
     	$smarty->template_dir = "{$systemRoot}/{$skinsDirname}/{$skinConfig['dir']}"; // configuro directorio de templates
     	$smarty->compile_dir = "{$systemRoot}/tmp/{$skinsDirname}/templates_c"; // configuro directorio de compilacion
     	$smarty->cache_dir = "{$systemRoot}/tmp/{$skinsDirname}/cache"; // configuro directorio de cache
     	$smarty->config_dir = "{$systemRoot}/{$skinsDirname}/configs"; // configuro directorio de configuraciones
-    	
+
     	$smarty->assign("skinsDirname",$skinsDirname);
     	return $smarty;
     }
 
     protected function initSmarty()
-    {	        
+    {
         $this->smarty = $this->getSmartyObject();
         $skinsDirname = $this->getTemplateVar('skinsDirname');
 
@@ -202,7 +202,7 @@ class BaseMod implements PropertiesManager {
         $this->smarty->assign('skinPath',$systemRoot."/{$skinsDirname}/".$this->_skinConfig['dir']);
         $this->smarty->assign('appName',Configuracion::getAppName());
 		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
-	
+
         $this->smarty->assign('dir_images',"{$skinsDirname}/{$publicSkinDir}/images");
         $this->smarty->assign('dir_js',"{$skinsDirname}/{$publicSkinDir}/js");
 
@@ -215,13 +215,13 @@ class BaseMod implements PropertiesManager {
         $this->assignSmartyTplVars();
 
         $this->smarty->assign('facade',new smartyFacade($this));
-        
+
         $this->setTplVar("ckeditorVersion", '4.4.1');
 
         $this->smarty->assign('usuario',$this->getUsuario());
         $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
     }
-    
+
     protected function assingSmartyMenu() {
     	$mp = $this->getMenuPrincipal();
     	//menu
@@ -237,9 +237,9 @@ class BaseMod implements PropertiesManager {
     	$tplsPath = "file:{$this->pasquinoPath}/SistemaFCE/tpls";
     	$cssPath = "file:{$this->pasquinoPath}/SistemaFCE/public/css";
     	$jsPath = "file:{$this->pasquinoPath}/SistemaFCE/js";
-    	
+
     	$this->smarty->assign("pQnTplsPath","{$tplsPath}");
-    	
+
     	//Opciones de layout estandar
     	$this->smarty->assign("pQnBaseTpl","{$tplsPath}/base.tpl");
     	$this->smarty->assign("pQnDefaultTpl","{$tplsPath}/default.tpl");
@@ -259,30 +259,30 @@ class BaseMod implements PropertiesManager {
     	$this->smarty->assign("pQnFormTpl","{$tplsPath}/admin/form.tpl");
     	$this->smarty->assign("pQnListaAccionesTpl","{$tplsPath}/admin/listaAcciones.tpl");
     	$this->smarty->assign("pQnPageHeader","{$tplsPath}/admin/pageHeader.tpl");
-    	 
+
     	//Lista
     	$this->smarty->assign("pQnGridTpl","{$tplsPath}/admin/lista/objGrid.tpl");
     	$this->smarty->assign("pQnBotonAltaTpl","{$tplsPath}/admin/botonAlta.tpl");
     	$this->smarty->assign("pQnHeaderListaTpl","{$tplsPath}/admin/lista/headerLista.tpl");
     	$this->smarty->assign("pQnFooterListaTpl","{$tplsPath}/admin/lista/footerLista.tpl");
     	$this->smarty->assign("pQnItemGridTpl","{$tplsPath}/admin/lista/itemGrid.tpl");
-    	 
+
     	//Pantallas generales
     	$this->smarty->assign("pQnFormLoginTpl","{$tplsPath}/formLogin.tpl");
     	$this->smarty->assign("pQnSinPermisosTpl","{$tplsPath}/sinPermisos.tpl");
-		
+
     	//CSS
     	$this->smarty->assign("pQnDefaultCss","/sistemafce/css/default.css");
     	$this->smarty->assign("pQnGridCss","/bootstrap/css/bootstrap-responsive.min.css");
     	$this->smarty->assign("pQnJQueryCss","/css/jquery/Aristo/Aristo.css");
     	$this->setTplVar("pQnBootstrapCss", "/bootstrap/css/bootstrap.min.css");
-    	 
+
     	//JS
     	$this->smarty->assign("pQnJQueryJs","/js/jquery/jquery-1.9.1.min.js");
     	$this->smarty->assign("pQnJQueryUiJs","/js/jquery/jquery-ui-1.10.0.custom.min.js");
-    	
-    	
-    	
+
+
+
     	// prueba de variables default de las partes estandares (sys-names) de templates las que tiene definido el dtd
     	//TODO: ver si se peude leer del dtd con algo medio simple y armar el arreglo a recorrer
     	$sysNames = array('Base','Default','Lista','Formulario','Info','FormFiltro','Menu','Admin','Head','FormLogin');
@@ -296,9 +296,9 @@ class BaseMod implements PropertiesManager {
 
     protected function setTplVar($tplVar,$value)
     {
-		$this->smarty->assign($tplVar,$value);    	
+		$this->smarty->assign($tplVar,$value);
     }
-    
+
     /**
      * Genera un arreglo con [url,tag,icon] si el operador tiene permisos
      */
@@ -306,45 +306,45 @@ class BaseMod implements PropertiesManager {
     {
     	if(isset($item['mod']))
     		$nombreModulo = (string)$item['mod'];
-    	
+
     	$accion = (string)$item['accion'];
-    	
+
     	$murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}&accion={$accion}";
-    	
+
     	if(!empty($item['alias']))
     	{
     		$aliasedItemConf = Configuracion::getMenuItemConfByName($item['alias']);
     		$accion = (string)$aliasedItemConf['accion'];
     		$nombreModulo = (string)$aliasedItemConf['mod'];
-    		
+
     		$murl = "{$_SERVER['PHP_SELF']}?alias={$item['alias']}";
     	}
-    	
+
     	$tienePermiso = true;
         if(!empty($item->permisos))
         {
             if(!isset($this->_usuario))
             	$tienePermiso = false;
-            else 
-            {	
+            else
+            {
 	        	foreach($item->permisos->permiso as $perm)
 	                $tienePermiso &= $this->_usuario->tienePermiso((string)$perm);
             }
         }
-        
+
         $permAccion = $this->checkPermisoAccion($accion,$nombreModulo);
         $tienePermiso &= $permAccion;
 
         if(!$tienePermiso)
             return null;
 
-        $mtag = (string)$item['tag'];        	
-        
+        $mtag = (string)$item['tag'];
+
         $murl = "?mIt={$item['name']}";
-        
+
         if(!empty($item['url']))
         	$murl = (string)$item['url'];
-        
+
         if(!empty($item['icon']))
         	$micon = (string)$item['icon'];
 
@@ -365,19 +365,19 @@ class BaseMod implements PropertiesManager {
         {
             if(($mItem = $this->_getMenuItemArray($nombreModulo,$menu))!=null)
             {
-            	$menuItems['_'] = $mItem;            
+            	$menuItems['_'] = $mItem;
 	            foreach($menu->menuItem as $item)
 	            {
 	                if(($mItem = $this->_getMenuItemArray($nombreModulo,$item))==null)
 	                    continue;
 	                $mItem['id'] = ++$c;
-	                
+
 	                $name = (string) $item['name'];
 	                if(isset($item->menuItem))
 	                    $menuItems[$name] = $this->_getMenuModuloArray($nombreModulo,$item);
 	                else
 	                    $menuItems[$name] = $mItem;
-	
+
 	           }
             }
         }
@@ -396,7 +396,7 @@ class BaseMod implements PropertiesManager {
             $m = $this->_getMenuModuloArray($n,$mod->menuPrincipal);
             if(!empty($m)) {
             	$m['_']['id'] = ++$c;
-              	$menuPpal[$n] = $m;          
+              	$menuPpal[$n] = $m;
             }
         }
         return $menuPpal;
@@ -428,7 +428,7 @@ class BaseMod implements PropertiesManager {
      * Chequeo de permisos que de haber vencido la sesión en una llamada por xajax
      * muestra un error recarga la pantalla en un tiempo
      * @param $objResponse objeto response de xajax
-     * @deprecated como todas las cosas de xajax están tendiendo a sacarse de pasquino por el uso de jQuery 
+     * @deprecated como todas las cosas de xajax están tendiendo a sacarse de pasquino por el uso de jQuery
      */
     protected function ajaxCheckPermisos(&$objResponse=null)
     {
@@ -450,7 +450,7 @@ class BaseMod implements PropertiesManager {
     	//si es una de las acciones publicas implementadas en BaseMod ni miro el config
     	if($this->esAccionPublicaDeBase($accion))
     		return true;
-    	
+
     	// chequeo a partir de la config del m�dulo
         $conf = $this->getConfigModulo($nombreModulo);
         //   Busco los permisos para la acci�n
@@ -483,7 +483,7 @@ class BaseMod implements PropertiesManager {
     {
         if(!isset($usuario))
         	$usuario = $this->getUsuario();
-        
+
     	if($this->_esPublica($accion,$nombreModulo))
         	return true;
     	if(!isset($usuario))
@@ -521,7 +521,7 @@ class BaseMod implements PropertiesManager {
     {	if (is_callable(array($this->session, 'loggingIn')) && ($this->session->loggingIn())) {
     		$this->smarty->assign("errorLogin",true);
     	}
-    	
+
     	$this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['nombre']);
     	if(method_exists($this->smarty,'getTemplateVars'))
     	{
@@ -534,7 +534,7 @@ class BaseMod implements PropertiesManager {
     		$this->_tilePath = $this->smarty->get_template_vars('pQnBaseTpl');
     	}
     	$this->addJsFile("/sistemafce/js/login.js");
-    	 
+
     	$this->mostrar($tpl);
         exit();
     }
@@ -546,7 +546,7 @@ class BaseMod implements PropertiesManager {
         	$tpl = $this->smarty->getTemplateVars('pQnSinPermisosTpl');
         else
         	$tpl = $this->smarty->get_template_vars('pQnSinPermisosTpl');
-         
+
         $this->mostrar($tpl,$_REQUEST['display']);
         die();
     }
@@ -555,27 +555,27 @@ class BaseMod implements PropertiesManager {
     {
     	$bLoged = $this->session->LogIn();
     	$usr = $this->_usuario;
-    	
+
     	$this->smarty->assign('usuario',$this->getUsuario());
-    	
+
     	if($usr!=$this->getUsuario())
     		$this->assingSmartyMenu();
-    	
+
     	return $bLoged;
    	}
-   	
+
    	/**
    	 * Evalua si una accion dada es una accion publica y definida completamente en el baseMod
-   	 * Este tipo de funciones no hace falta que estén en el config 
+   	 * Este tipo de funciones no hace falta que estén en el config
    	 * @param string $accion la accion sobre la que se está consultado
    	 * @return boolean
    	 */
    	protected final function esAccionPublicaDeBase($accion) {
-   		
+
    		$accionesPublicasDeBaseMod = array(
    				'checkSessionTimeout'
    		);
-   		
+
    		return array_search($accion, $accionesPublicasDeBaseMod) !== FALSE;
    	}
 
@@ -585,7 +585,7 @@ class BaseMod implements PropertiesManager {
      	if(!$this->_esPublica($req['accion']))
     	{
     		$isLogedIn = $this->LogIn();
-    		
+
     		if(!$isLogedIn)
 	        {
 	            $this->formLogin();
@@ -608,7 +608,7 @@ class BaseMod implements PropertiesManager {
     protected function getTilePathForDisplayType($displayType) {
     	if(!isset($displayType) || $displayType=='full')
     		return $this->_tilePath;
-    	
+
     	return "";
     }
 
@@ -650,7 +650,7 @@ class BaseMod implements PropertiesManager {
      * @param string $sortKey
      */
     protected function addCssFile($cssFile,$sortKey=null) {
-    	
+
     	if(!empty($sortKey)) // FIX: pregunto si no es empty porque sino le pone un index de cadena vacia
     		$this->cssFilesList[$sortKey] = $cssFile;
     	else
@@ -663,15 +663,15 @@ class BaseMod implements PropertiesManager {
     private function assignHeadCss()
     {
     	$cssIncludes = "";
-    	
+
     	$defaultCssTemplateVars = array("pQnBootstrapCss","pQnDefaultCss","pQnThemeCss","pQnGridCss","pQnJQueryCss","cssModulo");
-    	
+
     	foreach($defaultCssTemplateVars as $cssFileNameVar)
     	{
     		if(($cssFileName = $this->getTemplateVar($cssFileNameVar))!='')
     			$cssIncludes .= "\n	<link rel=\"stylesheet\" href=\"{$cssFileName}\" type=\"text/css\" />";
     	}
-    	
+
     	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y
     	// poniendolos minified
     	if(!empty($this->cssFilesList) && is_array($this->cssFilesList))
@@ -707,7 +707,7 @@ class BaseMod implements PropertiesManager {
         if($this->xajax!=null)
         	$this->smarty->assign('ajax',$this->xajax->getJavascript('js/'));
 
-        
+
 		$disp = $this->getTilePathForDisplayType($type);
 
 		if (isset($this->jsModulo))
@@ -826,8 +826,8 @@ class BaseMod implements PropertiesManager {
             $this->session->LogOut();
             $this->redirectHomeSistema();
         }
-		
-        
+
+
         if(!is_null($this->REST) && $this->REST->esUriRecurso())
         {
         	$rec = $this->REST->ejecutar($req);
@@ -1059,14 +1059,14 @@ class BaseMod implements PropertiesManager {
      */
     protected function getUsuario()
     {
-    	if(!isset($this->_usuario))
+    	if(!isset($this->_usuario) && $this->session->IsLoged())
     	{
     		$entidadUsuario = Configuracion::getEntidadUsuarioClass();
 	    	$claseDaoUsuario = 'Dao'.$entidadUsuario;
 	    	$daoU = $claseDaoUsuario::getInstance();
 	    	$this->_usuario = $daoU->findById($this->session->getIdUsuario());
     	}
-    	
+
     	return $this->_usuario;
     }
 
@@ -1183,14 +1183,14 @@ class BaseMod implements PropertiesManager {
 		if($this->exitOnMensaje)
 			die();
 	}
-	
+
 	/**
 	 * Agrega un atributo para el proximo mensaje OK que se enviará
 	 */
 	protected function addAtribMensajeOk($key,$value) {
 		$this->atribsMsgOk[$key] = $value;
 	}
-	
+
 	/**
 	 * Elimina un atributo dada su clave, para el próximo mensaje OK que se enviará
 	 * @param string|int $key
@@ -1198,7 +1198,7 @@ class BaseMod implements PropertiesManager {
 	protected function removeAtribMensajeOk($key) {
 		unset($this->atribsMsgOk[$key]);
 	}
-	
+
 	/**
 	 * Obtiene o genera los atributos del mensajeOK del guardar
 	 * @param unknown $aObj
@@ -1219,7 +1219,7 @@ class BaseMod implements PropertiesManager {
 			$otros =  $this->getAtribsMensajeOK();
 		else
 			$otros = array_merge($otros,$this->getAtribsMensajeOK());
-		
+
 		$this->mensaje("OK", $mensaje,$otros);
 		$this->atribsMsgOk=array();
 	}
@@ -1234,24 +1234,24 @@ class BaseMod implements PropertiesManager {
 	{
 		$this->mensaje("ERR", $mensaje, $otros);
 	}
-	
+
 	public function accionCheckSessionTimeout() {
 		$remainingSeconds = $this->session->getRemainingTime();
-		
+
 		if($remainingSeconds!==FALSE)
-		{							
+		{
 			$resp = array('remaining'=>$remainingSeconds);
 			if($remainingSeconds<0)
 				$resp['expired'] =true;
 		}
 		else
 			$resp = array('noExpire'=>true);
-		
+
 		$this->responseJson($resp);
 	}
-	
+
 	protected function log(Entidad &$aEntity,$aAction = null){}
-	
+
 	/**
 	 * Setea el PropertiesManager del modulo.
 	 * @param PropertiesManager $propertiesManager
@@ -1259,43 +1259,43 @@ class BaseMod implements PropertiesManager {
 	public function setPropertiesManager(PropertiesManager $propertiesManager) {
 		self::$propertiesManager = $propertiesManager;
 	}
-	
+
 	/* INTERFACE PropertiesManager */
-	
+
 	static public function getPropertyValue($propertyKey, $dafaultValue = null) {
 		if (isset(self::$propertiesManager))
 			return self::$propertiesManager->getPropertyValue($propertyKey, $dafaultValue);
 		return $dafaultValue;
 	}
-	
+
 	static public function setPropertyValue($propertyKey, $value) {
 		if (isset(self::$propertiesManager))
 			 self::$propertiesManager->setPropertyValue($propertyKey, $value);
 	}
-	
+
 	static public function deleteProperty($propertyKey) {
 		if (isset(self::$propertiesManager))
 			self::$propertiesManager->deleteProperty($propertyKey);
 	}
-	
+
 	static public function existsProperty($propertyKey) {
 		if (isset(self::$propertiesManager))
 			return self::$propertiesManager->existsProperty($propertyKey);
 		return false;
 	}
-	
+
 	public function setExitOnMensaje($bExit) {
 		$this->exitOnMensaje = $bExit;
 	}
-	
+
 	/**
 	 * Asigna la variable de theme para incluir el archivo css inmediatamente despues de defaultCss
-	 * @param string $themeCssFilePath la ruta (client side) del archivo css 
+	 * @param string $themeCssFilePath la ruta (client side) del archivo css
 	 */
 	public function setThemeCss($themeCssFilePath) {
 		$this->setTplVar("pQnThemeCss", $themeCssFilePath);
 	}
-	
+
 	/**
 	 * Obtiene el valor asignado en la template (smarty) a la variable dada
 	 * @param string $varname
