@@ -265,7 +265,7 @@ abstract class BaseAdminMod extends BaseMod {
 	 * @param integer $limitCount limite de elementos que se mostrarán por página
 	 */
 	protected function getListElements($filtro,$req,$limitCount=null) {
-		return $this->mainDao->findBy($filtro,$req['sort'],$limitCount,$this->getPageOffset($req));
+		return $this->mainDao->findBy($filtro,$this->getOrder($req),$limitCount,$this->getPageOffset($req));
 	}
 
 	/**
@@ -435,7 +435,7 @@ abstract class BaseAdminMod extends BaseMod {
 	 * Descarga la lista en formato excel
 	 */
 	protected function descargarListaExcel($aObjs,$req) {
-		
+
 		$objPHPExcel = $this->getListaExcel($aObjs,$req);
 
 		$title = $objPHPExcel->getProperties()->getTitle();
@@ -457,14 +457,14 @@ abstract class BaseAdminMod extends BaseMod {
 		$objWriter->save('php://output');
 		exit;
 	}
-	
+
 	/**
 	 * Asigna un titulo al modulo (se le asigna en el template como tituloModulo)
 	 */
 	protected function setTitulo($titulo) {
 		$this->setTplVar('tituloModulo', $titulo);
 	}
-	
+
 	/**
 	 * Asigna una descripción al modulo (se le asigna en el template como descripcionModulo)
 	 */
