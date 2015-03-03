@@ -143,14 +143,6 @@ class Configuracion {
         return "";
     }
 
-    public static function getDbHostPort($nombreDataSource = null)
-    {
-    	$host = Configuracion::getDbHost($nombreDataSource);
-    	$port = Configuracion::getDbPort($nombreDataSource);
-    	if($port != '')	$host .= ":{$port}";
-    	return $host;
-    }
-
     public static function getDBMS($nombreDataSource = null)
     {
         return Configuracion::getDBAttribute("dbms",$nombreDataSource);
@@ -158,7 +150,16 @@ class Configuracion {
 
     public static function getDbDSN($nombreDataSource = null)
     {
-        return Configuracion::getDBAttribute("DSN",$nombreDataSource);
+        $dsn = Configuracion::getDBAttribute("DSN",$nombreDataSource);
+        if(empty($dsn))
+        {
+        	$port = Configuracion::getDbPort($nombreDataSource);
+        	if(!empty($port))
+        	{
+        		$dsn = Configuracion::getDBMS($nombreDataSource)."://".Configuracion::getDbUser().":".Configuracion::getDbPassword()."@".Configuracion::getDbHost()."/".Configuracion::getDbName()."?port=".Configuracion::getDbPort();
+        	}
+        }
+    	return $dsn;
     }
 
     public static function getDbHost($nombreDataSource = null)
