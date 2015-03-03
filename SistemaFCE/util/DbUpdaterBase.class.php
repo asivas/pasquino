@@ -37,7 +37,7 @@ class DbUpdaterBase {
 		if(Configuracion::getDbDSN($dataSource)!='')
 			$db->NConnect(Configuracion::getDbDSN($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource));
 		else
-			$db->NConnect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
+			$db->NConnect(Configuracion::getDbHostPort($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
 		return $db;
 	}
 
@@ -84,14 +84,14 @@ class DbUpdaterBase {
 					$rs = $db->execute($q);
 					if(!$rs){
 						$queriesOK =false;
-						$this->report($db->ErrorMsg() . " Ejecutando: $q",self::R_ERROR);
+						$this->report($db->ErrorMsg() . "<br><b> Ejecutando</b>: $q",self::R_ERROR);
 					}
 				}
 			}
 			return $queriesOK;
 		}
 		$rs = $db->execute($query);
-		if(!$rs) $this->report($db->ErrorMsg() . " Ejecutando: $query",self::R_ERROR);
+		if(!$rs) $this->report($db->ErrorMsg() . " <br><b>Ejecutando</b>: $query",self::R_ERROR);
 		return $rs;
 	}
 
@@ -203,7 +203,7 @@ class DbUpdaterBase {
 				throw new Exception("No se pudo actualizar el nro de versión ". $this->getDb()->ErrorMsg());
 			return $bVerUpdated;
 		}
-		
+
 		throw new Exception("No se pudo actualizar el nro de versión. No hay administrador de propiedades");
 		return false;
 	}

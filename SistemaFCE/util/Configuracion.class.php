@@ -143,6 +143,14 @@ class Configuracion {
         return "";
     }
 
+    public static function getDbHostPort($nombreDataSource = null)
+    {
+    	$host = Configuracion::getDbHost($nombreDataSource);
+    	$port = Configuracion::getDbPort($nombreDataSource);
+    	if($port != '')	$host .= ":{$port}";
+    	return $host;
+    }
+
     public static function getDBMS($nombreDataSource = null)
     {
         return Configuracion::getDBAttribute("dbms",$nombreDataSource);

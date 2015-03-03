@@ -108,7 +108,7 @@ abstract class DaoBase {
 			if(Configuracion::getDbDSN($dataSource)!='')
 				self::$dbConections[$dataSource]->NConnect(Configuracion::getDbDSN($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource));
 			else
-				self::$dbConections[$dataSource]->NConnect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
+				self::$dbConections[$dataSource]->NConnect(Configuracion::getDbHostPort($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
 		}
         return self::$dbConections[$dataSource];
     }
@@ -373,7 +373,7 @@ abstract class DaoBase {
     				$fields[$k] = "`$field`";
     			}
     	}
-    	
+
     	return $fields;
     }
 
@@ -406,7 +406,7 @@ abstract class DaoBase {
         else
         {
             $tabla = $this->tableName;
-           
+
             if($tabla == $this->_xmlMapping['tabla'] && (is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli') ))
             	//ac� me aseguro por tablas con espacios en mysql
                 $tabla = "`{$tabla}`";
@@ -621,9 +621,9 @@ abstract class DaoBase {
             		unset($buf[$key]);
             }
 			unset($bufExistente);
-			
+
 			if(empty($buf)) return true; //nada que actualizar
-				
+
             $where = $this->getCriterioId($elem->getId())->getCondicion();
          }
 
