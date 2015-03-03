@@ -37,7 +37,7 @@ class DbUpdaterBase {
 		if(Configuracion::getDbDSN($dataSource)!='')
 			$db->NConnect(Configuracion::getDbDSN($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource));
 		else
-			$db->NConnect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
+			$db->NConnect(Configuracion::getDbHostPort($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
 		return $db;
 	}
 
