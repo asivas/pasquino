@@ -1,4 +1,4 @@
--- $CVSHeader: pasquino/datos/adodb/session/adodb-sessions.mysql.sql,v 1.2 2014-01-21 22:03:42 vidaguren Exp $
+-- $CVSHeader: pasquino/datos/adodb/session/adodb-sessions.mysql.sql,v 1.3 2015-03-04 13:42:11 vidaguren Exp $
 
 CREATE DATABASE /*! IF NOT EXISTS */ adodb_sessions;
 
