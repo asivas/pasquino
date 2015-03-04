@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.6 2015-03-04 19:36:17 vidaguren Exp $
+ * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.7 2015-03-04 19:52:53 vidaguren Exp $
  *
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * @package Log
  */
 require_once("datos/adodb/adodb.inc.php");
@@ -122,7 +122,7 @@ class Log_adodb extends Log
 
 		        $host = $this->_options['db_host'];
 		        if(!empty($this->_options['db_port']))
-		        	$host .= "$host:{$this->_options['db_port']}";
+		        	$host .= ":{$this->_options['db_port']}";
 		        $doDie = !$tmp_db->Connect($host,$this->_options['db_user'],$this->_options['db_pass'],$this->_options['db_schema']);
 		    }
 		    if($doDie)

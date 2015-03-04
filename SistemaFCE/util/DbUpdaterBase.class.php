@@ -38,7 +38,8 @@ class DbUpdaterBase {
 			$db->NConnect(Configuracion::getDbDSN($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource));
 		elseif(Configuracion::getDBMS($dataSource)=='mysqli') //mysqli no conecta con servidor:puerto
 		{
-			$db->port = Configuracion::getDbPort($dataSource);
+			if(($port = Configuracion::getDbPort($dataSource) ) != '')
+				$db->port = $port;
 			$db->NConnect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
 		}
 		else
@@ -162,15 +163,15 @@ class DbUpdaterBase {
 		if($toVersion == $fromVersion)	return; //no hace falta actualizar
 
 		$this->report("Se detectó que hay una actualización disponible. Al finalizar la actualización podrá usar el sistema nuevamente. Por favor espere un momento");
-		
-		set_time_limit(0); 
+
+		set_time_limit(0);
 		$ver = $fromVersion+1;
 		$noErrors = true;
 		$db = $this->getDb();
 		while($ver<=$toVersion && $noErrors)
 		{
 			$bVerUpdated = false;
-			
+
 
 			$db->startTrans();
 			$this->runChangesForVersion($ver);
