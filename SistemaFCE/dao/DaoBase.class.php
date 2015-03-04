@@ -107,6 +107,11 @@ abstract class DaoBase {
 		{
 			if(Configuracion::getDbDSN($dataSource)!='')
 				self::$dbConections[$dataSource]->NConnect(Configuracion::getDbDSN($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource));
+			elseif(Configuracion::getDBMS($dataSource)=='mysqli') //mysqli no conecta con servidor:puerto
+			{
+				self::$dbConections[$dataSource]->port = Configuracion::getDbPort($dataSource);
+				self::$dbConections[$dataSource]->NConnect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
+			}
 			else
 				self::$dbConections[$dataSource]->NConnect(Configuracion::getDbHostPort($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
 		}

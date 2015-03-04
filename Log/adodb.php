@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.5 2013-06-07 03:00:21 trotti Exp $
+ * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.6 2015-03-04 19:36:17 vidaguren Exp $
  *
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * @package Log
  */
 require_once("datos/adodb/adodb.inc.php");
@@ -29,7 +29,7 @@ class Log_adodb extends Log
      */
     var $_tabla = 'logs';
 
- 
+
     /**
      * Constructs a new sql logging object.
      *
@@ -53,7 +53,7 @@ class Log_adodb extends Log
         }
         else
         {
-        	try 
+        	try
         	{
         		$puso = 0;
 	        	if(class_exists(Configuracion))
@@ -64,6 +64,7 @@ class Log_adodb extends Log
 						$this->_options['db_user'] = Configuracion::getDbUser();
 						$this->_options['db_pass'] = Configuracion::getDbPassword();
 						$this->_options['db_schema'] = Configuracion::getDbName();
+						$this->_options['db_port'] = Configuracion::getDbPort();
 	        			$puso = 1;
 	        		}
 
@@ -85,20 +86,20 @@ class Log_adodb extends Log
 					$this->_options['db_schema'] = DB_SCHEMA;
         	}
         }
- 
+
         /* Now that the ident limit is confirmed, set the ident string. */
         $this->setIdent($ident);
 
         /* If an existing database connection was provided, use it. */
-        if (isset($conf['db'])) 
+        if (isset($conf['db']))
         {
             $this->_db = $conf['db'];
             $this->_existingConnection = true;
             $this->_opened = true;
         }
         else $this->_db = $this->open();
-        
- 
+
+
     }
 
     /**
@@ -110,20 +111,23 @@ class Log_adodb extends Log
      */
     function open()
     {
-        if (!$this->_opened) 
+        if (!$this->_opened)
         {
 		    $tmp_db = ADONewConnection('mysql');
-		    if(!$tmp_db) 
+		    if(!$tmp_db)
 			    $doDie = true;
 		    else
-		    {    
+		    {
 		        $tmp_db->SetFetchMode(ADODB_FETCH_BOTH);
-				
-		        $doDie = !$tmp_db->Connect($this->_options['db_host'],$this->_options['db_user'],$this->_options['db_pass'],$this->_options['db_schema']);
+
+		        $host = $this->_options['db_host'];
+		        if(!empty($this->_options['db_port']))
+		        	$host .= "$host:{$this->_options['db_port']}";
+		        $doDie = !$tmp_db->Connect($host,$this->_options['db_user'],$this->_options['db_pass'],$this->_options['db_schema']);
 		    }
-		    if($doDie) 
+		    if($doDie)
 	        die("Ha ocurrido un error tratando de conectarse con el origen de datos.".__FILE__.' '.__LINE__.' ');
-    
+
 		    return $tmp_db;
 
             /* We now consider out connection open. */
@@ -205,13 +209,13 @@ class Log_adodb extends Log
         );
 
         /* Execute the SQL query for this log entry insertion. */
-        
+
         $resultado = $this->_db->AutoExecute($this->_tabla,$values,'INSERT');
 		/*{
 			print $this->_db->ErrorMsg();
-			
-		}	
- 
+
+		}
+
         $this->_announce(array('priority' => $priority, 'message' => $message));
 */
         return $resultado;

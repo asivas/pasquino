@@ -36,6 +36,11 @@ class DbUpdaterBase {
 		$db->SetFetchMode(ADODB_FETCH_ASSOC);
 		if(Configuracion::getDbDSN($dataSource)!='')
 			$db->NConnect(Configuracion::getDbDSN($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource));
+		elseif(Configuracion::getDBMS($dataSource)=='mysqli') //mysqli no conecta con servidor:puerto
+		{
+			$db->port = Configuracion::getDbPort($dataSource);
+			$db->NConnect(Configuracion::getDbHost($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
+		}
 		else
 			$db->NConnect(Configuracion::getDbHostPort($dataSource), Configuracion::getDbUser($dataSource), Configuracion::getDbPassword($dataSource), Configuracion::getDbName($dataSource));
 		return $db;
