@@ -157,14 +157,15 @@ class DbUpdaterBase {
 		if($toVersion == $fromVersion)	return; //no hace falta actualizar
 
 		$this->report("Se detectó que hay una actualización disponible. Al finalizar la actualización podrá usar el sistema nuevamente. Por favor espere un momento");
-
+		
+		set_time_limit(0); 
 		$ver = $fromVersion+1;
 		$noErrors = true;
 		$db = $this->getDb();
 		while($ver<=$toVersion && $noErrors)
 		{
 			$bVerUpdated = false;
-			set_time_limit(120); //por si acaso cada vuelta renuevo el reloj
+			
 
 			$db->startTrans();
 			$this->runChangesForVersion($ver);
