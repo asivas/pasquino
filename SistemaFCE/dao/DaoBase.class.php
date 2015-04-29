@@ -75,7 +75,7 @@ abstract class DaoBase {
 
     /**
      * Obtiene una instancia singleton del Dao que la llama
-     * @return DaoBase Dao que exitende DaoBase
+     * @return self Dao que exitende DaoBase
      */
 	public static function getInstance()
     {
