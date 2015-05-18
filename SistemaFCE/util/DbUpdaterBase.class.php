@@ -216,35 +216,35 @@ class DbUpdaterBase {
 	}
 
 	protected function disableForeignKeyChecks() {
-		$this->excecuteQuery("SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0");
+		$this->executeQuery("SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0");
 	}
 
 	protected function resetForeignKeyChecks() {
-		$this->excecuteQuery("SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS");
+		$this->executeQuery("SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS");
 	}
 
 	protected function setSqlMode($sqlMode='TRADITIONAL') {
-		$this->excecuteQuery("SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='{$sqlMode}'");
+		$this->executeQuery("SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='{$sqlMode}'");
 	}
 
 	protected function resetSqlMode() {
-		$this->excecuteQuery("SET SQL_MODE=@OLD_SQL_MODE");
+		$this->executeQuery("SET SQL_MODE=@OLD_SQL_MODE");
 	}
 
 	protected function disableUniqueKeyChecks() {
-		$this->excecuteQuery("SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0");
+		$this->executeQuery("SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0");
 	}
 
 	protected function reseteUniqueKeyChecks() {
-		$this->excecuteQuery("SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS");
+		$this->executeQuery("SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS");
 	}
 
 	protected function setNamesCharset($charset='utf8') {
-		$this->excecuteQuery("SET NAMES {$charset}");
+		$this->executeQuery("SET NAMES {$charset}");
 	}
 
 	public function tableExists($tableName) {
-		if($rs = $this->excecuteQuery("SHOW TABLES LIKE '{$tableName}'"))
+		if($rs = $this->executeQuery("SHOW TABLES LIKE '{$tableName}'"))
 		{
 			return $rs->RowCount()!=0;
 		}
@@ -254,7 +254,7 @@ class DbUpdaterBase {
 
 	public function foreignKeyExists($tableName,$foreignKeyName) {
 		if($this->tableExists($tableName))
-			if($rs = $this->excecuteQuery("SHOW CREATE TABLE {$tableName}"))
+			if($rs = $this->executeQuery("SHOW CREATE TABLE {$tableName}"))
 			{
 				$create =$rs->fields['Create Table'];
 				return stripos($create, "CONSTRAINT `$foreignKeyName`")!==FALSE;
@@ -265,7 +265,7 @@ class DbUpdaterBase {
 
 	public function columnExists($tableName,$columnName) {
 		if($this->tableExists($tableName))
-			if($rs = $this->excecuteQuery("SHOW COLUMNS FROM `{$tableName}` WHERE Field = '$columnName'"))
+			if($rs = $this->executeQuery("SHOW COLUMNS FROM `{$tableName}` WHERE Field = '$columnName'"))
 				return $rs->RowCount()>0;
 
 			return false;
