@@ -130,12 +130,21 @@ class DbUpdaterBase {
 		print "<span style='color:{$color}; font-weight:bold;'>{$type}</span> {$message} </br>";
 		ob_flush();
 	}
-
+	
+	protected function getVersionUpdateMethod($version) {
+		$version = str_replace('.', "_", $version);
+		return "changesVersion{$version}";
+	}
+	
+	protected function versionUpdateExists($version) {
+		$changesMethod = $this->getVersionUpdateMethod($version);
+		return method_exists($this, $changesMethod);
+	}	
+	
 	protected function runChangesForVersion($version) {
-		$changesMethod = "changesVersion{$version}";
-
-		if(method_exists($this, $changesMethod))
+		if($this->versionUpdateExists($version))
 		{
+			$changesMethod = $this->getVersionUpdateMethod($version);
 			$this->report("Actualizando desde versión ".SistemaFCE::getVersionDB()." a versión {$version}");
 			return $this->$changesMethod();
 		}
@@ -143,6 +152,16 @@ class DbUpdaterBase {
 			$this->report("No se pudo actualizar desde versión ".SistemaFCE::getVersionDB()." a versión {$version} el metodo de actualización no existe",self::R_ERROR);
 		return false;
 
+	}
+	
+	protected function increaseVersion($ver,$increaseLimit) {
+		
+		do {		
+			$ver += 0.1;
+		}
+		while($ver<$increaseLimit && !$this->versionUpdateExists($ver));
+		
+		return round($ver,1);
 	}
 
 	/**
@@ -165,13 +184,12 @@ class DbUpdaterBase {
 		$this->report("Se detectó que hay una actualización disponible. Al finalizar la actualización podrá usar el sistema nuevamente. Por favor espere un momento");
 
 		set_time_limit(0);
-		$ver = $fromVersion+1;
+		$ver = $this->increaseVersion($fromVersion,$toVersion);
 		$noErrors = true;
 		$db = $this->getDb();
 		while($ver<=$toVersion && $noErrors)
 		{
 			$bVerUpdated = false;
-
 
 			$db->startTrans();
 			$this->runChangesForVersion($ver);
@@ -186,7 +204,11 @@ class DbUpdaterBase {
 				$this->reportLastError();
 
 			$noErrors &= $bVerUpdated;
-			$updatedTo = $ver++;
+			
+			$updatedTo = $ver;
+			
+			//busco sub versiones
+			$ver = $this->increaseVersion($ver,$toVersion);
 		}
 
 		if(!$noErrors)
