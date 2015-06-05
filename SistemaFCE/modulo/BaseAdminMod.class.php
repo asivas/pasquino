@@ -439,6 +439,8 @@ abstract class BaseAdminMod extends BaseMod {
 		$objPHPExcel = $this->getListaExcel($aObjs,$req);
 
 		$title = $objPHPExcel->getProperties()->getTitle();
+		if(isset($req['title']))
+			$title = $req['title'];
 
 		// Redirect output to a client’s web browser (Excel2007)
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
