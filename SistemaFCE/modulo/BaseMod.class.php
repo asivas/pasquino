@@ -762,7 +762,8 @@ class BaseMod implements PropertiesManager {
         foreach($multi as $orden)
         {
         	if(!empty($order)) $order .= ',';
-            $order .= "{$orden} {$this->_sentidoOrderListado}";
+        	if(stripos($orden, "ASC")===FALSE && stripos($orden, "DESC")===FALSE)
+            	$order .= "{$orden} {$this->_sentidoOrderListado}";
         }
 
         return $order;
