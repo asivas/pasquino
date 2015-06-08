@@ -726,14 +726,14 @@ class BaseMod implements PropertiesManager {
      */
     protected function getOrder($req){
         if(!empty($req['sort']))
-        {
-            if($req['sort']!=$this->_orderListado)
+        {	
+        	if($req['sort']!=$this->_orderListado)
             {
                 $this->_orderListado = $req['sort'];
                 $this->_sentidoOrderListado = "ASC";
             }
-            else{
-                if($this->_sentidoOrderListado == "ASC")
+            elseif(strpos($this->_orderListado, "ASC")===FALSE && strpos($this->_orderListado, "DESC")===FALSE) { // si no se envío un orden en el sort                 
+            	if($this->_sentidoOrderListado == "ASC")
                     $this->_sentidoOrderListado = "DESC";
                 else
                     $this->_sentidoOrderListado = "ASC";
