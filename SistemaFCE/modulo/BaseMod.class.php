@@ -764,6 +764,8 @@ class BaseMod implements PropertiesManager {
         	if(!empty($order)) $order .= ',';
         	if(stripos($orden, "ASC")===FALSE && stripos($orden, "DESC")===FALSE)
             	$order .= "{$orden} {$this->_sentidoOrderListado}";
+        	else 
+        		$order .= "{$orden}";
         }
 
         return $order;
