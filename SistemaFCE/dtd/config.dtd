@@ -6,6 +6,8 @@
 	nombre-session CDATA #IMPLIED
 	properties-manager-class CDATA #IMPLIED
 	dbUpdater-class CDATA #IMPLIED
+	merge-js-flies (true|false) #IMPLIED
+	merge-css-flies (true|false) #IMPLIED
 >
 
 <!ELEMENT date-formats (date-format,datetime-format?,time-format?)>
@@ -73,6 +75,8 @@
 	nombre CDATA #REQUIRED
 	dir CDATA #IMPLIED
 	versionSistema CDATA #IMPLIED
+	merge-js-flies (true|false) #IMPLIED
+	merge-css-flies (true|false) #IMPLIED
 >
 
 <!ELEMENT acciones (accion*)>

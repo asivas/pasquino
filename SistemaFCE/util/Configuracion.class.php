@@ -618,6 +618,41 @@ class Configuracion {
     	$config = Configuracion::getConfigXML();
     	return $config->auths;
     }
+    
+    /**
+     * Gets an attribute from config, if the modName is defined and has the attribute defined will return the mod attribute, 
+     * if it doesn't it will return the general attribute
+     * @param unknown $attribName
+     * @param unknown $modName
+     */
+    static private function getAttributeModOrGeneral($attribName,$modName=null) {
+    	$config = self::getConfigXML();
+    	if(isset($modName))
+    	{
+    		$configMod = self::getConfigModulo($modName);
+    		if(isset($configMod[$attribName]))
+    			return $configMod[$attribName];
+    	}
+    	
+    	return $config[$attribName];
+    }
+    
+    /**
+     * Corrobora en el config del sistema si se deben mergear los archivos JS en uno solo (los agregados con addJsFile)
+     * @return boolean
+     */
+    static public function getMergeJsFiles($modName=null) {
+    	return self::getAttributeModOrGeneral('merge-js-flies',$modName) == true;
+    } 
+    
+    /**
+     * Corrobora en el config del sistema si se deben mergear los archivos css en uno solo (los agregados con addCssFile)
+     * 
+     * @return boolean
+     */
+    static public function getMergeCssFiles($modName=null) {
+    	return self::getAttributeModOrGeneral('merge-css-flies',$modName) == true;
+    }
 
 }
 
