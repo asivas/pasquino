@@ -616,11 +616,14 @@ class BaseMod implements PropertiesManager {
      * Agrega un archivo (nombre de archivo) js para inluirlos de manera dinamica
      * @param string $jsFile
      * @param string $sortKey
+     * @param string $version
      */
-    protected function addJsFile($jsFile,$sortKey=null) {
+    protected function addJsFile($jsFile,$sortKey=null,$version=null) {
+		if(isset($version))
+			$jsFile = "$jsFile?v={$version}";    	
     	if($sortKey != null)
     		$this->jsFilesList[$sortKey] = $jsFile;
-    	else
+    	else    	
     		$this->jsFilesList[] = $jsFile;
     }
 
@@ -648,9 +651,11 @@ class BaseMod implements PropertiesManager {
      * Agrega un archivo (nombre de archivo) css para inluirlos de manera dinamica
      * @param string $cssFile
      * @param string $sortKey
+     * @param string $version
      */
-    protected function addCssFile($cssFile,$sortKey=null) {
-
+    protected function addCssFile($cssFile,$sortKey=null,$version=null) {
+    	if(isset($version))
+    		$cssFile = "$cssFile?v={$version}";
     	if(!empty($sortKey)) // FIX: pregunto si no es empty porque sino le pone un index de cadena vacia
     		$this->cssFilesList[$sortKey] = $cssFile;
     	else
