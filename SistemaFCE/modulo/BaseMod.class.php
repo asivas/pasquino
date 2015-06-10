@@ -621,8 +621,13 @@ class BaseMod implements PropertiesManager {
     protected function addJsFile($jsFile,$sortKey=null,$version=null) {
 		if(isset($version))
 			$jsFile = "$jsFile?v={$version}";    	
-    	if($sortKey != null)
-    		$this->jsFilesList[$sortKey] = $jsFile;
+    	if($sortKey !== null)
+    	{
+    		if($sortKey===0)
+    			array_unshift($this->jsFilesList, $jsFile);
+    		else
+    			$this->jsFilesList[$sortKey] = $jsFile;
+    	}
     	else    	
     		$this->jsFilesList[] = $jsFile;
     }
@@ -704,6 +709,10 @@ class BaseMod implements PropertiesManager {
         if(!empty($this->errors))
             $this->smarty->assign('errores',$this->errors);
 
+        if (isset($this->jsModulo))
+        	$this->addDateVersionedJsFile("js/{$this->jsModulo}.js",0);
+        //$this->smarty->assign("jsModulo",$this->jsModulo);
+        
         $this->assignHeadJs();
         $this->assignHeadCss();
 
@@ -715,8 +724,7 @@ class BaseMod implements PropertiesManager {
 
 		$disp = $this->getTilePathForDisplayType($type);
 
-		if (isset($this->jsModulo))
-			$this->smarty->assign("jsModulo",$this->jsModulo);
+		
 
         if(empty($disp))
         	$disp = $tpl;
@@ -1314,5 +1322,21 @@ class BaseMod implements PropertiesManager {
 			return $this->smarty->getTemplateVars($varname);
 
 		return $this->smarty->get_template_vars($varname);
+	}
+		
+	public function getFilemdatetime($filePath) {		
+		return date("YmdHis",filemtime($filePath));		
+	}
+	
+	public function addDateVersionedJsFile($jsFile,$sortKey=null) {
+		$jsFilePath = Configuracion::getPublicDir().DIRECTORY_SEPARATOR.$jsFile;
+		if(file_exists($jsFilePath))
+			$this->addJsFile($jsFile,$sortKey,$this->getFilemdatetime($jsFilePath));
+	}
+	
+	public function addDateVersionedCssFile($cssFile,$sortKey=null) {
+		$cssFilePath = Configuracion::getPublicDir().DIRECTORY_SEPARATOR.$cssFile;
+		if(file_exists($cssFilePath))
+			$this->addCssFile($cssFile,$sortKey,$this->getFilemdatetime($cssFilePath));
 	}
 }

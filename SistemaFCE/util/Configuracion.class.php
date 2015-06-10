@@ -4,6 +4,7 @@ class Configuracion {
     static private $rootDir;
     static private $confDir='conf';
     static private $confFilename='config.xml';
+    static private $publicDir;
 
     function Configuracion() {
 
@@ -24,16 +25,18 @@ class Configuracion {
 
     public static function initSistema($rutaSysRoot=null,$pathsIncludePath=null)
     {
-
+		$dbt = debug_backtrace();
+        
         if(Configuracion::getSystemRootDir()==null)
         {
-            if(!isset($rutaSysRoot))
-            {
-            	$dbt = debug_backtrace();
-            	$rutaSysRoot = dirname(dirname($dbt[0]['file']));
-            }
+        	if(!isset($rutaSysRoot))
+        	{
+        		$rutaSysRoot = dirname(dirname($dbt[0]['file']));
+        	}
         	Configuracion::setSystemRootDir($rutaSysRoot);
         }
+        
+        self::$publicDir = dirname($dbt[0]['file']);
 
         Configuracion::setIncludePath($pathsIncludePath);
 
@@ -652,6 +655,14 @@ class Configuracion {
      */
     static public function getMergeCssFiles($modName=null) {
     	return self::getAttributeModOrGeneral('merge-css-flies',$modName) == true;
+    }
+    
+    /**
+     * Gets the public dir (where executed index.php is) path
+     * @return string
+     */
+    static public function getPublicDir() {
+    	return self::$publicDir;
     }
 
 }
