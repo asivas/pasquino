@@ -91,10 +91,10 @@ abstract class DaoBase {
 
     function __destruct() {
     	$calledClass = get_called_class();
-    	$dao = self::$instances[$calledClass];
-    	if(isset($dao))
+    	$thisDao = self::$instances[$calledClass];
+    	if(isset($thisDao))
     	{
-    		$dao->getDb()->close();
+    		$thisDao->getDb()->close();
     		unset(self::$instances[$calledClass]);
     	}
     }
