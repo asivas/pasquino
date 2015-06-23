@@ -623,7 +623,7 @@ class BaseMod implements PropertiesManager {
 			$jsFile = "$jsFile?v={$version}";    	
     	if($sortKey !== null)
     	{
-    		if($sortKey===0)
+    		if($sortKey===0 && is_array($this->jsFilesList))
     			array_unshift($this->jsFilesList, $jsFile);
     		else
     			$this->jsFilesList[$sortKey] = $jsFile;
