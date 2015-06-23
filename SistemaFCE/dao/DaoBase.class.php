@@ -90,8 +90,13 @@ abstract class DaoBase {
     }
 
     function __destruct() {
-    	if(empty(self::$instances))
-    		$this->_db->close();
+    	$calledClass = get_called_class();
+    	$thisDao = self::$instances[$calledClass];
+    	if(isset($thisDao))
+    	{
+    		$thisDao->getDb()->close();
+    		unset(self::$instances[$calledClass]);
+    	}
     }
 
     function getConexion($dataSource=null)
