@@ -14,7 +14,7 @@ read -p "Apache Configs dir [$APACHECONF]:" -r
 read -p "Pasquino Config filename [$pQnConfFileName]:" -r
 [[  -n "$REPLY" ]] && pQnConfFileName=$REPLY
 
-read -p "SymLink Pasquino config file (Leave empty if not necesary) [$pQnConfFileSymLink]:" -r
+read -p "SymLink Pasquino config file (Leave empty if not necessary) [$pQnConfFileSymLink]:" -r
 [[  -n "$REPLY" ]] && pQnConfFileSymLink=$REPLY
 
 
