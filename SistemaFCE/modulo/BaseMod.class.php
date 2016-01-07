@@ -137,7 +137,7 @@ class BaseMod implements PropertiesManager {
 
             $this->xajax->processRequest();
 
-            $this->smarty->assign('xajax',$this->xajax->getJavascript('/js'));
+            $this->setTplVar('xajax',$this->xajax->getJavascript('/js'));
         }
         if (Configuracion::getLoggerClass()!= null)
         	$this->logger= Log::factory(Configuracion::getLoggerClass());
@@ -196,37 +196,37 @@ class BaseMod implements PropertiesManager {
         $publicSkinDir = $this->_skinConfig['wwwdir'];
         if(empty($publicSkinDir))
         	$publicSkinDir = $this->_skinConfig['dir'];
-        $this->smarty->assign('skin',$publicSkinDir);
-        $this->smarty->assign('relative_images',"{$skinsDirname}/{$publicSkinDir}/images");
-        $this->smarty->assign('version',Configuracion::getVersion());
-        $this->smarty->assign('skinPath',$systemRoot."/{$skinsDirname}/".$this->_skinConfig['dir']);
-        $this->smarty->assign('appName',Configuracion::getAppName());
-		$this->smarty->assign('cal_files',$this->_calendar->get_load_files_code());
+        $this->setTplVar('skin',$publicSkinDir);
+        $this->setTplVar('relative_images',"{$skinsDirname}/{$publicSkinDir}/images");
+        $this->setTplVar('version',Configuracion::getVersion());
+        $this->setTplVar('skinPath',$systemRoot."/{$skinsDirname}/".$this->_skinConfig['dir']);
+        $this->setTplVar('appName',Configuracion::getAppName());
+		$this->setTplVar('cal_files',$this->_calendar->get_load_files_code());
 
-        $this->smarty->assign('dir_images',"{$skinsDirname}/{$publicSkinDir}/images");
-        $this->smarty->assign('dir_js',"{$skinsDirname}/{$publicSkinDir}/js");
+        $this->setTplVar('dir_images',"{$skinsDirname}/{$publicSkinDir}/images");
+        $this->setTplVar('dir_js',"{$skinsDirname}/{$publicSkinDir}/js");
 
         $this->assingSmartyMenu();
 
-        $this->smarty->assign('dateFormat',$this->_dateFormat);
-        $this->smarty->assign('timeFormat',$this->_timeFormat);
-        $this->smarty->assign('dateTimeFormat',$this->_dateTimeFormat);
+        $this->setTplVar('dateFormat',$this->_dateFormat);
+        $this->setTplVar('timeFormat',$this->_timeFormat);
+        $this->setTplVar('dateTimeFormat',$this->_dateTimeFormat);
 
         $this->assignSmartyTplVars();
 
-        $this->smarty->assign('facade',new smartyFacade($this));
+        $this->setTplVar('facade',new smartyFacade($this));
 
         $this->setTplVar("ckeditorVersion", '4.4.1');
 
-        $this->smarty->assign('usuario',$this->getUsuario());
-        $this->smarty->assign('id_usuario_actual',$this->session->getIdUsuario());
+        $this->setTplVar('usuario',$this->getUsuario());
+        $this->setTplVar('id_usuario_actual',$this->session->getIdUsuario());
     }
 
     protected function assingSmartyMenu() {
     	$mp = $this->getMenuPrincipal();
     	//menu
-    	$this->smarty->assign('menuItems',$mp);
-    	$this->smarty->assign('menu',$mp);
+    	$this->setTplVar('menuItems',$mp);
+    	$this->setTplVar('menu',$mp);
     }
 
     /**
@@ -238,51 +238,51 @@ class BaseMod implements PropertiesManager {
     	$cssPath = "file:{$this->pasquinoPath}/SistemaFCE/public/css";
     	$jsPath = "file:{$this->pasquinoPath}/SistemaFCE/js";
 
-    	$this->smarty->assign("pQnTplsPath","{$tplsPath}");
+    	$this->setTplVar("pQnTplsPath","{$tplsPath}");
 
     	//Opciones de layout estandar
-    	$this->smarty->assign("pQnBaseTpl","{$tplsPath}/base.tpl");
-    	$this->smarty->assign("pQnDefaultTpl","{$tplsPath}/default.tpl");
-    	$this->smarty->assign("pQnAdminTpl","{$tplsPath}/admin/default.tpl");
+    	$this->setTplVar("pQnBaseTpl","{$tplsPath}/base.tpl");
+    	$this->setTplVar("pQnDefaultTpl","{$tplsPath}/default.tpl");
+    	$this->setTplVar("pQnAdminTpl","{$tplsPath}/admin/default.tpl");
 
     	//Partes generales de sistema/template
-    	$this->smarty->assign("pQnMenuTpl","{$tplsPath}/menu.tpl");
-    	$this->smarty->assign("pQnHeaderTpl","{$tplsPath}/header.tpl");
-    	$this->smarty->assign("pQnFooterTpl","{$tplsPath}/footer.tpl");
-    	$this->smarty->assign("pQnHeadTpl","{$tplsPath}/head.tpl");
+    	$this->setTplVar("pQnMenuTpl","{$tplsPath}/menu.tpl");
+    	$this->setTplVar("pQnHeaderTpl","{$tplsPath}/header.tpl");
+    	$this->setTplVar("pQnFooterTpl","{$tplsPath}/footer.tpl");
+    	$this->setTplVar("pQnHeadTpl","{$tplsPath}/head.tpl");
 
     	//Partes estandar de admin
-    	$this->smarty->assign("pQnHeadAdminTpl","{$tplsPath}/admin/head.tpl");
-    	$this->smarty->assign("pQnFormFiltroTpl","{$tplsPath}/admin/filtro.tpl");
-    	$this->smarty->assign("pQnListaTpl","{$tplsPath}/admin/lista.tpl");
-    	$this->smarty->assign("pQnInfoTpl","{$tplsPath}/admin/info.tpl");
-    	$this->smarty->assign("pQnFormTpl","{$tplsPath}/admin/form.tpl");
-    	$this->smarty->assign("pQnListaAccionesTpl","{$tplsPath}/admin/listaAcciones.tpl");
-    	$this->smarty->assign("pQnPageHeader","{$tplsPath}/admin/pageHeader.tpl");
+    	$this->setTplVar("pQnHeadAdminTpl","{$tplsPath}/admin/head.tpl");
+    	$this->setTplVar("pQnFormFiltroTpl","{$tplsPath}/admin/filtro.tpl");
+    	$this->setTplVar("pQnListaTpl","{$tplsPath}/admin/lista.tpl");
+    	$this->setTplVar("pQnInfoTpl","{$tplsPath}/admin/info.tpl");
+    	$this->setTplVar("pQnFormTpl","{$tplsPath}/admin/form.tpl");
+    	$this->setTplVar("pQnListaAccionesTpl","{$tplsPath}/admin/listaAcciones.tpl");
+    	$this->setTplVar("pQnPageHeader","{$tplsPath}/admin/pageHeader.tpl");
 
     	//Lista
-    	$this->smarty->assign("pQnGridTpl","{$tplsPath}/admin/lista/objGrid.tpl");
-    	$this->smarty->assign("pQnBotonAltaTpl","{$tplsPath}/admin/botonAlta.tpl");
-    	$this->smarty->assign("pQnHeaderListaTpl","{$tplsPath}/admin/lista/headerLista.tpl");
-    	$this->smarty->assign("pQnFooterListaTpl","{$tplsPath}/admin/lista/footerLista.tpl");
-    	$this->smarty->assign("pQnItemGridTpl","{$tplsPath}/admin/lista/itemGrid.tpl");
+    	$this->setTplVar("pQnGridTpl","{$tplsPath}/admin/lista/objGrid.tpl");
+    	$this->setTplVar("pQnBotonAltaTpl","{$tplsPath}/admin/botonAlta.tpl");
+    	$this->setTplVar("pQnHeaderListaTpl","{$tplsPath}/admin/lista/headerLista.tpl");
+    	$this->setTplVar("pQnFooterListaTpl","{$tplsPath}/admin/lista/footerLista.tpl");
+    	$this->setTplVar("pQnItemGridTpl","{$tplsPath}/admin/lista/itemGrid.tpl");
 
     	//Pantallas generales
-    	$this->smarty->assign("pQnFormLoginTpl","{$tplsPath}/formLogin.tpl");
-    	$this->smarty->assign("pQnSinPermisosTpl","{$tplsPath}/sinPermisos.tpl");
+    	$this->setTplVar("pQnFormLoginTpl","{$tplsPath}/formLogin.tpl");
+    	$this->setTplVar("pQnSinPermisosTpl","{$tplsPath}/sinPermisos.tpl");
 
     	//CSS
-    	$this->smarty->assign("pQnDefaultCss","/sistemafce/css/default.css");
-    	$this->smarty->assign("pQnGridCss","/bootstrap/css/bootstrap-responsive.min.css");
-    	$this->smarty->assign("pQnJQueryCss","/css/jquery/Aristo/Aristo.css");
+    	$this->setTplVar("pQnDefaultCss","/sistemafce/css/default.css");
+    	$this->setTplVar("pQnGridCss","/bootstrap/css/bootstrap-responsive.min.css");
+    	$this->setTplVar("pQnJQueryCss","/css/jquery/Aristo/Aristo.css");
     	$this->setTplVar("pQnBootstrapCss", "/bootstrap/css/bootstrap.min.css");
 
     	//JS
-    	$this->smarty->assign("pQnJQueryJs","/js/jquery/jquery-1.9.1.min.js");
-    	$this->smarty->assign("pQnJQueryUiJs","/js/jquery/jquery-ui-1.10.0.custom.min.js");
-
-
-
+    	$this->setTplVar("pQnJQueryJs","/js/jquery/jquery-1.9.1.min.js");
+    	$this->setTplVar("pQnJQueryUiJs","/js/jquery/jquery-ui-1.10.0.custom.min.js");
+    	$this->setTplVar("pQnBootstrapJs","/bootstrap/js/bootstrap.min.js");
+    	$this->setTplVar('pQnBrowserUpdateJs','/sistemafce/js/browser-update.js');
+    	
     	// prueba de variables default de las partes estandares (sys-names) de templates las que tiene definido el dtd
     	//TODO: ver si se peude leer del dtd con algo medio simple y armar el arreglo a recorrer
     	$sysNames = array('Base','Default','Lista','Formulario','Info','FormFiltro','Menu','Admin','Head','FormLogin');
@@ -290,7 +290,7 @@ class BaseMod implements PropertiesManager {
     	{
     		$sysNameTplFile = Configuracion::findTplPath($this->_skinConfig,$sysName);
     		if(!empty($sysNameTplFile))
-    			$this->smarty->assign("pQn".$sysName."Tpl",Configuracion::findTplPath($this->_skinConfig,$sysName));
+    			$this->setTplVar("pQn".$sysName."Tpl",Configuracion::findTplPath($this->_skinConfig,$sysName));
     	}
     }
 
@@ -519,7 +519,7 @@ class BaseMod implements PropertiesManager {
 
     public function formLogin()
     {	if (is_callable(array($this->session, 'loggingIn')) && ($this->session->loggingIn())) {
-    		$this->smarty->assign("errorLogin",true);
+    		$this->setTplVar("errorLogin",true);
     	}
 
     	$this->_tilePath = Configuracion::getBaseTplPath($this->_skinConfig['nombre']);
@@ -556,7 +556,7 @@ class BaseMod implements PropertiesManager {
     	$bLoged = $this->session->LogIn();
     	$usr = $this->_usuario;
 
-    	$this->smarty->assign('usuario',$this->getUsuario());
+    	$this->setTplVar('usuario',$this->getUsuario());
 
     	if($usr!=$this->getUsuario())
     		$this->assingSmartyMenu();
@@ -638,6 +638,18 @@ class BaseMod implements PropertiesManager {
     private function assignHeadJs()
     {
     	$jsIncludes = "";
+    	
+    	$defaultJsTemplateVars = array("pQnJQueryJs","pQnBrowserUpdateJs","pQnJQueryUiJs","pQnBootstrapJs");
+    	
+    	foreach($defaultJsTemplateVars as $jsFileNameVar)
+    	{
+    		if(($jsFileName = $this->getTemplateVar($jsFileNameVar))!='')
+    			$jsIncludes .= "\n	<script type=\"text/javascript\" src=\"{$jsFileName}\"></script>";
+    	}
+    	
+    	if(($jsBaseName = $this->getTemplateVar('jsModulo'))!='')
+    		$jsIncludes .= "\n	<script type=\"text/javascript\" src=\"js/{$jsBaseName}.js\"></script>";
+    	
     	//TODO: aca se puede hacer optimización de los archivos listados concatenandolos y
     	// poniendolos minified
     	if(!empty($this->jsFilesList) && is_array($this->jsFilesList))
@@ -649,7 +661,7 @@ class BaseMod implements PropertiesManager {
     		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
     		// si, no meterle a la fuerza la variable {$jsIncludes}
     	}
-    	$this->smarty->assign('jsIncludes',$jsIncludes);
+    	$this->setTplVar('jsIncludes',$jsIncludes);
     }
 
     /**
@@ -694,7 +706,7 @@ class BaseMod implements PropertiesManager {
     		//TODO: agarrar de configuración el tpl que esté como head, corroborar que tenga jsIncludes
     		// si, no meterle a la fuerza la variable {$jsIncludes}
     	}
-    	$this->smarty->assign('cssIncludes',$cssIncludes);
+    	$this->setTplVar('cssIncludes',$cssIncludes);
     }
 
     /**
@@ -707,19 +719,19 @@ class BaseMod implements PropertiesManager {
     protected function mostrar($tpl,$type=null)
     {
         if(!empty($this->errors))
-            $this->smarty->assign('errores',$this->errors);
+            $this->setTplVar('errores',$this->errors);
 
         if (isset($this->jsModulo))
         	$this->addDateVersionedJsFile("js/{$this->jsModulo}.js",0);
-        //$this->smarty->assign("jsModulo",$this->jsModulo);
+        //$this->setTplVar("jsModulo",$this->jsModulo);
         
         $this->assignHeadJs();
         $this->assignHeadCss();
 
-        $this->smarty->assign('menuMod',$this->_menuModTplPath);
-        $this->smarty->assign('pantalla',$tpl);
+        $this->setTplVar('menuMod',$this->_menuModTplPath);
+        $this->setTplVar('pantalla',$tpl);
         if($this->xajax!=null)
-        	$this->smarty->assign('ajax',$this->xajax->getJavascript('js/'));
+        	$this->setTplVar('ajax',$this->xajax->getJavascript('js/'));
 
 
 		$disp = $this->getTilePathForDisplayType($type);
@@ -767,8 +779,8 @@ class BaseMod implements PropertiesManager {
         $_SESSION[get_class($this)]['sort'] = $this->_orderListado;
         $_SESSION[get_class($this)]['sortSentido'] = $this->_sentidoOrderListado;
 
-        $this->smarty->assign('sort',$this->_orderListado);
-        $this->smarty->assign('sortSentido',$this->_sentidoOrderListado);
+        $this->setTplVar('sort',$this->_orderListado);
+        $this->setTplVar('sortSentido',$this->_sentidoOrderListado);
 
         $order = '';
         $multi = split(',',$this->_orderListado);
@@ -852,7 +864,7 @@ class BaseMod implements PropertiesManager {
         {
         	$this->checkPermisos($req);
         	$this->setMiembros($req);
-        	$this->smarty->assign('accion',$accion);
+        	$this->setTplVar('accion',$accion);
 
 	        $metodoAccion = "accion".ucfirst($accion);
 
@@ -1065,7 +1077,7 @@ class BaseMod implements PropertiesManager {
             $form = $this->getForm();
 
     	$rf = $form->renderSmarty($this->smarty);
-        $this->smarty->assign($nombreVarSmarty,$rf);
+        $this->setTplVar($nombreVarSmarty,$rf);
         return $rf;
     }
 
@@ -1175,9 +1187,9 @@ class BaseMod implements PropertiesManager {
 	 */
 	protected function mensaje($status,$mensaje,$otros=null)
 	{
-		$this->smarty->assign("status",$status);
-		$this->smarty->assign("msg",$mensaje);
-		$this->smarty->assign("otros",$otros);
+		$this->setTplVar("status",$status);
+		$this->setTplVar("msg",$mensaje);
+		$this->setTplVar("otros",$otros);
 
 		if(isset($this->smarty->_version))
 			$sv = $this->smarty->_version;
