@@ -5,32 +5,23 @@
 	<link rel="shortcut icon" href="{$pQnFavicon}"/>
 	{/if}
 	<!-- JS -->
-	
-	{if isset($pQnJQueryJs)}
-		<script type="text/javascript" src="{$pQnJQueryJs}"></script>
-	{/if}
-	
-	
-	{* FIXME *}	
-	<script type="text/javascript" src="/sistemafce/js/browser-update.js"></script>
-	
-	
-	{if isset($pQnJQueryUiJs)}
-		<script type="text/javascript" src="{$pQnJQueryUiJs}"></script>
-	{/if}
-	
-	{if isset($jsModulo) && !$noLoadJsMod}
-		<script type="text/javascript" src="js/{$jsModulo}.js"></script>
-	{/if}
-	
+	{*	Todos los js por defecto (pQn) están incluidos dentro de $jssIncludes en BaseMod::assignHeadJs
+		$pQnJQueryJs
+		$pQnBrowserUpdateJs
+		$pQnJQueryUiJs
+		$pQnBootstrapJs
+		js/{$jsModulo}.js
+	 *}
 	{$jsIncludes}
 	
-		
-	{* FIXME *}	
-	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
-	
-	
 	<!-- CSS -->
-	{*	Todos los css por defecto (pQn) están incluidos dentro de $cssIncludes en BaseMod::assignHeadCss *}
+	{*	Todos los css por defecto (pQn) están incluidos dentro de $cssIncludes en BaseMod::assignHeadCss 
+		$pQnBootstrapCss
+		$pQnDefaultCss
+		$pQnThemeCss
+		$pQnGridCss
+		$pQnJQueryCss
+		$cssModulo
+	*}
 	{$cssIncludes}
 	
