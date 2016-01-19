@@ -251,6 +251,7 @@ nav#sidebar {
 	nav#sidebar > ul,
 	nav#sidebar > menu {
 		margin-left: 0;
+		padding-left: 0;
 	}
 		
 		nav#sidebar > ul > li,
@@ -519,6 +520,7 @@ section .lista {
 	-moz-border-radius: 3px;
 	
 	display: table;
+	padding: 0;
 }
 
 
