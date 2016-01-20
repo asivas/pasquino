@@ -10,7 +10,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-pQnDir=$(dirname `pwd`)
+pQnDir=`pwd`
 APACHECONF=/etc/apache2/conf-available
 pQnConfFileName=pasquino.conf
 
@@ -48,7 +48,7 @@ pear > /dev/null 2>&1
 # si no existe intalamos via apt-get
 if [ $? != 0 ]; then
 	echo "Pear is required, installing pear"
-	apt-get -y install pear 
+	apt-get -y install php-pear 
 	pear channel-update pear.php.net > /dev/null
 fi
 
@@ -71,7 +71,7 @@ sed -e "s/{pasquino}/${pQnDirEscaped}/" ${pQnDir}/.alias_apache.conf > ${APACHEC
 read -p "Do you wish to install the alias with a2enconf [Y/n]?" yn
 case $yn in	    
     [Nn]* ) break;;
-	[Yy]* )
+    [Yy]* );;
     * ) 
 	 pQnConfName="${filename%.*}";
 	 a2enconf $pQnConfName;
@@ -84,7 +84,7 @@ includepath=$(php -i | grep include_path | awk '{print $5}')
 read -p "Do you wish to set include_path to $includepath:${pQnDir} [Y/n]?" yn
 case $yn in	    
     [Nn]* ) break;;
-	[Yy]* )
+	[Yy]* );;
     * ) 
 echo "; configuration for pasquino include_path" > $pQnIncludepathIni
 echo "; priority=20" > $pQnIncludepathIni
