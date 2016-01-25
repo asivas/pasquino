@@ -140,8 +140,8 @@
                         $port = ":{$_SERVER['SERVER_PORT']}";
                     $server = $_SERVER['SERVER_NAME'];
                     
-                    if(isset($_SERVER["HTTP_X_FORWARDED_SERVER"]))
-                    	$server = $_SERVER["HTTP_X_FORWARDED_SERVER"];
+                    if(isset($_SERVER["HTTP_X_FORWARDED_HOST"]))
+    					$server = $_SERVER["HTTP_X_FORWARDED_HOST"];
                     
                     $loc = "http://{$server}{$port}$_SERVER[PHP_SELF]";
                     if(!empty($_SERVER['QUERY_STRING'])) $loc .= '?'.$_SERVER['QUERY_STRING'];
