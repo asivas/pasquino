@@ -401,6 +401,95 @@ abstract class DaoBase {
 
     	return $strFields;
     }
+    
+    
+    /**
+     * Gets the findBySql, if all parameters are null.
+     *
+     * Modifing each parameter allows modifing the default sql
+     * @param string $baseSql a sql string with this format: SELECT {fields} FROM {table(s)}
+     * @param miixed $cond String o criterio
+     * @param string $group
+     * @param string $order
+     * @param mixed $limit string to limit count only array(count,offset)
+     */
+    protected function getSqlFromBaseSql($baseSql,Criterio $cond=null,$group=null,$order=null,$limit=null,$parametrized=false) {
+    	
+    	$paramIndex = $parametrized;
+    	if($parametrized)
+    		$paramIndex = 'a';
+    		 
+    	$sql = $baseSql;
+    	
+    	if(is_a($cond, 'Criterio')) 
+    		$strCond = ($cond != null)?$cond->getCondicion($this->_xmlMapping['nombre'],$paramIndex):'';
+    	else
+    		$strCond = $cond;
+    	
+    	if($strCond!='')
+    	{
+    		if(stripos($sql," WHERE ")===false || stripos($sql," WHERE ")==-1)
+    			$sql .= " WHERE ";
+    		else
+    			$sql .= " AND ";
+    				 
+    		$sql .= $strCond;
+    	}
+    	
+    	if(isset($group))	$sql .= " GROUP BY {$group}";
+    			 
+    	if(isset($order))	$sql .= " ORDER BY {$order}";
+    	
+    	if(isset($limit))
+    	{
+	    	if(is_string($limit))
+	    		$sql .= " LIMIT {$limit}";
+	    	elseif(is_array($limit))
+	    	{
+	    		if(isset($limit[0]))
+	    		{
+		    		$sql .= " LIMIT {$limit[0]}";
+		    		if(isset($limit[1]))
+		    			$sql .= " OFFSET {$limit[1]}";
+	    		}
+	    		elseif(isset($limit['count']))
+	    		{
+	    			$sql .= " LIMIT {$limit['count']}";
+	    			if(isset($limit['offset']))
+	    				$sql .= " OFFSET {$limit['offset']}";
+	    		}
+	    		
+	    	}
+    	}
+    	
+    	if(is_a($cond, 'Criterio') && $parametrized)
+    	{
+    		foreach ($cond->getBindValues() as $k => $v) {
+    			$sql = str_replace(":{$k}", $this->getDb()->param($k), $sql);
+    		}
+    	}
+    	return $sql;
+    }
+    
+    /**
+     * Gets the findBySql, if all parameters are null. 
+     * 
+     * Modifing each parameter allows modifing the default sql
+     * @param string $fields
+     * @param string $table
+     * @param mixed $cond Criterio or string with the condition part of the sql  
+     * @param string $group
+     * @param string $order
+     * @param mixed $limit string to limit count only array(count,offset) 
+     */
+    protected function getSql($fields=null,$table=null,$cond=null,$group=null,$order=null,$limit=null) {
+    	if(!isset($fields)) $table = $fields = $this->getSqlFields();
+    	if(!isset($table)) $table = $this->tableName;
+    	
+    	$baseSql = "SELECT {$fields} FROM {$table}";
+    	
+    	return $this->getSqlFromBaseSql($baseSql,$cond,$group,$order,$limit);
+    }
 
     /**
      *
@@ -412,58 +501,26 @@ abstract class DaoBase {
      */
     function getFindBySql($filtro = null,$order=null,$limitCount=null,$limitOffset=null,$group=null)
     {
+    	$limit = $limitCount;
+    	if(isset($limitCount,$limitOffset)) $limit = array($limitCount,$limitOffset);
+    	
+    	if(!isset($order))	$order = $this->defaultOrder;
+    		
     	if(!empty($this->baseFindBySQL))
-            $sql = $this->baseFindBySQL;
-        else
-        {
-            $tabla = $this->tableName;
-
-            if($tabla == $this->_xmlMapping['tabla'] && (is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli') ))
-            	//ac� me aseguro por tablas con espacios en mysql
-                $tabla = "`{$tabla}`";
-            $fields = $this->getSqlFields();
-            $sql = "SELECT {$fields} FROM {$tabla}";
-        }
-        $paramIndex = false;
-		if($this->parametrizedFindBy)
-        	$paramIndex = 'a';
-        $strFiltro = ($filtro != null)?$filtro->getCondicion($this->_xmlMapping['nombre'],$paramIndex):'';
-
-        if($strFiltro!='')
-        {
-        	if(stripos($sql," WHERE ")===false || stripos($sql," WHERE ")==-1)
-                $sql .= " WHERE ";
-            else
-                $sql .= " AND ";
-
-            $sql .= $strFiltro;
-        }
-
-        if(isset($group))
-        	$sql .= " GROUP BY {$group}";
-
-        if(!isset($order))
-        	$order = $this->defaultOrder;
-
-        if(isset($order))
-            $sql .= " ORDER BY {$order}";
-
-         if(isset($limitCount))
-         {
-            $sql .= " LIMIT {$limitCount}";
-            if(isset($limitOffset))
-            	$sql .= " OFFSET {$limitOffset}";
-         }
-         //print $sql;
-
-         if(is_a($filtro, 'Criterio') && $this->parametrizedFindBy)
-         {
-         	foreach ($filtro->getBindValues() as $k => $v) {
-         		$sql = str_replace(":{$k}", $this->getDb()->param($k), $sql);
-         	}
-         }
-
-         return $sql;
+    		$sql = $this->getSqlFromBaseSql($this->baseFindBySQL,$filtro,$group,$order,$limit,$this->parametrizedFindBy);
+    	else
+    	{
+    		$tabla = $this->tableName;
+    	
+    		if($tabla == $this->_xmlMapping['tabla'] && (is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli') ))
+    			//ac� me aseguro por tablas con espacios en mysql
+    			$tabla = "`{$tabla}`";
+    		$fields = $this->getSqlFields();
+    		$sql = $this->getSql($fields,$tabla,$filtro,$group,$order,$limit,$this->parametrizedFindBy);
+    		
+    	}
+   		//print $sql;
+        return $sql;
 
     }
 
