@@ -100,10 +100,10 @@
 				  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
 				  		}else{				  			
 				  			$("body").crearDiv("tmp");
-							$("#tmp").hide().html("").html(response);
-							var grid = $("#tmp").find(selectorSource);
-							var footer = $("#tmp").find("footer");
-							$("#tmp").html("");
+							var $tmp = $(response);
+							var grid = $tmp.find(selectorSource);
+							var footer = $tmp.find("footer");
+
 							srcObj.html(grid.html());
 							srcObj.parents(".lista").find("footer").html(footer.html());
 							
@@ -112,8 +112,9 @@
 				  			if(aOptions!=null &&
 				  			   aOptions.success!=null && 
 				  			   (typeof aOptions.success == 'function')) 
-				  				aOptions.success();
-			
+				  				aOptions.success(response, status, xhr);
+				  			
+				  			
 				  		}
 					}
 						
