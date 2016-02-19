@@ -413,7 +413,7 @@ abstract class DaoBase {
      * @param string $order
      * @param mixed $limit string to limit count only array(count,offset)
      */
-    protected function getSqlFromBaseSql($baseSql,Criterio $cond=null,$group=null,$order=null,$limit=null,$parametrized=false) {
+    protected function getSqlFromBaseSql($baseSql, $cond=null,$group=null,$order=null,$limit=null,$parametrized=false) {
     	
     	$paramIndex = $parametrized;
     	if($parametrized)
