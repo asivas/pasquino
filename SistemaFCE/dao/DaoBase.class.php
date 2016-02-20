@@ -483,7 +483,7 @@ abstract class DaoBase {
      * @param mixed $limit string to limit count only array(count,offset) 
      */
     protected function getSql($fields=null,$table=null,$cond=null,$group=null,$order=null,$limit=null) {
-    	if(!isset($fields)) $table = $fields = $this->getSqlFields();
+    	if(!isset($fields)) $fields = $this->getSqlFields();
     	if(!isset($table)) $table = $this->tableName;
     	
     	$baseSql = "SELECT {$fields} FROM {$table}";
