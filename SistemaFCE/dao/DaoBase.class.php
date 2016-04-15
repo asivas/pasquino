@@ -413,7 +413,7 @@ abstract class DaoBase {
      * @param string $order
      * @param mixed $limit string to limit count only array(count,offset)
      */
-    protected function getSqlFromBaseSql($baseSql,Criterio $cond=null,$group=null,$order=null,$limit=null,$parametrized=false) {
+    protected function getSqlFromBaseSql($baseSql, $cond=null,$group=null,$order=null,$limit=null,$parametrized=false) {
     	
     	$paramIndex = $parametrized;
     	if($parametrized)
@@ -592,6 +592,30 @@ abstract class DaoBase {
     protected function createListaFindBy() {
     	return array();
     }
+    
+    /**
+     * Busca en la base la query del sql y crea una lista de Entidad   
+     * @param string $sql SELECT Sql completo de búsqueda de los datos 
+     * @param Criterio $filtro Criterio utilizado para la condicion de la busqueda (para parametrización del sql) 
+     */
+    protected function findBySqlFiltro($sql,Criterio $filtro = null) 
+    {
+    	$rs = $this->executeFindByQuery($sql,$filtro);
+    	if(!($rs))
+    	{
+    		if($this->_dieOnFindByError)
+    			die( $this->_db->ErrorMsg()." $sql");
+    	}
+    	$lista = $this->createListaFindBy();
+    	if($rs)
+    	{
+    		while($row = $rs->FetchRow())
+    		{
+    			$this->addEntidadAListaFindBy($this->crearObjetoEntidad($row), $lista);
+    		}
+    	}
+    	return $lista;
+    }
 
     /**
      * Obtiene una lista de objetos de la entidad
@@ -604,20 +628,7 @@ abstract class DaoBase {
     	$this->parametrizedFindBy=true;
         $sql = $this->getFindBySql($filtro,$order,$limitCount,$limitOffset,$group);
 
-        $rs = $this->executeFindByQuery($sql,$filtro);
-        if(!($rs))
-        {
-            if($this->_dieOnFindByError)
-            	die( $this->_db->ErrorMsg()." $sql");
-        }
-        $lista = $this->createListaFindBy();
-        if($rs)
-        {
-	        while($row = $rs->FetchRow())
-	        {
-	        	$this->addEntidadAListaFindBy($this->crearObjetoEntidad($row), $lista);
-	        }
-        }
+        $lista = $this->findBySqlFiltro($sql, $filtro);
         $this->parametrizedFindBy = $parametrizedFindBy;
         return $lista;
     }
