@@ -48,7 +48,7 @@ pear > /dev/null 2>&1
 # si no existe intalamos via apt-get
 if [ $? != 0 ]; then
 	echo "Pear is required, installing pear"
-	apt-get -y install php-pear 
+	apt-get update & apt-get -y install php-pear 
 	pear channel-update pear.php.net > /dev/null
 fi
 
