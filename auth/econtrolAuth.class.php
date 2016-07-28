@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__)."/mdb2IdAuth.class.php";
+namespace pQn\auth;
 
 class EcontrolAuth extends Mdb2IdAuth{
     

@@ -1,4 +1,6 @@
 <?php
+namespace pQn\SistemaFCE\modulo;
+
 require_once("HTML/QuickForm.php");
 require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
 

@@ -1,5 +1,7 @@
 <?php
-require_once('Eq.class.php');
+namespace pQn\datos\criterio\Restricciones;
+
+use pQn\datos\criterio\Restricciones\Eq;
 
 class EqProperty extends Eq {
 
@@ -11,7 +13,7 @@ class EqProperty extends Eq {
     {
     	$columna = $this->buscarNombreColumna($clase,$this->propiedad);
         $columna2 = $this->buscarNombreColumna($clase,$this->valor);
-        // en el valor está el nombre de la segunda propiedad por eso lo pongo sin ''
+        // en el valor estï¿½ el nombre de la segunda propiedad por eso lo pongo sin ''
         return "{$columna} {$this->operador} {$columna2}";
     }
 }

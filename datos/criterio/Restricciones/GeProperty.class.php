@@ -1,5 +1,7 @@
 <?php
-require_once 'Ge.class.php';
+namespace pQn\datos\criterio\Restricciones;
+
+use pQn\datos\criterio\Restricciones\Ge;
 
 class GeProperty extends Ge{
 
@@ -11,7 +13,7 @@ class GeProperty extends Ge{
     {
     	$columna = $this->buscarNombreColumna($clase,$this->propiedad);
         $columna2 = $this->buscarNombreColumna($clase,$this->valor);
-        // en el valor está el nombre de la segunda propiedad por eso lo pongo sin ''
+        // en el valor estï¿½ el nombre de la segunda propiedad por eso lo pongo sin ''
         return "{$columna} {$this->operador} {$columna2}";
     }
 }

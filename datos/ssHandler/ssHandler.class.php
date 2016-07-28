@@ -1,4 +1,5 @@
 <?php
+namespace pQn\datos\ssHandler;
     /**
     * Se define la clase provee acceso via usuario y contrase�a
     * 

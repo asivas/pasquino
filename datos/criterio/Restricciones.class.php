@@ -1,5 +1,6 @@
 <?php
-require_once('datos/criterio/Restriccion.class.php');
+namespace pQn\datos\criterio;
+
 
 class Restricciones {
 

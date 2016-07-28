@@ -1,10 +1,10 @@
 <?php
+namespace pQn\SistemaFCE\modulo;
+use pQn\SistemaFCE\util\Configuracion;
+
 // si no se definió en otro lado cargo el smarty 3, para que no se cargue el 2 en baseMod
 if(!class_exists('Smarty'))
 	require_once('visual/smarty3/libs/Smarty.class.php');
-
-require_once 'SistemaFCE/modulo/BaseMod.class.php';
-require_once 'formato/xls/PHPExcel.php';
 
 /**
  * Modulo Esqueleto de administración

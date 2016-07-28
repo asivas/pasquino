@@ -1,5 +1,7 @@
 <?php
-require_once('Ne.class.php');
+namespace pQn\datos\criterio\Restricciones;
+
+use pQn\datos\criterio\Restricciones\Ne;
 
 class IsNotEmpty extends Ne {
 

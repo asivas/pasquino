@@ -1,5 +1,6 @@
 <?php
-require_once 'SistemaFCE/entidad/Entidad.class.php';
+namespace pQn\SistemaFCE\entidad;
+
 
 class BaseUsuario extends Entidad {
     

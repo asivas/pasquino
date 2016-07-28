@@ -1,0 +1,45 @@
+{
+	"require" : {
+		"facebook/php-sdk-v4" : "~5",
+		"facebook/php-ads-sdk" : ">=2.7.1",
+		"adodb/adodb-php" : "~5",
+		"phpoffice/phpexcel" : "~1.8"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"pQn\\SistemaFCE\\" : "SistemaFCE",
+			"pQn\\datos\\" : "datos",
+			"pQn\\auth\\" : "auth"
+		}
+	},
+	"name" : "Pasquino",
+	"type" : "library",
+	"description" : "Pasquino PHP framework",
+	"authors" : [{
+			"name" : "Lucas Vidaguren",
+			"email" : "lucas.vidaguren@asivas.com.ar",
+			"homepage" : "http://asiv.as",
+			"role" : "Arqutitect"
+		}, {
+			"name" : "Franco Stramana",
+			"email" : "franco.stramana@asivas.com.ar",
+			"homepage" : "http://asiv.as",
+			"role" : "Developer"
+		}, {
+			"name" : "Marcos Trotti",
+			"email" : "marcos.trotti@asivas.com.ar",
+			"homepage" : "http://www.magmaservers.com/",
+			"role" : "Developer"
+		}, {
+			"name" : "Diego Martinez Diaz",
+			"email" : "diego.martinezdiaz@asivas.com.ar",
+			"homepage" : "http://linkerx.com.ar",
+			"role" : "Developer"
+		}
+	],
+	"support" : {
+		"email" : "pasquino@asivas.com.ar"
+	},
+	"homepage" : "http://pasquino.asivas.com.ar",
+	"minimum-stability" : "stable"
+}

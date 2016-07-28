@@ -1,6 +1,6 @@
 <?php
+namespace pQn\SistemaFCE\modulo;
 
-require_once('SistemaFCE/modulo/BaseMod.class.php');
 
 class BaseUsuarioMod extends BaseMod{
     

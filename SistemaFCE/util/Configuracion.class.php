@@ -1,4 +1,5 @@
 <?php
+namespace pQn\SistemaFCE\util;
 
 class Configuracion {
     static private $rootDir;

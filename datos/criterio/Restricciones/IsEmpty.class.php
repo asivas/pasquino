@@ -1,5 +1,7 @@
 <?php
-require_once('Eq.class.php');
+namespace pQn\datos\criterio\Restricciones;
+
+use pQn\datos\criterio\Restricciones\Eq;
 
 class IsEmpty extends Eq {
 

@@ -1,6 +1,9 @@
 <?php
-require_once("datos/ssHandler/ssHandler.class.php");
-require_once("auth/econtrolAuth.class.php");
+namespace pQn\SistemaFCE\util;
+
+use pQn\datos\ssHandler\ssHandler;
+use pQn\auth\EcontrolAuth;
+
 require_once 'Auth/Auth.php';
 
 class Session extends ssHandler{
@@ -36,13 +39,13 @@ class Session extends ssHandler{
         }
     }
 
-    protected function addAuth(Auth $auth){
+    protected function addAuth(\Auth $auth){
     	$this->auths[]=$auth;
     }
 
     protected function checkValidAuths(){
     	if (!(count($this->auths)>0))
-    		throw new Exception('No valid auths');
+    		throw new \Exception('No valid auths');
     	return ;
     }
 

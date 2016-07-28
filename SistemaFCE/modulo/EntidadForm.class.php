@@ -1,5 +1,6 @@
 <?php
-require_once 'SistemaFCE/modulo/BaseForm.class.php';
+namespace pQn\SistemaFCE\modulo;
+
 class EntidadForm extends BaseForm {
 	protected function addElements() {
 		parent::addElements();

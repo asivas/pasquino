@@ -1,4 +1,5 @@
 <?php
+namespace pQn\SistemaFCE\modulo;
 /**
  *
  * @author lucas.vidaguren

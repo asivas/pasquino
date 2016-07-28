@@ -1,4 +1,5 @@
 <?php
+namespace pQn\SistemaFCE\modulo;
 /**
  * Conjunto de metodos de interacion entre smarty y un modulo asociado 
  * 

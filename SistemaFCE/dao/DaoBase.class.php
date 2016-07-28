@@ -1,7 +1,7 @@
 <?php
+namespace pQn\SistemaFCE\dao;
 
-require_once('datos/criterio/Criterio.class.php');
-require_once('datos/adodb/adodb.inc.php');
+use pQn\datos\criterio\Criteri;
 
 abstract class DaoBase {
     /**

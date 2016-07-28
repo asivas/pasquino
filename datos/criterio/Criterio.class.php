@@ -1,8 +1,5 @@
 <?php
-
-require_once('datos/criterio/Conjuncion.class.php');
-require_once('datos/criterio/Disjuncion.class.php');
-require_once('datos/criterio/Restricciones.class.php');
+namespace pQn\datos\criterio;
 
 class Criterio{
 

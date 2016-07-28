@@ -1,7 +1,10 @@
 <?php
-require_once 'SistemaFCE/util/Configuracion.class.php';
+namespace pQn\SistemaFCE\entidad;
 
-class Entidad implements Serializable{
+use pQn\SistemaFCE\util\Configuracion;
+
+
+class Entidad implements \Serializable{
 	protected $_id;
 	/**
 	 * Arreglo buffer de entidades relacionadas,
@@ -32,7 +35,7 @@ class Entidad implements Serializable{
 	function serialize()
 	{
 		//print get_class($this);
-		$ref = new ReflectionObject($this);
+		$ref = new \ReflectionObject($this);
 		$props = $ref->getProperties();
 		$result = array();
 	    foreach ($props as $pro) {
@@ -74,6 +77,7 @@ class Entidad implements Serializable{
 	    	}
 	    	elseif($cantIds>1)
 	    	{
+	    		$arrId = array();
 	    		foreach($mapping->clase->id as $prop)
 				{
 					$col = (string)$prop['columna'];
@@ -119,7 +123,7 @@ class Entidad implements Serializable{
 	    		foreach($mapping->clase->id as $prop)
 				{
 					$col = (string)$prop['columna'];
-					$nombre = (string)$prop['nombre'];
+					$nombreProp = (string)$prop['nombre'];
 					$setFn = "set".ucfirst($nombreProp);
 
 					if(method_exists($this, $setFn))

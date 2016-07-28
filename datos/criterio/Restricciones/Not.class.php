@@ -1,6 +1,7 @@
 <?php
-require_once('datos/criterio/Restriccion.class.php');
-require_once('datos/criterio/Criterio.class.php');
+namespace pQn\datos\criterio\Restricciones;
+
+use pQn\datos\criterio\Restriccion;
 
 class Not extends Restriccion {
     

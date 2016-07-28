@@ -1,5 +1,7 @@
 <?php
-require_once('datos/criterio/Restriccion.class.php');
+namespace pQn\datos\criterio\Restricciones;
+
+use pQn\datos\criterio\Restriccion;
 
 class In extends Restriccion {
 
@@ -35,7 +37,7 @@ class In extends Restriccion {
     function toString()
     {
         $listaIn = $this->_getListaIn();
-        return "{$this->propiedad} está en la lista ($listaIn)";
+        return "{$this->propiedad} estï¿½ en la lista ($listaIn)";
     }
     
     function toArray(){

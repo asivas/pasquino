@@ -1,4 +1,5 @@
 <?php
+namespace pQn\datos\criterio;
 
 class Restriccion{
     

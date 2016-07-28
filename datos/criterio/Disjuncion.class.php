@@ -1,4 +1,5 @@
 <?php
+namespace pQn\datos\criterio;
 require_once('datos/criterio/Criterio.class.php');
 
 class Disjuncion extends Criterio {

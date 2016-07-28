@@ -1,4 +1,5 @@
 <?php
+namespace pQn\SistemaFCE\modulo;
 /**
 * @author Martinez Diaz, Diego
 * @since 04/06/09

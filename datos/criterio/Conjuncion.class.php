@@ -1,5 +1,5 @@
 <?php
-require_once('datos/criterio/Criterio.class.php');
+namespace pQn\datos\criterio;
 
 class Conjuncion extends Criterio{
 

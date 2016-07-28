@@ -1,4 +1,6 @@
 <?php
+namespace pQn\auth;
+
 require_once "Auth/Auth.php";
 
 abstract class Mdb2IdAuth extends Auth{
