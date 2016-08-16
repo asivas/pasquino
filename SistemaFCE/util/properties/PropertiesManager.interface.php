@@ -1,4 +1,6 @@
 <?php
+namespace pQn\SistemaFCE\util\properties;
+
 interface PropertiesManager {
 	
 	/**

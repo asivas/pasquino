@@ -1,6 +1,9 @@
 <?php
 namespace pQn\SistemaFCE\modulo;
 
+use pQn\visual\dateTimeFmt;
+use pQn\SistemaFCE\util\Configuracion;
+
 require_once("HTML/QuickForm.php");
 require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
 
@@ -21,7 +24,7 @@ if(!function_exists('esFecha'))
 /**
  * Base para los formularios de modulo de pasquino
  */
-class BaseForm extends HTML_QuickForm {
+class BaseForm extends \HTML_QuickForm {
 
     /**
      *
@@ -101,7 +104,7 @@ class BaseForm extends HTML_QuickForm {
      */
     function renderSmarty($smarty)
     {
-        $renderer= new HTML_QuickForm_Renderer_ArraySmarty($smarty);// creacion del renderer para smarty
+        $renderer= new \HTML_QuickForm_Renderer_ArraySmarty($smarty);// creacion del renderer para smarty
 
         $this->accept($renderer);// inclusion en el form del renderer
         $rendered = $renderer->toArray();// pasaje a arreglo del renderer
@@ -231,7 +234,7 @@ class BaseForm extends HTML_QuickForm {
     {
     	//veo si existe el elemento al que le agrego info
     	$e = $this->getElement($elementName);
-    	if(!PEAR::isError($e))
+    	if(!\PEAR::isError($e))
     		$this->_elementsInfo[$elementName] = $elementInfo;
     }
 

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
-	<buildpathentry kind="src" path=""/>
+	<buildpathentry kind="src" path="visual"/>
+	<buildpathentry kind="src" path="vendor/facebook/php-sdk-v4/src/Facebook"/>
+	<buildpathentry kind="src" path="SistemaFCE"/>
+	<buildpathentry kind="src" path="datos"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+	<buildpathentry kind="src" path="vendor/composer"/>
+	<buildpathentry kind="src" path="vendor/adodb/adodb-php"/>
+	<buildpathentry kind="src" path="vendor/facebook/php-ads-sdk/src/FacebookAds"/>
+	<buildpathentry kind="src" path="vendor/phpoffice/phpexcel/Classes"/>
 </buildpath>

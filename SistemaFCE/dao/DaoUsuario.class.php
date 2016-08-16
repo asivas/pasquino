@@ -1,4 +1,5 @@
 <?php
+namespace pQn\SistemaFCE\dao;
 
 require_once('SistemaFCE/dao/DaoBase.class.php'); 
 

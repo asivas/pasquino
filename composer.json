@@ -9,7 +9,8 @@
 		"psr-4" : {
 			"pQn\\SistemaFCE\\" : "SistemaFCE",
 			"pQn\\datos\\" : "datos",
-			"pQn\\auth\\" : "auth"
+			"pQn\\auth\\" : "auth",
+			"pQn\\auth\\" : "visual"
 		}
 	},
 	"name" : "Pasquino",

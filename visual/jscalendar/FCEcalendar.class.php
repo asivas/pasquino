@@ -1,4 +1,5 @@
 <?php
+namespace pQn\visual\jscalendar;
 require_once("calendar.php");
 
 class FCEcalendar extends DHTML_Calendar{

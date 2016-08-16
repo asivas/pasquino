@@ -1,5 +1,7 @@
 <?php
 namespace pQn\SistemaFCE\modulo;
+use pQn\datos\criterio\Restricciones;
+use pQn\SistemaFCE\entidad\Entidad;
 use pQn\SistemaFCE\util\Configuracion;
 
 // si no se definió en otro lado cargo el smarty 3, para que no se cargue el 2 en baseMod
@@ -54,10 +56,6 @@ abstract class BaseAdminMod extends BaseMod {
 		if(!isset($this->_tplForm)) $this->_tplForm = $this->smarty->getTemplateVars('pQnFormTpl');
 		//si no está seteado el tpl form cargo un path por defecto con el dir y form.tpl
 		if(!isset($this->_tplForm)) $this->_tplForm = "{$lowerNombreEntidad}/form.tpl";
-
-		//TODO: ver de poner el js por defecto del mod
-		if(isset($nada)) //TODO: borrar esta linea y la siguiente, está para que autocomplete
-			$this->mainDao = new DaoBase();
 
 		$this->initListColumns();
 	}
@@ -141,7 +139,7 @@ abstract class BaseAdminMod extends BaseMod {
 	protected function sendValidateErrorMsg($form=null) {
 		$strErr = "No se cumplen las reglas de validación:";
 		$f = $this->renderForm('formulario',$form);
-		foreach($f['errors'] as $nombreRegla=>$err)
+		foreach($f['errors'] as $err)
 			$strErr .= "\n".$err;
 		$this->mensajeERR($strErr);
 	}
@@ -376,12 +374,12 @@ abstract class BaseAdminMod extends BaseMod {
 	 * @param array $req
 	 */
 	protected function getListaExcel($aObjs,$req) {
-		$objPHPExcel = new PHPExcel();
+		$objPHPExcel = new \PHPExcel();
 
 		$objPHPExcel->setActiveSheetIndex(0);
 
 
-		$objHeaderStyle = new PHPExcel_Style();
+		$objHeaderStyle = new \PHPExcel_Style();
 		$objHeaderStyle->getFont()->setBold(true);
 
 		$xlscol = 0;
@@ -455,7 +453,7 @@ abstract class BaseAdminMod extends BaseMod {
 		header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
 		header ('Pragma: public'); // HTTP/1.0
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->save('php://output');
 		exit;
 	}

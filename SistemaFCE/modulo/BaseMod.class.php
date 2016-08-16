@@ -1,5 +1,10 @@
 <?php
 namespace pQn\SistemaFCE\modulo;
+use pQn\SistemaFCE\util\properties\PropertiesManager;
+use pQn\SistemaFCE\util\Configuracion;
+use pQn\SistemaFCE\util\Session;
+use pQn\visual\jscalendar\FCEcalendar;
+
 /**
  *
  * @author lucas.vidaguren
@@ -120,7 +125,7 @@ class BaseMod implements PropertiesManager {
 
         $this->initSmarty();
         if($conXajax)
-            $this->xajax = new xajax(null,'es');
+            $this->xajax = new \xajax(null,'es');
 
         $this->_orderListado = $_SESSION[get_class($this)]['sort'];
         $this->_sentidoOrderListado = $_SESSION[get_class($this)]['sortSentido'];
@@ -169,7 +174,7 @@ class BaseMod implements PropertiesManager {
     }
 
     static public function getSmartyObject() {
-    	$smarty = new Smarty(); // Handler de smarty
+    	$smarty = new \Smarty(); // Handler de smarty
 
     	$systemRoot = Configuracion::getSystemRootDir();
     	$config = Configuracion::getConfigXML();

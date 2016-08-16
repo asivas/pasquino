@@ -1,7 +1,7 @@
 <?php
 namespace pQn\SistemaFCE\dao;
 
-use pQn\datos\criterio\Criteri;
+use pQn\datos\criterio\Criterio;
 
 abstract class DaoBase {
     /**

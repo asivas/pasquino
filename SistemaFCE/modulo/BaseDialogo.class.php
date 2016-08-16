@@ -4,7 +4,6 @@ namespace pQn\SistemaFCE\modulo;
 * @author Martinez Diaz, Diego
 * @since 04/06/09
 */
-require_once('SistemaFCE/modulo/BaseMod.class.php');
 
 abstract class BaseDialogo extends BaseMod
 {
@@ -15,7 +14,7 @@ abstract class BaseDialogo extends BaseMod
 	{
 		parent::__construct(null,false);
 		$this->nombreDlg = str_replace('Dlg','',get_class($this));
-        $this->objResponse = new xajaxResponse();
+        $this->objResponse = new \xajaxResponse();
         if($_POST['xjxcls']==get_class($this))
             $this->crearForm();
 	}

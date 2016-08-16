@@ -1,4 +1,5 @@
 <?php
+namespace pQn\visual;
 /**
 * Se define la clase dateTimeFmt 
 *
