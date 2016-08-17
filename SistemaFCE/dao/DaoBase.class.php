@@ -2,6 +2,8 @@
 namespace pQn\SistemaFCE\dao;
 
 use pQn\datos\criterio\Criterio;
+use pQn\SistemaFCE\util\Configuracion;
+use pQn\datos\criterio\Restricciones;
 
 abstract class DaoBase {
     /**

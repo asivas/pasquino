@@ -1,14 +1,13 @@
 <?php 
+namespace pQn\formato\mathFacade;
 class mathFacade
 {
-	/*! 
-	  @function numeroEnPalabras() 
-	  @param $num number - Numero a convertir. 
-	  @param $fem bool - Forma femenina (true) o no (false). 
-	  @param $dec bool - Con decimales (true) o no (false). 
-	  @result string - Devuelve el numero escrito en letras. 
-	
-	*/ 
+	/**
+	 * @param $num number - Numero a convertir. 
+	 * @param $fem bool - Forma femenina (true) o no (false). 
+	 * @param $dec bool - Con decimales (true) o no (false). 
+	 * @result string - Devuelve el numero escrito en letras.
+	 */ 
 	static function numeroEnPalabras($num, $fem = false, $dec = false) 
 	{ 
 	//if (strlen($num) > 14) die("El n?mero introducido es demasiado grande"); 

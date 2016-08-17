@@ -4,6 +4,7 @@ use pQn\SistemaFCE\util\properties\PropertiesManager;
 use pQn\SistemaFCE\util\Configuracion;
 use pQn\SistemaFCE\util\Session;
 use pQn\visual\jscalendar\FCEcalendar;
+use pQn\datos\criterio\Criterio;
 
 /**
  *
@@ -16,24 +17,9 @@ use pQn\visual\jscalendar\FCEcalendar;
  * @deprecated
  */
 require_once('visual/jscalendar/FCEcalendar.class.php');
-require_once('SistemaFCE/util/Session.class.php');
-require_once('visual/xajax/xajax_core/xajax.inc.php');
-require_once('datos/debug/DebugFacade.class.php');
-require_once('SistemaFCE/modulo/smartyFacade.class.php');
-require_once('SistemaFCE/util/properties/PropertiesManager.interface.php');
-
-if(!class_exists('Smarty'))
-	require_once('visual/smarty/libs/Smarty.class.php');
-
-if(!class_exists('DaoUsuario')) //Si el sistema implementa otro DaoUsuario no lo defino
-    require_once('SistemaFCE/dao/DaoUsuario.class.php');
-
-require_once 'SistemaFCE/modulo/BaseForm.class.php';
-require_once 'SistemaFCE/modulo/RESTMod.class.php';
 
 // Pear Log
 require_once 'Log.php';
-
 
 class BaseMod implements PropertiesManager {
 
@@ -146,7 +132,7 @@ class BaseMod implements PropertiesManager {
             $this->setTplVar('xajax',$this->xajax->getJavascript('/js'));
         }
         if (Configuracion::getLoggerClass()!= null)
-        	$this->logger= Log::factory(Configuracion::getLoggerClass());
+        	$this->logger= \Log::factory(Configuracion::getLoggerClass());
 	}
     /**
      * Provee una referencia al formulario del modulo
@@ -396,6 +382,7 @@ class BaseMod implements PropertiesManager {
     protected function getMenuPrincipal()
     {
     	$modulosConfig = Configuracion::getModulosConfig();
+    	$menuPpal = array();
         foreach($modulosConfig->modulo as $mod)
         {
             $n = (string)$mod['nombre'];
@@ -1027,7 +1014,7 @@ class BaseMod implements PropertiesManager {
     function hideMensaje($idDiv='message')
     {
     	// Instantiate the xajaxResponse object
-        $objResponse = new xajaxResponse();
+        $objResponse = new \xajaxResponse();
 
         $objResponse->script("clearTimeout(tMsg)");
         $objResponse->assign($idDiv,"className", "");
@@ -1201,7 +1188,7 @@ class BaseMod implements PropertiesManager {
 			$sv = $this->smarty->_version;
 		else
 		{
-			$tmp = explode(" ",Smarty::SMARTY_VERSION);
+			$tmp = explode(" ",\Smarty::SMARTY_VERSION);
 			$sv = $tmp[1];
 		}
 		if($sv[0]>2)

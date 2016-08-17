@@ -1,4 +1,5 @@
 <?php
+namespace pQn\datos\repote;
 /**
 * Se define la clase reportWriter
 *
@@ -20,6 +21,7 @@
 * @package      fichado
 * @subpackage   reportes
 * @version      0.7
+* @deprecated use pQn\SistemaFCE\BaseMod::list to reports
 */
 class reportWriter
 {

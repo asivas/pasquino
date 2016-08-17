@@ -1,8 +1,10 @@
 <?php
 namespace pQn\SistemaFCE\modulo;
 
-require_once 'SistemaFCE/util/Configuracion.class.php';
-require_once 'datos/criterio/Criterio.class.php';
+use pQn\SistemaFCE\util\Configuracion;
+use pQn\datos\criterio\Criterio;
+use pQn\datos\criterio\Restricciones;
+
 /**
  * 
  * Modulo que permite que todo sistema FCE senga RESTfull
@@ -302,10 +304,10 @@ class RESTMod {
 		$nombreRec = ucfirst($this->getNombreRecurso());
 		$nombreDao = "Dao".$nombreRec;
 		$dao = new $nombreDao();
-		$arregloDatos = json_decode($data);
-		$entoidad = $dao->crearDesdeArreglo($arregloDatos);
+		$arregloDatos = json_decode($datos);
+		$entidad = $dao->crearDesdeArreglo($arregloDatos);
 		$result = $dao->save($entidad);
-		
+		$resultado = array();
 		if($result)
 			$resultado['status'] = "SUCCESS";
 		else 
@@ -334,6 +336,7 @@ class RESTMod {
 		{	
 			$result = $dao->deletePorId($idRecurso);
 		}
+		$resultado = array();
 		if($result)
 			$resultado['status'] = "SUCCESS";
 		else 
@@ -356,13 +359,13 @@ class RESTMod {
 		$nombreRec = ucfirst($this->getNombreRecurso());
 		$nombreDao = "Dao".$nombreRec;
 		$dao = new $nombreDao();
-		$arregloDatos = json_decode($data);
-		$entoidad = $dao->crearDesdeArreglo($arregloDatos);
+		$arregloDatos = json_decode($datos);
+		$entidad = $dao->crearDesdeArreglo($arregloDatos);
 		$idRecurso = $this->getIdRecursoSolicitado();
 		
 		$entidad->setId($idRecurso);
 		$result = $dao->save($entidad);
-		
+		$resultado = array();
 		if($result)
 			$resultado['status'] = "SUCCESS";
 		else 

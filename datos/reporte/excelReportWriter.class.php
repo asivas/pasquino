@@ -1,4 +1,7 @@
 <?php
+namespace pQn\datos\repote;
+use pQn\formato\xls\ExcelWriter;
+
 /**
 * Define la clase excelReportWriter que 
 * 'Imprime' un reporte en un archivo de excel (XML para verion XP+)
@@ -11,14 +14,6 @@
 * @version      0.7
 */
 
-/**
- * clase de la que se extinde
- */
-require_once("datos/reporte/reportWriter.class.php");
-/**
- * La interfaz para escribir en excel
- */
-require_once("formato/xls/excelWriter.class.php");
 
 /**
 * 'Imprime' un reporte en un archivo de excel (XML para verion XP+)
@@ -29,6 +24,7 @@ require_once("formato/xls/excelWriter.class.php");
 * @package      datos
 * @subpackage   reporte
 * @version      0.7
+* @deprecated Use
 */
 class excelReportWriter extends reportWriter
 {

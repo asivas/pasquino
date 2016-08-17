@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__."/Configuracion.class.php";
+namespace pQn\SistemaFCE\util;
 
 class DbUpdaterBase {
 	private $db;
@@ -145,11 +145,11 @@ class DbUpdaterBase {
 		if($this->versionUpdateExists($version))
 		{
 			$changesMethod = $this->getVersionUpdateMethod($version);
-			$this->report("Actualizando desde versión ".SistemaFCE::getVersionDB()." a versión {$version}");
+			$this->report("Actualizando desde versión ".Configuracion::getVersionDB()." a versión {$version}");
 			return $this->$changesMethod();
 		}
 		else
-			$this->report("No se pudo actualizar desde versión ".SistemaFCE::getVersionDB()." a versión {$version} el metodo de actualización no existe",self::R_ERROR);
+			$this->report("No se pudo actualizar desde versión ".Configuracion::getVersionDB()." a versión {$version} el metodo de actualización no existe",self::R_ERROR);
 		return false;
 
 	}
@@ -172,7 +172,7 @@ class DbUpdaterBase {
 	public function updateDb($fromVersion=null,$toVersion=null) {
 
 		if(!isset($fromVersion))
-			$fromVersion = SistemaFCE::getVersionDB();
+			$fromVersion = Configuracion::getVersionDB();
 		if(!isset($toVersion))
 		{
 			$class = get_class($this);
@@ -223,17 +223,17 @@ class DbUpdaterBase {
 	}
 
 	private function updateVersionProperty($version) {
-		$propsMgrClass = SistemaFCE::getPropertiesManagerClass();
+		$propsMgrClass = Configuracion::getPropertiesManagerClass();
 		if(!empty($propsMgrClass))
 		{
 			require_once "$propsMgrClass.class.php";
 			$bVerUpdated = $propsMgrClass::setPropertyValue('versionDB',$version);
 			if(!$bVerUpdated)
-				throw new Exception("No se pudo actualizar el nro de versión ". $this->getDb()->ErrorMsg());
+				throw new \Exception("No se pudo actualizar el nro de versión ". $this->getDb()->ErrorMsg());
 			return $bVerUpdated;
 		}
 
-		throw new Exception("No se pudo actualizar el nro de versión. No hay administrador de propiedades");
+		throw new \Exception("No se pudo actualizar el nro de versión. No hay administrador de propiedades");
 		return false;
 	}
 

@@ -1,6 +1,7 @@
 <?php
+namespace pQn\datos\logger;
 /**
- * Se define la clase sqlLogger que permite hacer entradas de registro para una aplicación
+ * Se define la clase sqlLogger que permite hacer entradas de registro para una aplicaciï¿½n
  * en una base de datos
  * @author	    Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
  * @copyright	Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
@@ -11,7 +12,7 @@
  */
 
 /**
- * La definicio clase abrtacta que se extenderá
+ * La definicio clase abrtacta que se extenderï¿½
  */
 require_once('datos/logger/logger.class.php');
 
@@ -26,7 +27,7 @@ require_once('datos/adodb/adodb.inc.php');
  */
 class sqlLogger extends logger {
     /**
-     * Objeto de conexión a la base de datos (adodb)
+     * Objeto de conexiï¿½n a la base de datos (adodb)
      * 
      */
     var $_db;
@@ -37,7 +38,7 @@ class sqlLogger extends logger {
     
     /**
      * asigna las variables de instancia segun el valor del parametro $mode
-     * @param string $mode puede ser 'db' o 'file' determina que tipo de log se utilizará
+     * @param string $mode puede ser 'db' o 'file' determina que tipo de log se utilizarï¿½
      * @param mixed $db es la referencia al objeto adodb
      */
     function sqlLogger($db,$table=NULL,$modulo=NULL)
@@ -52,8 +53,8 @@ class sqlLogger extends logger {
         
         
         /*
-         * Debería corroborar la existencia de la tabla 
-         * y si no está y tiene derechos crearla
+         * Deberï¿½a corroborar la existencia de la tabla 
+         * y si no estï¿½ y tiene derechos crearla
          */
             
     }
@@ -65,6 +66,7 @@ class sqlLogger extends logger {
     function log($msg,$type)
     {
        $db = $this->_db;
+       $registro = array();
        $registro['msg'] = $msg;
        $registro['fecha'] = 'NOW()';
        $registro['tipo'] = $type;

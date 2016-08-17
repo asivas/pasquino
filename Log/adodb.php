@@ -1,4 +1,5 @@
 <?php
+namespace pQn\Log;
 /**
  * $Header: /server/cvsroot/pasquino/Log/adodb.php,v 1.7 2015-03-04 19:52:53 vidaguren Exp $
  *

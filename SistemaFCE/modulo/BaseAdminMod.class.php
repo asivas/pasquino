@@ -4,10 +4,6 @@ use pQn\datos\criterio\Restricciones;
 use pQn\SistemaFCE\entidad\Entidad;
 use pQn\SistemaFCE\util\Configuracion;
 
-// si no se definió en otro lado cargo el smarty 3, para que no se cargue el 2 en baseMod
-if(!class_exists('Smarty'))
-	require_once('visual/smarty3/libs/Smarty.class.php');
-
 /**
  * Modulo Esqueleto de administración
  *

@@ -410,7 +410,7 @@ class Configuracion {
 				$map = $daoClass::getDefaultMapping();
 			}
 			else{
-				throw new Exception("No se ecuentra el mapping de la clase {$nombreClase}");
+				throw new \Exception("No se ecuentra el mapping de la clase {$nombreClase}");
 			}
 		}
 

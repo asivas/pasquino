@@ -1,4 +1,5 @@
 <?php
+namespace pQn\datos\debug;
 
 class DebugFacade {
 

@@ -1,4 +1,5 @@
 <?php
+namespace pQn\datos\repote;
 /**
 * Define la clase PDFReportWriter que 
 * 'Genera' un reporte en un archivo PDF
@@ -15,15 +16,6 @@
  * directorio de definici�n de fuentes para PDF
  */
 define('FPDF_FONTPATH','datos/reporte/font/');
-/**
- * La interfaz para escribir en pdf
- */
-require_once('formato/pdf/fpdf.class.php'); 
-
-/**
- * clase de la que se extinde
- */
-require_once("datos/reporte/reportWriter.class.php");
 
 /**
 * 'Imprime' un reporte en un archivo de excel (XML para verion XP+)
@@ -70,7 +62,7 @@ class PDFReportWriter extends reportWriter
 
         $this->setFileName($fileName);
         
-        $this->pdf = new FPDF();       
+        $this->pdf = new \FPDF();       
         $this->pdf->AliasNbPages();
         
         $this->cellWidth = 35;

@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
+	<buildpathentry kind="src" path="vendor/phenx/php-svg-lib/src"/>
+	<buildpathentry kind="src" path="vendor/fergusean/nusoap/lib"/>
+	<buildpathentry excluding="sysplugins/" kind="src" path="vendor/smarty/smarty/libs"/>
+	<buildpathentry kind="src" path="vendor/smarty/smarty/libs/sysplugins"/>
+	<buildpathentry kind="src" path="vendor/setasign/fpdf"/>
+	<buildpathentry kind="src" path="formato"/>
+	<buildpathentry kind="src" path="vendor/html2text/html2text/src"/>
+	<buildpathentry kind="src" path="Log"/>
+	<buildpathentry kind="src" path="vendor/composer"/>
+	<buildpathentry kind="src" path="vendor/xajax/xajax/xajax_core"/>
+	<buildpathentry kind="src" path="vendor/dompdf/dompdf/src"/>
+	<buildpathentry kind="src" path="vendor/html2text/html2text/test"/>
 	<buildpathentry kind="src" path="visual"/>
+	<buildpathentry kind="src" path="vendor/phenx/php-font-lib/src"/>
+	<buildpathentry kind="src" path="auth"/>
 	<buildpathentry kind="src" path="vendor/facebook/php-sdk-v4/src/Facebook"/>
 	<buildpathentry kind="src" path="SistemaFCE"/>
 	<buildpathentry kind="src" path="datos"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-	<buildpathentry kind="src" path="vendor/composer"/>
 	<buildpathentry kind="src" path="vendor/adodb/adodb-php"/>
 	<buildpathentry kind="src" path="vendor/facebook/php-ads-sdk/src/FacebookAds"/>
+	<buildpathentry kind="src" path="vendor/dompdf/dompdf/lib"/>
 	<buildpathentry kind="src" path="vendor/phpoffice/phpexcel/Classes"/>
 </buildpath>

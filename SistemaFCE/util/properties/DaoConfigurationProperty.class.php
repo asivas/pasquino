@@ -1,5 +1,9 @@
 <?php
-require_once "SistemaFCE/dao/DaoBase.class.php";
+namespace pQn\SistemaFCE\util\properties;
+
+use pQn\SistemaFCE\dao\DaoBase;
+use pQn\datos\criterio\Restricciones;
+use pQn\datos\criterio\Criterio;
 
 class DaoConfigurationProperty extends DaoBase{
 
@@ -31,7 +35,7 @@ class DaoConfigurationProperty extends DaoBase{
 				<propiedad columna="value" nombre="value" />
 	</clase>
 </mapping>';
-		$map=new SimpleXMLElement($xmlstr);
+		$map=new \SimpleXMLElement($xmlstr);
 		return $map;
 	}
 

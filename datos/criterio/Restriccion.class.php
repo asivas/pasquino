@@ -1,6 +1,8 @@
 <?php
 namespace pQn\datos\criterio;
 
+use pQn\SistemaFCE\util\Configuracion;
+
 class Restriccion{
     
     protected $operador;
@@ -34,7 +36,7 @@ class Restriccion{
     	if(!empty($clase))
         {
             $m = Configuracion::getMappingClase($clase);
-            $mc = $m->clase;
+            //$mc = $m->clase;
             $propiedades = $m->propiedad;
             if(is_array($propiedades))
             foreach($propiedades as $prop)

@@ -1,4 +1,5 @@
 <?php
+namespace pQn\datos\logger;
 /**
  * Se define la clase abstracta logger que permite extenderse para 
  * hacer entradas de registro para una aplicaci�n

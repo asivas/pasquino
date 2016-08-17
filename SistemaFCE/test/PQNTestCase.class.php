@@ -1,9 +1,9 @@
 <?php
-require_once "PHPUnit/Extensions/Database/TestCase.php";
-require_once 'SistemaFCE/util/Configuracion.class.php';
-require_once __DIR__."/PHPUnitExtensionsDatabaseOperationMySQL55Truncate.php";
+namespace pQn\SistemaFCE\test;
 
-abstract class PQNTestCase extends PHPUnit_Extensions_Database_TestCase
+use pQn\SistemaFCE\util\Configuracion;
+
+abstract class PQNTestCase extends \PHPUnit_Extensions_Database_TestCase
 {
 	// only instantiate pdo once for test clean-up/fixture load
 	static private $pdo = null;
@@ -65,9 +65,9 @@ abstract class PQNTestCase extends PHPUnit_Extensions_Database_TestCase
 		$cascadeTruncates = FALSE; //if you want cascading truncates, false otherwise
 		//if unsure choose false
 	
-		return new PHPUnit_Extensions_Database_Operation_Composite(array(
+		return new \PHPUnit_Extensions_Database_Operation_Composite(array(
 				new PHPUnit_Extensions_Database_Operation_MySQL55Truncate($cascadeTruncates),
-				PHPUnit_Extensions_Database_Operation_Factory::INSERT()
+				\PHPUnit_Extensions_Database_Operation_Factory::INSERT()
 		));
 	}
 }

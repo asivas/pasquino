@@ -2,6 +2,9 @@
 namespace pQn\SistemaFCE\modulo;
 
 
+use pQn\SistemaFCE\dao\DaoUsuario;
+use pQn\SistemaFCE\util\Configuracion;
+
 class BaseUsuarioMod extends BaseMod{
     
     protected $_daoU;

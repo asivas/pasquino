@@ -3,14 +3,23 @@
 		"facebook/php-sdk-v4" : "~5",
 		"facebook/php-ads-sdk" : ">=2.7.1",
 		"adodb/adodb-php" : "~5",
-		"phpoffice/phpexcel" : "~1.8"
+		"phpoffice/phpexcel" : "~1.8",
+		"fergusean/nusoap" : ">=0.9.5",
+		"setasign/fpdf" : ">=1.7",
+		"dompdf/dompdf" : "~0.7",
+		"html2text/html2text" : "~4.0.1",
+		"smarty/smarty" : "~3.1",
+		"xajax/xajax" : "dev-master"
 	},
 	"autoload" : {
 		"psr-4" : {
 			"pQn\\SistemaFCE\\" : "SistemaFCE",
 			"pQn\\datos\\" : "datos",
 			"pQn\\auth\\" : "auth",
-			"pQn\\auth\\" : "visual"
+			"pQn\\visual\\" : "visual",
+			"pQn\\formato\\" : "formato",
+			"pQn\\social\\" : "social",
+			"pQn\\Log\\" : "Log"
 		}
 	},
 	"name" : "Pasquino",

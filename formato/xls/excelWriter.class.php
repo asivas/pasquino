@@ -1,4 +1,5 @@
 <?php
+namespace pQn\formato\xls;
 /**
 * Define la clase excelWriter que 
 * Permite escribir archivos en formato XML que interpreta el Excel XP+
@@ -28,6 +29,7 @@
 	 * Class is used for save the data into microsoft excel format.
 	 * It takes data into array or you can write data column vise.
 	 * @package reportes
+	 * @deprecated use PHPExcel instead
 	 */
 	Class ExcelWriter
 	{

@@ -1,8 +1,5 @@
 <?php
-require_once('SistemaFCE/modulo/BaseMod.class.php');
-
-require_once('formato/html2text/html2text.class.php');
-
+namespace pQn\SistemaFCE\modulo;
 require_once 'Mail.php';
 require_once 'Mail/mime.php';
 
@@ -12,7 +9,7 @@ class EmailsMod extends BaseMod {
     {
         if(!isset($textoSimple))
         {
-            $h2t = new Html2Text($textoHTML,15); //agarra maximo 15 columnas
+            $h2t = new \Html2Text($textoHTML,15); //agarra maximo 15 columnas
             $textoSimple = $h2t->convert();
         } 
         
@@ -26,7 +23,7 @@ class EmailsMod extends BaseMod {
         if(isset($bcc))
             $hdrs['BCC']= $bcc;
 
-        $mime = new Mail_mime($crlf);
+        $mime = new \Mail_mime($crlf);
     
         $mime->setTXTBody($textoSimple);
         $mime->setHTMLBody($textoHTML);
@@ -34,7 +31,7 @@ class EmailsMod extends BaseMod {
         $body = $mime->get();
         $hdrs = $mime->headers($hdrs);
 
-        $mail =& Mail::factory('mail');
+        $mail =& \Mail::factory('mail');
         return $mail->send($para, $hdrs, $body);
     }
 }

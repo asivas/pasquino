@@ -1,6 +1,7 @@
 <?php
+namespace pQn\datos\logger;
 /**
- * Se define la clase textFilelogger que permite hacer entradas de registro para una aplicación
+ * Se define la clase textFilelogger que permite hacer entradas de registro para una aplicaciï¿½n
  * en un archivo de texto
  *
  * @author	    Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
@@ -10,11 +11,6 @@
  * @subpackage   logger
  * @version      0.2
  */
-
-/**
- * La definicio superclase
- */
-require_once('datos/logger/logger.class.php');
 
 /**
  * Manejo de archivos (de PEAR)
@@ -61,6 +57,6 @@ class textfileLogger extends logger {
      */
     function log($msg,$type)
     {
-        File::writeLine($this->_filename,"({$type}) [{$this->_modulo}] {$msg}");
+        \File::writeLine($this->_filename,"({$type}) [{$this->_modulo}] {$msg}");
     }
 }
