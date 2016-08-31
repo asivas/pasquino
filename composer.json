@@ -51,5 +51,6 @@
 		"email" : "pasquino@asivas.com.ar"
 	},
 	"homepage" : "http://pasquino.asivas.com.ar",
-	"minimum-stability" : "stable"
+	"minimum-stability" : "stable",
+	"version" : "2.0"
 }
