@@ -34,7 +34,8 @@ abstract class Mdb2IdAuth extends Auth{
             "usernamecol" => $this->username_label,
             "passwordcol" => $this->password_label
             );
-        
+        if(isset($this->dbPort))
+        	$params['dsn'] = "{$this->dbms}://{$this->dbUser}:{$this->dbPassword}@{$this->dbHost}:{$this->dbPort}/{$this->dbName}";
         if(is_array($options))
         {
         	foreach($options as $clave => $valor)
