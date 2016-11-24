@@ -98,7 +98,7 @@
 						elCampo.removeClass("loading");
 				  		if (status == "error") {
 				  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
-				  		}else{<
+				  		}else{
 							var $tmp = $("<div>");
 							$tmp.html(response);
 							var grid = $tmp.find(selectorSource);
