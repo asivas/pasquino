@@ -13,6 +13,8 @@ fi
 pQnDir=`pwd`
 APACHECONF=/etc/apache2/conf-available
 pQnConfFileName=pasquino.conf
+pQnIncludepathIniDir=/etc/php5/mods-available/
+
 
 echo Welcome to pasquino Ubuntu installer
 echo "Step 1 of $STEPS: set the directories and config file paths "
@@ -26,6 +28,9 @@ read -p "Apache Configs dir [$APACHECONF]:" -r
 
 read -p "Pasquino Config filename [$pQnConfFileName]:" -r
 [[ -n "$REPLY" ]] && pQnConfFileName=$REPLY
+
+read -p "Php mods-available dir [$pQnIncludepathIniDir]:" -r
+[[ -n "$REPLY" ]] && pQnIncludepathIniDir=$REPLY
 
 # this could be useful if the installer was standalone
 #
@@ -79,17 +84,29 @@ case $yn in
 esac
 
 echo "Step 4 of $STEPS: replacing php include path"
-pQnIncludepathIni=/etc/php5/mods-available/pasquino.ini
+pQnIncludepathIni=$pQnIncludepathIniDir/pasquino.ini
 includepath=$(php -i | grep include_path | awk '{print $5}')
+
+# Check if phpenmod exists
+phpenmod > /dev/null 2>&1
+if [ $? != 0 ]; then
+    PHPENMODCMD=phpenmod
+else
+    php5enmod > /dev/null 2>&1
+    if [ $? != 0 ]; then
+        PHPENMODCMD=php5enmod
+    fi
+fi
+
 read -p "Do you wish to set include_path to $includepath:${pQnDir} [Y/n]?" yn
 case $yn in	    
     [Nn]* ) break;;
 	[Yy]* );;
     * ) 
-echo "; configuration for pasquino include_path" > $pQnIncludepathIni
-echo "; priority=20" > $pQnIncludepathIni
-echo "include_path='$includepath:${pQnDir}:'\${include_path}" > $pQnIncludepathIni
-php5enmod pasquino ;;
+    echo "; configuration for pasquino include_path" > $pQnIncludepathIni
+    echo "; priority=20" > $pQnIncludepathIni
+    echo "include_path='$includepath:${pQnDir}:'\${include_path}" > $pQnIncludepathIni
+    $PHPENMODCMD pasquino ;;
 esac
 
 echo Restarting apache
