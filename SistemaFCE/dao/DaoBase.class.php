@@ -442,7 +442,7 @@ abstract class DaoBase {
     	
     	if(isset($limit))
     	{
-	    	if(is_string($limit))
+	    	if(is_numeric($limit))
 	    		$sql .= " LIMIT {$limit}";
 	    	elseif(is_array($limit))
 	    	{
@@ -458,7 +458,6 @@ abstract class DaoBase {
 	    			if(isset($limit['offset']))
 	    				$sql .= " OFFSET {$limit['offset']}";
 	    		}
-	    		
 	    	}
     	}
     	
