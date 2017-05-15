@@ -354,7 +354,7 @@ class xajax
 			if (XAJAX_PROCESSING_EVENT == $aArgs[0])
 			{
 				$sEvent = $aArgs[1];
-				$xuf =& $aArgs[2];
+				$xuf = $aArgs[2];
 
 				if (false == is_a($xuf, 'xajaxUserFunction'))
 					$xuf =& new xajaxUserFunction($xuf);
@@ -1302,7 +1302,7 @@ class xajax
 	*/
 	function registerFunction($mFunction, $sIncludeFile=null)
 	{
-		$xuf =& new xajaxUserFunction($mFunction, $sIncludeFile);
+		$xuf = new xajaxUserFunction($mFunction, $sIncludeFile);
 		return $this->register(XAJAX_FUNCTION, $xuf);
 	}
 
