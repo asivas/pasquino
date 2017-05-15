@@ -75,7 +75,7 @@ abstract class DaoBase {
 
     /**
      * Obtiene una instancia singleton del Dao que la llama
-     * @return self Dao que exitende DaoBase
+     * @return static Dao que exitende DaoBase
      */
 	public static function getInstance()
     {
@@ -442,7 +442,7 @@ abstract class DaoBase {
     	
     	if(isset($limit))
     	{
-	    	if(is_string($limit))
+	    	if(is_numeric($limit))
 	    		$sql .= " LIMIT {$limit}";
 	    	elseif(is_array($limit))
 	    	{
@@ -458,7 +458,6 @@ abstract class DaoBase {
 	    			if(isset($limit['offset']))
 	    				$sql .= " OFFSET {$limit['offset']}";
 	    		}
-	    		
 	    	}
     	}
     	
