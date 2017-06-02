@@ -2,11 +2,13 @@
 
 <body id="body-login">
 	<header>
+		{if isset($logoSrc)}
 		<!-- BEGIN LOGO -->
 		<a id="logo" href="./">
 			<img src="{$logoSrc}" alt="{$appName}">
 		</a>
 		<!-- END LOGO -->
+		{/if}
 	</header>
 	<section id="container">
 		{if isset($errorLogin)}
