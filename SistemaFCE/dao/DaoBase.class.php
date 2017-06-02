@@ -667,6 +667,30 @@ abstract class DaoBase {
     }
 
     /**
+     * @param $propertyName nombre de la propiedad de la Entidad
+     * @param $value valor que buscará
+     */
+    function findListByProperty($propertyName,$value) {
+        $c = $this->getCriterioBase();
+
+        $c->add(Restricciones::eq($this->buscarNombreColumna($propertyName),$value));
+
+        return $this->findBy($c);
+    }
+
+    /**
+     * @param $propertyName nombre de la propiedad de la Entidad
+     * @param $value valor que buscará
+     */
+    function findFirstByProperty($propertyName,$value) {
+        $c = $this->getCriterioBase();
+
+        $c->add(Restricciones::eq($this->buscarNombreColumna($propertyName),$value));
+
+        return $this->findFirst($c);
+    }
+
+    /**
      * Guarda creando si no existe o actualizando si existe a partir de una instancia de la entidad
      * @param object $elem
      */
@@ -857,6 +881,20 @@ abstract class DaoBase {
     				return $nombreProp;
     		}
     	return $nombreColumna;
+    }
+
+    protected function buscarNombreColumna($nombrePropiedad)
+    {
+        $propiedades = $this->_xmlMapping->propiedad;
+        if(is_array($propiedades))
+            foreach($propiedades as $prop)
+            {
+                $nombreCol = (string)$prop['columna'];
+                $nombreProp = (string)$prop['nombre'];
+                if($nombreProp == $nombrePropiedad)
+                    return $nombreColumna;
+            }
+        return $nombrePropiedad;
     }
 
     /**
