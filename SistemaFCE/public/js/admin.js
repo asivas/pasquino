@@ -90,12 +90,14 @@
 					srcObj = $(aSourceID).parent();
 				}
 				elCampo.addClass("loading");
+				$(document).trigger('loadingList');
 				
 				$.ajax({
 					url: getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize(),
 					success: function(response, status, xhr) {	
 						
 						elCampo.removeClass("loading");
+                        $(document).trigger('doneLoadingList');
 				  		if (status == "error") {
 				  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
 				  		}else{
