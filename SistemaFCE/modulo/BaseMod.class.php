@@ -536,7 +536,7 @@ class BaseMod implements PropertiesManager {
     		$this->_tilePath = $this->smarty->get_template_vars('pQnBaseTpl');
     	}
     	$this->addJsFile("/sistemafce/js/login.js");
-
+        $this->setTplVar('action',Configuracion::getGessedAppRelpath());
     	$this->mostrar($tpl);
         exit();
     }
