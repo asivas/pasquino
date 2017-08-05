@@ -813,7 +813,7 @@ class BaseMod implements PropertiesManager {
     {
         if(!isset($req)) $req = $_GET;
 
-        header("Location: {$_SERVER['PHP_SELF']}?mod={$req['mod']}");
+        header("Location: {$_SERVER['REQUEST_URI']}?mod={$req['mod']}");
         exit();
     }
 
@@ -823,7 +823,7 @@ class BaseMod implements PropertiesManager {
     protected function redirectHomeSistema()
     {
         setcookie('mod',null);
-        header("Location: {$_SERVER['PHP_SELF']}");
+        header("Location: {$_SERVER['REQUEST_URI']}");
         exit();
     }
 
