@@ -89,6 +89,14 @@ class Configuracion {
         return $config['nombre'];
     }
 
+    public static function getGessedAppRelpath() {
+        $path = $_SERVER['REQUEST_URI'];
+        if( strpos($path,'?')!==false && !empty($_SERVER['QUERY_STRING']) )
+            $path = str_replace("?{$_SERVER['QUERY_STRING']}",'',$path);
+
+        return $path;
+    }
+
     public static function getDateFormat()
     {
         $config = Configuracion::getConfigXML();

@@ -19,7 +19,7 @@
 		<div id="form-login" class="lista">
 			<header><h6>Acceso</h6></header>
 			<div style="clear:both"></div>
-			<form class="base-form" action="{$smarty.server.PHP_SELF}" method="POST">
+			<form class="base-form" action="{$action}" method="POST">
 				
 			<div>
 				<div class="form_element input-prepend">
