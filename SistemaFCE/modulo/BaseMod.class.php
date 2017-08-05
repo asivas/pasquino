@@ -309,7 +309,7 @@ class BaseMod implements PropertiesManager {
 
     	$accion = (string)$item['accion'];
 
-    	$murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}&accion={$accion}";
+    	$murl = "{$_SERVER['REQUEST_URI']}?mod={$nombreModulo}&accion={$accion}";
 
     	if(!empty($item['alias']))
     	{
@@ -317,7 +317,7 @@ class BaseMod implements PropertiesManager {
     		$accion = (string)$aliasedItemConf['accion'];
     		$nombreModulo = (string)$aliasedItemConf['mod'];
 
-    		$murl = "{$_SERVER['PHP_SELF']}?alias={$item['alias']}";
+    		$murl = "{$_SERVER['REQUEST_URI']}?alias={$item['alias']}";
     	}
 
     	$tienePermiso = true;

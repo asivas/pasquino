@@ -143,7 +143,7 @@
                     if(isset($_SERVER["HTTP_X_FORWARDED_HOST"]))
     					$server = $_SERVER["HTTP_X_FORWARDED_HOST"];
                     
-                    $loc = "http://{$server}{$port}$_SERVER[PHP_SELF]";
+                    $loc = "http://{$server}{$port}{$_SERVER['REQUEST_URI']}";
                     if(!empty($_SERVER['QUERY_STRING'])) $loc .= '?'.$_SERVER['QUERY_STRING'];
                     header("Location: $loc");
                     exit();
