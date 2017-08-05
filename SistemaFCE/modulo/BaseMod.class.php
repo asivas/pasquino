@@ -309,7 +309,9 @@ class BaseMod implements PropertiesManager {
 
     	$accion = (string)$item['accion'];
 
-    	$murl = "{$_SERVER['REQUEST_URI']}?mod={$nombreModulo}&accion={$accion}";
+        $path = Configuracion::getGessedAppRelpath();
+
+    	$murl = "{$path}?mod={$nombreModulo}&accion={$accion}";
 
     	if(!empty($item['alias']))
     	{
@@ -317,7 +319,7 @@ class BaseMod implements PropertiesManager {
     		$accion = (string)$aliasedItemConf['accion'];
     		$nombreModulo = (string)$aliasedItemConf['mod'];
 
-    		$murl = "{$_SERVER['REQUEST_URI']}?alias={$item['alias']}";
+    		$murl = "{$path}?alias={$item['alias']}";
     	}
 
     	$tienePermiso = true;
@@ -813,7 +815,9 @@ class BaseMod implements PropertiesManager {
     {
         if(!isset($req)) $req = $_GET;
 
-        header("Location: {$_SERVER['REQUEST_URI']}?mod={$req['mod']}");
+        $path = Configuracion::getGessedAppRelpath();
+
+        header("Location: {$path}?mod={$req['mod']}");
         exit();
     }
 
@@ -823,7 +827,10 @@ class BaseMod implements PropertiesManager {
     protected function redirectHomeSistema()
     {
         setcookie('mod',null);
-        header("Location: {$_SERVER['REQUEST_URI']}");
+
+        $path = Configuracion::getGessedAppRelpath();
+
+        header("Location: {$path}");
         exit();
     }
 
