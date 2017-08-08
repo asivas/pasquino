@@ -5,6 +5,7 @@ class Configuracion {
     static private $confDir='conf';
     static private $confFilename='config.xml';
     static private $publicDir;
+    static private $configXml;
 
     function Configuracion() {
 
@@ -290,8 +291,9 @@ class Configuracion {
 
     public static function getConfigXML()
     {
-    	$config = simplexml_load_file(Configuracion::getSystemRootDir().DIRECTORY_SEPARATOR.self::$confDir.DIRECTORY_SEPARATOR.self::$confFilename);
-        return $config;
+    	if(!isset(self::$configXml))
+            self::$configXml = simplexml_load_file(Configuracion::getSystemRootDir().DIRECTORY_SEPARATOR.self::$confDir.DIRECTORY_SEPARATOR.self::$confFilename);
+        return self::$configXml;
     }
 
     public static function findTplPath($tConf,$sysName = 'Default')
