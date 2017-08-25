@@ -56,7 +56,7 @@ class RESTMod {
 		
 		if(!isset($this->nombreRecurso))
 		{
-			//por si no se está usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
+			//por si no se estÃ¡ usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
 			$uri = preg_replace('/\/index.php/','',$uri);
 			
 			if (preg_match('/([^\/]+)/i', $uri, $rec)) {				
@@ -77,7 +77,7 @@ class RESTMod {
 		
 		if(isset($_SERVER['PATH_INFO'])) $uri = $_SERVER['PATH_INFO'];
 		
-		//por si no se está usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
+		//por si no se estÃ¡ usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
 		$uri = preg_replace('/\/index.php/','',$uri);
 		
 		$tipoRecurso = $this->getRecursoSolicitado();
@@ -97,7 +97,7 @@ class RESTMod {
 	function getNombreRecurso()
 	{
 		$rec = $this->getRecursoSolicitado();						
-		//por si no se está usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
+		//por si no se estÃ¡ usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
 		if($rec!=null) {
 			$plural = false;
 	        $config = Configuracion::getConfigXML();
@@ -300,8 +300,8 @@ class RESTMod {
 		$nombreRec = ucfirst($this->getNombreRecurso());
 		$nombreDao = "Dao".$nombreRec;
 		$dao = new $nombreDao();
-		$arregloDatos = json_decode($data);
-		$entoidad = $dao->crearDesdeArreglo($arregloDatos);
+		$arregloDatos = json_decode($datos);
+		$entidad = $dao->crearDesdeArreglo($arregloDatos);
 		$result = $dao->save($entidad);
 		
 		if($result)
@@ -354,8 +354,8 @@ class RESTMod {
 		$nombreRec = ucfirst($this->getNombreRecurso());
 		$nombreDao = "Dao".$nombreRec;
 		$dao = new $nombreDao();
-		$arregloDatos = json_decode($data);
-		$entoidad = $dao->crearDesdeArreglo($arregloDatos);
+		$arregloDatos = json_decode($datos);
+		$entidad = $dao->crearDesdeArreglo($arregloDatos);
 		$idRecurso = $this->getIdRecursoSolicitado();
 		
 		$entidad->setId($idRecurso);

@@ -5,6 +5,7 @@ class Configuracion {
     static private $confDir='conf';
     static private $confFilename='config.xml';
     static private $publicDir;
+    static private $configXml;
 
     function Configuracion() {
 
@@ -87,6 +88,14 @@ class Configuracion {
     {
     	$config = Configuracion::getConfigXML();
         return $config['nombre'];
+    }
+
+    public static function getGessedAppRelpath() {
+        $path = $_SERVER['REQUEST_URI'];
+        if( strpos($path,'?')!==false && !empty($_SERVER['QUERY_STRING']) )
+            $path = str_replace("?{$_SERVER['QUERY_STRING']}",'',$path);
+
+        return $path;
     }
 
     public static function getDateFormat()
@@ -282,8 +291,9 @@ class Configuracion {
 
     public static function getConfigXML()
     {
-    	$config = simplexml_load_file(Configuracion::getSystemRootDir().DIRECTORY_SEPARATOR.self::$confDir.DIRECTORY_SEPARATOR.self::$confFilename);
-        return $config;
+    	if(!isset(self::$configXml))
+            self::$configXml = simplexml_load_file(Configuracion::getSystemRootDir().DIRECTORY_SEPARATOR.self::$confDir.DIRECTORY_SEPARATOR.self::$confFilename);
+        return self::$configXml;
     }
 
     public static function findTplPath($tConf,$sysName = 'Default')

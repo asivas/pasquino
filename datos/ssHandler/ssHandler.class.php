@@ -142,8 +142,10 @@
                     
                     if(isset($_SERVER["HTTP_X_FORWARDED_HOST"]))
     					$server = $_SERVER["HTTP_X_FORWARDED_HOST"];
-                    
-                    $loc = "http://{$server}{$port}{$_SERVER['REQUEST_URI']}";
+
+                    $path = Configuracion::getGessedAppRelpath();
+
+                    $loc = "http://{$server}{$port}{$path}";
                     if(!empty($_SERVER['QUERY_STRING'])) $loc .= '?'.$_SERVER['QUERY_STRING'];
                     header("Location: $loc");
                     exit();
