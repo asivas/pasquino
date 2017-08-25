@@ -357,7 +357,7 @@ class xajax
 				$xuf = $aArgs[2];
 
 				if (false == is_a($xuf, 'xajaxUserFunction'))
-					$xuf =& new xajaxUserFunction($xuf);
+					$xuf = new xajaxUserFunction($xuf);
 
 				$this->aProcessingEvents[$sEvent] =& $xuf;
 
