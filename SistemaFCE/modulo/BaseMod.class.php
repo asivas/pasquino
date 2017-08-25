@@ -169,7 +169,7 @@ class BaseMod implements PropertiesManager {
         $this->xajax->register(XAJAX_FUNCTION,array('hideMensaje',&$this,'hideMensaje'));
     }
 
-    static public function getSmartyObject() {
+    static public function getSmartyObject($skinConfig = null) {
     	$smarty = new Smarty(); // Handler de smarty
 
     	$systemRoot = Configuracion::getSystemRootDir();
@@ -180,7 +180,13 @@ class BaseMod implements PropertiesManager {
     	if(empty($skinsDirname))
     		$skinsDirname = "skins";
 
-    	$skinConfig = Configuracion::getTemplateConfigByDir($skinsDirname);
+    	if(isset($skinConfig))
+        {
+            $skinDirName = (string)$skinConfig['nombre'];
+            if(empty($skinDirName))
+                $skinDirName = (string)$skinConfig['dir'];
+        }
+        $skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
     	$smarty->template_dir = "{$systemRoot}/{$skinsDirname}/{$skinConfig['dir']}"; // configuro directorio de templates
     	$smarty->compile_dir = "{$systemRoot}/tmp/{$skinsDirname}/templates_c"; // configuro directorio de compilacion
     	$smarty->cache_dir = "{$systemRoot}/tmp/{$skinsDirname}/cache"; // configuro directorio de cache
@@ -192,7 +198,7 @@ class BaseMod implements PropertiesManager {
 
     protected function initSmarty()
     {
-        $this->smarty = $this->getSmartyObject();
+        $this->smarty = $this->getSmartyObject($this->_skinConfig);
         $skinsDirname = $this->getTemplateVar('skinsDirname');
 
         $publicSkinDir = $this->_skinConfig['wwwdir'];
