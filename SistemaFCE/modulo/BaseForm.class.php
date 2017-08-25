@@ -33,7 +33,9 @@ class BaseForm extends HTML_QuickForm {
     	if(!isset($nombre))
     		$nombre = str_replace("Form", "", get_class($this));
 
-    	if(empty($accion)) $accion = $_SERVER['REQUEST_URI'];
+        $path = Configuracion::getGessedAppRelpath();
+
+    	if(empty($accion)) $accion = $path;
     	//me aseguro por si envian explicitamente por error null
     	if(!isset($metodo))	$metodo = 'POST';
     	parent::__construct($nombre,$metodo,$accion,$target,$attributos);
