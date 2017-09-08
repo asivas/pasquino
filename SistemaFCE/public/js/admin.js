@@ -115,7 +115,7 @@
 							    var $hiddenSortDir = form.find('input[name=sortSentido]');
 							    if($hiddenSortDir.length==0) {
                                     $hiddenSortDir = $('<input type="hidden" name="sortSentido" value="' + sortdir + '"/>');
-                                    $hiddenSortDir.appendTo($formFiltro);
+                                    $hiddenSortDir.appendTo(form);
 							    }
                                 else
                                     $hiddenSortDir.val(sortdir);
