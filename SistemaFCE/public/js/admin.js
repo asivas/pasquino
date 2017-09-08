@@ -55,9 +55,16 @@
 				var $hiddenCount = $('<input type="hidden" name="count" value="'+count+'"/>');
 				$hiddenPag.appendTo($formFiltro);
 				$hiddenCount.appendTo($formFiltro);
+                var $hiddenSortDir = $('<input type="hidden" name="sortSentido" value="'+laLista.attr('sortdir')+'"/>');
+                if(laLista.attr('sortdir')!=undefined)
+				{
+                    $hiddenSortDir.appendTo($formFiltro);
+				}
+
 				$formFiltro.submit();
 				$hiddenCount.remove();
 				$hiddenPag.remove();
+				$hiddenSortDir.remove();
 			});
 		},
 		ultimoKeyup: null,
