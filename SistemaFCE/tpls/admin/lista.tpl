@@ -12,7 +12,7 @@
 	
 *}
 
-<div class="lista span12">
+<div class="lista span12" {if isset($sort)}sorted="{$sort}" sortdir="{$sortSentido}"{/if}>
 	
 	{include file="$pQnHeaderListaTpl"}
 	
