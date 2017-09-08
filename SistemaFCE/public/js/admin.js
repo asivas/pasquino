@@ -115,7 +115,11 @@
 
 							srcObj.html(grid.html());
 							srcObj.parents(".lista").find("footer").html(footer.html());
-							
+							var responseLista = $tmp.find('.lista');
+							if(responseLista.attr('sortdir')!=undefined)
+                                srcObj.parents(".lista").attr('sortdir',responseLista.attr('sortdir'));
+                            if(responseLista.attr('sortdir')!=undefined)
+                                srcObj.parents(".lista").attr('sort',responseLista.attr('sort'));
 							resize();
 							
 				  			if(aOptions!=null &&
