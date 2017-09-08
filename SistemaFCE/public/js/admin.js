@@ -118,7 +118,7 @@
 							var responseLista = $tmp.find('.lista');
 							if(responseLista.attr('sortdir')!=undefined)
                                 srcObj.parents(".lista").attr('sortdir',responseLista.attr('sortdir'));
-                            if(responseLista.attr('sortdir')!=undefined)
+                            if(responseLista.attr('sort')!=undefined)
                                 srcObj.parents(".lista").attr('sort',responseLista.attr('sort'));
 							resize();
 							
