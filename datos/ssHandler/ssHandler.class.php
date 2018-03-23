@@ -1,6 +1,6 @@
 <?php
     /**
-    * Se define la clase provee acceso via usuario y contrase�a
+    * Se define la clase provee acceso via usuario y contraseña
     * 
     * @author	    Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
     * @copyright	Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
@@ -12,7 +12,7 @@
     // en caso de querer usar log por sql el que extiende debería incluir esto: 
     // require_once("datos/logger/sqlLogger.class.php");
     /**
-    * Esta clase prov�e acceso via usuario y contrase�a
+    * Esta clase provée acceso via usuario y contraseña
     * 
     * @author	    Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
     * @copyright	Lucas Vidaguren <vidaguren@econ.unicen.edu.ar>
@@ -44,7 +44,7 @@
 		var $error;
 		
 		/**
-		* @var bool Determina si la contrase�a debe ser case-sensitive
+		* @var bool Determina si la contraseña debe ser case-sensitive
 		*/
 		var $passCaseSensitive;
 		
@@ -55,7 +55,7 @@
 		
         /**
          * @var object Objeto de clase Auth o derivado de auth que controla
-         * la autenticaci�n por diferntes metodos
+         * la autenticación por diferntes metodos
          */
         var $auth;
 		
@@ -63,7 +63,7 @@
 		* constructor de la clase
 		* inicia las variables de clase
 		* @param object $auth referencia a un objeto auth que define como 
-        * se usar� la autenticaci�n
+        * se usará la autenticación
 		*/
 		function ssHandler($auth) 
 		{
@@ -75,7 +75,7 @@
 		}
         
         /**
-         * Inicializa las variables miembro a definir en la construcci�n de la clase 
+         * Inicializa las variables miembro a definir en la construcción de la clase
          */
         function initMembers()
         {
@@ -121,7 +121,7 @@
         }
 		
 		/**
-		* Registra las variables de sesion de usuario si el usuario y la contrase�a son correctos
+		* Registra las variables de sesion de usuario si el usuario y la contraseña son correctos
 		* @param string $username
 		* @param string $password
 		* @return bool
@@ -136,7 +136,8 @@
             {   
                 if($this->loggingIn() && $this->refreshAfterLogin)
                 {
-                    if(isset($_SERVER['SERVER_PORT']))
+                    $protocol = ( !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443 ) ? "https" : "http";
+                    if(isset($_SERVER['SERVER_PORT']) && !($protocol == 'https' && $_SERVER['SERVER_PORT'] == 443))
                         $port = ":{$_SERVER['SERVER_PORT']}";
                     $server = $_SERVER['SERVER_NAME'];
                     
@@ -145,7 +146,7 @@
 
                     $path = Configuracion::getGessedAppRelpath();
 
-                    $loc = "http://{$server}{$port}{$path}";
+                    $loc = "{$protocol}://{$server}{$port}{$path}";
                     if(!empty($_SERVER['QUERY_STRING'])) $loc .= '?'.$_SERVER['QUERY_STRING'];
                     header("Location: $loc");
                     exit();
@@ -156,7 +157,7 @@
 		}	
         
 		/**
-		* Verifica si hay un usuario logueado en la maquina cliente que est� logueado
+		* Verifica si hay un usuario logueado en la maquina cliente que está logueado
 		* @return bool
 		*/
 		function IsLoged()
@@ -179,7 +180,7 @@
 		function LogOut()
 		{	
             if($this->IsLoged() && isset($this->logobj))
-			    $this->logobj->log(date("Y-m-d H:i")." - {$_SESSION[$this->usr_label]}: Cerr� sessi�n",CH_LOG_NOTICE);
+			    $this->logobj->log(date("Y-m-d H:i")." - {$_SESSION[$this->usr_label]}: Cerró sessión",CH_LOG_NOTICE);
 			
             $_SESSION = array();
 			
