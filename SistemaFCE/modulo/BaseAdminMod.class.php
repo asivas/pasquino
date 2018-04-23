@@ -16,7 +16,10 @@ require_once 'formato/xls/PHPExcel.php';
  *
  */
 abstract class BaseAdminMod extends BaseMod {
-	protected $mainDao;
+    /**
+     * @var DaoBase
+     */
+    protected $mainDao;
 	protected $_tplLista;
 	protected $_tplForm;
 	protected $defaultPaginationLimitCount;
@@ -56,8 +59,6 @@ abstract class BaseAdminMod extends BaseMod {
 		if(!isset($this->_tplForm)) $this->_tplForm = "{$lowerNombreEntidad}/form.tpl";
 
 		//TODO: ver de poner el js por defecto del mod
-		if(isset($nada)) //TODO: borrar esta linea y la siguiente, está para que autocomplete
-			$this->mainDao = new DaoBase();
 
 		$this->initListColumns();
 	}
