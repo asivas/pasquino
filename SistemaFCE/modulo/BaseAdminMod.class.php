@@ -409,6 +409,7 @@ abstract class BaseAdminMod extends BaseMod {
 			$xlscol = 0;
 			foreach($this->columnsList as $label => $prop)
 			{
+			    $val = "";
 				$getFn = 'get'.ucfirst($prop);
 				if($getFn != 'getGridAccionesItem')
 				{
