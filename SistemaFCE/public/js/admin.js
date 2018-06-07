@@ -55,6 +55,7 @@
 				var $hiddenCount = $('<input type="hidden" name="count" value="'+count+'"/>');
 				$hiddenPag.appendTo($formFiltro);
 				$hiddenCount.appendTo($formFiltro);
+
 				$formFiltro.submit();
 				$hiddenCount.remove();
 				$hiddenPag.remove();
@@ -108,7 +109,20 @@
 
 							srcObj.html(grid.html());
 							srcObj.parents(".lista").find("footer").html(footer.html());
-							
+							var responseLista = $tmp.find('.lista');
+							if(responseLista.attr('sortdir')!=undefined) {
+							    var sortdir = responseLista.attr('sortdir');
+							    var $hiddenSortDir = form.find('input[name=sortSentido]');
+							    if($hiddenSortDir.length==0) {
+                                    $hiddenSortDir = $('<input type="hidden" name="sortSentido" value="' + sortdir + '"/>');
+                                    $hiddenSortDir.appendTo(form);
+							    }
+                                else
+                                    $hiddenSortDir.val(sortdir);
+                                srcObj.parents(".lista").attr('sortdir', sortdir);
+                            }
+                            if(responseLista.attr('sort')!=undefined)
+                                srcObj.parents(".lista").attr('sort',responseLista.attr('sort'));
 							resize();
 							
 				  			if(aOptions!=null &&
