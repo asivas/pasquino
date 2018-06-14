@@ -145,7 +145,7 @@ class Entidad implements Serializable{
      * @param object $value
      */
     protected function setCacheRelacionado($key,$value) {
-    	$this->relacCache[$key] = $value;
+    	self::$relacCache[$key] = $value;
     }
 
     /**
