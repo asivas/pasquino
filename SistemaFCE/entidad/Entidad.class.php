@@ -9,7 +9,7 @@ class Entidad implements Serializable{
 	 * para evitar la busqueda repetida de entidades relacionadas
 	 * @var array
 	 */
-	private $relacCache;
+	private static $relacCache;
 
 	/**
 	 * Valor que representa si el objeto esta en proceso de edicion
@@ -119,7 +119,7 @@ class Entidad implements Serializable{
 	    		foreach($mapping->clase->id as $prop)
 				{
 					$col = (string)$prop['columna'];
-					$nombre = (string)$prop['nombre'];
+					$nombreProp = (string)$prop['nombre'];
 					$setFn = "set".ucfirst($nombreProp);
 
 					if(method_exists($this, $setFn))
@@ -145,7 +145,7 @@ class Entidad implements Serializable{
      * @param object $value
      */
     protected function setCacheRelacionado($key,$value) {
-    	$this->relacCache[$key] = $value;
+    	self::$relacCache[$key] = $value;
     }
 
     /**
@@ -154,7 +154,7 @@ class Entidad implements Serializable{
      * @return multitype:
      */
     protected function getCacheRelacionado($key) {
-    	return $this->relacCache[$key];
+    	return self::$relacCache[$key];
     }
 
     /**
@@ -162,7 +162,7 @@ class Entidad implements Serializable{
      * @param string $key
      */
     protected function clearCacheRelacionado($key) {
-    	unset($this->relacCache[$key]);
+    	unset(self::$relacCache[$key]);
     }
 
     /**
@@ -173,12 +173,13 @@ class Entidad implements Serializable{
      */
     protected function getEntidadRelacionada($relFk,$relClass) {
 
-    	if(($rel = $this->getCacheRelacionado($relClass))==null)
+        $cacheKey = "{$relClass}-{$relFk}";
+    	if(($rel = $this->getCacheRelacionado($cacheKey))==null)
     	{
     		$daoClass = 'Dao'.$relClass;
     		$dao = $daoClass::getInstance();
     		$rel = $dao->findById($relFk);
-    		$this->setCacheRelacionado($relClass,$rel);
+    		$this->setCacheRelacionado($cacheKey,$rel);
     	}
     	return $rel;
     }
