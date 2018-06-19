@@ -293,6 +293,13 @@ class DbUpdaterBase {
 			return false;
 	}
 
+	public function indexExists($tableName,$indexName) {
+	    if($this->columnExists($tableName))
+	        if($rs = $this->executeQuery("select count(*) as c from information_schema.statistics where table_name = '{$tableName}' and index_name = '{$indexName}' and table_schema = database()"))
+	            return $rs->fields['c'] > 0;
+	    return false;
+    }
+
 	/**
 	 * Crea una tabla con un nombre, columnas, indices y foreign keys dadas
 	 * @param unknown $tableName
