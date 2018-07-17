@@ -1,7 +1,8 @@
 (function(window,undefined) {
 	
 	//Bootstrap no conflicts
-	$.fn.button.noConflict();
+	if(typeof  $.fn.button.noConflict =='function')
+		$.fn.button.noConflict();
 	
 	var
 	// Define a local copy of pQn
