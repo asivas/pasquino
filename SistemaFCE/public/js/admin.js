@@ -1,7 +1,7 @@
 (function(window,undefined) {
 	
 	//Bootstrap no conflicts
-	if(typeof  $.fn.button.noConflict =='function')
+	if(typeof  $.fn.button.noConflict ==='function')
 		$.fn.button.noConflict();
 	
 	var
