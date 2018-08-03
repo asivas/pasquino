@@ -1,5 +1,6 @@
 $(document).ready(function(){
-	$.fn.button.noConflict();
+    if(typeof  $.fn.button.noConflict ==='function')
+		$.fn.button.noConflict();
 	
 	$('input[name=submit]').button();
 	if($("#error-login").length>0)
