@@ -6,6 +6,7 @@ class Configuracion {
     static private $confFilename='config.xml';
     static private $publicDir;
     static private $configXml;
+    static private $mappingsXml;
 
     function Configuracion() {
 
@@ -387,41 +388,41 @@ class Configuracion {
 
     public static function getMappingClase($nombreClase,$xmlMappingFile = null)
     {
-        if(empty($xmlMappingFile))
-        {
-            $archivoMappings = "";
-            $config = Configuracion::getConfigXML();
+        $nc = (string) $nombreClase;
+        if(!isset(self::$mappingsXml[$nc])) {
+            if (empty($xmlMappingFile)) {
+                $archivoMappings = "";
+                $config = Configuracion::getConfigXML();
 
-            $mappings = $config->mappings;
+                $mappings = $config->mappings;
 
-            $map = Configuracion::getMappingConfigClase($nombreClase);
-            if(isset($map))
-            {
-                $archivo = $map['archivo'];
-                if(isset($map['dir']))
-                {
-                    $archivo = "{$map['dir']}/{$archivo}";
+                $map = Configuracion::getMappingConfigClase($nombreClase);
+                if (isset($map)) {
+                    $archivo = $map['archivo'];
+                    if (isset($map['dir'])) {
+                        $archivo = "{$map['dir']}/{$archivo}";
+                    }
+                    $archivoMappings = "{$mappings['path']}/{$archivo}";
                 }
-                $archivoMappings = "{$mappings['path']}/{$archivo}";
+
+                //el archivo obtenido est� puesto relativo a la raiz del proyecto
+                $xmlMappingFile = Configuracion::getSystemRootDir() . "/{$archivoMappings}";
             }
 
-            //el archivo obtenido est� puesto relativo a la raiz del proyecto
-            $xmlMappingFile = Configuracion::getSystemRootDir()."/{$archivoMappings}";
+            if (file_exists($xmlMappingFile) && $archivoMappings != '')
+                self::$mappingsXml[$nc] = simplexml_load_file($xmlMappingFile);
+            else {
+                $daoClass = "Dao{$nombreClase}";
+
+                if (class_exists($daoClass) && method_exists($daoClass, 'getDefaultMapping')) {
+                    self::$mappingsXml[$nc] = $daoClass::getDefaultMapping();
+                } else {
+                    throw new Exception("No se ecuentra el mapping de la clase {$nombreClase}");
+                }
+            }
         }
 
-		if(file_exists($xmlMappingFile) && $archivoMappings!='')
-			$map = simplexml_load_file($xmlMappingFile);
-		else {
-			$daoClass = "Dao{$nombreClase}";
-
-			if(class_exists($daoClass) && method_exists($daoClass, 'getDefaultMapping'))
-			{
-				$map = $daoClass::getDefaultMapping();
-			}
-			else{
-				throw new Exception("No se ecuentra el mapping de la clase {$nombreClase}");
-			}
-		}
+        $map = self::$mappingsXml[$nc];
 
         return $map;
     }
