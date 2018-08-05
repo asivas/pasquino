@@ -51,7 +51,7 @@ echo "Step 2 of $STEPS: installing pear dependencies"
 pear > /dev/null 2>&1
 
 # si no existe intalamos via apt-get
-if [ $? != 0 ]; then
+if [ $? -ne 0 ]; then
 	echo "Pear is required, installing pear"
 	apt-get update && apt-get -y install php-pear 
 	pear channel-update pear.php.net > /dev/null
@@ -92,11 +92,11 @@ includepath=$(php -i | grep include_path | awk '{print $5}')
 
 # Check if phpenmod exists
 phpenmod > /dev/null 2>&1
-if [ $? != 0 ]; then
+if [ $? -ne 0 ]; then
     PHPENMODCMD=phpenmod
 else
     php5enmod > /dev/null 2>&1
-    if [ $? != 0 ]; then
+    if [ $? -ne 0 ]; then
         PHPENMODCMD=php5enmod
     fi
 fi
