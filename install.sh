@@ -13,7 +13,7 @@ fi
 pQnDir=`pwd`
 APACHECONF=/etc/apache2/conf-available
 pQnConfFileName=pasquino.conf
-pQnIncludepathIniDir=/etc/php5/mods-available/
+pQnIncludepathIniDir=/etc/php5/mods-available
 
 
 echo Welcome to pasquino Ubuntu installer
@@ -51,12 +51,12 @@ echo "Step 2 of $STEPS: installing pear dependencies"
 pear > /dev/null 2>&1
 
 # si no existe intalamos via apt-get
-if [ $? != 0 ]; then
+if [ $? -ne 0 ]; then
 	echo "Pear is required, installing pear"
 	apt-get update && apt-get -y install php-pear 
 	pear channel-update pear.php.net > /dev/null
 fi
-
+pear -q upgrade -f PEAR
 pear -q install -f Archive_Tar 
 pear -q install -f Auth Auth_SASL 
 pear -q install -f Console_Getopt DB File HTML_Common HTML_QuickForm 
@@ -76,10 +76,13 @@ sed -e "s/{pasquino}/${pQnDirEscaped}/" ${pQnDir}/.alias_apache.conf > ${APACHEC
 read -p "Do you wish to install the alias with a2enconf [Y/n]?" yn
 case $yn in	    
     [Nn]* ) break;;
-    [Yy]* );;
+    [Yy]* )
+        pQnConfName="${filename%.*}";
+	    a2enconf $pQnConfName;
+	 ;;
     * ) 
-	 pQnConfName="${filename%.*}";
-	 a2enconf $pQnConfName;
+	   pQnConfName="${filename%.*}";
+	   a2enconf $pQnConfName;
 	 ;;
 esac
 
@@ -89,24 +92,34 @@ includepath=$(php -i | grep include_path | awk '{print $5}')
 
 # Check if phpenmod exists
 phpenmod > /dev/null 2>&1
-if [ $? != 0 ]; then
+if [ $? -ne 0 ]; then
     PHPENMODCMD=phpenmod
 else
     php5enmod > /dev/null 2>&1
-    if [ $? != 0 ]; then
+    if [ $? -ne 0 ]; then
         PHPENMODCMD=php5enmod
     fi
 fi
 
+
+createPhpIncludePathIni() {
+    iniFile=$1;
+    echo "; configuration for pasquino include_path" > $iniFile;
+    echo "; priority=20" >> $iniFile;
+    echo "include_path='$includepath:${pQnDir}:'\${include_path}" >> $iniFile;
+    echo $iniFile created, executing $PHPENMODCMD pasquino
+    $PHPENMODCMD pasquino
+}
+
 read -p "Do you wish to set include_path to $includepath:${pQnDir} [Y/n]?" yn
 case $yn in	    
     [Nn]* ) break;;
-	[Yy]* );;
-    * ) 
-    echo "; configuration for pasquino include_path" > $pQnIncludepathIni
-    echo "; priority=20" > $pQnIncludepathIni
-    echo "include_path='$includepath:${pQnDir}:'\${include_path}" > $pQnIncludepathIni
-    $PHPENMODCMD pasquino ;;
+	[Yy]* )
+	    createPhpIncludePathIni $pQnIncludepathIni;
+	   ;;
+    * )
+        createPhpIncludePathIni $pQnIncludepathIni;
+     ;;
 esac
 
 echo Restarting apache
