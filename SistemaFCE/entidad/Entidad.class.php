@@ -172,7 +172,10 @@ class Entidad implements Serializable{
      * @return Entidad
      */
     protected function getEntidadRelacionada($relFk,$relClass) {
-
+        if(is_array($relFk))
+        {
+            $relFk = implode('-',$relFk);
+        }
         $cacheKey = "{$relClass}-{$relFk}";
     	if(($rel = $this->getCacheRelacionado($cacheKey))==null)
     	{
