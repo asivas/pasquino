@@ -948,7 +948,7 @@ abstract class DaoBase {
     		$valuestring = str_replace("(", "", $valuestring);
     		$valuestring = str_replace(")", "", $valuestring);
     		$valuestring = str_replace("'", "", $valuestring);
-    		$values = split(",", $valuestring);
+    		$values = explode(",", $valuestring);
     	}
     	return $values;
     }

@@ -726,7 +726,7 @@ class BaseMod implements PropertiesManager {
      *
      * Muestra por pantalla el tpl con el tipo de display seleccionado o si no hay tipo se muestra
      * con la plantilla (tile) default
-     * @param unknown_type $tpl
+     * @param string $tpl
      * @param unknown_type $type
      */
     protected function mostrar($tpl,$type=null)
@@ -796,7 +796,7 @@ class BaseMod implements PropertiesManager {
         $this->setTplVar('sortSentido',$this->_sentidoOrderListado);
 
         $order = '';
-        $multi = split(',',$this->_orderListado);
+        $multi = explode(',',$this->_orderListado);
         foreach($multi as $orden)
         {
         	if(!empty($order)) $order .= ',';
