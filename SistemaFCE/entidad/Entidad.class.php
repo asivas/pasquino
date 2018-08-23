@@ -172,11 +172,12 @@ class Entidad implements Serializable{
      * @return Entidad
      */
     protected function getEntidadRelacionada($relFk,$relClass) {
-        if(is_array($relFk))
+        $textFK=$relFk;
+        if(is_array($textFK))
         {
-            $relFk = implode('-',$relFk);
+            $textFK = implode('-',$relFk);
         }
-        $cacheKey = "{$relClass}-{$relFk}";
+        $cacheKey = "{$relClass}-{$textFK}";
     	if(($rel = $this->getCacheRelacionado($cacheKey))==null)
     	{
     		$daoClass = 'Dao'.$relClass;
