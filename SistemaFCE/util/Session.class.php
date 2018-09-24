@@ -106,4 +106,16 @@ class Session extends ssHandler{
 
     	return FALSE;
     }
+
+    function close($deleteAuths=false) {
+        if($deleteAuths)
+        {
+            foreach($this->auths as $auth) {
+                if(method_exists($auth,'disconnectDB'))
+                    $auth->disconnectDB();
+                unset ($this->auth);
+            }
+        }
+        parent::close();
+    }
 }
