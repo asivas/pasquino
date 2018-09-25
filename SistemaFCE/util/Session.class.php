@@ -113,7 +113,7 @@ class Session extends ssHandler{
             foreach($this->auths as $auth) {
                 if(method_exists($auth,'disconnectDB'))
                     $auth->disconnectDB();
-                unset ($this->auth);
+                unset ($auth);
             }
         }
         parent::close();
