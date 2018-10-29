@@ -11,6 +11,8 @@ abstract class Mdb2IdAuth extends Auth{
     protected $dbName;
     protected $dbUser;
     protected $dbPassword;
+
+    static private $userId;
     
     function Mdb2IdAuth($loginFunction = "", $showLogin = false, $options=null) {
         
@@ -48,6 +50,9 @@ abstract class Mdb2IdAuth extends Auth{
     
     function getUserId()
     {
+        if(isset(self::$userId))
+            return self::$userId;
+
         $sql = "SELECT {$this->id_label} FROM {$this->userTable} WHERE {$this->username_label} = '{$this->session['username']}'";
         
         if(!is_object($this->storage)) // si no se hizo ninguna acci�n no se efectu� el _loadStorage 
@@ -62,9 +67,11 @@ abstract class Mdb2IdAuth extends Auth{
 	            	if($u = $res->fetchRow(MDB2_FETCHMODE_ASSOC))
 	                {
 	                    if(empty($u[$this->id_label]))
-	                        return $u[strtolower($this->id_label)];
+	                        self::$userId =  $u[strtolower($this->id_label)];
 	                    else
-	                        return $u[$this->id_label];
+                            self::$userId = $u[$this->id_label];
+
+	                    return self::$userId;
 	                }
                 }
                 else 
