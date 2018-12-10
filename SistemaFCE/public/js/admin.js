@@ -100,7 +100,7 @@
                 elCampo.addClass("loading");
                 $(document).trigger('loadingList');
 
-            	var formFiltro = srcObj.parents('form');
+            	var formFiltro = elCampo.parents('form');
 				var formFiltroData = pQn.fn.getFormData(formFiltro.attr('id'));
 
                 $.ajax({
