@@ -83,12 +83,13 @@
         /**
 		 * Envía el request del form de filtro para que taiga los datos filtrados (lista)
          * @param e evento del sumbit del form
-         * @param aSourceID id del input que se usa para buscar el form
+         * @param elCampo elemento jQuery de un capo dado dentro del formFiltro
+         * @param aSourceID id del recipiente para la carga del resultado de lo filtrado
          * @param aMod nombre del modulo sobre el que trabaja el filtro
          * @param aAction accion que envía el filtro (normalmente listar)
          * @param aOptions opciones (opcional) que tiene metodo success
          */
-		formFiltroSubmit: function(e,aSourceID,aMod,aAction,aOptions) {
+		formFiltroSubmit: function(e,elCampo,aSourceID,aMod,aAction,aOptions) {
                 var selectorSource = " #"+aSourceID;
                 var srcObj = $(selectorSource);
                 if(!srcObj.exists())
@@ -153,8 +154,8 @@
 		keyUpFilter : function(elCampo,aSourceID,aMod,aAction,aOptions){
 			var form = elCampo.parent("form");
 			form.unbind('submit');
-			form.submit(function(e,aSourceID,aMod,aAction,aOptions){
-				pQn.fn.formFiltroSubmit(e,aSourceID,aMod,aAction,aOptions);
+			form.submit(function(e){
+				pQn.fn.formFiltroSubmit(e,elCampo,aSourceID,aMod,aAction,aOptions);
 			});
 			elCampo.unbind('keyup');
 			elCampo.keyup(function(event){
