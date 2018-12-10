@@ -109,7 +109,7 @@
                     cache: false,
                     contentType: false,
                     processData: false,
-					type: 'GET',
+					method: 'POST',
                     success: function(response, status, xhr) {
 
                         elCampo.removeClass("loading");
