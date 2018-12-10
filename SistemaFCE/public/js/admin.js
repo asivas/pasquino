@@ -80,64 +80,81 @@
 				}
 			}
 		},
-		keyUpFilter : function(elCampo,aSourceID,aMod,aAction,aOptions){
-			var form = elCampo.parent("form");
-			form.unbind('submit');
-			form.submit(function(e) {
-				var selectorSource = " #"+aSourceID;
-				var srcObj = $(selectorSource);
-				if(!srcObj.exists())
-				{
-					selectorSource = aSourceID;
-					srcObj = $(aSourceID).parent();
-				}
-				elCampo.addClass("loading");
-				$(document).trigger('loadingList');
-				
-				$.ajax({
-					url: getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize(),
-					success: function(response, status, xhr) {	
-						
-						elCampo.removeClass("loading");
-                        $(document).trigger('doneLoadingList');
-				  		if (status == "error") {
-				  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
-				  		}else{
-							var $tmp = $("<div>");
-							$tmp.html(response);
-							var grid = $tmp.find(selectorSource);
-							var footer = $tmp.find("footer");
+        /**
+		 * Envía el request del form de filtro para que taiga los datos filtrados (lista)
+         * @param e evento del sumbit del form
+         * @param aSourceID id del input que se usa para buscar el form
+         * @param aMod nombre del modulo sobre el que trabaja el filtro
+         * @param aAction accion que envía el filtro (normalmente listar)
+         * @param aOptions opciones (opcional) que tiene metodo success
+         */
+		formFiltroSubmit: function(e,aSourceID,aMod,aAction,aOptions) {
+                var selectorSource = " #"+aSourceID;
+                var srcObj = $(selectorSource);
+                if(!srcObj.exists())
+                {
+                    selectorSource = aSourceID;
+                    srcObj = $(aSourceID).parent();
+                }
+                elCampo.addClass("loading");
+                $(document).trigger('loadingList');
 
-							srcObj.html(grid.html());
-							srcObj.parents(".lista").find("footer").html(footer.html());
-							var responseLista = $tmp.find('.lista');
-							if(responseLista.attr('sortdir')!=undefined) {
-							    var sortdir = responseLista.attr('sortdir');
-							    var $hiddenSortDir = form.find('input[name=sortSentido]');
-							    if($hiddenSortDir.length==0) {
+            	var formFiltro = $srcObj.parents('form');
+				var formFiltroData = pQn.fn.getFormData(formFiltro.attr('id'));
+
+                $.ajax({
+                    url: getAccionUrl(aMod,aAction,"plain"),
+					data: formFiltroData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+					type: 'GET',
+                    success: function(response, status, xhr) {
+
+                        elCampo.removeClass("loading");
+                        $(document).trigger('doneLoadingList');
+                        if (status == "error") {
+                            alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
+                        }else{
+                            var $tmp = $("<div>");
+                            $tmp.html(response);
+                            var grid = $tmp.find(selectorSource);
+                            var footer = $tmp.find("footer");
+
+                            srcObj.html(grid.html());
+                            srcObj.parents(".lista").find("footer").html(footer.html());
+                            var responseLista = $tmp.find('.lista');
+                            if(responseLista.attr('sortdir')!=undefined) {
+                                var sortdir = responseLista.attr('sortdir');
+                                var $hiddenSortDir = form.find('input[name=sortSentido]');
+                                if($hiddenSortDir.length==0) {
                                     $hiddenSortDir = $('<input type="hidden" name="sortSentido" value="' + sortdir + '"/>');
                                     $hiddenSortDir.appendTo(form);
-							    }
+                                }
                                 else
                                     $hiddenSortDir.val(sortdir);
                                 srcObj.parents(".lista").attr('sortdir', sortdir);
                             }
                             if(responseLista.attr('sort')!=undefined)
                                 srcObj.parents(".lista").attr('sort',responseLista.attr('sort'));
-							resize();
-							
-				  			if(aOptions!=null &&
-				  			   aOptions.success!=null && 
-				  			   (typeof aOptions.success == 'function')) 
-				  				aOptions.success(response, status, xhr);
-				  			
-				  			
-				  		}
-					}
-						
-				});
+                            resize();
 
-				e.preventDefault();
+                            if(aOptions!=null &&
+                                aOptions.success!=null &&
+                                (typeof aOptions.success == 'function'))
+                                aOptions.success(response, status, xhr);
+                        }
+                    }
+                });
+
+                e.preventDefault();
+
+		},
+		keyUpFilter : function(elCampo,aSourceID,aMod,aAction,aOptions){
+			var form = elCampo.parent("form");
+			form.unbind('submit');
+			form.submit(function(e,aSourceID,aMod,aAction,aOptions){
+				pQn.fn.formFiltroSubmit(e,aSourceID,aMod,aAction,aOptions);
 			});
 			elCampo.unbind('keyup');
 			elCampo.keyup(function(event){
