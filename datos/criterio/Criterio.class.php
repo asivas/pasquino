@@ -168,7 +168,7 @@ class Criterio{
 		$c = new Criterio();
 
 		if($oper== "OR")
-			$c = $c->disjunction();
+			$c = $c->disjuncion();
 
 		foreach($array[$oper] as $exp)
 			$c->add(Criterio::unserialize(serialize($exp)));
