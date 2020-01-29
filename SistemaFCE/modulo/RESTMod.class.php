@@ -245,7 +245,7 @@ class RESTMod {
         $range = $this->range;
 
 		if(!isset($this->range))
-		    $range = "items=10";
+		    $range = "items=0-10";
 
         $cant = $dao->count($crit,$orden);
         $posItems = strpos($range,"items=")+6;
