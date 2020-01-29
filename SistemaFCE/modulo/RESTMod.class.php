@@ -357,12 +357,24 @@ class RESTMod {
 		$nombreRec = ucfirst($this->getNombreRecurso());
 		$nombreDao = "Dao".$nombreRec;
 		$dao = new $nombreDao();
-		$arregloDatos = json_decode($datos);
-		$entidad = $dao->crearDesdeArreglo($arregloDatos);
-		$idRecurso = $this->getIdRecursoSolicitado();
-		
-		$entidad->setId($idRecurso);
-		$result = $dao->save($entidad);
+
+		if(isset($req['updateMethod'])) {
+		    $method=$req['updateMethod'];
+		    if(method_exists($this,$method))
+            {
+                $result = $this->$method($datos,$req);
+            }
+        }
+		else
+        {
+            $arregloDatos = json_decode($datos);
+            $entidad = $dao->crearDesdeArreglo($arregloDatos);
+            $idRecurso = $this->getIdRecursoSolicitado();
+
+            $entidad->setId($idRecurso);
+            $result = $dao->save($entidad);
+        }
+
 		
 		if($result)
 			$resultado['status'] = "SUCCESS";
