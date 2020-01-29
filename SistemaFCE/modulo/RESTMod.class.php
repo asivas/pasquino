@@ -256,6 +256,7 @@ class RESTMod {
 
         header("Content-Range: items {$limitOffset}-{$limitCant}/{$cant}");
 
+        $limitOffset = ($limitOffset)?$limitOffset:null;
 		
 		$lista = $dao->findBy($crit,$orden,$limitCant,$limitOffset);
 		$arr = array();
