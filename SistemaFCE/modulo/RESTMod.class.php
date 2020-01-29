@@ -248,11 +248,11 @@ class RESTMod {
 		    $range = "items=10";
 
         $cant = $dao->count($crit,$orden);
-        $posItems = strpos($this->range,"items=")+6;
-        $posMenos = strpos($this->range,'-',$posItems);
+        $posItems = strpos($range,"items=")+6;
+        $posMenos = strpos($range,'-',$posItems);
 
-        $limitOffset = substr($this->range, $posItems ,$posMenos-$posItems);
-        $limitCant = (substr($this->range, $posMenos+1 ) - $limitOffset)+1;
+        $limitOffset = substr($range, $posItems ,$posMenos-$posItems);
+        $limitCant = (substr($range, $posMenos+1 ) - $limitOffset)+1;
 
         header("Content-Range: items {$limitOffset}-{$limitCant}/{$cant}");
 
