@@ -12,7 +12,7 @@ class RESTMod {
 	
 	private $nombreRecurso;
 	
-	private $range;
+	protected $range;
 	
 	private $methodMap;
 	
@@ -242,18 +242,20 @@ class RESTMod {
 		
 		$crit = $this->getFiltro($req);
 		$orden = $this->getOrden($req);
-		
-		if($this->range)
-		{
-			$cant = $dao->count($crit,$orden);
-			$posItems = strpos($this->range,"items=")+6;
-			$posMenos = strpos($this->range,'-',$posItems);
-			
-			$limitOffset = substr($this->range, $posItems ,$posMenos-$posItems);
-			$limitCant = (substr($this->range, $posMenos+1 ) - $limitOffset)+1;
+        $range = $this->range;
 
-			header("Content-Range: items {$limitOffset}-{$limitCant}/{$cant}");
-		}
+		if(!isset($this->range))
+		    $range = "items=10";
+
+        $cant = $dao->count($crit,$orden);
+        $posItems = strpos($this->range,"items=")+6;
+        $posMenos = strpos($this->range,'-',$posItems);
+
+        $limitOffset = substr($this->range, $posItems ,$posMenos-$posItems);
+        $limitCant = (substr($this->range, $posMenos+1 ) - $limitOffset)+1;
+
+        header("Content-Range: items {$limitOffset}-{$limitCant}/{$cant}");
+
 		
 		$lista = $dao->findBy($crit,$orden,$limitCant,$limitOffset);
 		$arr = array();
