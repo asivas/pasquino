@@ -344,7 +344,7 @@ class RESTMod {
         else
         {
             $resultado['status'] = "ERROR";
-            $resultado['message'] = $nombreRec::getInstance()->getLastError();
+            $resultado['message'] = $nombreDao::getInstance()->getLastError();
         }
 
         return $resultado;
