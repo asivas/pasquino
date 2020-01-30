@@ -200,7 +200,7 @@ class RESTMod {
 	 * @param object $recurso el recurso al que se le consultan las variables
 	 * @param xml $mappingClase el mapping de la clase del recurso
 	 */
-	private function getVars($recurso,$mappingClase=null)
+	protected function getVars($recurso,$mappingClase=null)
 	{
 		if($mappingClase==null)
 			$mappingClase =  Configuracion::getMappingClase($this->getNombreRecurso());
