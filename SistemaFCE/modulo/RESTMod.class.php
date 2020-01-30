@@ -307,16 +307,7 @@ class RESTMod {
 		$entidad = $dao->crearDesdeArreglo($arregloDatos);
 		$result = $dao->save($entidad);
 		
-		if($result)
-			$resultado['status'] = "SUCCESS";
-		else 
-		{
-			$resultado['status'] = "ERROR";
-			$resultado['message'] = $dao->getLastError();
-		}
-		
-		return json_encode($resultado); 
-		
+		return json_encode($this->getPostResponse($result,$datos,$req));
 	}
 	
 	/**
@@ -335,16 +326,29 @@ class RESTMod {
 		{	
 			$result = $dao->deletePorId($idRecurso);
 		}
-		if($result)
-			$resultado['status'] = "SUCCESS";
-		else 
-		{
-			$resultado['status'] = "ERROR";
-			$resultado['message'] = $dao->getLastError();
-		}
-		
-		return json_encode($resultado); 
+
+        return json_encode($this->getPostResponse($result,$datos,$req));
 	}
+
+    /**
+     * Obtiene el conjunto
+     * @param $result
+     * @param $datos
+     * @param $req
+     */
+	public function getPostResponse($result,$datos,$req) {
+        $nombreRec = ucfirst($this->getNombreRecurso());
+        $nombreDao = "Dao".$nombreRec;
+        if($result)
+            $resultado['status'] = "SUCCESS";
+        else
+        {
+            $resultado['status'] = "ERROR";
+            $resultado['message'] = $nombreRec::getInstance()->getLastError();
+        }
+
+        return $resultado;
+    }
 	
 	/**
 	 * 
@@ -375,16 +379,8 @@ class RESTMod {
             $result = $dao->save($entidad);
         }
 
-		
-		if($result)
-			$resultado['status'] = "SUCCESS";
-		else 
-		{
-			$resultado['status'] = "ERROR";
-			$resultado['message'] = $dao->getLastError();
-		}
-		
-		return json_encode($resultado); 
+		return json_encode($this->getPostResponse($result,$datos,$req));
+
 	}
 	
 	
