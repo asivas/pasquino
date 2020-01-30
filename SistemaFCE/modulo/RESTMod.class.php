@@ -224,6 +224,20 @@ class RESTMod {
 			if(method_exists($recurso, $getFn))
 				$vars[$nombreProp] = $recurso->$getFn();
 		}
+
+        $extiende = (string)$this->_xmlMapping['extiende'];
+        if($extiende != null)
+        {
+            $mappingClaseExtiende =  Configuracion::getMappingClase($extiende);
+            foreach($mappingClaseExtiende->clase->propiedad as $prop)
+            {
+                $nombreProp = (string)$prop['nombre'];
+                $getFn = "get".ucfirst($prop['nombre']);
+                if(method_exists($recurso, $getFn))
+                    $vars[$nombreProp] = $recurso->$getFn();
+            }
+
+        }
 		return $vars;
 	}
 	
