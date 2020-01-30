@@ -225,7 +225,7 @@ class RESTMod {
 				$vars[$nombreProp] = $recurso->$getFn();
 		}
 
-        $extiende = (string)$this->_xmlMapping['extiende'];
+        $extiende = (string)$mappingClase['extiende'];
         if($extiende != null)
         {
             $mappingClaseExtiende =  Configuracion::getMappingClase($extiende);
