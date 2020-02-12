@@ -407,6 +407,16 @@ class RESTMod {
 		$method = $_SERVER['REQUEST_METHOD'];
 		
 		$idRecurso = $this->getIdRecursoSolicitado();
+
+        if($method=='OPTIONS')
+        {
+            //HTTP/1.1 200 OK
+            header("Content-Length: 0");
+            header("Connection: keep-alive");
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
+            exit;
+        }
 		
 		if($method=='GET')
 		{
