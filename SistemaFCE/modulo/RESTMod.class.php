@@ -414,7 +414,7 @@ class RESTMod {
             header("Content-Length: 0");
             header("Connection: keep-alive");
             header("Access-Control-Allow-Origin: *");
-            header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
+            header("Access-Control-Allow-Methods: POST, GET, PUT, OPTIONS, DELETE");
             exit;
         }
 		
