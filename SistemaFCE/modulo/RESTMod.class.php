@@ -410,6 +410,7 @@ class RESTMod {
 
         if($method=='OPTIONS')
         {
+            ob_clean();
             //HTTP/1.1 200 OK
             header("Content-Length: 0");
             header("Connection: keep-alive");
