@@ -139,10 +139,12 @@
                     $protocol = ( !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443 ) ? "https" : "http";
                     if(isset($_SERVER['SERVER_PORT']) && !($protocol == 'https' && $_SERVER['SERVER_PORT'] == 443))
                         $port = ":{$_SERVER['SERVER_PORT']}";
+                    if(isset($_SERVER["HTTP_X_FORWARDED_PROTO"])&& $_SERVER["HTTP_X_FORWARDED_PROTO"]="https") {
+                        $port="";
+                    }
                     $server = $_SERVER['SERVER_NAME'];
                     
                     if(isset($_SERVER["HTTP_X_FORWARDED_HOST"])) {
-                        $port = "";
                         $server = $_SERVER["HTTP_X_FORWARDED_HOST"];
                     }
 
