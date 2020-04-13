@@ -141,8 +141,10 @@
                         $port = ":{$_SERVER['SERVER_PORT']}";
                     $server = $_SERVER['SERVER_NAME'];
                     
-                    if(isset($_SERVER["HTTP_X_FORWARDED_HOST"]))
-    					$server = $_SERVER["HTTP_X_FORWARDED_HOST"];
+                    if(isset($_SERVER["HTTP_X_FORWARDED_HOST"])) {
+                        $port = "";
+                        $server = $_SERVER["HTTP_X_FORWARDED_HOST"];
+                    }
 
                     $path = Configuracion::getGessedAppRelpath();
 
