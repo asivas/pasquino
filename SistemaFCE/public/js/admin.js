@@ -93,16 +93,16 @@
 				}
 				elCampo.addClass("loading");
 				$(document).trigger('loadingList');
-				
-				$.ajax({
+
+				var ajaxParams = {
 					url: getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize(),
-					success: function(response, status, xhr) {	
-						
+					success: function(response, status, xhr) {
+
 						elCampo.removeClass("loading");
-                        $(document).trigger('doneLoadingList');
-				  		if (status == "error") {
-				  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
-				  		}else{
+						$(document).trigger('doneLoadingList');
+						if (status == "error") {
+							alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
+						}else{
 							var $tmp = $("<div>");
 							$tmp.html(response);
 							var grid = $tmp.find(selectorSource);
@@ -112,30 +112,36 @@
 							srcObj.parents(".lista").find("footer").html(footer.html());
 							var responseLista = $tmp.find('.lista');
 							if(responseLista.attr('sortdir')!=undefined) {
-							    var sortdir = responseLista.attr('sortdir');
-							    var $hiddenSortDir = form.find('input[name=sortSentido]');
-							    if($hiddenSortDir.length==0) {
-                                    $hiddenSortDir = $('<input type="hidden" name="sortSentido" value="' + sortdir + '"/>');
-                                    $hiddenSortDir.appendTo(form);
-							    }
-                                else
-                                    $hiddenSortDir.val(sortdir);
-                                srcObj.parents(".lista").attr('sortdir', sortdir);
-                            }
-                            if(responseLista.attr('sort')!=undefined)
-                                srcObj.parents(".lista").attr('sort',responseLista.attr('sort'));
+								var sortdir = responseLista.attr('sortdir');
+								var $hiddenSortDir = form.find('input[name=sortSentido]');
+								if($hiddenSortDir.length==0) {
+									$hiddenSortDir = $('<input type="hidden" name="sortSentido" value="' + sortdir + '"/>');
+									$hiddenSortDir.appendTo(form);
+								}
+								else
+									$hiddenSortDir.val(sortdir);
+								srcObj.parents(".lista").attr('sortdir', sortdir);
+							}
+							if(responseLista.attr('sort')!=undefined)
+								srcObj.parents(".lista").attr('sort',responseLista.attr('sort'));
 							resize();
-							
-				  			if(aOptions!=null &&
-				  			   aOptions.success!=null && 
-				  			   (typeof aOptions.success == 'function')) 
-				  				aOptions.success(response, status, xhr);
-				  			
-				  			
-				  		}
+
+							if(aOptions!=null &&
+								aOptions.success!=null &&
+								(typeof aOptions.success == 'function'))
+								aOptions.success(response, status, xhr);
+
+
+						}
 					}
-						
-				});
+
+				};
+				if(aOptions!=null &&
+					aOptions.errorFn!=null &&
+					(typeof aOptions.errorFn == 'function'))
+					ajaxParams.error = aOptions.errorFn;
+				
+				$.ajax(ajaxParams);
 
 				e.preventDefault();
 			});
