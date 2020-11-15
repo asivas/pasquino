@@ -1,15 +1,22 @@
 {
+	"repositories": [
+		{"type": "vcs", "url":"https://github.com/pear/Auth.git"  },
+		{"type": "vcs", "url":"https://github.com/pear/HTML_QuickForm.git"  }
+	],
 	"require" : {
-		"facebook/php-sdk-v4" : "~5",
+		"facebook/graph-sdk" : "~5",
 		"facebook/php-ads-sdk" : ">=2.7.1",
 		"adodb/adodb-php" : "~5",
-		"phpoffice/phpexcel" : "~1.8",
+		"phpoffice/phpspreadsheet" : ">=1.8",
 		"fergusean/nusoap" : ">=0.9.5",
 		"setasign/fpdf" : ">=1.7",
 		"dompdf/dompdf" : "~0.7",
 		"html2text/html2text" : "~4.0.1",
 		"smarty/smarty" : "~3.1",
-		"xajax/xajax" : "dev-master"
+		"xajax/xajax" : "dev-master",
+		"pear/pear": "v1.10.12",
+		"pear/auth": "dev-trunk",
+		"pear/html_quickform": "dev-trunk"
 	},
 	"autoload" : {
 		"psr-4" : {
@@ -22,7 +29,7 @@
 			"pQn\\Log\\" : "Log"
 		}
 	},
-	"name" : "Pasquino",
+	"name" : "asivas/pasquino",
 	"type" : "library",
 	"description" : "Pasquino PHP framework",
 	"authors" : [{
@@ -51,6 +58,6 @@
 		"email" : "pasquino@asivas.com.ar"
 	},
 	"homepage" : "http://pasquino.asivas.com.ar",
-	"minimum-stability" : "stable",
+	"minimum-stability" : "dev",
 	"version" : "2.0"
 }
