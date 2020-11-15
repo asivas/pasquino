@@ -6,6 +6,8 @@ class Configuracion {
     static private $confDir='conf';
     static private $confFilename='config.xml';
     static private $publicDir;
+    static private $configXml;
+    static private $mappingsXml;
 
     function Configuracion() {
 
@@ -88,6 +90,14 @@ class Configuracion {
     {
     	$config = Configuracion::getConfigXML();
         return $config['nombre'];
+    }
+
+    public static function getGessedAppRelpath() {
+        $path = $_SERVER['REQUEST_URI'];
+        if( strpos($path,'?')!==false && !empty($_SERVER['QUERY_STRING']) )
+            $path = str_replace("?{$_SERVER['QUERY_STRING']}",'',$path);
+
+        return $path;
     }
 
     public static function getDateFormat()
@@ -283,8 +293,9 @@ class Configuracion {
 
     public static function getConfigXML()
     {
-    	$config = simplexml_load_file(Configuracion::getSystemRootDir().DIRECTORY_SEPARATOR.self::$confDir.DIRECTORY_SEPARATOR.self::$confFilename);
-        return $config;
+    	if(!isset(self::$configXml))
+            self::$configXml = simplexml_load_file(Configuracion::getSystemRootDir().DIRECTORY_SEPARATOR.self::$confDir.DIRECTORY_SEPARATOR.self::$confFilename);
+        return self::$configXml;
     }
 
     public static function findTplPath($tConf,$sysName = 'Default')
@@ -378,32 +389,31 @@ class Configuracion {
 
     public static function getMappingClase($nombreClase,$xmlMappingFile = null)
     {
-        if(empty($xmlMappingFile))
-        {
-            $archivoMappings = "";
-            $config = Configuracion::getConfigXML();
+        $nc = (string) $nombreClase;
+        if(!isset(self::$mappingsXml[$nc])) {
+            if (empty($xmlMappingFile)) {
+                $archivoMappings = "";
+                $config = Configuracion::getConfigXML();
 
-            $mappings = $config->mappings;
+                $mappings = $config->mappings;
 
-            $map = Configuracion::getMappingConfigClase($nombreClase);
-            if(isset($map))
-            {
-                $archivo = $map['archivo'];
-                if(isset($map['dir']))
-                {
-                    $archivo = "{$map['dir']}/{$archivo}";
+                $map = Configuracion::getMappingConfigClase($nombreClase);
+                if (isset($map)) {
+                    $archivo = $map['archivo'];
+                    if (isset($map['dir'])) {
+                        $archivo = "{$map['dir']}/{$archivo}";
+                    }
+                    $archivoMappings = "{$mappings['path']}/{$archivo}";
                 }
-                $archivoMappings = "{$mappings['path']}/{$archivo}";
+
+                //el archivo obtenido est� puesto relativo a la raiz del proyecto
+                $xmlMappingFile = Configuracion::getSystemRootDir() . "/{$archivoMappings}";
             }
 
-            //el archivo obtenido est� puesto relativo a la raiz del proyecto
-            $xmlMappingFile = Configuracion::getSystemRootDir()."/{$archivoMappings}";
-        }
-
-		if(file_exists($xmlMappingFile) && $archivoMappings!='')
-			$map = simplexml_load_file($xmlMappingFile);
-		else {
-			$daoClass = "Dao{$nombreClase}";
+            if (file_exists($xmlMappingFile) && $archivoMappings != '')
+                self::$mappingsXml[$nc] = simplexml_load_file($xmlMappingFile);
+            else {
+                $daoClass = "Dao{$nombreClase}";
 
 			if(class_exists($daoClass) && method_exists($daoClass, 'getDefaultMapping'))
 			{

@@ -16,7 +16,7 @@ class RESTMod {
 	
 	private $nombreRecurso;
 	
-	private $range;
+	protected $range;
 	
 	private $methodMap;
 	
@@ -60,7 +60,7 @@ class RESTMod {
 		
 		if(!isset($this->nombreRecurso))
 		{
-			//por si no se est� usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
+			//por si no se está usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
 			$uri = preg_replace('/\/index.php/','',$uri);
 			
 			if (preg_match('/([^\/]+)/i', $uri, $rec)) {				
@@ -81,7 +81,7 @@ class RESTMod {
 		
 		if(isset($_SERVER['PATH_INFO'])) $uri = $_SERVER['PATH_INFO'];
 		
-		//por si no se est� usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
+		//por si no se está usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
 		$uri = preg_replace('/\/index.php/','',$uri);
 		
 		$tipoRecurso = $this->getRecursoSolicitado();
@@ -101,7 +101,7 @@ class RESTMod {
 	function getNombreRecurso()
 	{
 		$rec = $this->getRecursoSolicitado();						
-		//por si no se est� usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
+		//por si no se está usando mod_rewrite cambio /index.php/recurso[/id] por /recurso[/id]
 		if($rec!=null) {
 			$plural = false;
 	        $config = Configuracion::getConfigXML();
@@ -204,7 +204,7 @@ class RESTMod {
 	 * @param object $recurso el recurso al que se le consultan las variables
 	 * @param xml $mappingClase el mapping de la clase del recurso
 	 */
-	private function getVars($recurso,$mappingClase=null)
+	protected function getVars($recurso,$mappingClase=null)
 	{
 		if($mappingClase==null)
 			$mappingClase =  Configuracion::getMappingClase($this->getNombreRecurso());
@@ -228,6 +228,20 @@ class RESTMod {
 			if(method_exists($recurso, $getFn))
 				$vars[$nombreProp] = $recurso->$getFn();
 		}
+
+        $extiende = (string)$mappingClase->clase['extiende'];
+        if($extiende != null)
+        {
+            $mappingClaseExtiende =  Configuracion::getMappingClase($extiende);
+            foreach($mappingClaseExtiende->clase->propiedad as $prop)
+            {
+                $nombreProp = (string)$prop['nombre'];
+                $getFn = "get".ucfirst($prop['nombre']);
+                if(method_exists($recurso, $getFn))
+                    $vars[$nombreProp] = $recurso->$getFn();
+            }
+
+        }
 		return $vars;
 	}
 	
@@ -246,18 +260,21 @@ class RESTMod {
 		
 		$crit = $this->getFiltro($req);
 		$orden = $this->getOrden($req);
-		
-		if($this->range)
-		{
-			$cant = $dao->count($crit,$orden);
-			$posItems = strpos($this->range,"items=")+6;
-			$posMenos = strpos($this->range,'-',$posItems);
-			
-			$limitOffset = substr($this->range, $posItems ,$posMenos-$posItems);
-			$limitCant = (substr($this->range, $posMenos+1 ) - $limitOffset)+1;
+        $range = $this->range;
 
-			header("Content-Range: items {$limitOffset}-{$limitCant}/{$cant}");
-		}
+		if(!isset($this->range))
+		    $range = "items=0-10";
+
+        $cant = $dao->count($crit,$orden);
+        $posItems = strpos($range,"items=")+6;
+        $posMenos = strpos($range,'-',$posItems);
+
+        $limitOffset = substr($range, $posItems ,$posMenos-$posItems);
+        $limitCant = (substr($range, $posMenos+1 ) - $limitOffset)+1;
+
+        header("Content-Range: items {$limitOffset}-{$limitCant}/{$cant}");
+
+        $limitOffset = ($limitOffset)?$limitOffset:null;
 		
 		$lista = $dao->findBy($crit,$orden,$limitCant,$limitOffset);
 		$arr = array();
@@ -307,17 +324,8 @@ class RESTMod {
 		$arregloDatos = json_decode($datos);
 		$entidad = $dao->crearDesdeArreglo($arregloDatos);
 		$result = $dao->save($entidad);
-		$resultado = array();
-		if($result)
-			$resultado['status'] = "SUCCESS";
-		else 
-		{
-			$resultado['status'] = "ERROR";
-			$resultado['message'] = $dao->getLastError();
-		}
 		
-		return json_encode($resultado); 
-		
+		return json_encode($this->getPostResponse($result,$datos,$req));
 	}
 	
 	/**
@@ -336,17 +344,29 @@ class RESTMod {
 		{	
 			$result = $dao->deletePorId($idRecurso);
 		}
-		$resultado = array();
-		if($result)
-			$resultado['status'] = "SUCCESS";
-		else 
-		{
-			$resultado['status'] = "ERROR";
-			$resultado['message'] = $dao->getLastError();
-		}
-		
-		return json_encode($resultado); 
+
+        return json_encode($this->getPostResponse($result,$datos,$req));
 	}
+
+    /**
+     * Obtiene el conjunto
+     * @param $result
+     * @param $datos
+     * @param $req
+     */
+	public function getPostResponse($result,$datos,$req) {
+        $nombreRec = ucfirst($this->getNombreRecurso());
+        $nombreDao = "Dao".$nombreRec;
+        if($result)
+            $resultado['status'] = "SUCCESS";
+        else
+        {
+            $resultado['status'] = "ERROR";
+            $resultado['message'] = $nombreDao::getInstance()->getLastError();
+        }
+
+        return $resultado;
+    }
 	
 	/**
 	 * 
@@ -359,22 +379,26 @@ class RESTMod {
 		$nombreRec = ucfirst($this->getNombreRecurso());
 		$nombreDao = "Dao".$nombreRec;
 		$dao = new $nombreDao();
-		$arregloDatos = json_decode($datos);
-		$entidad = $dao->crearDesdeArreglo($arregloDatos);
-		$idRecurso = $this->getIdRecursoSolicitado();
-		
-		$entidad->setId($idRecurso);
-		$result = $dao->save($entidad);
-		$resultado = array();
-		if($result)
-			$resultado['status'] = "SUCCESS";
-		else 
-		{
-			$resultado['status'] = "ERROR";
-			$resultado['message'] = $dao->getLastError();
-		}
-		
-		return json_encode($resultado); 
+
+		if(isset($req['updateMethod'])) {
+		    $method=$req['updateMethod'];
+		    if(method_exists($this,$method))
+            {
+                $result = $this->$method($datos,$req);
+            }
+        }
+		else
+        {
+            $arregloDatos = json_decode($datos);
+            $entidad = $dao->crearDesdeArreglo($arregloDatos);
+            $idRecurso = $this->getIdRecursoSolicitado();
+
+            $entidad->setId($idRecurso);
+            $result = $dao->save($entidad);
+        }
+
+		return json_encode($this->getPostResponse($result,$datos,$req));
+
 	}
 	
 	
@@ -387,7 +411,19 @@ class RESTMod {
 		$method = $_SERVER['REQUEST_METHOD'];
 		
 		$idRecurso = $this->getIdRecursoSolicitado();
-		
+
+        if($method=='OPTIONS')
+        {
+            ob_clean();
+            //HTTP/1.1 200 OK
+            header("Content-Length: 0");
+            header("Connection: keep-alive");
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Methods: POST, GET, PUT, OPTIONS, DELETE");
+            header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization');
+            exit;
+        }
+
 		if($method=='GET')
 		{
 			$methodKey = 'lista';

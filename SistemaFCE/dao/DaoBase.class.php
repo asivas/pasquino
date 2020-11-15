@@ -77,7 +77,7 @@ abstract class DaoBase {
 
     /**
      * Obtiene una instancia singleton del Dao que la llama
-     * @return self Dao que exitende DaoBase
+     * @return static Dao que exitende DaoBase
      */
 	public static function getInstance()
     {
@@ -444,7 +444,7 @@ abstract class DaoBase {
     	
     	if(isset($limit))
     	{
-	    	if(is_string($limit))
+	    	if(is_numeric($limit))
 	    		$sql .= " LIMIT {$limit}";
 	    	elseif(is_array($limit))
 	    	{
@@ -460,7 +460,6 @@ abstract class DaoBase {
 	    			if(isset($limit['offset']))
 	    				$sql .= " OFFSET {$limit['offset']}";
 	    		}
-	    		
 	    	}
     	}
     	
@@ -670,6 +669,30 @@ abstract class DaoBase {
     }
 
     /**
+     * @param $propertyName nombre de la propiedad de la Entidad
+     * @param $value valor que buscará
+     */
+    function findListByProperty($propertyName,$value) {
+        $c = $this->getCriterioBase();
+
+        $c->add(Restricciones::eq($this->buscarNombreColumna($propertyName),$value));
+
+        return $this->findBy($c);
+    }
+
+    /**
+     * @param $propertyName nombre de la propiedad de la Entidad
+     * @param $value valor que buscará
+     */
+    function findFirstByProperty($propertyName,$value) {
+        $c = $this->getCriterioBase();
+
+        $c->add(Restricciones::eq($this->buscarNombreColumna($propertyName),$value));
+
+        return $this->findFirst($c);
+    }
+
+    /**
      * Guarda creando si no existe o actualizando si existe a partir de una instancia de la entidad
      * @param object $elem
      */
@@ -862,6 +885,20 @@ abstract class DaoBase {
     	return $nombreColumna;
     }
 
+    protected function buscarNombreColumna($nombrePropiedad)
+    {
+        $propiedades = $this->_xmlMapping->propiedad;
+        if(is_array($propiedades))
+            foreach($propiedades as $prop)
+            {
+                $nombreCol = (string)$prop['columna'];
+                $nombreProp = (string)$prop['nombre'];
+                if($nombreProp == $nombrePropiedad)
+                    return $nombreColumna;
+            }
+        return $nombrePropiedad;
+    }
+
     /**
      * Determina si existe una entidad dado un criterio
      * @param Criterio $c
@@ -913,7 +950,7 @@ abstract class DaoBase {
     		$valuestring = str_replace("(", "", $valuestring);
     		$valuestring = str_replace(")", "", $valuestring);
     		$valuestring = str_replace("'", "", $valuestring);
-    		$values = split(",", $valuestring);
+    		$values = explode(",", $valuestring);
     	}
     	return $values;
     }

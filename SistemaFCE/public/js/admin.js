@@ -1,7 +1,8 @@
 (function(window,undefined) {
 	
 	//Bootstrap no conflicts
-	$.fn.button.noConflict();
+	if(typeof  $.fn.button.noConflict ==='function')
+		$.fn.button.noConflict();
 	
 	var
 	// Define a local copy of pQn
@@ -55,6 +56,7 @@
 				var $hiddenCount = $('<input type="hidden" name="count" value="'+count+'"/>');
 				$hiddenPag.appendTo($formFiltro);
 				$hiddenCount.appendTo($formFiltro);
+
 				$formFiltro.submit();
 				$hiddenCount.remove();
 				$hiddenPag.remove();
@@ -90,35 +92,56 @@
 					srcObj = $(aSourceID).parent();
 				}
 				elCampo.addClass("loading");
-				
-				$.ajax({
+				$(document).trigger('loadingList');
+
+				var ajaxParams = {
 					url: getAccionUrl(aMod,aAction,"plain")+ "&" +$(this).serialize(),
-					success: function(response, status, xhr) {	
-						
+					success: function(response, status, xhr) {
+
 						elCampo.removeClass("loading");
-				  		if (status == "error") {
-				  			alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
-				  		}else{				  			
-				  			$("body").crearDiv("tmp");
-							var $tmp = $(response);
+						$(document).trigger('doneLoadingList');
+						if (status == "error") {
+							alert("Ocurrio un Error: " + xhr.status + " " + xhr.statusText);
+						}else{
+							var $tmp = $("<div>");
+							$tmp.html(response);
 							var grid = $tmp.find(selectorSource);
 							var footer = $tmp.find("footer");
 
 							srcObj.html(grid.html());
 							srcObj.parents(".lista").find("footer").html(footer.html());
-							
+							var responseLista = $tmp.find('.lista');
+							if(responseLista.attr('sortdir')!=undefined) {
+								var sortdir = responseLista.attr('sortdir');
+								var $hiddenSortDir = form.find('input[name=sortSentido]');
+								if($hiddenSortDir.length==0) {
+									$hiddenSortDir = $('<input type="hidden" name="sortSentido" value="' + sortdir + '"/>');
+									$hiddenSortDir.appendTo(form);
+								}
+								else
+									$hiddenSortDir.val(sortdir);
+								srcObj.parents(".lista").attr('sortdir', sortdir);
+							}
+							if(responseLista.attr('sort')!=undefined)
+								srcObj.parents(".lista").attr('sort',responseLista.attr('sort'));
 							resize();
-							
-				  			if(aOptions!=null &&
-				  			   aOptions.success!=null && 
-				  			   (typeof aOptions.success == 'function')) 
-				  				aOptions.success(response, status, xhr);
-				  			
-				  			
-				  		}
+
+							if(aOptions!=null &&
+								aOptions.success!=null &&
+								(typeof aOptions.success == 'function'))
+								aOptions.success(response, status, xhr);
+
+
+						}
 					}
-						
-				});
+
+				};
+				if(aOptions!=null &&
+					aOptions.errorFn!=null &&
+					(typeof aOptions.errorFn == 'function'))
+					ajaxParams.error = aOptions.errorFn;
+				
+				$.ajax(ajaxParams);
 
 				e.preventDefault();
 			});

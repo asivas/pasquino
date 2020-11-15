@@ -14,7 +14,10 @@ use pQn\SistemaFCE\util\Configuracion;
  *
  */
 abstract class BaseAdminMod extends BaseMod {
-	protected $mainDao;
+    /**
+     * @var DaoBase
+     */
+    protected $mainDao;
 	protected $_tplLista;
 	protected $_tplForm;
 	protected $defaultPaginationLimitCount;
@@ -403,6 +406,7 @@ abstract class BaseAdminMod extends BaseMod {
 			$xlscol = 0;
 			foreach($this->columnsList as $label => $prop)
 			{
+			    $val = "";
 				$getFn = 'get'.ucfirst($prop);
 				if($getFn != 'getGridAccionesItem')
 				{

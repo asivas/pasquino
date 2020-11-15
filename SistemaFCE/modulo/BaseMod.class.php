@@ -95,8 +95,10 @@ class BaseMod implements PropertiesManager {
 		//@deprecated ya no se usa el calendario js, se prefiere el uso de jQuery
         $this->_calendar = new FCEcalendar('/js/jscalendar/', "es", "../../skins/".$this->_skinConfig['dir']."/css/cal", false);
 
-		if(function_exists('apache_request_headers'))
+		/*
+		 if(function_exists('apache_request_headers'))
         	$this->REST = new RESTMod();
+		*/
 
 
 
@@ -159,7 +161,7 @@ class BaseMod implements PropertiesManager {
         $this->xajax->register(XAJAX_FUNCTION,array('hideMensaje',&$this,'hideMensaje'));
     }
 
-    static public function getSmartyObject() {
+    static public function getSmartyObject($skinConfig = null) {
     	$smarty = new \Smarty(); // Handler de smarty
 
     	$systemRoot = Configuracion::getSystemRootDir();
@@ -170,7 +172,13 @@ class BaseMod implements PropertiesManager {
     	if(empty($skinsDirname))
     		$skinsDirname = "skins";
 
-    	$skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
+    	if(isset($skinConfig))
+        {
+            $skinDirName = (string)$skinConfig['nombre'];
+            if(empty($skinDirName))
+                $skinDirName = (string)$skinConfig['dir'];
+        }
+        $skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
     	$smarty->template_dir = "{$systemRoot}/{$skinsDirname}/{$skinConfig['dir']}"; // configuro directorio de templates
     	$smarty->compile_dir = "{$systemRoot}/tmp/{$skinsDirname}/templates_c"; // configuro directorio de compilacion
     	$smarty->cache_dir = "{$systemRoot}/tmp/{$skinsDirname}/cache"; // configuro directorio de cache
@@ -182,7 +190,7 @@ class BaseMod implements PropertiesManager {
 
     protected function initSmarty()
     {
-        $this->smarty = $this->getSmartyObject();
+        $this->smarty = $this->getSmartyObject($this->_skinConfig);
         $skinsDirname = $this->getTemplateVar('skinsDirname');
 
         $publicSkinDir = $this->_skinConfig['wwwdir'];
@@ -191,7 +199,7 @@ class BaseMod implements PropertiesManager {
         $this->setTplVar('skin',$publicSkinDir);
         $this->setTplVar('relative_images',"{$skinsDirname}/{$publicSkinDir}/images");
         $this->setTplVar('version',Configuracion::getVersion());
-        $this->setTplVar('skinPath',$systemRoot."/{$skinsDirname}/".$this->_skinConfig['dir']);
+        $this->setTplVar('skinPath',Configuracion::getSystemRootDir()."/{$skinsDirname}/".$this->_skinConfig['dir']);
         $this->setTplVar('appName',Configuracion::getAppName());
 		$this->setTplVar('cal_files',$this->_calendar->get_load_files_code());
 
@@ -301,7 +309,9 @@ class BaseMod implements PropertiesManager {
 
     	$accion = (string)$item['accion'];
 
-    	$murl = "{$_SERVER['PHP_SELF']}?mod={$nombreModulo}&accion={$accion}";
+        $path = Configuracion::getGessedAppRelpath();
+
+    	$murl = "{$path}?mod={$nombreModulo}&accion={$accion}";
 
     	if(!empty($item['alias']))
     	{
@@ -309,7 +319,7 @@ class BaseMod implements PropertiesManager {
     		$accion = (string)$aliasedItemConf['accion'];
     		$nombreModulo = (string)$aliasedItemConf['mod'];
 
-    		$murl = "{$_SERVER['PHP_SELF']}?alias={$item['alias']}";
+    		$murl = "{$path}?alias={$item['alias']}";
     	}
 
     	$tienePermiso = true;
@@ -358,6 +368,7 @@ class BaseMod implements PropertiesManager {
             if(($mItem = $this->_getMenuItemArray($nombreModulo,$menu))!=null)
             {
             	$menuItems['_'] = $mItem;
+                $c = 0;
 	            foreach($menu->menuItem as $item)
 	            {
 	                if(($mItem = $this->_getMenuItemArray($nombreModulo,$item))==null)
@@ -383,6 +394,7 @@ class BaseMod implements PropertiesManager {
     {
     	$modulosConfig = Configuracion::getModulosConfig();
     	$menuPpal = array();
+    	$c = 0;
         foreach($modulosConfig->modulo as $mod)
         {
             $n = (string)$mod['nombre'];
@@ -527,7 +539,7 @@ class BaseMod implements PropertiesManager {
     		$this->_tilePath = $this->smarty->get_template_vars('pQnBaseTpl');
     	}
     	$this->addJsFile("/sistemafce/js/login.js");
-
+        $this->setTplVar('action',Configuracion::getGessedAppRelpath());
     	$this->mostrar($tpl);
         exit();
     }
@@ -706,7 +718,7 @@ class BaseMod implements PropertiesManager {
      *
      * Muestra por pantalla el tpl con el tipo de display seleccionado o si no hay tipo se muestra
      * con la plantilla (tile) default
-     * @param unknown_type $tpl
+     * @param string $tpl
      * @param unknown_type $type
      */
     protected function mostrar($tpl,$type=null)
@@ -776,7 +788,7 @@ class BaseMod implements PropertiesManager {
         $this->setTplVar('sortSentido',$this->_sentidoOrderListado);
 
         $order = '';
-        $multi = split(',',$this->_orderListado);
+        $multi = explode(',',$this->_orderListado);
         foreach($multi as $orden)
         {
         	if(!empty($order)) $order .= ',';
@@ -806,7 +818,9 @@ class BaseMod implements PropertiesManager {
     {
         if(!isset($req)) $req = $_GET;
 
-        header("Location: {$_SERVER['PHP_SELF']}?mod={$req['mod']}");
+        $path = Configuracion::getGessedAppRelpath();
+
+        header("Location: {$path}?mod={$req['mod']}");
         exit();
     }
 
@@ -816,7 +830,10 @@ class BaseMod implements PropertiesManager {
     protected function redirectHomeSistema()
     {
         setcookie('mod',null);
-        header("Location: {$_SERVER['PHP_SELF']}");
+
+        $path = Configuracion::getGessedAppRelpath();
+
+        header("Location: {$path}");
         exit();
     }
 
