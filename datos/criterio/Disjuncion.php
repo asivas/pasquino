@@ -4,7 +4,7 @@ namespace pQn\datos\criterio;
 
 class Disjuncion extends Criterio {
 
-    function Disjuncion($expresion1=null,$expresion2=null) 
+    function __construct($expresion1=null,$expresion2=null)
     {
         parent::__construct();
         $this->_operador = "OR";

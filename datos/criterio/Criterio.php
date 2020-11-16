@@ -12,7 +12,7 @@ class Criterio{
     static function getAND($expresion1,$expresion2){ return new Conjuncion($expresion1,$expresion2); }
     static function getOR($expresion1,$expresion2){ return new Disjuncion($expresion1,$expresion2); }
 
-    function Criterio() {
+    function __construct() {
         $this->_expresiones = array();
     }
 
