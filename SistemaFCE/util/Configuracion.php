@@ -43,7 +43,7 @@ class Configuracion {
 
         Configuracion::setIncludePath($pathsIncludePath);
 
-        spl_autoload_register('Configuracion::autoload_entidad');
+        spl_autoload_register('pQn\SistemaFCE\util\Configuracion::autoload_entidad');
         //{{{ Incluir modulos
         Configuracion::incluirModulos();
         ///}}}
