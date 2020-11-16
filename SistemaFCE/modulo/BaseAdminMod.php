@@ -1,6 +1,7 @@
 <?php
 namespace pQn\SistemaFCE\modulo;
 use pQn\datos\criterio\Restricciones;
+use pQn\SistemaFCE\dao\DaoBase;
 use pQn\SistemaFCE\entidad\Entidad;
 use pQn\SistemaFCE\util\Configuracion;
 
@@ -103,7 +104,7 @@ abstract class BaseAdminMod extends BaseMod {
 
 	/**
 	 * Agrega los atributos necesarios para eniar el mensaje de guardar
-	 * @param objet $aObj objeto que se estaría guardando
+	 * @param object $aObj objeto que se estaría guardando
 	 */
 	protected function addAtribsMensajeOkGuardar($aObj) {
 		$this->addAtribMensajeOk('id', $aObj->getId());

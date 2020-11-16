@@ -107,7 +107,7 @@ abstract class DaoBase {
             $dataSource = Configuracion::getDefaultDataSource();
 		if(!isset(self::$dbConections[$dataSource]))
 		{
-	        self::$dbConections[$dataSource] = &ADONewConnection(Configuracion::getDBMS($dataSource)); # eg 'mysql' or 'postgres'
+	        self::$dbConections[$dataSource] = ADONewConnection(Configuracion::getDBMS($dataSource)); # eg 'mysql' or 'postgres'
 	        self::$dbConections[$dataSource]->SetFetchMode(ADODB_FETCH_ASSOC);
 		}
 		if(!self::$dbConections[$dataSource]->IsConnected())
@@ -410,7 +410,7 @@ abstract class DaoBase {
      *
      * Modifing each parameter allows modifing the default sql
      * @param string $baseSql a sql string with this format: SELECT {fields} FROM {table(s)}
-     * @param miixed $cond String o criterio
+     * @param string|Criterio $cond String o criterio
      * @param string $group
      * @param string $order
      * @param mixed $limit string to limit count only array(count,offset)
@@ -560,8 +560,8 @@ abstract class DaoBase {
     /**
      *
      * Cuenta la cantidad de elementos
-     * @param unknown_type $filtro
-     * @param unknown_type $order
+     * @param string|Criterio $filtro
+     * @param string $order
      */
     function count($filtro = null,$order=null)
     {
@@ -894,7 +894,7 @@ abstract class DaoBase {
                 $nombreCol = (string)$prop['columna'];
                 $nombreProp = (string)$prop['nombre'];
                 if($nombreProp == $nombrePropiedad)
-                    return $nombreColumna;
+                    return $nombreCol;
             }
         return $nombrePropiedad;
     }
@@ -937,8 +937,8 @@ abstract class DaoBase {
 
     /**
      * Obtiene un arreglo con los valores de un enum dado el campo
-     * @param unknown $strField
-     * @return multitype:
+     * @param string $strField
+     * @return false|string[]:
      */
     protected function getEnumArray($strField)
     {
