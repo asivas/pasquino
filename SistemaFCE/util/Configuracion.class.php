@@ -389,8 +389,8 @@ class Configuracion {
 
     public static function getMappingClase($nombreClase,$xmlMappingFile = null)
     {
-        $nc = (string) $nombreClase;
-        if(!isset(self::$mappingsXml[$nc])) {
+        $nc = (string)$nombreClase;
+        if (!isset(self::$mappingsXml[$nc])) {
             if (empty($xmlMappingFile)) {
                 $archivoMappings = "";
                 $config = Configuracion::getConfigXML();
@@ -415,14 +415,15 @@ class Configuracion {
             else {
                 $daoClass = "Dao{$nombreClase}";
 
-			if(class_exists($daoClass) && method_exists($daoClass, 'getDefaultMapping'))
-			{
-				$map = $daoClass::getDefaultMapping();
-			}
-			else{
-				throw new \Exception("No se ecuentra el mapping de la clase {$nombreClase}");
-			}
-		}
+                if (class_exists($daoClass) && method_exists($daoClass, 'getDefaultMapping')) {
+                    self::$mappingsXml[$nc] = $daoClass::getDefaultMapping();
+                } else {
+                    throw new Exception("No se ecuentra el mapping de la clase {$nombreClase}");
+                }
+            }
+        }
+
+        $map = self::$mappingsXml[$nc];
 
         return $map;
     }
