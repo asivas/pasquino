@@ -314,6 +314,8 @@ class RESTMod {
 	 */
 	function alta($datos,$req)
 	{
+        if(isset($req['createMethod'])) { $req['updateMethod']=$req['createMethodMethod']; }
+
         if(isset($req['updateMethod'])) {
             $method=$req['updateMethod'];
             if(method_exists($this,$method))
