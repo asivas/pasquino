@@ -313,13 +313,22 @@ class RESTMod {
 	 * @param array $req
 	 */
 	function alta($datos,$req)
-	{	
-		$nombreRec = ucfirst($this->getNombreRecurso());
-		$nombreDao = "Dao".$nombreRec;
-		$dao = new $nombreDao();
-		$arregloDatos = json_decode($datos);
-		$entidad = $dao->crearDesdeArreglo($arregloDatos);
-		$result = $dao->save($entidad);
+	{
+        if(isset($req['updateMethod'])) {
+            $method=$req['updateMethod'];
+            if(method_exists($this,$method))
+            {
+                $result = $this->$method($datos,$req);
+            }
+        }
+        else {
+            $nombreRec = ucfirst($this->getNombreRecurso());
+            $nombreDao = "Dao" . $nombreRec;
+            $dao = new $nombreDao();
+            $arregloDatos = json_decode($datos);
+            $entidad = $dao->crearDesdeArreglo($arregloDatos);
+            $result = $dao->save($entidad);
+        }
 		
 		return json_encode($this->getPostResponse($result,$datos,$req));
 	}
