@@ -4,9 +4,6 @@ namespace pQn\SistemaFCE\modulo;
 use pQn\visual\dateTimeFmt;
 use pQn\SistemaFCE\util\Configuracion;
 
-require_once("HTML/QuickForm.php");
-require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
-
 if(!function_exists('esFecha'))
 {
     /**
