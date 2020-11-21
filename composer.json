@@ -15,6 +15,7 @@
 		"smarty/smarty" : "~3.1",
 		"xajax/xajax" : "dev-master",
 		"pear/pear": "v1.10.12",
+		"pear/html_common": "dev-trunk",
 		"pear/auth": "dev-trunk",
 		"pear/log": "dev-trunk",
 		"pear/auth_sasl2": "dev-trunk",
