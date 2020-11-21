@@ -1,7 +1,7 @@
 {
 	"repositories": [
 		{"type": "vcs", "url":"https://github.com/pear/Auth.git"  },
-		{"type": "vcs", "url":"https://github.com/pear/HTML_QuickForm.git"  }
+		{"type": "vcs", "url":"https://github.com/asivas/HTML_QuickForm.git"  }
 	],
 	"require" : {
 		"facebook/graph-sdk" : "~5",
@@ -16,6 +16,10 @@
 		"xajax/xajax" : "dev-master",
 		"pear/pear": "v1.10.12",
 		"pear/auth": "dev-trunk",
+		"pear/log": "dev-trunk",
+		"pear/auth_sasl2": "dev-trunk",
+		"pear/db": "dev-trunk",
+		"pear/mail_mime": "dev-master",
 		"pear/html_quickform": "dev-trunk"
 	},
 	"autoload" : {
