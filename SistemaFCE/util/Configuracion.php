@@ -605,7 +605,7 @@ class Configuracion {
     	$propsMgrClass = Configuracion::getPropertiesManagerClass();
     	if(!empty($propsMgrClass))
     	{
-    		require_once "$propsMgrClass.class.php";
+    		//require_once "$propsMgrClass.class.php";
     		//$propsMgr = new $propsMgrClass();
     		return $propsMgrClass::getPropertyValue('versionDB','0');
     	}
