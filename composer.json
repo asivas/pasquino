@@ -21,7 +21,8 @@
 		"pear/auth_sasl2": "dev-trunk",
 		"pear/db": "dev-trunk",
 		"pear/mail_mime": "dev-master",
-		"asivas/html_quickform": "dev-trunk"
+		"asivas/html_quickform": "dev-trunk",
+		"ext-simplexml": "*"
 	},
 	"autoload" : {
 		"psr-4" : {
