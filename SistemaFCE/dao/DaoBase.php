@@ -62,7 +62,7 @@ abstract class DaoBase {
     /**
      * Constructor de DaoBase
      */
-    function DaoBase() {
+    function __construct() {
         $this->loadMapping();
 
         $dataSource = null;

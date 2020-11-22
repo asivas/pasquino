@@ -390,6 +390,7 @@ class Configuracion {
     public static function getMappingClase($nombreClase,$xmlMappingFile = null)
     {
         $nc = (string)$nombreClase;
+        $nc = substr($nc,strrpos($nc,'\\',-1)+1);
         if (!isset(self::$mappingsXml[$nc])) {
             if (empty($xmlMappingFile)) {
                 $archivoMappings = "";
@@ -418,7 +419,7 @@ class Configuracion {
                 if (class_exists($daoClass) && method_exists($daoClass, 'getDefaultMapping')) {
                     self::$mappingsXml[$nc] = $daoClass::getDefaultMapping();
                 } else {
-                    throw new Exception("No se ecuentra el mapping de la clase {$nombreClase}");
+                    throw new \Exception("No se ecuentra el mapping de la clase {$nombreClase}");
                 }
             }
         }
@@ -679,4 +680,4 @@ class Configuracion {
 
 }
 
-class_alias('Configuracion','SistemaFCE');
+class_alias('pQn\SistemaFCE\util\Configuracion','SistemaFCE');
