@@ -45,7 +45,7 @@ class Configuracion {
 
         spl_autoload_register('pQn\SistemaFCE\util\Configuracion::autoload_entidad');
         //{{{ Incluir modulos
-        Configuracion::incluirModulos();
+        //Configuracion::incluirModulos();
         ///}}}
 
         if(strpos(strtoupper($_SERVER['SERVER_SIGNATURE']),"WIN")!==FALSE) /*servidor Windows*/
