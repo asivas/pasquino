@@ -13,11 +13,6 @@ namespace pQn\datos\logger;
  */
 
 /**
- * Manejo de archivos (de PEAR)
- */
-require_once('File.php');
-
-/**
  * Genera un log en  un archivo de texto
  * esta clase requiere PEAR::File
  */

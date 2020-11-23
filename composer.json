@@ -1,6 +1,7 @@
 {
 	"repositories": [
 		{"type": "vcs", "url":"https://github.com/pear/Auth.git"  },
+		{"type": "vcs", "url":"https://github.com/pear/File.git"  },
 		{"type": "vcs", "url":"https://github.com/asivas/HTML_QuickForm.git"  }
 	],
 	"require" : {
@@ -21,6 +22,10 @@
 		"pear/auth_sasl2": "dev-trunk",
 		"pear/db": "dev-trunk",
 		"pear/mail_mime": "dev-master",
+		"pear/mail": "dev-master",
+		"pear/auth_sasl": "dev-master",
+		"pear/net_smtp": "dev-master",
+		"pear/file": "dev-trunk",
 		"asivas/html_quickform": "dev-trunk",
 		"ext-simplexml": "*"
 	},

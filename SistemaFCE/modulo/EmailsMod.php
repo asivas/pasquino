@@ -1,7 +1,5 @@
 <?php
 namespace pQn\SistemaFCE\modulo;
-require_once 'Mail.php';
-require_once 'Mail/mime.php';
 
 
 class EmailsMod extends BaseMod {

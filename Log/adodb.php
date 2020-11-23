@@ -6,10 +6,8 @@ namespace pQn\Log;
  * @version $Revision: 1.7 $
  * @package Log
  */
-require_once("datos/adodb/adodb.inc.php");
-require_once("Log.php");
 
-class Log_adodb extends Log
+class Log_adodb extends \Log
 {
      /**
      * Handler existente de la base.

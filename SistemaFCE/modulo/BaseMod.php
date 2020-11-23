@@ -12,15 +12,6 @@ use pQn\datos\criterio\Criterio;
  * @since 06/10/2008
  */
 
-/**
- * El calendario viejo,
- * @deprecated
- */
-require_once('visual/jscalendar/FCEcalendar.class.php');
-
-// Pear Log
-require_once 'Log.php';
-
 class BaseMod implements PropertiesManager {
 
     var $smarty;

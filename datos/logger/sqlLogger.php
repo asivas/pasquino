@@ -12,22 +12,11 @@ namespace pQn\datos\logger;
  */
 
 /**
- * La definicio clase abrtacta que se extender�
- */
-require_once('datos/logger/logger.class.php');
-
-
-/**
- * para conexion a la base de datos
- */
-require_once('datos/adodb/adodb.inc.php');
-
-/**
  * Genera un log en una tabla SQL o en un archivo de texto
  */
 class sqlLogger extends logger {
     /**
-     * Objeto de conexi�n a la base de datos (adodb)
+     * Objeto de conexión a la base de datos (adodb)
      * 
      */
     var $_db;
@@ -53,8 +42,8 @@ class sqlLogger extends logger {
         
         
         /*
-         * Deber�a corroborar la existencia de la tabla 
-         * y si no est� y tiene derechos crearla
+         * Debería corroborar la existencia de la tabla
+         * y si no está y tiene derechos crearla
          */
             
     }

@@ -205,7 +205,11 @@ abstract class DaoBase {
 
     private function _newDaoClase($clase)
     {
-    	$nombreDao = $nombreDaoFile = "Dao".$clase;
+        $nombreClase = (string)$clase;
+        $nc = substr($nombreClase,strrpos($nombreClase,'\\',-1)+1);
+        $namespaceClass = substr($nombreClase,0,strrpos($nombreClase,'\\',-1));
+
+        $nombreDao = $nombreDaoFile = "Dao".$nc;
 
         $map = Configuracion::getMappingConfigClase($clase);
 
@@ -214,9 +218,22 @@ abstract class DaoBase {
 
         //Siempre se espera la misma estructura para los mappings que para los daos
 
-        if(!@include_once("{$nombreDaoFile}.class.php"))
-        	require_once("daos/{$nombreDaoFile}.class.php");
+        /*if(!@include_once("{$nombreDaoFile}.class.php"))
+        	require_once("daos/{$nombreDaoFile}.class.php");*/
+        if(class_exists("$namespaceClass\\$nombreDao"))
+        {
+            $nombreDaoSameNamespace = "$namespaceClass\\$nombreDao";
+            return $nombreDaoSameNamespace::getInstance();
+        }
+        //intento reemplazando en el namespace entidad por dao
+        $namespaceClassDao = str_replace('entidad','dao',$namespaceClass);
+        if(class_exists("$namespaceClassDao\\$nombreDao"))
+        {
+            $nombreDaoNamespace = "$namespaceClassDao\\$nombreDao";
+            return $nombreDaoNamespace::getInstance();
+        }
 
+        //en caso de que esté definido cómo encontrarlo en el autoload
         return $nombreDao::getInstance();
     }
 
