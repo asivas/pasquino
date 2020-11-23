@@ -5,7 +5,7 @@ use pQn\datos\criterio\Restricciones\Ge;
 
 class GeProperty extends Ge{
 
-    function GeProperty($nombrePropiedad1,$nombrePropiedad2) {
+    function __construct($nombrePropiedad1,$nombrePropiedad2) {
         parent::__construct($nombrePropiedad1,$nombrePropiedad2);
     }
     

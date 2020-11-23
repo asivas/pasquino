@@ -26,7 +26,7 @@ class Restriccion{
     	return $this->valor;
     }
     
-    function Restriccion($nombrePropiedad,$valor) {
+    function __construct($nombrePropiedad,$valor) {
         $this->propiedad = $nombrePropiedad;
         $this->valor = $valor;   
     }

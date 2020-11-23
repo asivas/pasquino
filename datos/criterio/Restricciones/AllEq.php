@@ -7,7 +7,7 @@ class AllEq extends Restriccion {
     
     private $_nombresValores;
     
-    function allEq($nombresValoresPropiedades) {
+    function __construct($nombresValoresPropiedades) {
        $this->_nombresValores = $nombresValoresPropiedades;
        $this->operador = "=";
        $this->operadorH = " es igual a";

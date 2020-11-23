@@ -5,7 +5,7 @@ use pQn\datos\criterio\Restricciones\Ne;
 
 class NeProperty extends Ne {
 
-    function NeProperty($nombrePropiedad1,$nombrePropiedad2) {
+    function __construct($nombrePropiedad1,$nombrePropiedad2) {
         parent::__construct($nombrePropiedad1,$nombrePropiedad2);
     }
     

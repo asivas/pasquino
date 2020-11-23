@@ -5,7 +5,7 @@ use pQn\datos\criterio\Restriccion;
 
 class In extends Restriccion {
 
-    function In($nombrePropiedad,$valores) {
+    function __construct($nombrePropiedad,$valores) {
         parent::__construct($nombrePropiedad,$valores);
     }
     

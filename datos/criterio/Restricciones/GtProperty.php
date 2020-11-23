@@ -5,7 +5,7 @@ use pQn\datos\criterio\Restricciones\Gt;
 
 class GtProperty extends Gt{
 
-    function GtProperty($nombrePropiedad1,$nombrePropiedad2) {
+    function __construct($nombrePropiedad1,$nombrePropiedad2) {
         parent::__construct($nombrePropiedad1,$nombrePropiedad2);
     }
     

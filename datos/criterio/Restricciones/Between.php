@@ -7,7 +7,7 @@ class Between extends Restriccion {
     
     private $valor2;
     
-    function Between($nombreProp,$valor1,$valor2) {
+    function __construct($nombreProp,$valor1,$valor2) {
         $this->propiedad = $nombreProp;
         $this->valor     = $valor1;
         $this->valor2    = $valor2;

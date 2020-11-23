@@ -66,10 +66,10 @@ class Criterio{
             {
                 $cond .= $exp;
             }
-            elseif(is_a($exp,"In")) {
+            elseif(is_a($exp,'pQn\datos\criterio\In')) {
 				$cond .= $exp->toSqlString($clase);
             }
-            elseif(is_a($exp,"Between")) {
+            elseif(is_a($exp,'pQn\datos\criterio\Between')) {
             	$paramMin = $parametized;
             	$cond .= $exp->toSqlString($clase,$parametized!==false?$parametized:null,$parametized!==false?++$parametized:null);
             	if($parametized!==false && $exp->getValorMin()!==null && $exp->getValorMax()!==null)
@@ -77,12 +77,12 @@ class Criterio{
             		$this->bindParameters[$paramMin] = $exp->getValorMin();
             		$this->bindParameters[$parametized++] = $exp->getValorMax();
             	}
-			}elseif(is_a($exp,"Restriccion")) {
+			}elseif(is_a($exp,'pQn\datos\criterio\Restriccion')) {
                 $cond .= $exp->toSqlString($clase,$parametized!==false?$parametized:null);
                 if($parametized!==false && $exp->getValor()!==null)
                 	$this->bindParameters[$parametized++] = $exp->getValor();
             }
-            elseif(is_a($exp,"Criterio")) //si no es string si o si debe ser alguna clase de Criterio
+            elseif(is_a($exp,'pQn\datos\criterio\Criterio')) //si no es string si o si debe ser alguna clase de Criterio
             {
             	//TODO: parece que sería saludable corroborar que  $exp != $this
             	$cond .= "(". $exp->getCondicion($clase,$parametized) .")";

@@ -5,7 +5,7 @@ use pQn\datos\criterio\Restricciones\Ne;
 
 class IsNotEmpty extends Ne {
 
-    function IsNotEmpty($nombrePropiedad) {
+    function __construct($nombrePropiedad) {
         parent::__construct($nombrePropiedad,null);
     }
     

@@ -30,7 +30,7 @@ class DaoConfigurationProperty extends DaoBase{
 		$xmlstr = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapping PUBLIC "-//FCEunicen//DTD Mapping//ES" "http://apps.econ.unicen.edu.ar/public/dtd/mapping.dtd" >
 <mapping path="SistemaFCE/entidades">
-	<clase nombre="ConfigurationProperty" tabla="configurationproperty">
+	<clase nombre="pQn\SistemaFCE\entidad\ConfigurationProperty" tabla="configurationproperty">
     			<id columna="property" nombre="property" />
 				<propiedad columna="value" nombre="value" />
 	</clase>

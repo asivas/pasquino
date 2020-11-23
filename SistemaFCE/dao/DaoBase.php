@@ -440,7 +440,7 @@ abstract class DaoBase {
     		 
     	$sql = $baseSql;
     	
-    	if(is_a($cond, 'Criterio')) 
+    	if(is_a($cond, 'pQn\datos\criterio\Criterio'))
     		$strCond = ($cond != null)?$cond->getCondicion($this->_xmlMapping['nombre'],$paramIndex):'';
     	else
     		$strCond = $cond;
@@ -480,7 +480,7 @@ abstract class DaoBase {
 	    	}
     	}
     	
-    	if(is_a($cond, 'Criterio') && $parametrized)
+    	if(is_a($cond, 'pQn\datos\criterio\Criterio') && $parametrized)
     	{
     		foreach ($cond->getBindValues() as $k => $v) {
     			$sql = str_replace(":{$k}", $this->getDb()->param($k), $sql);
@@ -564,7 +564,7 @@ abstract class DaoBase {
 
 	protected function executeFindByQuery($sql,$filtro=null) {
 
-		if(isset($filtro) && is_a($filtro, 'Criterio') && $this->parametrizedFindBy!==false)
+		if(isset($filtro) && is_a($filtro, 'pQn\datos\criterio\Criterio') && $this->parametrizedFindBy!==false)
 		{
 			$stmt = $this->_db->Prepare($sql);
 			$rs = $this->_db->Execute($stmt,$filtro->getBindValues());

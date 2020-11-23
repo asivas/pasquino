@@ -5,7 +5,7 @@ use pQn\datos\criterio\Restriccion;
 
 class IsNull extends Restriccion {
 
-    function IsNull($nombrePropiedad) {
+    function __construct($nombrePropiedad) {
         parent::__construct($nombrePropiedad,null);
         $this->operador = "IS NULL";
     }

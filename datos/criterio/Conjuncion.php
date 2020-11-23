@@ -3,7 +3,7 @@ namespace pQn\datos\criterio;
 
 class Conjuncion extends Criterio{
 
-    function Conjuncion($expresion1,$expresion2) 
+    function __construct($expresion1,$expresion2)
     {
         parent::__construct();
         $this->_expresiones[] = $expresion1;

@@ -5,7 +5,7 @@ use pQn\datos\criterio\Restricciones\Eq;
 
 class IsEmpty extends Eq {
 
-    function IsEmpty($nombrePropiedad) {
+    function __construct($nombrePropiedad) {
         parent::__construct($nombrePropiedad,null);
     }
     
