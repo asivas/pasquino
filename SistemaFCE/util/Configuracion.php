@@ -389,8 +389,9 @@ class Configuracion {
 
     public static function getMappingClase($nombreClase,$xmlMappingFile = null)
     {
-        $nc = (string)$nombreClase;
-        $nc = substr($nc,strrpos($nc,'\\',-1)+1);
+        $nombreClase = (string)$nombreClase;
+        $nc = substr($nombreClase,strrpos($nombreClase,'\\',-1)+1);
+        $namespaceClass = substr($nombreClase,0,strrpos($nombreClase,'\\',-1));
         if (!isset(self::$mappingsXml[$nc])) {
             if (empty($xmlMappingFile)) {
                 $archivoMappings = "";
@@ -398,7 +399,7 @@ class Configuracion {
 
                 $mappings = $config->mappings;
 
-                $map = Configuracion::getMappingConfigClase($nombreClase);
+                $map = Configuracion::getMappingConfigClase($nc);
                 if (isset($map)) {
                     $archivo = $map['archivo'];
                     if (isset($map['dir'])) {
@@ -414,7 +415,9 @@ class Configuracion {
             if (file_exists($xmlMappingFile) && $archivoMappings != '')
                 self::$mappingsXml[$nc] = simplexml_load_file($xmlMappingFile);
             else {
-                $daoClass = "Dao{$nombreClase}";
+                $daoClass = "Dao{$nc}";
+                if(!empty($namespaceClass))
+                    $daoClass = "{$namespaceClass}\\{$daoClass}";
 
                 if (class_exists($daoClass) && method_exists($daoClass, 'getDefaultMapping')) {
                     self::$mappingsXml[$nc] = $daoClass::getDefaultMapping();
