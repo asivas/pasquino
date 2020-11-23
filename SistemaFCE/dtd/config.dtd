@@ -3,6 +3,7 @@
 	nombre CDATA #REQUIRED
 	version CDATA #IMPLIED
 	version-pasquino CDATA #REQUIRED
+	namespace CDATA #IMPLIED
 	nombre-session CDATA #IMPLIED
 	properties-manager-class CDATA #IMPLIED
 	dbUpdater-class CDATA #IMPLIED
