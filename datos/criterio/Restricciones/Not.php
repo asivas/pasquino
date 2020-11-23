@@ -7,7 +7,7 @@ class Not extends Restriccion {
     
     private $_restriccion;
     
-    function Not($restriccion) {
+    function __construct($restriccion) {
         $this->_restriccion = $restriccion; 
     }
     
