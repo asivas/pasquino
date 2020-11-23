@@ -27,8 +27,9 @@
 		"pear/net_smtp": "dev-master",
 		"pear/file": "dev-trunk",
 		"asivas/html_quickform": "dev-trunk",
-		"ext-simplexml": "*"
-	},
+		"ext-simplexml": "*",
+      	"ext-json": "*"
+    },
 	"autoload" : {
 		"psr-4" : {
 			"pQn\\SistemaFCE\\" : "SistemaFCE",

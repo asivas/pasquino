@@ -1,5 +1,6 @@
 <?php
 namespace pQn\SistemaFCE\modulo;
+use pQn\SistemaFCE\entidad\Entidad;
 use pQn\SistemaFCE\util\properties\PropertiesManager;
 use pQn\SistemaFCE\util\Configuracion;
 use pQn\SistemaFCE\util\Session;
@@ -62,7 +63,7 @@ class BaseMod implements PropertiesManager {
     protected $logger=null;
 
     /**
-     * @var PropertiesManagaer Manager para manejar propiedades del sistema
+     * @var PropertiesManager para manejar propiedades del sistema
      */
     static protected $propertiesManager;
 
@@ -75,7 +76,7 @@ class BaseMod implements PropertiesManager {
      *
      * Inicializa el BaseMod
      * @param string $skinDirName nombre de la skin/template utilizada
-     * @param boolean $conXajax determina si se utilizar� xajax como motor de ajax
+     * @param boolean $conXajax determina si se utilizará xajax como motor de ajax
      */
     function __construct($skinName=null,$conXajax=true) {
         if(!isset($this->session))
@@ -170,10 +171,10 @@ class BaseMod implements PropertiesManager {
                 $skinDirName = (string)$skinConfig['dir'];
         }
         $skinConfig = Configuracion::getTemplateConfigByDir($skinDirName);
-    	$smarty->template_dir = "{$systemRoot}/{$skinsDirname}/{$skinConfig['dir']}"; // configuro directorio de templates
-    	$smarty->compile_dir = "{$systemRoot}/tmp/{$skinsDirname}/templates_c"; // configuro directorio de compilacion
-    	$smarty->cache_dir = "{$systemRoot}/tmp/{$skinsDirname}/cache"; // configuro directorio de cache
-    	$smarty->config_dir = "{$systemRoot}/{$skinsDirname}/configs"; // configuro directorio de configuraciones
+    	$smarty->setTemplateDir("{$systemRoot}/{$skinsDirname}/{$skinConfig['dir']}"); // configuro directorio de templates
+    	$smarty->setCompileDir("{$systemRoot}/tmp/{$skinsDirname}/templates_c"); // configuro directorio de compilacion
+    	$smarty->setCacheDir("{$systemRoot}/tmp/{$skinsDirname}/cache"); // configuro directorio de cache
+    	$smarty->setConfigDir("{$systemRoot}/{$skinsDirname}/configs"); // configuro directorio de configuraciones
 
     	$smarty->assign("skinsDirname",$skinsDirname);
     	return $smarty;
@@ -192,7 +193,6 @@ class BaseMod implements PropertiesManager {
         $this->setTplVar('version',Configuracion::getVersion());
         $this->setTplVar('skinPath',Configuracion::getSystemRootDir()."/{$skinsDirname}/".$this->_skinConfig['dir']);
         $this->setTplVar('appName',Configuracion::getAppName());
-		$this->setTplVar('cal_files',$this->_calendar->get_load_files_code());
 
         $this->setTplVar('dir_images',"{$skinsDirname}/{$publicSkinDir}/images");
         $this->setTplVar('dir_js',"{$skinsDirname}/{$publicSkinDir}/js");
@@ -423,7 +423,7 @@ class BaseMod implements PropertiesManager {
     /**
      * Chequeo de permisos que de haber vencido la sesión en una llamada por xajax
      * muestra un error recarga la pantalla en un tiempo
-     * @param $objResponse objeto response de xajax
+     * @param $objResponse object response de xajax
      * @deprecated como todas las cosas de xajax están tendiendo a sacarse de pasquino por el uso de jQuery
      */
     protected function ajaxCheckPermisos(&$objResponse=null)
@@ -447,9 +447,9 @@ class BaseMod implements PropertiesManager {
     	if($this->esAccionPublicaDeBase($accion))
     		return true;
 
-    	// chequeo a partir de la config del m�dulo
+    	// chequeo a partir de la config del módulo
         $conf = $this->getConfigModulo($nombreModulo);
-        //   Busco los permisos para la acci�n
+        //   Busco los permisos para la acción
         $acciones = $conf->acciones;
         if(!isset($acciones->accion)) return false;
 
@@ -710,7 +710,7 @@ class BaseMod implements PropertiesManager {
      * Muestra por pantalla el tpl con el tipo de display seleccionado o si no hay tipo se muestra
      * con la plantilla (tile) default
      * @param string $tpl
-     * @param unknown_type $type
+     * @param string $type
      */
     protected function mostrar($tpl,$type=null)
     {
@@ -1000,9 +1000,9 @@ class BaseMod implements PropertiesManager {
         $xajaxObjResponse->assign($idDiv,"innerHTML", "<div style='float:right; font-size:5px;'><button onclick='xajax_hideMensaje()'>X</button></div>".$this->caracteres_html($mensaje));
         $xajaxObjResponse->assign($idDiv,"className", $className);
         if(isset($xPos))
-            $xajaxObjResponse->assign($idDiv,"style.left", $xPos+"px");
+            $xajaxObjResponse->assign($idDiv,"style.left", $xPos."px");
         if(isset($yPos))
-            $xajaxObjResponse->assign($idDiv,"style.top", $yPos+"px");
+            $xajaxObjResponse->assign($idDiv,"style.top", $yPos."px");
         $xajaxObjResponse->script("tMsg = setTimeout('xajax_hideMensaje()',3000)");
     }
 
@@ -1045,8 +1045,8 @@ class BaseMod implements PropertiesManager {
     /**
      * Genera un arreglo con opciones para un select
      * @param array $listaElementos Lista de elementos que deben tener getId y getNombre definidos
-     * @param integre $vacio si se debe crear una opcion vacia
-     * @param integre $otro si se debe crear una opcion de "Otro", si est� definido el nro ser� el id
+     * @param integer $vacio si se debe crear una opcion vacia
+     * @param integer $otro si se debe crear una opcion de "Otro", si está definido el nro será el id
      * @return array arreglo asociativo id => nombre
      * @deprecated 1.3- 05/06/2009
      */
@@ -1328,7 +1328,7 @@ class BaseMod implements PropertiesManager {
 	/**
 	 * Obtiene el valor asignado en la template (smarty) a la variable dada
 	 * @param string $varname
-	 * @return Ambigous <multitype:, NULL>
+	 * @return string <multitype:, NULL>
 	 */
 	public function getTemplateVar($varname) {
 		if(method_exists($this->smarty,'getTemplateVars'))

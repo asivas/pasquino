@@ -14,7 +14,7 @@ class smartyFacade
 	 * Recibe el modulo sobre el cual se inicializa el facade,
 	 * y lo carga en una variable miembro
 	 * 
-	 * @param Modulo $mod modulo asociado
+	 * @param BaseMod $mod modulo asociado
 	 */
 	function __construct($mod)
 	{

@@ -2,7 +2,7 @@
 namespace pQn\visual\jscalendar;
 require_once("calendar.php");
 
-class FCEcalendar extends DHTML_Calendar{
+class FCEcalendar extends \DHTML_Calendar {
 
     function get_input_field($cal_options = array(), $field_attributes = array(),$baseID = null) {
         $id = $this->_gen_id();

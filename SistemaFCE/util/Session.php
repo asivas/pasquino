@@ -14,7 +14,7 @@ class Session extends ssHandler{
 	 */
 	protected $sessionAuthClassName='pQn_AUTH_NAME';
 
-    function Session($sessName = null) {
+    function __construct($sessName = null) {
         if(!isset($sessName)) $sessName =Configuracion::getAppName();
     	$this->sessionName =  $sessName;
         $authsConfig = Configuracion::getAuths();
