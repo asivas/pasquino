@@ -4,8 +4,6 @@ namespace pQn\SistemaFCE\util;
 use pQn\datos\ssHandler\ssHandler;
 use pQn\auth\EcontrolAuth;
 
-require_once 'Auth/Auth.php';
-
 class Session extends ssHandler{
 
 	protected $auths=array();

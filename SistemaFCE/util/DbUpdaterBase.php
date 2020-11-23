@@ -226,7 +226,7 @@ class DbUpdaterBase {
 		$propsMgrClass = Configuracion::getPropertiesManagerClass();
 		if(!empty($propsMgrClass))
 		{
-			require_once "$propsMgrClass.class.php";
+			//require_once "$propsMgrClass.class.php";
 			$bVerUpdated = $propsMgrClass::setPropertyValue('versionDB',$version);
 			if(!$bVerUpdated)
 				throw new \Exception("No se pudo actualizar el nro de versión ". $this->getDb()->ErrorMsg());
