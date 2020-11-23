@@ -92,6 +92,12 @@ class Configuracion {
         return $config['nombre'];
     }
 
+    public static function getAppNamespace()
+    {
+        $config = Configuracion::getConfigXML();
+        return $config['namespace'];
+    }
+
     public static function getGessedAppRelpath() {
         $path = $_SERVER['REQUEST_URI'];
         if( strpos($path,'?')!==false && !empty($_SERVER['QUERY_STRING']) )
@@ -271,6 +277,13 @@ class Configuracion {
         }
 
         $inc_path = ini_set("include_path",$inc_path);
+    }
+
+    public static function getPathModulos() {
+        $config = Configuracion::getConfigXML();
+        $modulos = $config->modulos;
+        $pathModulos = $modulos['path'];
+        return $pathModulos;
     }
 
     public static function incluirModulos()
@@ -473,12 +486,22 @@ class Configuracion {
         }
 
         $modName = ucfirst($m)."Mod";
+        $appNamespace = (string)self::getAppNamespace();
+
 
         if(!class_exists($modName))
         {
             $modName = Configuracion::getDefaultMod().'Mod';
             if(!isset($req['accion'])) //solo actualizo si se llama sin mod y sin acción
             	Configuracion::installOrUpdateDatabase();
+        }
+        if(!empty($appNamespace))
+        {            
+            $pathModulos = self::getPathModulos();
+            $configModulo = self::getConfigModulo($modName);
+            $rutaDesdeModulos = $configModulo->archivos->coreDir['ruta'];
+
+            $modName = "{$appNamespace}\\{$pathModulos}\\{$rutaDesdeModulos}\\$modName";
         }
 
         $mod = new $modName();

@@ -351,7 +351,7 @@ abstract class DaoBase {
                 $dao = $this->_newDaoClase($prop['tipo']);
 
                 $colName = "{$prop['columna']}";
-                if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli')) //ac� me aseguro por tablas con espacios en mysql
+                if(is_a($this->_db,'\ADODB_mysql') || is_a($this->_db,'\ADODB_mysqli')) //ac� me aseguro por tablas con espacios en mysql
                     $colName = "`{$colName}`";
 
                 $elemsRelac = $dao->findBy(new Criterio("{$colName} = ".$elem->getId().""));
@@ -395,7 +395,7 @@ abstract class DaoBase {
 
 
     	//FIXME: solo mysql permite nombres locos en el field
-    	if(is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli'))
+    	if(is_a($this->_db,'\ADODB_mysql') || is_a($this->_db,'\ADODB_mysqli'))
     	{
     		if(is_array($fields))
     			foreach($fields as $k => $field)
@@ -530,7 +530,7 @@ abstract class DaoBase {
     	{
     		$tabla = $this->tableName;
     	
-    		if($tabla == $this->_xmlMapping['tabla'] && (is_a($this->_db,'ADODB_mysql') || is_a($this->_db,'ADODB_mysqli') ))
+    		if($tabla == $this->_xmlMapping['tabla'] && (is_a($this->_db,'\ADODB_mysql') || is_a($this->_db,'\ADODB_mysqli') ))
     			//ac� me aseguro por tablas con espacios en mysql
     			$tabla = "`{$tabla}`";
     		$fields = $this->getSqlFields();
