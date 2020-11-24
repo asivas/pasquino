@@ -514,7 +514,7 @@ class BaseMod implements PropertiesManager {
     }
 
     public function formLogin()
-    {	if (is_callable(array($this->session, 'loggingIn')) && ($this->session->loggingIn())) {
+    {	if (is_callable(array($this->session, 'loggingIn')) && (@$this->session->loggingIn())) {
     		$this->setTplVar("errorLogin",true);
     	}
 
@@ -1092,6 +1092,12 @@ class BaseMod implements PropertiesManager {
     	{
     		$entidadUsuario = Configuracion::getEntidadUsuarioClass();
 	    	$claseDaoUsuario = 'Dao'.$entidadUsuario;
+	    	$daosNamespace = Configuracion::getAppNamespace()."\\daos";
+	    	$claseDaoUsuarioEnApp = "{$daosNamespace}\\$claseDaoUsuario";
+	    	if(class_exists($claseDaoUsuarioEnApp))
+	    	    $claseDaoUsuario = $claseDaoUsuarioEnApp;
+	    	else
+	    	    $claseDaoUsuario = "pQn\\SistemaFCE\\dao\\{$claseDaoUsuario}";
 	    	$daoU = $claseDaoUsuario::getInstance();
 	    	$this->_usuario = $daoU->findById($this->session->getIdUsuario());
     	}
