@@ -1,6 +1,9 @@
 <?php
 namespace pQn\datos\criterio;
 
+use pQn\datos\criterio\Restricciones\Between;
+use pQn\datos\criterio\Restricciones\In;
+
 class Criterio{
 
     protected $_expresiones;
@@ -66,10 +69,10 @@ class Criterio{
             {
                 $cond .= $exp;
             }
-            elseif(is_a($exp,'pQn\datos\criterio\In')) {
+            elseif(is_a($exp,In::class)) {
 				$cond .= $exp->toSqlString($clase);
             }
-            elseif(is_a($exp,'pQn\datos\criterio\Between')) {
+            elseif(is_a($exp,Between::class)) {
             	$paramMin = $parametized;
             	$cond .= $exp->toSqlString($clase,$parametized!==false?$parametized:null,$parametized!==false?++$parametized:null);
             	if($parametized!==false && $exp->getValorMin()!==null && $exp->getValorMax()!==null)
@@ -77,7 +80,7 @@ class Criterio{
             		$this->bindParameters[$paramMin] = $exp->getValorMin();
             		$this->bindParameters[$parametized++] = $exp->getValorMax();
             	}
-			}elseif(is_a($exp,'pQn\datos\criterio\Restriccion')) {
+			}elseif(is_a($exp,Restriccion::class)) {
                 $cond .= $exp->toSqlString($clase,$parametized!==false?$parametized:null);
                 if($parametized!==false && $exp->getValor()!==null)
                 	$this->bindParameters[$parametized++] = $exp->getValor();

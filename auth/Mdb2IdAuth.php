@@ -62,7 +62,7 @@ abstract class Mdb2IdAuth extends \Auth{
         {
             if($res = $this->storage->db->query($sql))
             {	
-                if(!PEAR::isError($res))
+                if(!\PEAR::isError($res))
                 {
 	            	if($u = $res->fetchRow(MDB2_FETCHMODE_ASSOC))
 	                {
