@@ -26,7 +26,7 @@
 		"pear/auth_sasl": "dev-master",
 		"pear/net_smtp": "dev-master",
 		"pear/file": "dev-trunk",
-		"asivas/html_quickform": "dev-trunk",
+		"asivas/html_quickform": "dev-composer",
 		"ext-simplexml": "*",
       	"ext-json": "*"
     },
