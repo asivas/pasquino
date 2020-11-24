@@ -2,7 +2,7 @@
 	"repositories": [
 		{"type": "vcs", "url":"https://github.com/pear/Auth.git"  },
 		{"type": "vcs", "url":"https://github.com/pear/File.git"  },
-		{"type": "vcs", "url":"https://github.com/pear/MDB2.git"  },
+		{"type": "vcs", "url":"https://github.com/asivas/MDB2.git"  },
 		{"type": "vcs", "url":"https://github.com/asivas/HTML_QuickForm.git"  }
 	],
 	"require" : {
@@ -27,7 +27,7 @@
 		"pear/auth_sasl": "dev-master",
 		"pear/net_smtp": "dev-master",
 		"pear/file": "dev-trunk",
-		"pear/MDB2": "dev-master",
+		"asivas/MDB2": "dev-master",
 		"asivas/html_quickform": "dev-composer",
 		"ext-simplexml": "*",
       	"ext-json": "*"
