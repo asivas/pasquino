@@ -14,7 +14,7 @@ abstract class Mdb2IdAuth extends \Auth{
 
     static private $userId;
     
-    function Mdb2IdAuth($loginFunction = "", $showLogin = false, $options=null) {
+    function __construct($loginFunction = "", $showLogin = false, $options=null) {
         
         if(empty($this->userTable))
             $this->userTable = "usuarios";
@@ -58,7 +58,7 @@ abstract class Mdb2IdAuth extends \Auth{
         if(!is_object($this->storage)) // si no se hizo ninguna acci�n no se efectu� el _loadStorage 
             $this->listUsers();        // hago el query de usuarios que llama a _loadStorage y no cambia nada 
         
-        if(isset($this->storage->db) && !PEAR::isError($this->storage->db))
+        if(isset($this->storage->db) && !\PEAR::isError($this->storage->db))
         {
             if($res = $this->storage->db->query($sql))
             {	
