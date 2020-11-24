@@ -403,8 +403,14 @@ class Configuracion {
     public static function getMappingClase($nombreClase,$xmlMappingFile = null)
     {
         $nombreClase = (string)$nombreClase;
-        $nc = substr($nombreClase,strrpos($nombreClase,'\\',-1)+1);
-        $namespaceClass = substr($nombreClase,0,strrpos($nombreClase,'\\',-1));
+        if(strpos($nombreClase,"\\")!==FALSE)
+        {
+            $nc = substr($nombreClase,strrpos($nombreClase,'\\',-1)+1);
+            $namespaceClass = substr($nombreClase,0,strrpos($nombreClase,'\\',-1));
+        }
+        else
+            $nc = $nombreClase;
+
         if (!isset(self::$mappingsXml[$nc])) {
             if (empty($xmlMappingFile)) {
                 $archivoMappings = "";

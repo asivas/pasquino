@@ -291,7 +291,12 @@ abstract class DaoBase {
         if($elem == null)
         {
         	$elem_name = $this->getClaseEntidad();
-        	$elem = new $elem_name();
+        	$namespaceEntidades = Configuracion::getAppNamespace()."\\entidades";
+        	$namespaceElemName="$namespaceEntidades\\$elem_name";
+        	if(strpos($elem_name,"\\")!==FALSE)
+        	    $elem = new $elem_name;
+        	else
+        	    $elem = new $namespaceElemName();
         }
 
         foreach($this->_xmlMapping->id as $id)

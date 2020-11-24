@@ -25,6 +25,10 @@ class Session extends ssHandler{
 	        foreach($authsConfig->auth as $authConfig)
 	        {
 	        	$authClass = (string)$authConfig['class'];
+                $namespaceAuths = Configuracion::getAppNamespace()."\\auth";
+                if(strpos($authClass,"\\")===FALSE)
+                    $authClass = "{$namespaceAuths}\\{$authClass}";
+
 	        	$this->addAuth(new $authClass());
 	        }
         }

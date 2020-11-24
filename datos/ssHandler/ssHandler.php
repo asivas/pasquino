@@ -66,7 +66,7 @@ namespace pQn\datos\ssHandler;
 		* @param object $auth referencia a un objeto auth que define como 
         * se usará la autenticación
 		*/
-		function ssHandler($auth) 
+		function __construct($auth)
 		{
             $this->auth = $auth;
             if (function_exists("session_register_shutdown"))
