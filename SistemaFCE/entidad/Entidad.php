@@ -185,7 +185,13 @@ class Entidad implements \Serializable{
     	if(($rel = $this->getCacheRelacionado($cacheKey))==null)
     	{
     		$daoClass = 'Dao'.$relClass;
-    		$dao = $daoClass::getInstance();
+
+    		$daosNamespace = Configuracion::getAppNamespace()."\\daos";
+            $claseDaoUsuarioEnApp = "{$daosNamespace}\\{$daoClass}";
+            if(class_exists($claseDaoUsuarioEnApp))
+                $daoClass = $claseDaoUsuarioEnApp;
+
+            $dao = $daoClass::getInstance();
     		$rel = $dao->findById($relFk);
     		$this->setCacheRelacionado($cacheKey,$rel);
     	}
