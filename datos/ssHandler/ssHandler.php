@@ -1,5 +1,7 @@
 <?php
 namespace pQn\datos\ssHandler;
+    use pQn\SistemaFCE\util\Configuracion;
+
     /**
     * Se define la clase provee acceso via usuario y contraseña
     * 
