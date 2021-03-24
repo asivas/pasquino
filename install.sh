@@ -82,11 +82,11 @@ read -p "Do you wish to install the alias with a2enconf [Y/n]?" yn
 case $yn in	    
     [Nn]* ) break;;
     [Yy]* )
-        pQnConfName="${filename%.*}";
+        pQnConfName="${$pQnConfFileName%.*}";
 	    a2enconf $pQnConfName;
 	 ;;
     * ) 
-	   pQnConfName="${filename%.*}";
+	   pQnConfName="${$pQnConfFileName%.*}";
 	   a2enconf $pQnConfName;
 	 ;;
 esac
