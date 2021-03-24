@@ -53,7 +53,7 @@ fi
 echo "Step 2 of $STEPS: installing pear dependencies"
 
 # Corroboramos si esta instalado pear
-pear > /dev/null 2>&1
+which pear > /dev/null 2>&1
 
 # si no existe intalamos via apt-get
 if [ $? -ne 0 ]; then
