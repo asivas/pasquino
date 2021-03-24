@@ -61,17 +61,17 @@ if [ $? -ne 0 ]; then
 	apt-get update && apt-get -y install php-pear 
 	pear channel-update pear.php.net > /dev/null
 fi
-pear -q upgrade -f PEAR
-pear -q install -f Archive_Tar 
-pear -q install -f Auth Auth_SASL 
-pear -q install -f Console_Getopt DB File HTML_Common HTML_QuickForm 
-pear -q install -f HTTP HTTP_Client HTTP_Request 
-pear -q install -f Log 
-pear -q install -f MDB2 MDB2_Driver_mysql MDB2_Driver_mysqli 
-pear -q install -f Mail Mail_Mime Mail_Queue Mail_mimeDecode 
-pear -q install -f Net_SMTP Net_Socket Net_URL Net_UserAgent_Detect 
-pear -q install -f Structures_Graph 
-pear -q install -f XML_Parser XML_RPC XML_Util
+pear -q upgrade PEAR
+pear -q install Archive_Tar
+pear -q install  Auth Auth_SASL
+pear -q install Console_Getopt DB File HTML_Common HTML_QuickForm
+pear -q install HTTP HTTP_Client HTTP_Request
+pear -q install Log
+pear -q install MDB2 MDB2_Driver_mysql MDB2_Driver_mysqli
+pear -q install Mail Mail_Mime Mail_Queue Mail_mimeDecode
+pear -q install Net_SMTP Net_Socket Net_URL Net_UserAgent_Detect
+pear -q install Structures_Graph
+pear -q install XML_Parser XML_RPC XML_Util
 
 echo "Step 3 of $STEPS: installing apache aliases"
 echo replacing {pasquino} by ${pQnDir} from ${pQnDir}/.alias_apache.conf to ${APACHECONF}/$pQnConfFileName 
