@@ -4,6 +4,8 @@
 
 STEPS=4
 
+getopts "y" options
+
 # Make sure only root (or executed via sudo) can run our script
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run with root privileges" 1>&2
@@ -15,23 +17,26 @@ APACHECONF=/etc/apache2/conf-available
 pQnConfFileName=pasquino.conf
 pQnIncludepathIniDir=/etc/php5/mods-available
 
-
 echo Welcome to pasquino Ubuntu installer
-echo "Step 1 of $STEPS: set the directories and config file paths "
+  echo "Step 1 of $STEPS: set the directories and config file paths "
 
-#alias de js y css (visual)
-read -p "Pasquino Path [$pQnDir]:" -r
-[[ -n "$REPLY" ]] && pQnDir=$REPLY
+if [ "${options}" != "y" ]; then
 
-read -p "Apache Configs dir [$APACHECONF]:" -r
-[[  -n "$REPLY" ]]  && APACHECONF=$REPLY
+  #alias de js y css (visual)
+  read -p "Pasquino Path [$pQnDir]:" -r
+  [[ -n "$REPLY" ]] && pQnDir=$REPLY
 
-read -p "Pasquino Config filename [$pQnConfFileName]:" -r
-[[ -n "$REPLY" ]] && pQnConfFileName=$REPLY
+  read -p "Apache Configs dir [$APACHECONF]:" -r
+  [[  -n "$REPLY" ]]  && APACHECONF=$REPLY
 
-read -p "Php mods-available dir [$pQnIncludepathIniDir]:" -r
-[[ -n "$REPLY" ]] && pQnIncludepathIniDir=$REPLY
+  read -p "Pasquino Config filename [$pQnConfFileName]:" -r
+  [[ -n "$REPLY" ]] && pQnConfFileName=$REPLY
 
+  read -p "Php mods-available dir [$pQnIncludepathIniDir]:" -r
+  [[ -n "$REPLY" ]] && pQnIncludepathIniDir=$REPLY
+else
+  echo "Using defaults"
+fi
 # this could be useful if the installer was standalone
 #
 ##check git command is installed
