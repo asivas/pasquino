@@ -97,11 +97,11 @@ includepath=$(php -i | grep include_path | awk '{print $5}')
 
 # Check if phpenmod exists
 phpenmod > /dev/null 2>&1
-if [ $? -ne 0 ]; then
+if [ $? -eq 0 ]; then
     PHPENMODCMD=phpenmod
 else
     php5enmod > /dev/null 2>&1
-    if [ $? -ne 0 ]; then
+    if [ $? -eq 0 ]; then
         PHPENMODCMD=php5enmod
     fi
 fi
