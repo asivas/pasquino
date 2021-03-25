@@ -83,10 +83,12 @@ case $yn in
     [Nn]* ) break;;
     [Yy]* )
         pQnConfName="${pQnConfFileName%.*}"
+        echo executing a2enconf $pQnConfName
 	      a2enconf $pQnConfName
 	 ;;
     * ) 
 	   pQnConfName="${pQnConfFileNamee%.*}"
+	   echo executing a2enconf $pQnConfName
 	   a2enconf $pQnConfName
 	 ;;
 esac
