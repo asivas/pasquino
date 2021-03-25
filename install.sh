@@ -87,7 +87,7 @@ case $yn in
 	      a2enconf $pQnConfName
 	 ;;
     * ) 
-	   pQnConfName="${pQnConfFileNamee%.*}"
+	   pQnConfName="${pQnConfFileName%.*}"
 	   echo executing a2enconf $pQnConfName
 	   a2enconf $pQnConfName
 	 ;;
