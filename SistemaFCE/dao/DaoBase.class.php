@@ -428,7 +428,9 @@ abstract class DaoBase {
     	
     	if($strCond!='')
     	{
-    		if(stripos($sql," WHERE ")===false || stripos($sql," WHERE ")==-1)
+    		if(stripos($sql," WHERE ")===false || stripos($sql," WHERE ")==-1
+                || stripos($sql," WHERE ") < strripos($sql," FROM")  //this happens on subquery fields ( where before last from )
+            )
     			$sql .= " WHERE ";
     		else
     			$sql .= " AND ";
