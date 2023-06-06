@@ -13,9 +13,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 pQnDir=`pwd`
-APACHECONF=/etc/apache2/conf-available
-pQnConfFileName=pasquino.conf
-pQnIncludepathIniDir=/etc/php5/mods-available
+[[ -z "${APACHECONF}" ]] && APACHECONF=/etc/apache2/conf-available
+[[ -z "${pQnConfFileName}" ]] && pQnConfFileName=pasquino.conf
+[[ -z "${pQnIncludepathIniDir}" ]] && pQnIncludepathIniDir=/etc/php5/mods-available
 
 echo Welcome to pasquino Ubuntu installer
   echo "Step 1 of $STEPS: set the directories and config file paths "
