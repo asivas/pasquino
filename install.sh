@@ -78,7 +78,7 @@ echo replacing {pasquino} by ${pQnDir} from ${pQnDir}/.alias_apache.conf to ${AP
 pQnDirEscaped=$(echo ${pQnDir} | sed -e 's/\//\\\//g' -e 's/\&/\\\&/g' )
 sed -e "s/{pasquino}/${pQnDirEscaped}/" ${pQnDir}/.alias_apache.conf > ${APACHECONF}/$pQnConfFileName
 
-read -p "Do you wish to install the alias with a2enconf [Y/n]?" yn
+[[ "${options}" != "y" ]] && read -p "Do you wish to install the alias with a2enconf [Y/n]?" yn
 case $yn in	    
     [Nn]* ) break;;
     [Yy]* )
@@ -118,7 +118,7 @@ createPhpIncludePathIni() {
     $PHPENMODCMD pasquino
 }
 
-read -p "Do you wish to set include_path to $includepath:${pQnDir} [Y/n]?" yn
+[[ "${options}" != "y" ]] && read -p "Do you wish to set include_path to $includepath:${pQnDir} [Y/n]?" yn
 case $yn in	    
     [Nn]* ) break;;
 	[Yy]* )
