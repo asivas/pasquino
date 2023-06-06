@@ -58,9 +58,9 @@ which pear > /dev/null 2>&1
 # si no existe intalamos via apt-get
 if [ $? -ne 0 ]; then
 	echo "Pear is required, installing pear"
-	apt-get update && apt-get -y install php-pear 
-	pear channel-update pear.php.net > /dev/null
+	apt-get update && apt-get -y install php-pear
 fi
+pear channel-update pear.php.net > /dev/null
 pear -q upgrade PEAR
 pear -q install Archive_Tar
 pear -q install  Auth Auth_SASL
